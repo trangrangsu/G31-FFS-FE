@@ -1,0 +1,30 @@
+.Frees {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div {
+    text-align: center;
+}
+
+table {
+    border: 0.5px solid black;
+    width: 1225px;
+    height: 400px;
+}
+
+th {
+    border-bottom: 0.5px solid black;
+    font-weight: 500px;
+    text-align: center;
+    height: 45px;
+    vertical-align: middle;
+}
+
+td {
+    text-align: center;
+    font-weight: 400;
+    height: 40px;
+    vertical-align: middle;
+}
