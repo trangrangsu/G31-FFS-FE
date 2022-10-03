@@ -1,7 +1,55 @@
 .wrapper {
     margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .container {
     width: var(--default-layout-width);
     padding: 20px;
+}
+.greeting {
+    width: 900px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 150px;
+}
+.greeting-title {
+    font-size: 25px;
+    font-weight: bold;
+}
+.greeting-content {
+    font-size: 15px;
+    width: 800px;
+}
+
+.profile-content {
+    width: 900px;
+    margin-top: 30px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 150px;
+}
+.profile-basic {
+    width: 100%;
+}
+.personal-title {
+}
+.avatar {
+}
+.avatar-img {
+}
+.avatar-upload {
+}
+.avatar-instruction {
+}
+.personal-info {
+}
+.full-name {
+}
+.profile-complex {
 }

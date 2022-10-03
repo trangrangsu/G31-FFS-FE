@@ -13,6 +13,8 @@ const routes = {
     payment: '/payment',
     support: '/support',
     updateFreelancer: '/freelancer/updateProfile',
+    viewDetailFreelancer: '/freelancer/viewProfile',
+    updateRecruiter: '/recruiter/updateProfile',
 };
 
 export default routes;

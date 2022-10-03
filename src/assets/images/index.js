@@ -2,6 +2,7 @@ const images = {
     logo: require('../../assets/images/logo.png'),
     designWebsiteImg: require('../../assets/images/thiết-kế-website.jpg'),
     man: require('../../assets/images/man.png'),
+    defaultAvatar: require('../../assets/images/default-avatar.png'),
     trang: require('../../assets/images/trang.jpg'),
     manh: require('../../assets/images/manh.jpg'),
     cong: require('../../assets/images/cong.jpg'),
