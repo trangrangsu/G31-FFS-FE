@@ -1,71 +1,67 @@
-import React from 'react'
-import {
-  CButton,
-  CCard,
-  CCardBody,
-  CCol,
-  CContainer,
-  CForm,
-  CFormInput,
-  CInputGroup,
-  CInputGroupText,
-  CRow,
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
+import React from 'react';
+import { MDBInput } from 'mdb-react-ui-kit';
+import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+import { CFormCheck } from '@coreui/react';
+import classNames from 'classnames/bind';
 
+import config from '../../../config';
+import Button from '../../../components/Button';
+import styles from './Register.module.scss';
+const cx = classNames.bind(styles);
 const Register = () => {
-  return (
-    <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
-      <CContainer>
-        <CRow className="justify-content-center">
-          <CCol md={9} lg={7} xl={6}>
-            <CCard className="mx-4">
-              <CCardBody className="p-4">
-                <CForm>
-                  <h1>Register</h1>
-                  <p className="text-medium-emphasis">Create your account</p>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilUser} />
-                    </CInputGroupText>
-                    <CFormInput placeholder="Username" autoComplete="username" />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>@</CInputGroupText>
-                    <CFormInput placeholder="Email" autoComplete="email" />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilLockLocked} />
-                    </CInputGroupText>
-                    <CFormInput
-                      type="password"
-                      placeholder="Password"
-                      autoComplete="new-password"
-                    />
-                  </CInputGroup>
-                  <CInputGroup className="mb-4">
-                    <CInputGroupText>
-                      <CIcon icon={cilLockLocked} />
-                    </CInputGroupText>
-                    <CFormInput
-                      type="password"
-                      placeholder="Repeat password"
-                      autoComplete="new-password"
-                    />
-                  </CInputGroup>
-                  <div className="d-grid">
-                    <CButton color="success">Create Account</CButton>
-                  </div>
-                </CForm>
-              </CCardBody>
-            </CCard>
-          </CCol>
-        </CRow>
-      </CContainer>
-    </div>
-  )
-}
+    return (
+        <div className={cx('wrapper')}>
+            <div className={cx('form')}>
+                <div className={cx('title')}>
+                    <p>Đăng ký</p>
+                </div>
+                <div className={cx('container')}>
+                    <MDBInput label="Họ và tên *" id="form1" type="text" className={cx('custom')} />
+                </div>
+                <div className={cx('container')}>
+                    <MDBInput label="Mật khẩu *" id="form2" type="password" className={cx('custom')} />
+                </div>
+                <div className={cx('container')}>
+                    <MDBInput label="Xác nhận mật khẩu *" id="form3" type="password" className={cx('custom')} />
+                </div>
+                <div className={cx('container')}>
+                    <MDBInput label="Email *" id="form6" type="email" className={cx('custom')} />
+                </div>
+                <div className={cx('role-form')}>
+                    <label className={cx('label')}>Tôi muốn đăng ký làm</label>
+                    <div className={cx('content')}>
+                        <CFormCheck
+                            type="radio"
+                            name="role"
+                            id="freelancer"
+                            label="Freelancer"
+                            className={cx('freelancer')}
+                            defaultChecked
+                        />
+                        <CFormCheck
+                            type="radio"
+                            name="role"
+                            id="recruiter"
+                            label="Recruiter"
+                            className={cx('recruiter')}
+                        />
+                    </div>
+                    <div className={cx('left-top')}></div>
+                    <div className={cx('right-top')}></div>
+                </div>
+                <Button text rounded to={config.routes.updateFreelancer} className={cx('btn')}>
+                    ĐĂNG KÝ
+                </Button>
+                <span className={cx('text')}>
+                    {' '}
+                    Đã có tài khoản?
+                    <Button text to={config.routes.login} className={cx('link')}>
+                        Đăng nhập
+                    </Button>
+                </span>
+            </div>
+        </div>
+    );
+};
 
-export default Register
+export default Register;
