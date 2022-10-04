@@ -15,6 +15,7 @@ const routes = {
     updateFreelancer: '/freelancer/updateProfile',
     viewDetailFreelancer: '/freelancer/viewProfile',
     updateRecruiter: '/recruiter/updateProfile',
+    postJob: '/recruiter/postJob'
 };
 
 export default routes;

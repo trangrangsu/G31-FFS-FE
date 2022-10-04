@@ -16,9 +16,10 @@ const Support = React.lazy(() => import('./views/admin/Support'));
 const ContentHome = React.lazy(() => import('./views/pages/ContentHome'));
 const Login = React.lazy(() => import('./views/pages/login'));
 const Register = React.lazy(() => import('./views/pages/register'));
-const UpdateFreelancerProfile = React.lazy(() => import('./views/Freelancer/Update'));
+const UpdateFreelancerProfile = React.lazy(() => import('./views/freelancer/Update'));
 const UpdateRecruiterProfile = React.lazy(() => import('./views/recruiter/Update'));
 const ViewDetailFreelancer = React.lazy(() => import('./views/pages/ViewDetailFreelancer'));
+const PostJob = React.lazy(() => import('./views/recruiter/Post'));
 
 // Public routes
 export const routes = [
@@ -37,6 +38,7 @@ export const routes = [
     { path: config.routes.updateFreelancer, element: UpdateFreelancerProfile, layout: HomeLayout },
     { path: config.routes.updateRecruiter, element: UpdateRecruiterProfile, layout: HomeLayout },
     { path: config.routes.viewDetailFreelancer, element: ViewDetailFreelancer, layout: HomeLayout },
+    { path: config.routes.postJob, element: PostJob, layout: HomeLayout },
 ];
 
 // Private routes

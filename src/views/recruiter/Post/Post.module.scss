@@ -1,0 +1,100 @@
+.wrapper{
+
+}
+.container{
+    margin: 0 auto;
+    border-radius: 1px solid black;
+    margin-top: 100px;
+    width:880px;
+    height:fit-content;
+    background-color: #fff!important;
+    margin-bottom: 100px;
+    box-shadow: 0 -1px 1px 0 rgba(0,0,0,.05),0 2px 3px 0 rgba(177,177,177,.4)!important;
+}
+.greeting-title{
+font-size: 40px;
+text-align: center;
+}
+.label-title{
+    font-weight: bold;
+    display: block;
+    font-size: 25px;
+}
+.label-subTitle{
+    font-size: 18px;
+}
+.career-post{
+   padding: 16px;
+   display: flex;
+}
+.post-detail{
+    padding: 16px;
+    display: flex;
+}
+.label-attach{
+    margin-top: 16px;
+    color: blue;
+}
+.more-req{
+    padding: 16px;
+    display: flex;
+}
+.budget-post{
+    padding: 16px;
+    display: flex;
+}
+.career-post select{
+    margin-bottom: 16px;
+}
+.form-post{display: flex;}
+.attach{
+    display: block;
+}
+.post-detail input{
+    margin-bottom:16px;
+}
+.submit-button{
+    width:100%;
+    height: fit-content;
+    padding:25px;
+    text-align: center;
+    margin: 0 auto;
+    background-color: #f0f0f0;
+    
+}
+.budget-post input::placeholder{
+    text-align: right;
+}
+
+.submit-button button{
+    margin-bottom:20px ;
+   
+    font-weight: bold;
+}
+.icon-post{
+    color: rgb(64, 144, 219)   ;
+    height:50px;
+    width: 50px;
+    margin-right:40px;
+}
+.right-post{
+    width: 90%;
+}
+.post-detail .form-control{
+    width: 50%;
+    display: block  ;
+}
+.more-req select{
+    width: 50%;
+    display: block ;
+}
+.budget-post .form-control{
+    width: 50%;
+    display: block;
+    margin-bottom: 40px;
+}
+.budget-post .payment{
+    width: 50%;
+    display: block;
+}
+
