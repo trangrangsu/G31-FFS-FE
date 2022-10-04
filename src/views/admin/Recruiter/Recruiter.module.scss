@@ -1,0 +1,33 @@
+.recruiters td,
+.recruiters th {
+    border: 1px solid #fff;
+    padding: 8px;
+}
+
+.recruiters tr:nth-child(even) {
+    background-color: #d0d0e1;
+}
+
+.recruiters tr:hover {
+    background-color: #a9a9a9;
+}
+
+.recruiters th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #4f5d73;
+    color: #fff;
+}
+.title {
+    text-align: center;
+    font-family: arial, sans-serif;
+}
+
+.recruiters {
+    text-align: center;
+    font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    border: 3px solid #ddd;
+    width: 100%;
+}
