@@ -3,31 +3,40 @@
     border: 1px solid #fff;
     padding: 8px;
 }
-
 .freelancers tr:nth-child(even) {
     background-color: #d0d0e1;
 }
-
 .freelancers tr:hover {
     background-color: #a9a9a9;
 }
+.wrapper{
+    padding: 0%;
+}
 
-.freelancers th {
+.table-header{
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: center;
     background-color: #4f5d73;
     color: #fff;
 }
-.title {
+.container{
+    width: var(--default-layout-width);
+
+    margin:var(--default-margin-top-title-admin) auto;
+
+}
+.title{
     text-align: center;
     font-family: arial, sans-serif;
 }
-
 .freelancers {
+    width: 100%;
     text-align: center;
     font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     border: 3px solid #ddd;
-    width: 100%;
+}
+.table-paging{
+    margin-top:20px;
 }

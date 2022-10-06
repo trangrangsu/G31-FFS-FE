@@ -85,23 +85,26 @@ function Freelancer() {
         });
     };
     return (
-        <div>
-            <h1 className={cx('title')}>Danh sách Freelancer</h1>
-            <table className={cx('freelancers')}>
-                <thead>{renderTableHeader()}</thead>
-                <tbody>{renderTableData()}</tbody>
-            </table>
-            <CPagination aria-label="Page navigation example">
-                <CPaginationItem aria-label="Previous" disabled>
-                    <span aria-hidden="true">&laquo;</span>
-                </CPaginationItem>
-                <CPaginationItem active>1</CPaginationItem>
-                <CPaginationItem>2</CPaginationItem>
-                <CPaginationItem>3</CPaginationItem>
-                <CPaginationItem aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </CPaginationItem>
-            </CPagination>
+        <div className={cx('wrapper')}>
+
+            <div className={cx('container')}>
+                <h1 className={cx('title')}>Danh sách Freelancer</h1>
+                <table className={cx('freelancers')}>
+                    <thead className={cx('table-header')}>{renderTableHeader()}</thead>
+                    <tbody>{renderTableData()}</tbody>
+                </table>
+                <CPagination aria-label="Page navigation example" className={cx('table-paging')}>
+                    <CPaginationItem aria-label="Previous" disabled>
+                        <span aria-hidden="true">&laquo;</span>
+                    </CPaginationItem>
+                    <CPaginationItem active>1</CPaginationItem>
+                    <CPaginationItem>2</CPaginationItem>
+                    <CPaginationItem>3</CPaginationItem>
+                    <CPaginationItem aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </CPaginationItem>
+                </CPagination>
+            </div>
         </div>
     );
 }
