@@ -11,27 +11,27 @@ function SubCareer() {
     const subCareers = [
         {
             id: 1,
-            name: 'Công Nghệ Thông tin'
+            name: 'Công Nghệ Thông tin',
         },
         {
             id: 2,
-            name: 'Bất Động Sản'
+            name: 'Bất Động Sản',
         },
         {
             id: 3,
-            name: 'Bán Hàng'
+            name: 'Bán Hàng',
         },
         {
             id: 4,
-            name: 'Thiết Kế'
+            name: 'Thiết Kế',
         },
         {
             id: 5,
-            name: 'Tư Vấn'
+            name: 'Tư Vấn',
         },
         {
             id: 6,
-            name: 'Xây dựng'
+            name: 'Xây dựng',
         },
     ];
     const renderTableHeader = () => {
@@ -45,31 +45,44 @@ function SubCareer() {
                 <h1 className={cx('title')}>Danh sách SubCareer</h1>
                 <div className={cx('subcareer-list')}>
                     <select className={cx('career-list')} aria-label="Default select example">
-                        <option selected><label for="exampleFormControlTextarea1" className={cx('form-label')}>--Chọn ngành nghề-</label></option>
+                        <option selected>
+                            <label for="exampleFormControlTextarea1" className={cx('form-label')}>
+                                --Chọn ngành nghề-
+                            </label>
+                        </option>
                         <option value="0">CNTT</option>
                         <option value="24">Bất Động Sản</option>
                         <option value="31">Tư vấn bán hàng</option>
                     </select>
                     <div className={cx('subcareer-search')}>
-                        <span class="icon"> <i><FontAwesomeIcon icon={faSearch} /></i></span>
+                        <span className="icon">
+                            {' '}
+                            <i>
+                                <FontAwesomeIcon icon={faSearch} />
+                            </i>
+                        </span>
                         <input type="search" id="search" placeholder="Search..." />
                     </div>
-
                 </div>
 
                 <table className={cx('subCareers')}>
                     <thead className={cx('table-header')}>{renderTableHeader()}</thead>
-                    <tbody>{
-                        subCareers.map((subCareers) => {
+                    <tbody>
+                        {subCareers.map((subCareers) => {
                             return (
                                 <tr key={subCareers.id}>
                                     <td>{subCareers.id}</td>
                                     <td>{subCareers.name}</td>
-                                    <td><button>Chỉnh sửa</button></td>
-                                    <td><button>Xóa</button></td>
+                                    <td>
+                                        <button>Chỉnh sửa</button>
+                                    </td>
+                                    <td>
+                                        <button>Xóa</button>
+                                    </td>
                                 </tr>
                             );
-                        })}</tbody>
+                        })}
+                    </tbody>
                 </table>
                 <CPagination aria-label="Page navigation example" className={cx('table-paging')}>
                     <CPaginationItem aria-label="Previous" disabled>

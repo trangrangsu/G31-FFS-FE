@@ -1,8 +1,9 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import { CPagination, CPaginationItem } from '@coreui/react';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import Button from '../../../components/Button';
+import Search from '../../../components/Search';
 import styles from './Career.module.scss';
 const cx = classNames.bind(styles);
 
@@ -11,27 +12,27 @@ function Career() {
     const careers = [
         {
             id: 1,
-            name: 'Công Nghệ Thông tin'
+            name: 'Công Nghệ Thông tin',
         },
         {
             id: 2,
-            name: 'Bất Động Sản'
+            name: 'Bất Động Sản',
         },
         {
             id: 3,
-            name: 'Bán Hàng'
+            name: 'Bán Hàng',
         },
         {
             id: 4,
-            name: 'Thiết Kế'
+            name: 'Thiết Kế',
         },
         {
             id: 5,
-            name: 'Tư Vấn'
+            name: 'Tư Vấn',
         },
         {
             id: 6,
-            name: 'Xây dựng'
+            name: 'Xây dựng',
         },
     ];
     const renderTableHeader = () => {
@@ -43,28 +44,31 @@ function Career() {
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <h1 className={cx('title')}>Danh sách career</h1>
-                <div className={cx('career-list')}>
-                    <button type="button" className={cx('btn btn-dark', 'btn-add')}>Thêm mới</button>
-                    <div className={cx('career-search')}>
-                        <span class="icon"> <i><FontAwesomeIcon icon={faSearch} /></i></span>
-                        <input type="search" id="search" placeholder="Search..." />
-                    </div>
-
+                <div className={cx('action')}>
+                    <Button admin>Thêm mới</Button>
+                    <Search title="Tìm kiếm ngành nghề" />
                 </div>
 
                 <table className={cx('careers')}>
-                    <thead className={cx('table-header')}>{renderTableHeader()}</thead>
-                    <tbody>{
-                        careers.map((careers) => {
+                    <thead className={cx('table-header')}>
+                        <tr>{renderTableHeader()}</tr>
+                    </thead>
+                    <tbody>
+                        {careers.map((careers) => {
                             return (
                                 <tr key={careers.id}>
                                     <td>{careers.id}</td>
                                     <td>{careers.name}</td>
-                                    <td><button>Chỉnh sửa</button></td>
-                                    <td><button>Xóa</button></td>
+                                    <td>
+                                        <button>Chỉnh sửa</button>
+                                    </td>
+                                    <td>
+                                        <button>Xóa</button>
+                                    </td>
                                 </tr>
                             );
-                        })}</tbody>
+                        })}
+                    </tbody>
                 </table>
                 <CPagination aria-label="Page navigation example" className={cx('table-paging')}>
                     <CPaginationItem aria-label="Previous" disabled>

@@ -13,6 +13,7 @@ const SubCareer = React.lazy(() => import('./views/admin/SubCareer'));
 const Service = React.lazy(() => import('./views/admin/Service'));
 const Payment = React.lazy(() => import('./views/admin/Payment'));
 const Support = React.lazy(() => import('./views/admin/Support'));
+const ViewDetailFreelancerAdmin = React.lazy(() => import('./views/admin/ViewDetailFreelancer'));
 const ContentHome = React.lazy(() => import('./views/pages/ContentHome'));
 const Login = React.lazy(() => import('./views/pages/login'));
 const Register = React.lazy(() => import('./views/pages/register'));
@@ -35,6 +36,7 @@ export const routes = [
     { path: config.routes.service, element: Service },
     { path: config.routes.payment, element: Payment },
     { path: config.routes.support, element: Support },
+    { path: config.routes.viewDetailFreelancerAdmin, element: ViewDetailFreelancerAdmin },
     { path: config.routes.updateFreelancer, element: UpdateFreelancerProfile, layout: HomeLayout },
     { path: config.routes.updateRecruiter, element: UpdateRecruiterProfile, layout: HomeLayout },
     { path: config.routes.viewDetailFreelancer, element: ViewDetailFreelancer, layout: HomeLayout },

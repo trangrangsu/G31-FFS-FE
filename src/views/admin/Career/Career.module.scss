@@ -3,30 +3,30 @@
     border: 1px solid #fff;
     padding: 8px;
 }
-.careers tr{
-
-    &:nth-child(even){background-color: #d0d0e1;}
+.careers tr {
+    &:nth-child(even) {
+        background-color: #d0d0e1;
+    }
     &:hover {
         background-color: #a9a9a9;
     }
 }
-.wrapper{
+.wrapper {
     padding: 0%;
 }
-.table-header{
+.table-header {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: center;
     background-color: #4f5d73;
     color: #fff;
 }
-.container{
+.container {
     width: var(--default-layout-width);
 
-    margin:var(--default-margin-top-title-admin) auto;
-
+    margin: var(--default-margin-top-title-admin) auto;
 }
-.title{
+.title {
     text-align: center;
     font-family: arial, sans-serif;
 }
@@ -37,26 +37,12 @@
     border-collapse: collapse;
     border: 3px solid #ddd;
 }
-.table-paging{
-    margin-top:20px;
+.table-paging {
+    margin-top: 20px;
 }
-.career-search {
-    width: 300px;
-    position: relative;
-}
-.career-search{
-    input{ 
-    height:40px;
-    width: 300px;
-    margin-right: 20px;
-    border-radius: 5px;
-}
-}
-  .career-list{
-   display: flex;
-  }
-  .btn-add{ 
-    height:40px;
-    margin-right: 20px;
-  }
 
+.action {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
