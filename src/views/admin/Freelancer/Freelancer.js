@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import classNames from 'classnames/bind';
 import Search from '../../../components/Search';
 import { CPagination, CPaginationItem } from '@coreui/react';
+import { Link } from 'react-router-dom';
 
+import Config from '../../../config';
 import styles from './Freelancer.module.scss';
 const cx = classNames.bind(styles);
 
@@ -51,7 +53,6 @@ function Freelancer() {
             accountbalance: '20000',
             isbanned: 'False',
         },
-
     ];
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
@@ -61,19 +62,27 @@ function Freelancer() {
     const renderTableData = () => {
         return freelancers.map((freelancer) => {
             return (
-                <tr key={freelancer.id}>
-                    <td>{freelancer.id}</td>
-                    <td>{freelancer.email}</td>
-                    <td>{freelancer.fullname}</td>
-                    <td>{freelancer.accountbalance}</td>
-                    <td>{freelancer.isbanned}</td>
-                </tr>
+                <Link
+                    to={{
+                        pathname: Config.routes.viewDetailFreelancerAdmin,
+                        search: `?id=${freelancer.id}`,
+                    }}
+                >
+                    <div>
+                        <tr key={freelancer.id}>
+                            <td>{freelancer.id}</td>
+                            <td>{freelancer.email}</td>
+                            <td>{freelancer.fullname}</td>
+                            <td>{freelancer.accountbalance}</td>
+                            <td>{freelancer.isbanned}</td>
+                        </tr>
+                    </div>
+                </Link>
             );
         });
     };
     return (
         <div className={cx('wrapper')}>
-
             <div className={cx('container')}>
                 <h1 className={cx('title')}>Danh sách Freelancer</h1>
                 <Search className={cx('table-paging')} title="Tìm kiếm Freelancer" />
