@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames/bind';
-
+import Search from '../../../components/Search';
 import { CPagination, CPaginationItem } from '@coreui/react';
 
 import styles from './Freelancer.module.scss';
@@ -51,20 +51,7 @@ function Freelancer() {
             accountbalance: '20000',
             isbanned: 'False',
         },
-        {
-            id: 7,
-            email: 'nguyenbacquyet@gmail.com',
-            fullname: 'Nguyen Bac Quyet',
-            accountbalance: '20000',
-            isbanned: 'False',
-        },
-        {
-            id: 8,
-            email: 'nguyenbacquyet@gmail.com',
-            fullname: 'Nguyen Bac Quyet',
-            accountbalance: '20000',
-            isbanned: 'False',
-        },
+
     ];
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
@@ -89,6 +76,7 @@ function Freelancer() {
 
             <div className={cx('container')}>
                 <h1 className={cx('title')}>Danh sách Freelancer</h1>
+                <Search className={cx('table-paging')} title="Tìm kiếm Freelancer" />
                 <table className={cx('freelancers')}>
                     <thead className={cx('table-header')}>{renderTableHeader()}</thead>
                     <tbody>{renderTableData()}</tbody>

@@ -1,7 +1,8 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import { CPagination, CPaginationItem } from '@coreui/react';
-
+import { faTrashCan, faPenClip } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from '../../../components/Button';
 import Search from '../../../components/Search';
 import styles from './Career.module.scss';
@@ -59,12 +60,8 @@ function Career() {
                                 <tr key={careers.id}>
                                     <td>{careers.id}</td>
                                     <td>{careers.name}</td>
-                                    <td>
-                                        <button>Chỉnh sửa</button>
-                                    </td>
-                                    <td>
-                                        <button>Xóa</button>
-                                    </td>
+                                    <td> <FontAwesomeIcon icon={faPenClip} /></td>
+                                    <td> <FontAwesomeIcon icon={faTrashCan} /></td>
                                 </tr>
                             );
                         })}

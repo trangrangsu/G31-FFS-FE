@@ -1,0 +1,150 @@
+.wrapper {
+    padding: 0;
+}
+.container {
+    width: 1200px;
+    margin: var(--default-margin-top-title-admin) auto;
+    .detail-title {
+        display: flex;
+        margin-bottom: 40px;
+        .title {
+            width: 100%;
+        }
+        .icon-user {
+            font-size: 50px;
+            margin-right: 40px;
+        }
+
+    }
+    .freelancer-info {
+        display: flex;
+        .left-info {
+            .avatar-info {
+                border-radius: 50%;
+                -moz-border-radius: 50%;
+                -webkit-border-radius: 50%;
+                width: 80px;
+                height: 80px;
+            }
+            display: flex;
+            div {
+                padding-bottom: 15px;
+            }
+            .img-info {
+                width: 30%;
+                margin-right: 50px;
+            }
+            .left-detail {
+                width: 100%;
+            }
+            .fullname {
+                font-size: 24px;
+                color: #1C62A3
+            }
+            .sub-career {
+                font-weight: bold;
+            }
+            margin-right: 200px;
+        }
+        .right-info {
+            margin-top: 50px;
+            div {
+                padding-bottom: 15px;
+            }
+        }
+    }
+
+    .description {
+        background-color: #ffffff;
+
+        height: fit-content;
+        p {
+            padding: 20px 0;
+            margin-left: 40px !important;
+
+        }
+        margin-bottom: 20px;
+        box-shadow: rgba(0, 0, 0, 0.4) 0 0 10px;
+    }
+
+    .btn-warning {
+        width: fit-content;
+        background-color: red;
+    }
+
+    .education-content {
+        box-shadow: rgba(0, 0, 0, 0.4) 0 0 10px;
+        .education-title {
+            background-color: #1C62A3;
+            width: 100%;
+            height: 60px;
+            font-weight: bold;
+            font-size: 24px;
+            color: white;
+            p {
+                margin-left: 40px;
+            }
+        }
+        .education {
+            width: 100%;
+            background-color: #ffffff;
+            .education-detail {
+                margin-left: 40px;
+                .education-uni {
+                    color: #1C62A3;
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                }
+                .education-level {
+                    color: #1C62A3;
+                    margin-bottom: 10px;
+                }
+                .education-time {
+                    color: #837575;
+                    margin-bottom: 10px;
+                }
+                margin-bottom: 20px;
+            }
+        }
+    }
+    .work-exp-content {
+        box-shadow: rgba(0, 0, 0, 0.4) 0 0 10px;
+        .work-exp-title {
+            background-color: #1C62A3;
+            width: 100%;
+            height: 60px;
+            font-weight: bold;
+            font-size: 24px;
+            color: white;
+            p {
+                margin-left: 40px;
+            }
+        }
+        .work-exp {
+            width: 100%;
+            background-color: #ffffff;
+            .work-exp-detail {
+                margin-left: 40px;
+                .work-exp-name {
+                    color: #1C62A3;
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                }
+                .work-exp-position {
+                    color: #1C62A3;
+                    margin-bottom: 10px;
+                }
+                .work-exp-time {
+                    color: #837575;
+                    margin-bottom: 10px;
+                }
+                .work-exp-description {
+                    color: #837575;
+                    margin-bottom: 10px;
+                }
+            }
+            margin-bottom: 20px;
+        }
+    }
+
+}

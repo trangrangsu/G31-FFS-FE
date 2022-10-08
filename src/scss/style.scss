@@ -14,9 +14,7 @@ $enable-rtl: true;
 @import 'example';
 
 // If you want to add custom CSS you can put it here.
-@import 'custom';
-
-:root {
+@import 'custom';:root {
     --primary: #fe2c55;
     --black: #000;
     --white: #fff;
@@ -27,9 +25,9 @@ $enable-rtl: true;
     --default-layout-horizontal-spacer: 24px;
     --default-margin-top-title-admin: 80px;
 
-    //search
+    // search
     --search-border-radius: 92px;
-    --search-height: 46px;
+    --search-height: 43px;
     --search-top-spacer: 9px;
     --search-button-width: 52px;
 }

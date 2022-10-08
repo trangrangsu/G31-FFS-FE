@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames/bind';
 
 import { CPagination, CPaginationItem } from '@coreui/react';
-
+import Search from '../../../components/Search';
 import styles from './Recruiter.module.scss';
 const cx = classNames.bind(styles);
 
@@ -74,7 +74,8 @@ function Recruiter() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
-                <h1 className={cx('title')}>Danh sách Freelancer</h1>
+                <h1 className={cx('title')}>Danh sách Recruiter</h1>
+                <Search title="Tìm kiếm Recruiter" />
                 <table className={cx('recruiters')}>
                     <thead className={cx('table-header')}>{renderTableHeader()}</thead>
                     <tbody>{

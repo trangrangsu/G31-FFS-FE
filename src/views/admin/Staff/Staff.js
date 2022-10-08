@@ -1,7 +1,9 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import { CPagination, CPaginationItem } from '@coreui/react';
-
+import Search from '../../../components/Search';
+import { faTrashCan, faPenClip } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Staff.module.scss';
 const cx = classNames.bind(styles);
 
@@ -61,6 +63,7 @@ function Staff() {
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <h1 className={cx('title')}>Danh sách Staff</h1>
+                <Search title="Tìm kiếm Staff" />
                 <table className={cx('staffs')}>
                     <thead className={cx('table-header')}>{renderTableHeader()}</thead>
                     <tbody>{
@@ -72,8 +75,8 @@ function Staff() {
                                     <td>{staffs.fullname}</td>
                                     <td>{staffs.phone}</td>
                                     <td>{staffs.address}</td>
-                                    <td><button>Chỉnh sửa</button></td>
-                                    <td><button>Xóa</button></td>
+                                    <td> <FontAwesomeIcon icon={faPenClip} /></td>
+                                    <td> <FontAwesomeIcon icon={faTrashCan} /></td>
                                 </tr>
                             );
                         })}</tbody>

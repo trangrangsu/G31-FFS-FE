@@ -1,8 +1,9 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import { CPagination, CPaginationItem } from '@coreui/react';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faTrashCan, faPenClip } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Search from '../../../components/Search';
 import styles from './SubCareer.module.scss';
 const cx = classNames.bind(styles);
 
@@ -34,6 +35,21 @@ function SubCareer() {
             name: 'Xây dựng',
         },
     ];
+    const listCareers = [
+        {
+            id: 1,
+            name: 'Công nghệ thông tin',
+        },
+        {
+            id: 2,
+            name: 'Bất Động Sản',
+        },
+        {
+            id: 3,
+            name: 'Marketing',
+        },
+    ];
+
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
             return <th key={index}>{properties}</th>;
@@ -43,25 +59,25 @@ function SubCareer() {
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <h1 className={cx('title')}>Danh sách SubCareer</h1>
-                <div className={cx('subcareer-list')}>
+
+                <div className={cx('subcareer-filter')}>
                     <select className={cx('career-list')} aria-label="Default select example">
                         <option selected>
                             <label for="exampleFormControlTextarea1" className={cx('form-label')}>
                                 --Chọn ngành nghề-
                             </label>
                         </option>
-                        <option value="0">CNTT</option>
-                        <option value="24">Bất Động Sản</option>
-                        <option value="31">Tư vấn bán hàng</option>
+                        {listCareers.map((career) => {
+                            return (
+                                <option value={career.id}>
+                                    {career.name}
+                                </option>
+                            );
+                        })}
+
                     </select>
                     <div className={cx('subcareer-search')}>
-                        <span className="icon">
-                            {' '}
-                            <i>
-                                <FontAwesomeIcon icon={faSearch} />
-                            </i>
-                        </span>
-                        <input type="search" id="search" placeholder="Search..." />
+                        <Search title="Tìm kiếm ngành nghề chi tiết" />
                     </div>
                 </div>
 
@@ -73,12 +89,8 @@ function SubCareer() {
                                 <tr key={subCareers.id}>
                                     <td>{subCareers.id}</td>
                                     <td>{subCareers.name}</td>
-                                    <td>
-                                        <button>Chỉnh sửa</button>
-                                    </td>
-                                    <td>
-                                        <button>Xóa</button>
-                                    </td>
+                                    <td> <FontAwesomeIcon icon={faPenClip} /></td>
+                                    <td> <FontAwesomeIcon icon={faTrashCan} /></td>
                                 </tr>
                             );
                         })}

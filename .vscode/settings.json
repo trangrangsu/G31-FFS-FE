@@ -3,5 +3,8 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "liveServer.settings.CustomBrowser": "chrome",
     "liveServer.settings.NoBrowser": false,
-    "liveServer.settings.port": 0
+    "liveServer.settings.port": 0,
+    "[scss]": {
+        "editor.defaultFormatter": "mblode.pretty-formatter"
+    }
 }
