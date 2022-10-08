@@ -5,6 +5,7 @@ import Search from '../../../components/Search';
 import { faTrashCan, faPenClip } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Staff.module.scss';
+import StaffPopUp from './StaffPopUp.js';
 const cx = classNames.bind(styles);
 
 function Staff() {
@@ -63,7 +64,10 @@ function Staff() {
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <h1 className={cx('title')}>Danh sách Staff</h1>
-                <Search title="Tìm kiếm Staff" />
+                <div className={cx('action')}>
+                    <StaffPopUp />
+                    <Search title="Tìm kiếm Staff" />
+                </div>
                 <table className={cx('staffs')}>
                     <thead className={cx('table-header')}>{renderTableHeader()}</thead>
                     <tbody>{

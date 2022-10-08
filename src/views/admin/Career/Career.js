@@ -3,9 +3,10 @@ import classNames from 'classnames/bind';
 import { CPagination, CPaginationItem } from '@coreui/react';
 import { faTrashCan, faPenClip } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Button from '../../../components/Button';
+
 import Search from '../../../components/Search';
 import styles from './Career.module.scss';
+import CareerPopUp from './CareerPopUp.js';
 const cx = classNames.bind(styles);
 
 function Career() {
@@ -46,7 +47,7 @@ function Career() {
             <div className={cx('container')}>
                 <h1 className={cx('title')}>Danh sách career</h1>
                 <div className={cx('action')}>
-                    <Button admin>Thêm mới</Button>
+                    <CareerPopUp className={cx('career-popup')} />
                     <Search title="Tìm kiếm ngành nghề" />
                 </div>
 
@@ -78,6 +79,7 @@ function Career() {
                         <span aria-hidden="true">&raquo;</span>
                     </CPaginationItem>
                 </CPagination>
+
             </div>
         </div>
     );

@@ -16,7 +16,7 @@
         }
 
     }
-    .freelancer-info {
+    .recruiter-info {
         display: flex;
         width: 100%;
         height: fit-content;
@@ -42,11 +42,11 @@
             .left-detail {
                 width: 100%;
             }
-            .fullname {
+            .companyname {
                 font-size: 24px;
                 color: #1C62A3
             }
-            .sub-career {
+            .career {
                 font-weight: bold;
             }
             margin-right: 200px;
@@ -58,28 +58,13 @@
             }
         }
     }
-
-    .description {
-        background-color: #ffffff;
-
-        height: fit-content;
-        p {
-            padding: 20px 0;
-            margin-left: 40px !important;
-
-        }
-        margin-bottom: 20px;
-        box-shadow: rgba(0, 0, 0, 0.4) 0 0 10px;
-    }
-
     .btn-warning {
         width: fit-content;
         background-color: red;
     }
-
-    .education-content {
+    .description-content {
         box-shadow: rgba(0, 0, 0, 0.4) 0 0 10px;
-        .education-title {
+        .description-title {
             background-color: #1C62A3;
             width: 100%;
             height: 60px;
@@ -88,33 +73,19 @@
             color: white;
             p {
                 margin-left: 40px;
+                line-height: 60px;
             }
         }
-        .education {
+        .description {
             width: 100%;
             background-color: #ffffff;
-            .education-detail {
-                margin-left: 40px;
-                .education-uni {
-                    color: #1C62A3;
-                    font-weight: bold;
-                    margin-bottom: 10px;
-                }
-                .education-level {
-                    color: #1C62A3;
-                    margin-bottom: 10px;
-                }
-                .education-time {
-                    color: #837575;
-                    margin-bottom: 10px;
-                }
-                margin-bottom: 20px;
-            }
+            margin-bottom: 20px;
+            padding: 15px;
         }
     }
-    .work-exp-content {
+    .address-content {
         box-shadow: rgba(0, 0, 0, 0.4) 0 0 10px;
-        .work-exp-title {
+        .address-title {
             background-color: #1C62A3;
             width: 100%;
             height: 60px;
@@ -123,33 +94,14 @@
             color: white;
             p {
                 margin-left: 40px;
+                line-height: 60px;
             }
         }
-        .work-exp {
+        .address {
             width: 100%;
             background-color: #ffffff;
-            .work-exp-detail {
-                margin-left: 40px;
-                .work-exp-name {
-                    color: #1C62A3;
-                    font-weight: bold;
-                    margin-bottom: 10px;
-                }
-                .work-exp-position {
-                    color: #1C62A3;
-                    margin-bottom: 10px;
-                }
-                .work-exp-time {
-                    color: #837575;
-                    margin-bottom: 10px;
-                }
-                .work-exp-description {
-                    color: #837575;
-                    margin-bottom: 10px;
-                }
-            }
+            padding: 15px;
             margin-bottom: 20px;
         }
     }
-
 }
