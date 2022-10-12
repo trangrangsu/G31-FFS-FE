@@ -10,6 +10,9 @@ $enable-rtl: true;
 // Import Chart.js custom tooltips styles
 @import '@coreui/chartjs/scss/coreui-chartjs';
 
+//tippy
+@import 'tippy.js/dist/tippy.css';
+
 @import 'layout';
 @import 'example';
 
@@ -26,7 +29,7 @@ $enable-rtl: true;
     --default-margin-top-title-admin: 80px;
 
     // search
-    --search-border-radius: 92px;
+    --search-border-radius: 13px;
     --search-height: 43px;
     --search-top-spacer: 9px;
     --search-button-width: 52px;

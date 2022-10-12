@@ -32,9 +32,21 @@
                 background-color: #a9a9a9;
             }
         }
-        .table-paging {
-            margin-top: 20px;
-        }
     }
 
+}
+.table-paging {
+    margin-top: 10px;
+    color: rgba(22, 24, 35, 0.5) !important;
+    .active-page span{
+        background-color: #4f5d73 !important;
+        border-color: #4f5d73 !important;
+        color: var(--white) !important;
+    }
+    li a{
+        color: rgba(22, 24, 35, 0.8) !important;
+    }
+}
+.search{
+    margin-bottom: 5px;
 }

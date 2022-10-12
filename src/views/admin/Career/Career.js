@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import { CPagination, CPaginationItem } from '@coreui/react';
 import { faTrashCan, faPenClip } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import CustomButton from '../../../components/Button';
 import Search from '../../../components/Search';
 import styles from './Career.module.scss';
 import CareerPopUp from './CareerPopUp.js';
@@ -37,18 +38,42 @@ function Career() {
             name: 'Xây dựng',
         },
     ];
+    const [show, setShow] = useState(false);
+    const [careerInfo, setCareerInfo] = useState({});
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
             return <th key={index}>{properties}</th>;
         });
+    };
+    const handleShow = () => {
+        setCareerInfo({});
+        setShow(true);
+    };
+    const handUpdate = (careerInfo) => {
+        setCareerInfo(careerInfo);
+        setShow(true);
+    };
+    const handDelete = (careerInfo) => {
+        alert('delete');
     };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <h1 className={cx('title')}>Danh sách career</h1>
                 <div className={cx('action')}>
-                    <CareerPopUp className={cx('career-popup')} />
-                    <Search title="Tìm kiếm ngành nghề" />
+                    <CustomButton admin className={'button-popup'} variant="primary" onClick={handleShow}>
+                        Thêm mới
+                    </CustomButton>
+                    {/* <CareerPopUp className={cx('career-popup')} /> */}
+                    <Search className={cx('search')} title="Tìm kiếm ngành nghề" />
+                    {show && (
+                        <CareerPopUp
+                            career={careerInfo}
+                            callback={() => {
+                                setShow(false);
+                            }}
+                        />
+                    )}
                 </div>
 
                 <table className={cx('careers')}>
@@ -56,13 +81,19 @@ function Career() {
                         <tr>{renderTableHeader()}</tr>
                     </thead>
                     <tbody>
-                        {careers.map((careers) => {
+                        {careers.map((career) => {
                             return (
-                                <tr key={careers.id}>
-                                    <td>{careers.id}</td>
-                                    <td>{careers.name}</td>
-                                    <td> <FontAwesomeIcon icon={faPenClip} /></td>
-                                    <td> <FontAwesomeIcon icon={faTrashCan} /></td>
+                                <tr key={career.id}>
+                                    <td>{career.id}</td>
+                                    <td>{career.name}</td>
+                                    <td>
+                                        {' '}
+                                        <FontAwesomeIcon icon={faPenClip} onClick={() => handUpdate(career)} />
+                                    </td>
+                                    <td>
+                                        {' '}
+                                        <FontAwesomeIcon icon={faTrashCan} onClick={() => handDelete(career)} />
+                                    </td>
                                 </tr>
                             );
                         })}
@@ -72,14 +103,15 @@ function Career() {
                     <CPaginationItem aria-label="Previous" disabled>
                         <span aria-hidden="true">&laquo;</span>
                     </CPaginationItem>
-                    <CPaginationItem active>1</CPaginationItem>
+                    <CPaginationItem active className={cx('active-page')}>
+                        1
+                    </CPaginationItem>
                     <CPaginationItem>2</CPaginationItem>
                     <CPaginationItem>3</CPaginationItem>
                     <CPaginationItem aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </CPaginationItem>
                 </CPagination>
-
             </div>
         </div>
     );

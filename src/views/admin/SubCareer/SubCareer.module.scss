@@ -7,22 +7,22 @@
             text-align: center;
             font-family: arial, sans-serif;
         }
-        .table-paging {
-            margin-top: 20px;
-        }
         .subcareer-filter {
             display: flex;
-            .career-list {
-                width: fit-content;
-                border-radius: 5px;
-                background-color: #DEE0E3;
-                .subCareer-search {
-                    input {
-                        height: 40px;
-                        width: 300px;
-                        margin-right: 20px;
-                        border-radius: 5px;
-                    }
+            margin-bottom: 5px;
+            .button-popup{
+                margin-right: 10px;
+            }
+
+            .subCareer-search {
+                margin-left: 10px;
+                div{
+                    width: 380px;
+                }
+                input {
+                    height: 40px;
+                    margin-right: 20px;
+                    border-radius: 5px;
                 }
             }
         }
@@ -54,4 +54,116 @@
             }
         }
     }
+}
+.sub-career-list {
+    position: relative;
+    width: fit-content;
+    border-radius: 5px;
+    background-color: #DEE0E3;
+    box-shadow: 0px 2px 5px grey;
+    ::after {
+        content: '<>';
+        font: 17px "Consolas", monospace;
+        color: #333;
+        -webkit-transform: rotate(90deg);
+        -moz-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        transform: rotate(90deg);
+        right: 11px;
+        /*Adjust for position however you want*/
+        
+        top: 18px;
+        padding: 0 0 2px;
+        border-bottom: 1px solid #999;
+        /*left line */
+        
+        position: absolute;
+        pointer-events: none;
+      }
+    select {
+        display: block;
+        width: 100%;
+        max-width: 320px;
+        height: 44px;
+        border-radius: 5px;
+        float: right;
+        padding: 0px 24px;
+        font-size: 16px;
+        line-height: 1.75;
+        color: #333;
+        background-color: #ffffff;
+        background-image: none;
+        border: none;
+        -ms-word-break: normal;
+        word-break: normal;
+    }
+    select::-ms-expand {
+        display: none;
+    }
+}
+
+.table-paging {
+    margin-top: 10px;
+    color: rgba(22, 24, 35, 0.5) !important;
+    .active-page span{
+        background-color: #4f5d73 !important;
+        border-color: #4f5d73 !important;
+        color: var(--white) !important;
+    }
+    li a{
+        color: rgba(22, 24, 35, 0.8) !important;
+    }
+}
+
+// Popup
+.pop-up{
+    display: flex;
+    flex-direction: column;
+    p{
+        font-size: 20px;
+        font-weight: 600;
+    }
+}
+.input {
+    margin-top: 20px;
+    position: relative;
+}
+
+.input-label {
+    position: absolute;
+    top:0;
+    left: 0;
+    //padding: 10px 10px;
+    //text-decoration: underline #999;
+    
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(22, 24, 35, 0.8);
+    pointer-events: none;
+    transition: .5s;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px 10px;
+    font-size: 16px;
+    margin-bottom: 30px;
+    border: none;
+    border-bottom: 1px solid rgba(22, 24, 35, 0.5);
+    outline: none;
+    background: transparent;
+
+    &:focus ~ label, &:valid ~ label {
+        top: -20px;
+        left: 0;
+        padding: 10px 0;
+        color: #4f5d73;
+        font-size: 14px;
+
+    }
+}
+
+// btn add
+.btn-add{
+    margin-left: 38%;
 }

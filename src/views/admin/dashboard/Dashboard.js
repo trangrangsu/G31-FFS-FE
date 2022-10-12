@@ -8,8 +8,8 @@ import { CWidgetStatsF } from '@coreui/react';
 
 const Dashboard = () => {
     const [revenue, setRevenue] = useState({
-        label: ['January'],
-        data: [4],
+        label: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        data: [4, 5, 9, 11, 15, 13, 18],
     });
     const [countExample, setCountExample] = useState([
         { title: 'Category', value: 2 },

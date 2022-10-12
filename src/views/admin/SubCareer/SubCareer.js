@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import { CPagination, CPaginationItem } from '@coreui/react';
 import { faTrashCan, faPenClip } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import SubCareerPopUp from './SubCareerPopUp';
+import Button from '../../../components/Button';
 import Search from '../../../components/Search';
 import styles from './SubCareer.module.scss';
 const cx = classNames.bind(styles);
@@ -12,27 +15,27 @@ function SubCareer() {
     const subCareers = [
         {
             id: 1,
-            name: 'Công Nghệ Thông tin',
+            name: 'Kỹ thuật phần mềm',
         },
         {
             id: 2,
-            name: 'Bất Động Sản',
+            name: 'Khoa học máy tính',
         },
         {
             id: 3,
-            name: 'Bán Hàng',
+            name: 'An toàn thông tin',
         },
         {
             id: 4,
-            name: 'Thiết Kế',
+            name: 'Trí tuệ nhân tạo',
         },
         {
             id: 5,
-            name: 'Tư Vấn',
+            name: 'Blockchain',
         },
         {
             id: 6,
-            name: 'Xây dựng',
+            name: 'Tester',
         },
     ];
     const listCareers = [
@@ -48,12 +51,42 @@ function SubCareer() {
             id: 3,
             name: 'Marketing',
         },
+        {
+            id: 4,
+            name: 'Bán Hàng',
+        },
+        {
+            id: 5,
+            name: 'Thiết Kế',
+        },
+        {
+            id: 6,
+            name: 'Tư Vấn',
+        },
+        {
+            id: 7,
+            name: 'Xây dựng',
+        },
     ];
 
+    const [show, setShow] = useState(false);
+    const [subCareerInfo, setSubCareerInfo] = useState({});
+    const [career, setCareer] = useState(listCareers[0].name);
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
             return <th key={index}>{properties}</th>;
         });
+    };
+    const handleShow = () => {
+        setSubCareerInfo({});
+        setShow(true);
+    };
+    const handUpdate = (subCareerInfo) => {
+        setSubCareerInfo(subCareerInfo);
+        setShow(true);
+    };
+    const handDelete = (subCareerInfo) => {
+        alert('delete');
     };
     return (
         <div className={cx('wrapper')}>
@@ -61,36 +94,52 @@ function SubCareer() {
                 <h1 className={cx('title')}>Danh sách SubCareer</h1>
 
                 <div className={cx('subcareer-filter')}>
-                    <select className={cx('career-list')} aria-label="Default select example">
-                        <option selected>
-                            <label for="exampleFormControlTextarea1" className={cx('form-label')}>
-                                --Chọn ngành nghề-
-                            </label>
-                        </option>
-                        {listCareers.map((career) => {
-                            return (
-                                <option value={career.id}>
-                                    {career.name}
-                                </option>
-                            );
-                        })}
-
-                    </select>
-                    <div className={cx('subcareer-search')}>
+                    <Button admin className={cx('button-popup')} onClick={handleShow}>
+                        Thêm mới
+                    </Button>
+                    <div className={cx('sub-career-list')}>
+                        <select value={career} onChange={(e) => setCareer(e.target.value)}>
+                            {listCareers.map((career, index) => {
+                                return (
+                                    <option key={index} value={career.id}>
+                                        {career.name}
+                                    </option>
+                                );
+                            })}
+                        </select>
+                    </div>
+                    <div className={cx('subCareer-search')}>
                         <Search title="Tìm kiếm ngành nghề chi tiết" />
                     </div>
+                    {show && (
+                        <SubCareerPopUp
+                            career={career}
+                            subCareer={subCareerInfo}
+                            callback={() => {
+                                setShow(false);
+                            }}
+                        />
+                    )}
                 </div>
 
                 <table className={cx('subCareers')}>
-                    <thead className={cx('table-header')}>{renderTableHeader()}</thead>
+                    <thead className={cx('table-header')}>
+                        <tr>{renderTableHeader()}</tr>
+                    </thead>
                     <tbody>
                         {subCareers.map((subCareers) => {
                             return (
                                 <tr key={subCareers.id}>
                                     <td>{subCareers.id}</td>
                                     <td>{subCareers.name}</td>
-                                    <td> <FontAwesomeIcon icon={faPenClip} /></td>
-                                    <td> <FontAwesomeIcon icon={faTrashCan} /></td>
+                                    <td>
+                                        {' '}
+                                        <FontAwesomeIcon icon={faPenClip} onClick={() => handUpdate(subCareers)} />
+                                    </td>
+                                    <td>
+                                        {' '}
+                                        <FontAwesomeIcon icon={faTrashCan} onClick={() => handDelete(subCareers)} />
+                                    </td>
                                 </tr>
                             );
                         })}
@@ -100,7 +149,9 @@ function SubCareer() {
                     <CPaginationItem aria-label="Previous" disabled>
                         <span aria-hidden="true">&laquo;</span>
                     </CPaginationItem>
-                    <CPaginationItem active>1</CPaginationItem>
+                    <CPaginationItem active className={cx('active-page')}>
+                        1
+                    </CPaginationItem>
                     <CPaginationItem>2</CPaginationItem>
                     <CPaginationItem>3</CPaginationItem>
                     <CPaginationItem aria-label="Next">
