@@ -9,12 +9,13 @@ import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
 
 // sidebar nav config
-import navigation from '../_nav';
+import { navAdmin, navStaff } from '../_nav';
 
 const AppSidebar = () => {
     const dispatch = useDispatch();
     const unfoldable = useSelector((state) => state.sidebarUnfoldable);
     const sidebarShow = useSelector((state) => state.sidebarShow);
+    const account = useSelector((state) => state.account);
 
     return (
         <CSidebar
@@ -28,7 +29,7 @@ const AppSidebar = () => {
             <CSidebarBrand className="d-none d-md-flex" to="/"></CSidebarBrand>
             <CSidebarNav>
                 <SimpleBar>
-                    <AppSidebarNav items={navigation} />
+                    <AppSidebarNav items={account.role === 1 ? navAdmin : navStaff} />
                 </SimpleBar>
             </CSidebarNav>
             <CSidebarToggler

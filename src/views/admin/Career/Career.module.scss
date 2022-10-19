@@ -76,10 +76,12 @@
     }
     .input-career {
         padding-bottom: 20px;
-        input {
+        margin-left: 24%;
+        .input {
             padding: 10px;
             border-radius: 5px;
             width: 250px;
+            box-shadow: 0px 1px 5px 1px grey;
         }
     }
 }

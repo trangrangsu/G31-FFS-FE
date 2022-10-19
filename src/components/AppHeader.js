@@ -1,10 +1,33 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { CContainer, CHeader, CHeaderBrand, CHeaderNav, CHeaderToggler, CNavLink, CNavItem } from '@coreui/react';
+import { CContainer, CHeader, CHeaderBrand, CHeaderNav, CHeaderToggler, CNavItem } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
-import { cilBell, cilMenu } from '@coreui/icons';
+import { cilMenu } from '@coreui/icons';
+import classNames from 'classnames/bind';
+import Menu from './Popper/Menu';
 
-import { AppHeaderDropdown } from './header/index';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAddressCard, faEllipsisVertical, faRightFromBracket, faUnlock } from '@fortawesome/free-solid-svg-icons';
+import styles from './Component.module.scss';
+
+const cx = classNames.bind(styles);
+const MENU_ITEMS = [
+    {
+        icon: <FontAwesomeIcon icon={faAddressCard} />,
+        title: 'Xem hồ sơ',
+        to: '/staff/Profile',
+    },
+    {
+        icon: <FontAwesomeIcon icon={faUnlock} />,
+        title: 'Đổi mật khẩu',
+        to: '/changePassword',
+    },
+    {
+        icon: <FontAwesomeIcon icon={faRightFromBracket} />,
+        title: 'Đăng xuất',
+        to: '/',
+    },
+];
 
 const AppHeader = () => {
     const dispatch = useDispatch();
@@ -18,14 +41,14 @@ const AppHeader = () => {
                 </CHeaderToggler>
                 <CHeaderBrand className="mx-auto d-md-none" to="/"></CHeaderBrand>
                 <CHeaderNav className="d-none d-md-flex me-margin-left">
-                    <CNavItem>
-                        <CNavLink href="#">
-                            <CIcon icon={cilBell} size="lg" />
-                        </CNavLink>
-                    </CNavItem>
+                    <CNavItem></CNavItem>
                 </CHeaderNav>
                 <CHeaderNav className="ms-3">
-                    <AppHeaderDropdown />
+                    <Menu items={MENU_ITEMS}>
+                        <button className={cx('more-btn')}>
+                            <FontAwesomeIcon icon={faEllipsisVertical} />
+                        </button>
+                    </Menu>
                 </CHeaderNav>
             </CContainer>
         </CHeader>

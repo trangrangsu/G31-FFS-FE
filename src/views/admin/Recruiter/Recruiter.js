@@ -84,8 +84,8 @@ function Recruiter() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
-                <h1 className={cx('title')}>Danh sách Recruiter</h1>
-                <Search className={cx('search')} title="Tìm kiếm Recruiter" />
+                <h1 className={cx('title')}>Danh sách nhà tuyển dụng</h1>
+                <Search className={cx('search')} title="Tìm kiếm nhà tuyển dụng" />
                 <table className={cx('recruiters')}>
                     <thead className={cx('table-header')}>
                         <tr>{renderTableHeader()}</tr>

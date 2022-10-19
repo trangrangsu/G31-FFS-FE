@@ -11,7 +11,7 @@ import styles from './SubCareer.module.scss';
 const cx = classNames.bind(styles);
 
 function SubCareer() {
-    const headers = ['ID', 'Tên Ngành Nghề', 'Chỉnh Sửa', 'Xóa'];
+    const headers = ['ID', 'TÊN NGÀNH NGHỀ', 'CHỈNH SỬA', 'XÓA'];
     const subCareers = [
         {
             id: 1,
@@ -127,18 +127,18 @@ function SubCareer() {
                         <tr>{renderTableHeader()}</tr>
                     </thead>
                     <tbody>
-                        {subCareers.map((subCareers) => {
+                        {subCareers.map((subCareer) => {
                             return (
-                                <tr key={subCareers.id}>
-                                    <td>{subCareers.id}</td>
-                                    <td>{subCareers.name}</td>
+                                <tr key={subCareer.id}>
+                                    <td>{subCareer.id}</td>
+                                    <td>{subCareer.name}</td>
                                     <td>
                                         {' '}
-                                        <FontAwesomeIcon icon={faPenClip} onClick={() => handUpdate(subCareers)} />
+                                        <FontAwesomeIcon icon={faPenClip} onClick={() => handUpdate(subCareer)} />
                                     </td>
                                     <td>
                                         {' '}
-                                        <FontAwesomeIcon icon={faTrashCan} onClick={() => handDelete(subCareers)} />
+                                        <FontAwesomeIcon icon={faTrashCan} onClick={() => handDelete(subCareer)} />
                                     </td>
                                 </tr>
                             );

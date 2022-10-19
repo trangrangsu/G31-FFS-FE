@@ -1,10 +1,14 @@
 import React from 'react';
 import CIcon from '@coreui/icons-react';
-import { cilCash, cilChartLine, cilList, cilListRich, cilPeople, cilStar, cilUser } from '@coreui/icons';
+import { cilCash, cilChartLine, cilList, cilListRich, cilStar, cilUser } from '@coreui/icons';
 import { CNavItem } from '@coreui/react';
-import config from './config';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const _nav = [
+import config from './config';
+import { faClipboard } from '@fortawesome/free-solid-svg-icons';
+import { faFlag } from '@fortawesome/free-regular-svg-icons';
+
+export const navAdmin = [
     {
         component: CNavItem,
         name: 'Dashboard',
@@ -31,6 +35,26 @@ const _nav = [
     },
     {
         component: CNavItem,
+        name: 'Service',
+        to: config.routes.service,
+        icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
+    },
+];
+export const navStaff = [
+    {
+        component: CNavItem,
+        name: 'Freelancer',
+        to: config.routes.freelancer,
+        icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    },
+    {
+        component: CNavItem,
+        name: 'Recruiter',
+        to: config.routes.recruiter,
+        icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    },
+    {
+        component: CNavItem,
         name: 'Career',
         to: config.routes.career,
         icon: <CIcon icon={cilListRich} customClassName="nav-icon" />,
@@ -43,22 +67,20 @@ const _nav = [
     },
     {
         component: CNavItem,
-        name: 'Service',
-        to: config.routes.service,
-        icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
-    },
-    {
-        component: CNavItem,
         name: 'Payment',
         to: config.routes.payment,
         icon: <CIcon icon={cilCash} customClassName="nav-icon" />,
     },
     {
         component: CNavItem,
-        name: 'Support',
-        to: config.routes.support,
-        icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+        name: 'Post',
+        to: config.routes.post,
+        icon: <FontAwesomeIcon icon={faClipboard} className="nav-icon-custom" />,
+    },
+    {
+        component: CNavItem,
+        name: 'Report',
+        to: config.routes.report,
+        icon: <FontAwesomeIcon icon={faFlag} className="nav-icon-custom" />,
     },
 ];
-
-export default _nav;

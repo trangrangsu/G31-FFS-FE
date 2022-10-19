@@ -6,6 +6,7 @@
     padding: 9px 16px;
     border-radius: 4px;
     font-size: 1.6rem;
+    font-family: var(--font-family);
     cursor: pointer;
     background-color: var(--white);
     border: 1px solid transparent;
@@ -52,8 +53,9 @@
     border-color: var(--primary);
 
     &:hover {
+        color: var(--white);
         border-color: var(--primary);
-        background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), #fe2c55;
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), #1C62A3;
     }
 }
 

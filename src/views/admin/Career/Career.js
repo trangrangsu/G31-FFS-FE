@@ -6,8 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import CustomButton from '../../../components/Button';
 import Search from '../../../components/Search';
-import styles from './Career.module.scss';
 import CareerPopUp from './CareerPopUp.js';
+import styles from './Career.module.scss';
 const cx = classNames.bind(styles);
 
 function Career() {

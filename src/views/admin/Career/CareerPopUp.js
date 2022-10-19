@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import CustomButton from '../../../components/Button';
 import classNames from 'classnames/bind';
 import Modal from 'react-bootstrap/Modal';
+import { CFormInput } from '@coreui/react';
+
+import CustomButton from '../../../components/Button';
 import styles from './Career.module.scss';
 const cx = classNames.bind(styles);
 function CareerPopUp({ career, callback }) {
@@ -37,11 +39,12 @@ function CareerPopUp({ career, callback }) {
                     <div className={cx('pop-up')}>
                         <h1>Thêm mới Career</h1>
                         <div className={cx('input-career')}>
-                            <input
+                            <CFormInput
                                 type="text"
                                 placeholder="Nhập ngành nghề"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
+                                className={cx('input')}
                             />
                         </div>
                         <CustomButton admin className={cx('btn-add')} onClick={handleAdd}>

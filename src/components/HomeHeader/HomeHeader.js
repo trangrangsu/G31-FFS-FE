@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 
@@ -20,7 +19,7 @@ function HomeHeader() {
                     <Button text rounded to={config.routes.register} className={cx('btn')}>
                         Đăng ký
                     </Button>
-                    <Button text rounded to={config.routes.login} className={cx('btn')}>
+                    <Button primary to={config.routes.login} className={cx('btn')}>
                         Đăng nhập
                     </Button>
                 </div>

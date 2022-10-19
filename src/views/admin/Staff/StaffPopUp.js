@@ -1,7 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import CustomButton from '../../../components/Button';
 import classNames from 'classnames/bind';
 import Modal from 'react-bootstrap/Modal';
+import { CFormCheck, CFormInput } from '@coreui/react';
+
+import * as staffService from '../../../services/staffService';
+import CustomButton from '../../../components/Button';
 import styles from './Staff.module.scss';
 const cx = classNames.bind(styles);
 function StaffPopUp({ staff, callback }) {
@@ -17,16 +20,16 @@ function StaffPopUp({ staff, callback }) {
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
     const [titleButton, setTitleButton] = useState('Thêm mới');
+    const [titlePopup, setTitlePopup] = useState('Thêm mới Nhân viên');
 
     useEffect(() => {
         if (staff.id) {
             setFullName(staff.fullname);
             setEmail(staff.email);
-            //setPassword(staff.)
-            //setPasswordConfirm(staff.)
             setPhone(staff.phone);
             setAddress(staff.address);
             setTitleButton('Cập nhật');
+            setTitlePopup('Cập nhật thông tin nhân viên');
         }
     }, []);
 
@@ -36,10 +39,15 @@ function StaffPopUp({ staff, callback }) {
                 fullName,
                 email,
                 password,
-                passwordConfirm,
                 phone,
                 address,
+                role: '2',
             };
+            const fetchApi = async () => {
+                const result = await staffService.addStaff(staff);
+                console.log(result);
+            };
+            fetchApi();
             handleClose();
             console.log(staff);
         }
@@ -48,59 +56,75 @@ function StaffPopUp({ staff, callback }) {
         <div className={cx('staff-popup')}>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Thêm mới Nhân viên</Modal.Title>
+                    <Modal.Title>{titlePopup}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className={cx('pop-up')}>
                         <div className={cx('input-staff')}>
-                            Tên nhân viên:
-                            <input
+                            <label className={cx('label')}>Tên nhân viên:</label>
+                            <CFormInput
                                 type="text"
                                 placeholder="Nhập tên nhân viên"
                                 value={fullName}
                                 onChange={(e) => setFullName(e.target.value)}
+                                className={cx('input-info')}
                             />
-                            Email:
-                            <input
+                            <label className={cx('label')}>Email:</label>
+                            <CFormInput
                                 type="text"
                                 placeholder="Nhập email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
+                                className={cx('input-info')}
                             />
-                            <div className={cx('staff-password')}>
-                                <div>
-                                    Password:
-                                    <input
-                                        type="password"
-                                        placeholder="Nhập mật khẩu"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
+                            {staff.status === undefined ? (
+                                <div className={cx('staff-password')}>
+                                    <div>
+                                        <label className={cx('label')}>Password:</label>
+                                        <CFormInput
+                                            type="password"
+                                            placeholder="Nhập mật khẩu"
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            className={cx('input-info')}
+                                        />
+                                    </div>
+                                    <div>
+                                        {' '}
+                                        <label className={cx('label')}>ConfirmPassword:</label>
+                                        <CFormInput
+                                            type="password"
+                                            placeholder="Xác nhận mật khẩu"
+                                            value={passwordConfirm}
+                                            onChange={(e) => setPasswordConfirm(e.target.value)}
+                                            className={cx('input-info')}
+                                        />
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className={cx('staff-checkbox')}>
+                                    <CFormCheck
+                                        id={staff.id}
+                                        defaultChecked={staff.status === '1' ? 'defaultChecked' : ''}
+                                        label="Hoạt động"
                                     />
                                 </div>
-                                <div>
-                                    {' '}
-                                    ConfirmPassword:
-                                    <input
-                                        type="password"
-                                        placeholder="Xác nhận mật khẩu"
-                                        value={passwordConfirm}
-                                        onChange={(e) => setPasswordConfirm(e.target.value)}
-                                    />
-                                </div>
-                            </div>
-                            Số điện thoại
-                            <input
+                            )}
+                            <label className={cx('label')}>Số điện thoại:</label>
+                            <CFormInput
                                 type="text"
                                 placeholder="Nhập số điện thoại"
                                 value={phone}
                                 onChange={(e) => setPhone(e.target.value)}
+                                className={cx('input-info')}
                             />
-                            Địa chỉ
-                            <input
+                            <label className={cx('label')}> Địa chỉ:</label>
+                            <CFormInput
                                 type="text"
                                 placeholder="Nhập địa chỉ"
                                 value={address}
                                 onChange={(e) => setAddress(e.target.value)}
+                                className={cx('input-info')}
                             />
                             <CustomButton admin className={cx('btn-add')} onClick={handleAdd}>
                                 {titleButton}

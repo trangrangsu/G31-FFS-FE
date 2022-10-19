@@ -2,6 +2,10 @@ import { createStore } from 'redux';
 
 const initialState = {
     sidebarShow: true,
+    account: {
+        id: '123',
+        role: 2,
+    },
 };
 
 const changeState = (state = initialState, { type, ...rest }) => {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import Modal from 'react-bootstrap/Modal';
+import { CFormInput } from '@coreui/react';
 
 import CustomButton from '../../../components/Button';
 import styles from './SubCareer.module.scss';
@@ -81,12 +82,12 @@ function SubCareerPopUp({ career, subCareer, callback }) {
                             </select>
                         </div>
                         <div className={cx('input')}>
-                            <input
+                            <CFormInput
                                 className={cx('input-field')}
                                 type="text"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                autofocus
+                                autoFocus
                             />
                             <label className={cx('input-label')}>Sub career</label>
                         </div>

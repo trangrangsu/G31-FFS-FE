@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames/bind';
-
 import { MDBInput } from 'mdb-react-ui-kit';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+
 import Button from '../../../components/Button';
 import config from '../../../config';
 import styles from './Login.module.scss';
@@ -15,7 +15,7 @@ const Login = () => {
                     <p>Đăng nhập</p>
                 </div>
                 <div div className={cx('container')}>
-                    <MDBInput label="Tên đăng nhập/Email *" id="form1" type="text" className={cx('custom')} />
+                    <MDBInput label="Email *" id="form1" type="text" className={cx('custom')} />
                 </div>
                 <div div className={cx('container')}>
                     <MDBInput label="Mật khẩu *" id="form2" type="password" className={cx('custom')} />
