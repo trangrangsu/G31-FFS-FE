@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { CPagination, CPaginationItem } from '@coreui/react';
 
+import * as adminPaymentServices from '../../../services/adminPaymentServices';
 import RequestPopup from './RequestPopup';
 import Search from '../../../components/Search';
 import styles from './Payment.module.scss';
@@ -9,89 +10,20 @@ const cx = classNames.bind(styles);
 function Payment() {
     const status = ['Tất cả', 'Đã phê duyệt', 'Không phê duyệt', 'Chờ phê duyệt'];
     const headers = ['MÃ NẠP', 'ID KHÁCH HÀNG', 'SỐ TIỀN', 'NGÀY YÊU CẦU', 'NGÀY PHÊ DUYỆT'];
-    const requestPayment = [
-        {
-            code: 'AB1230',
-            id: '1',
-            money: '50000',
-            date_request: '16-10-2022 10:30',
-            date_approve: '16-10-2022 10:35',
-            state: 0,
-            description: 'Vi phạm quy định',
-        },
-        {
-            code: 'AB1231',
-            id: '2',
-            money: '50000',
-            date_request: '16-10-2022 10:30',
-            date_approve: '16-10-2022 10:35',
-            state: 1,
-            description: 'Đã duyệt',
-        },
-        {
-            code: 'AB1232',
-            id: '3',
-            money: '50000',
-            date_request: '16-10-2022 10:30',
-            date_approve: '',
-            state: 2,
-            description: '',
-        },
-        {
-            code: 'AB1233',
-            id: '4',
-            money: '50000',
-            date_request: '16-10-2022 10:30',
-            date_approve: '16-10-2022 10:35',
-        },
-        {
-            code: 'AB1234',
-            id: '5',
-            money: '50000',
-            date_request: '16-10-2022 10:30',
-            date_approve: '16-10-2022 10:35',
-        },
-        {
-            code: 'AB1235',
-            id: '6',
-            money: '50000',
-            date_request: '16-10-2022 10:30',
-            date_approve: '16-10-2022 10:35',
-        },
-        {
-            code: 'AB1236',
-            id: '7',
-            money: '50000',
-            date_request: '16-10-2022 10:30',
-            date_approve: '16-10-2022 10:35',
-        },
-        {
-            code: 'AB1237',
-            id: '8',
-            money: '50000',
-            date_request: '16-10-2022 10:30',
-            date_approve: '',
-        },
-        {
-            code: 'AB1238',
-            id: '9',
-            money: '50000',
-            date_request: '16-10-2022 10:30',
-            date_approve: '',
-        },
-        {
-            code: 'AB1239',
-            id: '10',
-            money: '50000',
-            date_request: '16-10-2022 10:30',
-            date_approve: '',
-        },
-    ];
 
+    const [requestPayment, setRequestPayment] = useState([]);
     const [show, setShow] = useState(false);
     const [request, setRequest] = useState(false);
     const [state, setState] = useState(status[0]);
 
+    useEffect(() => {
+        const fetchApi = async () => {
+            const result = await adminPaymentServices.getPayments('a', '', 0);
+            console.log(result);
+            setRequestPayment(result.payments);
+        };
+        fetchApi();
+    }, []);
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
             return <th key={index}>{properties}</th>;
@@ -141,10 +73,10 @@ function Payment() {
                             return (
                                 <tr key={request.code} onClick={() => handleViewDetail(request)}>
                                     <td>{request.code}</td>
-                                    <td>{request.id}</td>
+                                    <td>{request.user_id}</td>
                                     <td>{request.money}</td>
-                                    <td>{request.date_request}</td>
-                                    <td>{request.date_approve}</td>
+                                    <td>{request.dateRequest}</td>
+                                    <td>{request.dateApprove}</td>
                                 </tr>
                             );
                         })}

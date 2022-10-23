@@ -1,9 +1,10 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import Search from '../../../components/Search';
 import { CPagination, CPaginationItem } from '@coreui/react';
 import { useNavigate } from 'react-router-dom';
 
+import * as adminFreelancerService from '../../../services/adminFreelancerServices';
 import Config from '../../../config';
 import styles from './Freelancer.module.scss';
 const cx = classNames.bind(styles);
@@ -11,50 +12,16 @@ const cx = classNames.bind(styles);
 function Freelancer() {
     const navigate = useNavigate();
     const headers = ['ID', 'Email', 'Họ và tên', 'Số dư tài khoản', 'Trạng thái tài khoản'];
-    const freelancers = [
-        {
-            id: 1,
-            email: 'nguyenbacquyet@gmail.com',
-            fullname: 'Nguyen Bac Quyet',
-            accountbalance: '20000',
-            isbanned: 'True',
-        },
-        {
-            id: 2,
-            email: 'nguyenbacquyet@gmail.com',
-            fullname: 'Nguyen Huu Tuyen',
-            accountbalance: '20000',
-            isbanned: 'False',
-        },
-        {
-            id: 3,
-            email: 'nguyenbacquyet@gmail.com',
-            fullname: 'Nguyen Van Manh',
-            accountbalance: '20000',
-            isbanned: 'True',
-        },
-        {
-            id: 4,
-            email: 'nguyenbacquyet@gmail.com',
-            fullname: 'Nguyen Van Nam',
-            accountbalance: '20000',
-            isbanned: 'False',
-        },
-        {
-            id: 5,
-            email: 'nguyenbacquyet@gmail.com',
-            fullname: 'Bien Van Cong',
-            accountbalance: '20000',
-            isbanned: 'False',
-        },
-        {
-            id: 6,
-            email: 'nguyenbacquyet@gmail.com',
-            fullname: 'Nguyen Ba Trang',
-            accountbalance: '20000',
-            isbanned: 'False',
-        },
-    ];
+    const [freelancers, setFreelancers] = useState([]);
+    useEffect(() => {
+        const fetchApi = async () => {
+            const result = await adminFreelancerService.getFreelancers('', 0);
+            console.log(result);
+            setFreelancers(result.freelancers);
+        };
+        fetchApi();
+    }, []);
+
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
             return <th key={index}>{properties}</th>;
@@ -66,9 +33,9 @@ function Freelancer() {
                 <tr onClick={() => handleClickUser(freelancer.id)} key={freelancer.id}>
                     <td>{freelancer.id}</td>
                     <td>{freelancer.email}</td>
-                    <td>{freelancer.fullname}</td>
-                    <td>{freelancer.accountbalance}</td>
-                    <td>{freelancer.isbanned}</td>
+                    <td>{freelancer.fullName}</td>
+                    <td>{freelancer.accountBalance}</td>
+                    <td>{freelancer.isBanned ? 'Cấm' : 'Hoạt động'}</td>
                 </tr>
             );
         });

@@ -1,0 +1,44 @@
+// Menu wrapper
+.menu-list {
+    width: 350px;
+    border: 1px solid rgba(22, 24, 35, 0.12);
+    border-radius: 5px;
+    margin-top: -8px;
+}
+.input-popper{
+    width: 350px;
+    padding: 5px;
+    input{
+        padding: 3px 3px !important;
+    }
+}
+.menu-popper {
+    padding-top: 0px;
+    width: 350px;
+}
+
+.menu-body {
+    overflow-y: auto;
+    max-height: 130px;
+    width: 350px;
+}
+
+// Menu items
+.career-item {
+    width: 100%;
+    justify-content: flex-start;
+    border-radius: 0;
+    padding: 4px 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color);
+
+    &:hover {
+        background-color: rgba(22, 24, 35, 0.1);
+        color: var(--text-color) !important;
+    }
+    &.custom{
+        color:#48494A;
+    }
+}
+

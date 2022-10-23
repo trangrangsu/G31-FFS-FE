@@ -3,12 +3,20 @@ import { MDBInput } from 'mdb-react-ui-kit';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import { CFormCheck } from '@coreui/react';
 import classNames from 'classnames/bind';
+import { useNavigate } from 'react-router-dom';
 
 import config from '../../../config';
 import Button from '../../../components/Button';
 import styles from './Register.module.scss';
 const cx = classNames.bind(styles);
 const Register = () => {
+    const navigate = useNavigate();
+    const handRegister = () => {
+        const to = {
+            pathname: config.routes.verifyOTP,
+        };
+        navigate(to);
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('form')}>
@@ -49,7 +57,7 @@ const Register = () => {
                     <div className={cx('left-top')}></div>
                     <div className={cx('right-top')}></div>
                 </div>
-                <Button text rounded to={config.routes.updateFreelancer} className={cx('btn')}>
+                <Button text rounded className={cx('btn')} onClick={handRegister}>
                     ĐĂNG KÝ
                 </Button>
                 <span className={cx('text')}>

@@ -3,7 +3,7 @@
 }
 .form {
     background: #fff;
-    border: 2px solid #c5dafa;
+    border: 1px solid #8e76e4;
     margin: 0 auto;
     max-width: 530px;
     padding: 20px;
@@ -11,7 +11,7 @@
     flex-direction: column;
 }
 .title {
-    color: rgb(59, 122, 204);
+    color: #7451F8;
     font-size: 30px;
     font-weight: 700;
     margin-bottom: 5px;
@@ -20,6 +20,12 @@
 .btn {
     height: 50px;
     font-size: 18px;
+    color: #8e76e4;
+    border: 1px solid #8e76e4;
+    &:hover{
+        color: #7451F8;
+        border: 1px solid #7451F8;
+    }
 }
 .container {
     margin: 10px 0;
@@ -117,4 +123,8 @@
 .link {
     font-size: 17px;
     padding: 0;
+    color: #7451F8;
+    &:hover{
+        color: #7451F8;
+    }
 }

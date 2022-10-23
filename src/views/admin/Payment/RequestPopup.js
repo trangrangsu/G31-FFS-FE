@@ -44,7 +44,7 @@ function RequestPopup({ request, callback }) {
                                     size="sm"
                                     className={cx('input-field')}
                                     type="text"
-                                    value={request.id}
+                                    value={request.user_id}
                                     disabled
                                 />
                             </div>
@@ -64,7 +64,7 @@ function RequestPopup({ request, callback }) {
                                     size="sm"
                                     className={cx('input-field')}
                                     type="text"
-                                    value={request.date_request}
+                                    value={request.dateRequest}
                                     disabled
                                 />
                             </div>
@@ -75,7 +75,7 @@ function RequestPopup({ request, callback }) {
                                         size="sm"
                                         className={cx('input-field')}
                                         type="text"
-                                        value={request.date_approve}
+                                        value={request.dateApprove}
                                         disabled
                                     />
                                 </div>

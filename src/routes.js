@@ -36,6 +36,7 @@ const JobApply = React.lazy(() => import('./views/freelancer/JobApply'));
 const RecruiterProfile = React.lazy(() => import('./views/recruiter/Profile'));
 const SearchFreelancer = React.lazy(() => import('./views/recruiter/SearchFreelancer'));
 const PostManagement = React.lazy(() => import('./views/recruiter/PostManagement'));
+const VerifyOTP = React.lazy(() => import('./views/pages/VerifyOTP'));
 
 // Public routes
 export const routes = [
@@ -72,6 +73,8 @@ export const routes = [
     { path: config.routes.recruiterProfile, element: RecruiterProfile, layout: HomeLayout },
     { path: config.routes.searchFreelancer, element: SearchFreelancer, layout: HomeLayout },
     { path: config.routes.postManagement, element: PostManagement, layout: HomeLayout },
+
+    { path: config.routes.verifyOTP, element: VerifyOTP, layout: HomeLayout },
 ];
 
 // Admin routes

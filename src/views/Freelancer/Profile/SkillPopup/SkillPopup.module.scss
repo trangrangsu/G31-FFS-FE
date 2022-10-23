@@ -1,0 +1,46 @@
+
+.column{
+    margin-bottom: 10px;
+}
+.row{
+    display: flex;
+    flex-direction: row;
+}
+.space{
+    width: 100%;
+    min-height: 40px;
+    margin-bottom: 5px;
+    padding: 5px;
+}
+.skill{
+    display: inline-block;
+    background-color: #8FB0D7;
+    border-radius: 10px;
+    margin-right: 5px;
+    padding: 2px 5px;
+    p{
+        line-height: 18px;
+        font-size: 14px;
+        margin: 0;
+        float: left;
+    }
+    svg{
+        width: 15px;
+        height: 15px;
+        margin-left: 8px;
+        float: right;
+        &:hover{
+            cursor: pointer;
+            color: rgb(236, 89, 89);
+        }
+    }
+}
+.save-btn{
+    margin: 130px 0 10px 120px;
+    padding: 0;
+    font-size: 20px;
+    min-width: 100px;
+    + button{
+        margin-left: 20px;
+    }
+}

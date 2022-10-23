@@ -3,73 +3,103 @@ import classNames from 'classnames/bind';
 import Modal from 'react-bootstrap/Modal';
 import { CFormCheck, CAccordion, CAccordionItem, CAccordionHeader, CAccordionBody, CFormInput } from '@coreui/react';
 
+import * as adminServiceServices from '../../../services/adminServiceServices';
 import CustomButton from '../../../components/Button';
 import styles from './Service.module.scss';
 const cx = classNames.bind(styles);
 
 function ServicePopUp({ user, service, callback }) {
     const users = [
-        { id: 1, name: 'Freelancer' },
-        { id: 2, name: 'Recruiter' },
+        { id: 3, name: 'Freelancer' },
+        { id: 4, name: 'Recruiter' },
     ];
-    const benefits = [
-        {
-            id: '1',
-            name: 'Hiển thì hồ sơ cá nhân công khai trên Lanceddy',
-        },
-        {
-            id: '2',
-            name: 'Được xem tất cả công việc',
-        },
-        {
-            id: '3',
-            name: 'Được nhận thông báo việc hàng ngày',
-        },
-        {
-            id: '4',
-            name: 'Gợi ý khách hàng mời tham gia chào giá dự án',
-        },
-        {
-            id: '5',
-            name: 'Được gửi yêu cầu tham gia chào giá dự án bí mật',
-        },
-        {
-            id: '6',
-            name: 'Được gửi chào giá không giới hạn với tất cả lĩnh vực',
-        },
-        {
-            id: '7',
-            name: 'Nhắn tin trao đổi với khách hàng',
-        },
-    ];
-    const bought = ['1', '2', '3'];
+
+    //const bought = [1, 2, 3];
+    const [bought, setBought] = useState([]);
+    const [benefits, setBenefits] = useState([]);
     const [show, setShow] = useState(true);
     const [userCurrent, setUserCurrent] = useState(user);
+    const [id, setId] = useState('');
     const [name, setName] = useState('');
     const [duration, setDuration] = useState('');
     const [price, setPrice] = useState('');
     const [titleButton, setTitleButton] = useState('Thêm mới');
     const [titlePopup, setTitlePopup] = useState('Thêm mới một dịch vụ');
-
     const handleClose = () => {
         setShow(false);
         callback();
     };
     useEffect(() => {
+        console.log(userCurrent);
+        const sbsApi = async () => {
+            const result = await adminServiceServices.getBenefitService(service.id);
+            console.log(result);
+            setBought(result);
+        };
         if (service.id) {
-            setName(service.name);
+            setId(service.id);
+            setName(service.serviceName);
             setDuration(service.duration);
             setPrice(service.price);
             setTitleButton('Cập nhật');
             setTitlePopup('Chỉnh sửa dịch vụ');
+            sbsApi();
         }
+        const fetchApi = async () => {
+            const result = await adminServiceServices.getBenefits();
+            console.log(result);
+            setBenefits(result);
+        };
+        fetchApi();
     }, []);
     const handleAdd = () => {
         const service = {
-            name,
+            serviceName: name,
+            duration: duration,
+            price: price,
+            benefits: [
+                {
+                    id: 1,
+                },
+                {
+                    id: 2,
+                },
+            ],
+            role: { id: users.find((user) => user.name === userCurrent).id },
         };
         handleClose();
         console.log(service);
+        const fetchApi = async () => {
+            const result = await adminServiceServices.addService(service);
+            console.log(result);
+            setBenefits(result);
+        };
+        fetchApi();
+    };
+    const handleUpdate = () => {
+        const service = {
+            id,
+            serviceName: name,
+            duration: duration,
+            price: price,
+            benefits: [
+                {
+                    id: 1,
+                },
+                {
+                    id: 2,
+                },
+            ],
+            role: { id: users.find((user) => user.name === userCurrent).id },
+        };
+        handleClose();
+        console.log(service);
+        const fetchApi = async () => {
+            const result = await adminServiceServices.addService(service);
+            console.log(result);
+            setBenefits(result);
+        };
+        fetchApi();
     };
     return (
         <div className={cx('service-popup')}>
@@ -133,7 +163,9 @@ function ServicePopUp({ user, service, callback }) {
                                         <div className={cx('row-benefit')} key={benefit.id}>
                                             <CFormCheck
                                                 id={benefit.id}
-                                                defaultChecked={bought.includes(benefit.id) ? 'defaultChecked' : ''}
+                                                defaultChecked={
+                                                    bought.find((b) => b.id === benefit.id) ? 'defaultChecked' : ''
+                                                }
                                             />
                                             <CAccordion>
                                                 <CAccordionItem itemKey={benefit.id}>
@@ -149,9 +181,15 @@ function ServicePopUp({ user, service, callback }) {
                             </div>
                         </div>
                     </div>
-                    <CustomButton admin className={cx('btn-add')} onClick={handleAdd}>
-                        {titleButton}
-                    </CustomButton>
+                    {service.id ? (
+                        <CustomButton admin className={cx('btn-add')} onClick={handleUpdate}>
+                            {titleButton}
+                        </CustomButton>
+                    ) : (
+                        <CustomButton admin className={cx('btn-add')} onClick={handleAdd}>
+                            {titleButton}
+                        </CustomButton>
+                    )}
                 </Modal.Body>
             </Modal>
         </div>

@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { CPagination, CPaginationItem } from '@coreui/react';
 import { faTrashCan, faPenClip } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import * as adminSubCareerServices from '../../../services/adminSubCareerServices';
+import * as adminCareerServices from '../../../services/adminCareerServices';
 import SubCareerPopUp from './SubCareerPopUp';
 import Button from '../../../components/Button';
 import Search from '../../../components/Search';
@@ -12,66 +14,24 @@ const cx = classNames.bind(styles);
 
 function SubCareer() {
     const headers = ['ID', 'TÊN NGÀNH NGHỀ', 'CHỈNH SỬA', 'XÓA'];
-    const subCareers = [
-        {
-            id: 1,
-            name: 'Kỹ thuật phần mềm',
-        },
-        {
-            id: 2,
-            name: 'Khoa học máy tính',
-        },
-        {
-            id: 3,
-            name: 'An toàn thông tin',
-        },
-        {
-            id: 4,
-            name: 'Trí tuệ nhân tạo',
-        },
-        {
-            id: 5,
-            name: 'Blockchain',
-        },
-        {
-            id: 6,
-            name: 'Tester',
-        },
-    ];
-    const listCareers = [
-        {
-            id: 1,
-            name: 'Công nghệ thông tin',
-        },
-        {
-            id: 2,
-            name: 'Bất Động Sản',
-        },
-        {
-            id: 3,
-            name: 'Marketing',
-        },
-        {
-            id: 4,
-            name: 'Bán Hàng',
-        },
-        {
-            id: 5,
-            name: 'Thiết Kế',
-        },
-        {
-            id: 6,
-            name: 'Tư Vấn',
-        },
-        {
-            id: 7,
-            name: 'Xây dựng',
-        },
-    ];
+    const [subCareers, setSubCareers] = useState([]);
+    const [listCareers, setListCareers] = useState([]);
 
     const [show, setShow] = useState(false);
     const [subCareerInfo, setSubCareerInfo] = useState({});
-    const [career, setCareer] = useState(listCareers[0].name);
+    const [career, setCareer] = useState('');
+    useEffect(() => {
+        const fetchApi = async () => {
+            const result1 = await adminSubCareerServices.getSubCareers(1, '', 0);
+            const result2 = await adminCareerServices.getCareers('', 0);
+            console.log(result1);
+            console.log(result2);
+            setSubCareers(result1.subCareers);
+            setListCareers(result2.careers);
+            setCareer(listCareers[0].name);
+        };
+        fetchApi();
+    }, []);
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
             return <th key={index}>{properties}</th>;
