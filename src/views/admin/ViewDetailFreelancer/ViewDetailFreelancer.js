@@ -1,75 +1,57 @@
 import classNames from 'classnames/bind';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { faUserPen, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ref, getDownloadURL, listAll } from 'firebase/storage';
 
+import BanPopUp from './BanPopUp';
 import images from '../../../assets/images';
+import * as firebase from '../../../firebase/firebase';
+import Image from '../../../components/Image';
 import * as adminFreelancerService from '../../../services/adminFreelancerServices';
 import Button from '../../../components/Button';
 import styles from './ViewDetailFreelancer.module.scss';
 const cx = classNames.bind(styles);
 function ViewDetailFreelancer() {
-    const banFlag = false;
+    const [banFlag, setBanFlag] = useState(false);
+    const imgRef = useRef();
     const [freelancer, setFreelancer] = useState({
         educations: [],
-        workexperiences: [],
+        workExperiences: [],
+        skills: [],
     });
+    const [image, setImage] = useState(images.defaultAvatar);
+    const [show, setShow] = useState(false);
     const [searchParams, setSearchParams] = useSearchParams();
+    const fetchApi = async () => {
+        const result = await adminFreelancerService.getFreelancer(searchParams.get('id'));
+        console.log(result);
+        downloadFile(result.id, 'avatar');
+        setFreelancer(result);
+        setBanFlag(result.isBanned);
+    };
     useEffect(() => {
-        const fetchApi = async () => {
-            const result = await adminFreelancerService.getFreelancer(searchParams.get('id'));
-            console.log(result);
-            setFreelancer(result);
-        };
         fetchApi();
     }, []);
-    // const freelancer = {
-    //     id: 1,
-    //     gender: 'Nam',
-    //     phone: '0337177679  ',
-    //     fullname: 'Nguyễn Hữu Tuyên',
-    //     address: 'SN02/07 ngõ 18 Đông Anh Hà Nội',
-    //     skills: 'Java, SQL, C++',
-    //     cost_per_hour: '200.000 VND',
-    //     avatar: 'https://i.pravatar.cc/300',
-    //     description:
-    //         'Tôi là một lập trình viên tiềm năng, hãy tuyển tôi,tôi có kĩ năng làm việc trong nhiều tập đoàn lớn, với hoài bão và ý chí, có kiến thức về lập trình backend và các thể loại khác',
-    //     cv: 'tuyen.pdf',
-    //     education: [
-    //         {
-    //             university: 'Đại học FPT',
-    //             level: 'Xuất sắc',
-    //             from: '2018',
-    //             to: '2022',
-    //         },
-    //         {
-    //             university: 'Đại học Kinh Công',
-    //             level: 'Xuất sắc',
-    //             from: '2018',
-    //             to: '2022',
-    //         },
-    //     ],
-    //     work_exp: [
-    //         {
-    //             companyname: 'FPT Software',
-    //             position: 'Intern',
-    //             from: '2016',
-    //             to: '2018',
-    //             description: 'Tôi triển khai làm front-end sản phẩm website giới thiệu',
-    //         },
-    //         {
-    //             companyname: 'FPT Software',
-    //             position: 'Intern',
-    //             from: '2016',
-    //             to: '2018',
-    //             description: 'Tôi triển khai làm front-end sản phẩm website giới thiệu',
-    //         },
-    //     ],
-    //     star: '5',
-    //     birthdate: '20/06/2000',
-    //     subCareer: 'Lập Trình viên',
-    // };
+    const downloadFile = async (userId, type) => {
+        const ImageService = ref(firebase.storage, `${userId}/${type}`);
+        await listAll(ImageService)
+            .then((res) => {
+                res.items.forEach(async (itemRef) => {
+                    await getDownloadURL(ref(firebase.storage, itemRef._location.path_)).then((url) => {
+                        console.log(url);
+                        imgRef.current.src = url;
+                    });
+                });
+            })
+            .catch((error) => {
+                console.log('Lỗi');
+            });
+    };
+    const handleShowBanPopup = () => {
+        setShow(true);
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
@@ -81,13 +63,7 @@ function ViewDetailFreelancer() {
                 <div className={cx('freelancer-info')}>
                     <div className={cx('left-info')}>
                         <div className={cx('img-info')}>
-                            <img
-                                className={cx('avatar-info')}
-                                src={images.trang}
-                                alt="Girl in a jacket"
-                                width="500"
-                                height="600"
-                            />
+                            <Image className={cx('avatar-info')} src={image} alt="Girl in a jacket" ref={imgRef} />
                         </div>
                         <div className={cx('left-detail')}>
                             <div className={cx('fullname')}>{freelancer.fullName}</div>
@@ -135,13 +111,13 @@ function ViewDetailFreelancer() {
                         <p>Kinh nghiệm làm việc</p>
                     </div>
                     <div className={cx('work-exp')}>
-                        {freelancer.workexperiences.map((work_exp) => {
+                        {freelancer.workExperiences.map((work_exp) => {
                             return (
                                 <div key={work_exp.id} className={cx('work-exp-detail')}>
                                     <div className={cx('work-exp-name')}>{work_exp.companyName}</div>
                                     <div className={cx('work-exp-position')}>{work_exp.position}</div>
                                     <div className={cx('work-exp-time')}>
-                                        {work_exp.from}-{work_exp.to}
+                                        {work_exp.monthFrom}/{work_exp.yearFrom}-{work_exp.monthTo}/{work_exp.yearTo}
                                     </div>
                                     <div className={cx('work-exp-description')}>{work_exp.description}</div>
                                 </div>
@@ -149,10 +125,35 @@ function ViewDetailFreelancer() {
                         })}
                     </div>
                 </div>
-                <Button admin className={cx('btn-warning')}>
+                <div className={cx('work-exp-content')}>
+                    <div className={cx('work-exp-title')}>
+                        <p>Kỹ năng</p>
+                    </div>
+                    <div className={cx('skills')}>
+                        {freelancer.skills.map((skill) => {
+                            return (
+                                <div key={skill.id} className={cx('work-exp-detail')}>
+                                    <div className={cx('skill')}>
+                                        <p>{skill.name}</p>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+                <Button admin className={cx(!banFlag ? 'btn-warning' : 'btn-info')} onClick={handleShowBanPopup}>
                     {!banFlag ? 'Khóa tài khoản' : 'Mở khóa'}
                 </Button>
             </div>
+            {show && (
+                <BanPopUp
+                    id={freelancer.id}
+                    callback={(isBan) => {
+                        setBanFlag(isBan);
+                        setShow(false);
+                    }}
+                />
+            )}
         </div>
     );
 }

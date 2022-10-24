@@ -62,6 +62,9 @@
         width: fit-content;
         background-color: red;
     }
+    .btn-info{
+        background-color: green;
+    }
     .description-content {
         box-shadow: rgba(0, 0, 0, 0.4) 0 0 10px;
         .description-title {
@@ -104,4 +107,34 @@
             margin-bottom: 20px;
         }
     }
+}
+// Pop up
+.ban-type-list{
+    
+    select{
+        min-width: 200px;
+        height: 30px;
+        padding: 5px;
+    }
+}
+.detail{
+    label{
+        font-weight: 600;
+        margin-top: 10px;
+        margin-right: 5px;
+    }
+    span{
+        padding: 5px;
+        background-color: #dad3d3;
+        border-radius: 5px;
+    }
+    p{
+        padding: 5px;
+        background-color: #dad3d3;
+        border-radius: 5px;
+    }
+}
+.btn-ban{
+    font-size: 18px;
+    padding: 5px 10px;
 }

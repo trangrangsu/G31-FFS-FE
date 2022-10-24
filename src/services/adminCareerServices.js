@@ -8,41 +8,33 @@ export const getCareers = async (name, pageIndex) => {
         console.log(error);
     }
 };
-export const getBenefits = async () => {
+export const getAllCareers = async () => {
     try {
-        const res = await httpRequest.get(`api/admin/benefit`);
+        const res = await httpRequest.get(`api/staff/getAllCareer`);
         return res;
     } catch (error) {
         console.log(error);
     }
 };
-export const getBenefitService = async (id) => {
+export const addCareer = async (name) => {
     try {
-        const res = await httpRequest.get(`api/admin/benefits-service?id=${id}`);
+        const res = await httpRequest.post(`api/staff/career/add?name=${name}`);
         return res;
     } catch (error) {
         console.log(error);
     }
 };
-export const addService = async (service) => {
+export const updateCareer = async (id, name) => {
     try {
-        const res = await httpRequest.post(`api/admin/add-service`, service);
+        const res = await httpRequest.put(`api/staff/career/update?id=${id}&name=${name}`);
         return res;
     } catch (error) {
         console.log(error);
     }
 };
-export const updateStaff = async (service) => {
+export const deleteCareer = async (id) => {
     try {
-        const res = await httpRequest.put('api/admin/update-service', service);
-        return res;
-    } catch (error) {
-        console.log(error);
-    }
-};
-export const deleteStaff = async (id) => {
-    try {
-        const res = await httpRequest.deleteMetohd(`admin/delete-service?id=${id}`);
+        const res = await httpRequest.deleteMetohd(`api/staff/career/delete?id=${id}`);
         return res;
     } catch (error) {
         console.log(error);

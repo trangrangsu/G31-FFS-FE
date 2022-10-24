@@ -33,6 +33,7 @@ const UserService = React.lazy(() => import('./views/pages/UserService'));
 const FreelancerProfile = React.lazy(() => import('./views/freelancer/Profile'));
 const SearchJob = React.lazy(() => import('./views/freelancer/SearchJob'));
 const JobApply = React.lazy(() => import('./views/freelancer/JobApply'));
+const ViewDetailPost = React.lazy(() => import('./views/freelancer/ViewDetailPost'));
 const RecruiterProfile = React.lazy(() => import('./views/recruiter/Profile'));
 const SearchFreelancer = React.lazy(() => import('./views/recruiter/SearchFreelancer'));
 const PostManagement = React.lazy(() => import('./views/recruiter/PostManagement'));
@@ -70,6 +71,8 @@ export const routes = [
     { path: config.routes.freelancerProfile, element: FreelancerProfile, layout: HomeLayout },
     { path: config.routes.searchJob, element: SearchJob, layout: HomeLayout },
     { path: config.routes.jobApply, element: JobApply, layout: HomeLayout },
+    { path: config.routes.viewDetailPost, element: ViewDetailPost, layout: HomeLayout },
+
     { path: config.routes.recruiterProfile, element: RecruiterProfile, layout: HomeLayout },
     { path: config.routes.searchFreelancer, element: SearchFreelancer, layout: HomeLayout },
     { path: config.routes.postManagement, element: PostManagement, layout: HomeLayout },

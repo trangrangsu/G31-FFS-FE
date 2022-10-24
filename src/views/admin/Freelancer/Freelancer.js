@@ -13,15 +13,21 @@ function Freelancer() {
     const navigate = useNavigate();
     const headers = ['ID', 'Email', 'Họ và tên', 'Số dư tài khoản', 'Trạng thái tài khoản'];
     const [freelancers, setFreelancers] = useState([]);
+    const [searchValue, setSearchValue] = useState('');
+    const [pageIndex, setPageIndex] = useState(0);
+    const [totalPages, setTotalPages] = useState(5);
+    const fetchApi = async (pIndex) => {
+        const result = await adminFreelancerService.getFreelancers(searchValue, pIndex);
+        setFreelancers(result.freelancers);
+        setPageIndex(result.pageIndex);
+        setTotalPages(result.totalPages);
+    };
     useEffect(() => {
-        const fetchApi = async () => {
-            const result = await adminFreelancerService.getFreelancers('', 0);
-            console.log(result);
-            setFreelancers(result.freelancers);
-        };
         fetchApi();
     }, []);
-
+    const handlePaging = (pIndex) => {
+        fetchApi(pIndex);
+    };
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
             return <th key={index}>{properties}</th>;
@@ -40,6 +46,50 @@ function Freelancer() {
             );
         });
     };
+    const renderPages = () => {
+        if (totalPages < 2) {
+            return;
+        }
+        let paging = [];
+        if (pageIndex > 2) {
+            paging.push(
+                <CPaginationItem aria-label="Previous" key="0" onClick={() => handlePaging(0)}>
+                    <span aria-hidden="true">&laquo;</span>
+                </CPaginationItem>,
+            );
+        }
+        for (let i = pageIndex - 1; i < pageIndex; i++) {
+            if (i >= 1) {
+                paging.push(
+                    <CPaginationItem key={i} onClick={() => handlePaging(i - 1)}>
+                        {i}
+                    </CPaginationItem>,
+                );
+            }
+        }
+        paging.push(
+            <CPaginationItem active className={cx('active-page')} key={pageIndex}>
+                {pageIndex}
+            </CPaginationItem>,
+        );
+        for (let y = pageIndex + 1; y <= pageIndex + 1; y++) {
+            if (y <= totalPages) {
+                paging.push(
+                    <CPaginationItem key={y} onClick={() => handlePaging(y - 1)}>
+                        {y}
+                    </CPaginationItem>,
+                );
+            }
+        }
+        if (pageIndex < totalPages - 1) {
+            paging.push(
+                <CPaginationItem aria-label="Next" key="9999" onClick={() => handlePaging(totalPages - 1)}>
+                    <span aria-hidden="true">&raquo;</span>
+                </CPaginationItem>,
+            );
+        }
+        return paging;
+    };
     const handleClickUser = (id) => {
         const to = {
             pathname: Config.routes.viewDetailFreelancerAdmin,
@@ -51,7 +101,15 @@ function Freelancer() {
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <h1 className={cx('title')}>Danh sách Freelancer</h1>
-                <Search className={cx('search')} title="Tìm kiếm Freelancer" />
+                <Search
+                    type="f"
+                    className={cx('search')}
+                    title="Tìm kiếm Freelancer"
+                    onPending={(value) => {
+                        setSearchValue(value);
+                    }}
+                    onSearch={(value) => handlePaging(value)}
+                />
                 <table className={cx('freelancers')}>
                     <thead className={cx('table-header')}>
                         <tr>{renderTableHeader()}</tr>
@@ -59,17 +117,7 @@ function Freelancer() {
                     <tbody>{renderTableData()}</tbody>
                 </table>
                 <CPagination aria-label="Page navigation example" className={cx('table-paging')}>
-                    <CPaginationItem aria-label="Previous" disabled>
-                        <span aria-hidden="true">&laquo;</span>
-                    </CPaginationItem>
-                    <CPaginationItem>1</CPaginationItem>
-                    <CPaginationItem active className={cx('active-page')}>
-                        2
-                    </CPaginationItem>
-                    <CPaginationItem>3</CPaginationItem>
-                    <CPaginationItem aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </CPaginationItem>
+                    {renderPages()}
                 </CPagination>
             </div>
         </div>

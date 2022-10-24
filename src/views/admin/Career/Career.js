@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import * as adminCareerServices from '../../../services/adminCareerServices';
 import CustomButton from '../../../components/Button';
-import Search from '../../../components/Search';
+import GlobalSearch from '../../../components/GlobalSearch';
 import CareerPopUp from './CareerPopUp.js';
 import styles from './Career.module.scss';
 const cx = classNames.bind(styles);
@@ -14,16 +14,71 @@ const cx = classNames.bind(styles);
 function Career() {
     const headers = ['ID', 'Tên Ngành Nghề', 'Chỉnh Sửa', 'Xóa'];
     const [careers, setCareer] = useState([]);
+    const [updatePage, setUpdatePage] = useState(0);
     const [show, setShow] = useState(false);
     const [careerInfo, setCareerInfo] = useState({});
+    const [searchValue, setSearchValue] = useState('');
+    const [pageIndex, setPageIndex] = useState(0);
+    const [totalPages, setTotalPages] = useState(5);
+    const fetchApi = async (pIndex) => {
+        const result = await adminCareerServices.getCareers(searchValue, pIndex);
+        setCareer(result.careers);
+        setPageIndex(result.pageIndex);
+        setTotalPages(result.totalPages);
+    };
     useEffect(() => {
-        const fetchApi = async () => {
-            const result = await adminCareerServices.getCareers('', 0);
-            console.log(result);
-            setCareer(result.careers);
-        };
         fetchApi();
     }, []);
+    useEffect(() => {
+        fetchApi();
+    }, [updatePage]);
+    const handlePaging = (pIndex) => {
+        fetchApi(pIndex);
+    };
+    const renderPages = () => {
+        if (totalPages < 2) {
+            return;
+        }
+        let paging = [];
+        if (pageIndex > 2) {
+            paging.push(
+                <CPaginationItem aria-label="Previous" key="0" onClick={() => handlePaging(0)}>
+                    <span aria-hidden="true">&laquo;</span>
+                </CPaginationItem>,
+            );
+        }
+        for (let i = pageIndex - 1; i < pageIndex; i++) {
+            if (i >= 1) {
+                paging.push(
+                    <CPaginationItem key={i} onClick={() => handlePaging(i - 1)}>
+                        {i}
+                    </CPaginationItem>,
+                );
+            }
+        }
+        paging.push(
+            <CPaginationItem active className={cx('active-page')} key={pageIndex}>
+                {pageIndex}
+            </CPaginationItem>,
+        );
+        for (let y = pageIndex + 1; y <= pageIndex + 1; y++) {
+            if (y <= totalPages) {
+                paging.push(
+                    <CPaginationItem key={y} onClick={() => handlePaging(y - 1)}>
+                        {y}
+                    </CPaginationItem>,
+                );
+            }
+        }
+        if (pageIndex < totalPages - 1) {
+            paging.push(
+                <CPaginationItem aria-label="Next" key="9999" onClick={() => handlePaging(totalPages - 1)}>
+                    <span aria-hidden="true">&raquo;</span>
+                </CPaginationItem>,
+            );
+        }
+        return paging;
+    };
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
             return <th key={index}>{properties}</th>;
@@ -38,7 +93,12 @@ function Career() {
         setShow(true);
     };
     const handDelete = (careerInfo) => {
-        alert('delete');
+        const deleteCareerFetchApi = async (id) => {
+            const result = await adminCareerServices.deleteCareer(id);
+            console.log(result);
+        };
+        deleteCareerFetchApi(careerInfo.id);
+        setUpdatePage(Math.random());
     };
     return (
         <div className={cx('wrapper')}>
@@ -49,12 +109,20 @@ function Career() {
                         Thêm mới
                     </CustomButton>
                     {/* <CareerPopUp className={cx('career-popup')} /> */}
-                    <Search className={cx('search')} title="Tìm kiếm ngành nghề" />
+                    <GlobalSearch
+                        className={cx('search')}
+                        title="Tìm kiếm ngành nghề"
+                        onPending={(value) => {
+                            setSearchValue(value);
+                        }}
+                        onSearch={(value) => handlePaging(value)}
+                    />
                     {show && (
                         <CareerPopUp
                             career={careerInfo}
                             callback={() => {
                                 setShow(false);
+                                setUpdatePage(Math.random());
                             }}
                         />
                     )}
@@ -84,17 +152,7 @@ function Career() {
                     </tbody>
                 </table>
                 <CPagination aria-label="Page navigation example" className={cx('table-paging')}>
-                    <CPaginationItem aria-label="Previous" disabled>
-                        <span aria-hidden="true">&laquo;</span>
-                    </CPaginationItem>
-                    <CPaginationItem active className={cx('active-page')}>
-                        1
-                    </CPaginationItem>
-                    <CPaginationItem>2</CPaginationItem>
-                    <CPaginationItem>3</CPaginationItem>
-                    <CPaginationItem aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </CPaginationItem>
+                    {renderPages()}
                 </CPagination>
             </div>
         </div>

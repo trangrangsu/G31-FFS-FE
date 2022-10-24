@@ -8,30 +8,95 @@ import * as adminServiceServices from '../../../services/adminServiceServices';
 import DetailService from './DetailService';
 import ServicePopUp from './ServicePopUp';
 import Button from '../../../components/Button';
-import Search from '../../../components/Search';
+import GlobalSearch from '../../../components/GlobalSearch';
 import styles from './Service.module.scss';
 const cx = classNames.bind(styles);
 function Service() {
     const headers = ['ID', 'TÊN DỊCH VỤ', 'THỜI GIAN', 'GIÁ TIỀN', 'CHỈNH SỬA', 'XÓA'];
     const users = [
-        { id: 1, name: 'Freelancer' },
-        { id: 2, name: 'Recruiter' },
+        { id: 3, name: 'Freelancer' },
+        { id: 4, name: 'Recruiter' },
     ];
     const [services, setServices] = useState([]);
     const [show, setShow] = useState(false);
     const [showDetail, setShowDetail] = useState(false);
     const [serviceInfo, setServiceInfo] = useState({});
-    const [user, setUser] = useState(users[0].name);
+    const [user, setUser] = useState(users[0].id);
+    const [searchValue, setSearchValue] = useState('');
+    const [pageIndex, setPageIndex] = useState(0);
+    const [totalPages, setTotalPages] = useState(5);
 
+    const fetchApi = async (pIndex) => {
+        const result = await adminServiceServices.getServices(user, searchValue, pIndex);
+        console.log(result);
+        setServices(result.services);
+        setPageIndex(result.pageIndex);
+        setTotalPages(result.totalPage);
+    };
+    const deleteApi = async (id) => {
+        const result = await adminServiceServices.deleteService(id);
+        console.log(result);
+        fetchApi();
+    };
+    const addApi = async (service) => {
+        const result = await adminServiceServices.addService(service);
+        console.log(result);
+        fetchApi();
+    };
     useEffect(() => {
-        const fetchApi = async () => {
-            const result = await adminServiceServices.getServices('', 0);
-            console.log(result);
-            setServices(result.services);
-        };
         fetchApi();
     }, []);
-
+    useEffect(() => {
+        fetchApi();
+    }, [user]);
+    const handlePaging = (pIndex) => {
+        fetchApi(pIndex);
+    };
+    const renderPages = () => {
+        console.log(totalPages + ' ' + pageIndex);
+        if (totalPages < 2) {
+            return;
+        }
+        let paging = [];
+        if (pageIndex > 2) {
+            paging.push(
+                <CPaginationItem aria-label="Previous" key="0" onClick={() => handlePaging(0)}>
+                    <span aria-hidden="true">&laquo;</span>
+                </CPaginationItem>,
+            );
+        }
+        for (let i = pageIndex - 1; i < pageIndex; i++) {
+            if (i >= 1) {
+                paging.push(
+                    <CPaginationItem key={i} onClick={() => handlePaging(i - 1)}>
+                        {i}
+                    </CPaginationItem>,
+                );
+            }
+        }
+        paging.push(
+            <CPaginationItem active className={cx('active-page')} key={pageIndex}>
+                {pageIndex}
+            </CPaginationItem>,
+        );
+        for (let y = pageIndex + 1; y <= pageIndex + 1; y++) {
+            if (y <= totalPages) {
+                paging.push(
+                    <CPaginationItem key={y} onClick={() => handlePaging(y - 1)}>
+                        {y}
+                    </CPaginationItem>,
+                );
+            }
+        }
+        if (pageIndex < totalPages - 1) {
+            paging.push(
+                <CPaginationItem aria-label="Next" key="9999" onClick={() => handlePaging(totalPages - 1)}>
+                    <span aria-hidden="true">&raquo;</span>
+                </CPaginationItem>,
+            );
+        }
+        return paging;
+    };
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
             return <th key={index}>{properties}</th>;
@@ -47,7 +112,8 @@ function Service() {
         setShow(true);
     };
     const handDelete = (serviceInfo) => {
-        alert('delete');
+        deleteApi(serviceInfo.id);
+        console.log('delete');
     };
     const handleViewDetail = (service) => {
         setServiceInfo(service);
@@ -63,7 +129,13 @@ function Service() {
                         Thêm mới
                     </Button>
                     <div className={cx('service-list')}>
-                        <select value={user} onChange={(e) => setUser(e.target.value)}>
+                        <select
+                            value={user}
+                            onChange={(e) => {
+                                console.log(e.target.value);
+                                setUser(e.target.value);
+                            }}
+                        >
                             {users.map((user, index) => {
                                 return (
                                     <option key={index} value={user.id}>
@@ -74,14 +146,21 @@ function Service() {
                         </select>
                     </div>
                     <div className={cx('subCareer-search')}>
-                        <Search title="Tìm kiếm dịch vụ" />
+                        <GlobalSearch
+                            title="Tìm kiếm dịch vụ"
+                            onPending={(value) => {
+                                setSearchValue(value);
+                            }}
+                            onSearch={(value) => handlePaging(value)}
+                        />
                     </div>
                     {show && (
                         <ServicePopUp
                             user={user}
                             service={serviceInfo}
-                            callback={() => {
+                            callback={(service) => {
                                 setShow(false);
+                                addApi(service);
                             }}
                         />
                     )}
@@ -121,17 +200,7 @@ function Service() {
                     </tbody>
                 </table>
                 <CPagination aria-label="Page navigation example" className={cx('table-paging')}>
-                    <CPaginationItem aria-label="Previous" disabled>
-                        <span aria-hidden="true">&laquo;</span>
-                    </CPaginationItem>
-                    <CPaginationItem active className={cx('active-page')}>
-                        1
-                    </CPaginationItem>
-                    <CPaginationItem>2</CPaginationItem>
-                    <CPaginationItem>3</CPaginationItem>
-                    <CPaginationItem aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </CPaginationItem>
+                    {renderPages()}
                 </CPagination>
             </div>
         </div>

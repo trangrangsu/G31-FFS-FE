@@ -1,34 +1,87 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { CPagination, CPaginationItem } from '@coreui/react';
-import { faTrashCan, faPenClip } from '@fortawesome/free-solid-svg-icons';
+import { faPenClip, faPersonCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import * as staffService from '../../../services/staffService';
 import CustomButton from '../../../components/Button';
-import Search from '../../../components/Search';
+import GlobalSearch from '../../../components/GlobalSearch';
 import styles from './Staff.module.scss';
 import StaffPopUp from './StaffPopUp.js';
 const cx = classNames.bind(styles);
 
 function Staff() {
-    const headers = ['ID', 'Email', 'Họ và tên', 'Số điện thoại', 'Địa chỉ', 'Trạng thái', 'Chỉnh Sửa', 'Xóa'];
+    const headers = ['ID', 'Email', 'Họ và tên', 'Số điện thoại', 'Địa chỉ', 'Trạng thái', 'Chỉnh Sửa', 'Cấp quyền'];
     const [show, setShow] = useState(false);
     const [staffInfo, setStaffInfo] = useState({});
     const [staffs, setStaffs] = useState([]);
+    const [searchValue, setSearchValue] = useState('');
+    const [pageIndex, setPageIndex] = useState(0);
+    const [totalPages, setTotalPages] = useState(5);
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
             return <th key={index}>{properties}</th>;
         });
     };
+    const fetchApi = async (pIndex) => {
+        const result = await staffService.getStaffs(searchValue, pIndex);
+        console.log(result);
+        setStaffs(result.staffs);
+        console.log(result.pageIndex);
+        setPageIndex(result.pageIndex);
+        setTotalPages(result.totalPages);
+    };
     useEffect(() => {
-        const fetchApi = async () => {
-            const result = await staffService.getStaffs('', 0);
-            console.log(result);
-            setStaffs(result.staffs);
-        };
         fetchApi();
     }, []);
+    const handlePaging = (pIndex) => {
+        fetchApi(pIndex);
+    };
+    const renderPages = () => {
+        if (totalPages < 2) {
+            return;
+        }
+        let paging = [];
+        if (pageIndex > 2) {
+            paging.push(
+                <CPaginationItem aria-label="Previous" key="0" onClick={() => handlePaging(0)}>
+                    <span aria-hidden="true">&laquo;</span>
+                </CPaginationItem>,
+            );
+        }
+        for (let i = pageIndex - 1; i < pageIndex; i++) {
+            if (i >= 1) {
+                paging.push(
+                    <CPaginationItem key={i} onClick={() => handlePaging(i - 1)}>
+                        {i}
+                    </CPaginationItem>,
+                );
+            }
+        }
+        paging.push(
+            <CPaginationItem active className={cx('active-page')} key={pageIndex}>
+                {pageIndex}
+            </CPaginationItem>,
+        );
+        for (let y = pageIndex + 1; y <= pageIndex + 1; y++) {
+            if (y <= totalPages) {
+                paging.push(
+                    <CPaginationItem key={y} onClick={() => handlePaging(y - 1)}>
+                        {y}
+                    </CPaginationItem>,
+                );
+            }
+        }
+        if (pageIndex < totalPages - 1) {
+            paging.push(
+                <CPaginationItem aria-label="Next" key="9999" onClick={() => handlePaging(totalPages - 1)}>
+                    <span aria-hidden="true">&raquo;</span>
+                </CPaginationItem>,
+            );
+        }
+        return paging;
+    };
     const handleShow = () => {
         setStaffInfo({});
         setShow(true);
@@ -38,7 +91,12 @@ function Staff() {
         setShow(true);
     };
     const handDelete = (staff) => {
-        alert('delete');
+        const banStaffFetchApi = async (id) => {
+            const result = await staffService.banStaff(id);
+            console.log(result);
+        };
+        banStaffFetchApi(staff.id);
+        fetchApi();
     };
     return (
         <div className={cx('wrapper')}>
@@ -49,7 +107,14 @@ function Staff() {
                         Thêm mới
                     </CustomButton>
 
-                    <Search className={cx('search')} title="Tìm kiếm Nhân viên" />
+                    <GlobalSearch
+                        className={cx('search')}
+                        title="Tìm kiếm Nhân viên"
+                        onPending={(value) => {
+                            setSearchValue(value);
+                        }}
+                        onSearch={(value) => handlePaging(value)}
+                    />
                     {show && (
                         <StaffPopUp
                             staff={staffInfo}
@@ -80,7 +145,10 @@ function Staff() {
                                         </td>
                                         <td>
                                             {' '}
-                                            <FontAwesomeIcon icon={faTrashCan} onClick={() => handDelete(staff)} />
+                                            <FontAwesomeIcon
+                                                icon={faPersonCircleExclamation}
+                                                onClick={() => handDelete(staff)}
+                                            />
                                         </td>
                                     </tr>
                                 );
@@ -88,17 +156,7 @@ function Staff() {
                     </tbody>
                 </table>
                 <CPagination aria-label="Page navigation example" className={cx('table-paging')}>
-                    <CPaginationItem aria-label="Previous" disabled>
-                        <span aria-hidden="true">&laquo;</span>
-                    </CPaginationItem>
-                    <CPaginationItem active className={cx('active-page')}>
-                        1
-                    </CPaginationItem>
-                    <CPaginationItem>2</CPaginationItem>
-                    <CPaginationItem>3</CPaginationItem>
-                    <CPaginationItem aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </CPaginationItem>
+                    {renderPages()}
                 </CPagination>
             </div>
         </div>

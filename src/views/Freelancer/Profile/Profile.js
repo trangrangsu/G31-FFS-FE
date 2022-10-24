@@ -26,7 +26,6 @@ import BasicPopup from './BasicPopup';
 import Feedback from './Feedback';
 import WorkExperiment from './WorkExperiment';
 import EducationItem from './EducationItem';
-import images from '../../../assets/images';
 import Image from '../../../components/Image';
 import styles from './Profile.module.scss';
 const cx = classNames.bind(styles);
@@ -373,7 +372,7 @@ const Profile = ({ freelancerId }) => {
                                         <FontAwesomeIcon icon={faFileLines} />
                                     </div>
                                     <div className={cx('cv-right')}>
-                                        <p>{freelancer.cv}</p>
+                                        <a href="#">{freelancer.cv}</a>
                                         <FontAwesomeIcon icon={faTrashCan} />
                                     </div>
                                 </div>

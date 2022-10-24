@@ -5,21 +5,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import HeadlessTippy from '@tippyjs/react/headless';
 
-//import * as searchServices from '../../services/searchService';
+import * as adminFreelancerService from '../../services/adminFreelancerServices';
+import * as adminRecruiterServices from '../../services/adminRecruiterServices';
 import { useDebounce } from '../../hooks';
-import images from '../../assets/images';
 import { Wrapper as PopperWrapper } from '../../components/Popper';
 import UserItem from '../UserItem';
 import styles from './Search.module.scss';
 const cx = classNames.bind(styles);
 
-function Search({ title, className, onSearch }) {
-    const userItem = {
-        id: 1,
-        full_name: 'Nguyen Ba Trang',
-        email: 'trangrangsu@gmail.com',
-        avatar: images.trang,
-    };
+function Search({ type, title, className, onSearch, onPending }) {
     const [searchValue, setSearchValue] = useState('');
     const [searchResult, setSearchResult] = useState([]);
     const [showResult, setShowResult] = useState(false);
@@ -34,19 +28,21 @@ function Search({ title, className, onSearch }) {
             return;
         }
 
-        // const fetchApi = async () => {
-        //     setLoading(true);
+        const fetchApi = async () => {
+            setLoading(true);
+            let result = {};
+            if (type === 'f') {
+                result = await adminFreelancerService.getTop5(debouncedValue);
+            } else {
+                result = await adminRecruiterServices.getTop5(debouncedValue);
+            }
+            console.log(result);
+            setSearchResult(result);
+            setLoading(false);
+        };
 
-        //     const result = await searchServices.search(debouncedValue);
-
-        //     setSearchResult(result);
-        //     setLoading(false);
-        // };
-
-        // fetchApi();
-        setLoading(true);
-        console.log('ahihi');
-        setLoading(false);
+        fetchApi();
+        onPending(debouncedValue);
     }, [debouncedValue]);
 
     const handleClear = () => {
@@ -69,13 +65,14 @@ function Search({ title, className, onSearch }) {
                 interactive
                 //visible={true}
                 placement="bottom-end"
-                // visible={showResult && searchResult.length > 0}
+                visible={showResult && searchResult.length > 0}
                 render={(attrs) => (
                     <div className={cx('search-result')} tabIndex="-1" {...attrs}>
                         <PopperWrapper>
                             <h4 className={cx('search-title')}>User</h4>
-                            <UserItem data={userItem} />
-                            <UserItem data={userItem} />
+                            {searchResult.map((userItem) => (
+                                <UserItem data={userItem} key={userItem.id} />
+                            ))}
                         </PopperWrapper>
                     </div>
                 )}
@@ -111,8 +108,10 @@ function Search({ title, className, onSearch }) {
     );
 }
 Search.propTypes = {
+    type: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     className: PropTypes.string,
     onSearch: PropTypes.func,
+    onPending: PropTypes.func,
 };
 export default Search;

@@ -4,26 +4,90 @@ import { CPagination, CPaginationItem } from '@coreui/react';
 
 import * as adminPaymentServices from '../../../services/adminPaymentServices';
 import RequestPopup from './RequestPopup';
-import Search from '../../../components/Search';
+import GlobalSearch from '../../../components/GlobalSearch';
 import styles from './Payment.module.scss';
 const cx = classNames.bind(styles);
 function Payment() {
     const status = ['Tất cả', 'Đã phê duyệt', 'Không phê duyệt', 'Chờ phê duyệt'];
+
     const headers = ['MÃ NẠP', 'ID KHÁCH HÀNG', 'SỐ TIỀN', 'NGÀY YÊU CẦU', 'NGÀY PHÊ DUYỆT'];
 
+    const [updatePage, setUpdatePage] = useState(0);
     const [requestPayment, setRequestPayment] = useState([]);
     const [show, setShow] = useState(false);
-    const [request, setRequest] = useState(false);
+    const [request, setRequest] = useState({});
     const [state, setState] = useState(status[0]);
-
+    const [searchValue, setSearchValue] = useState('');
+    const [pageIndex, setPageIndex] = useState(0);
+    const [totalPages, setTotalPages] = useState(5);
+    const fetchApi = async (pIndex) => {
+        let s = -1;
+        if (state === 'Đã phê duyệt') {
+            s = 1;
+        } else if (state === 'Không phê duyệt') {
+            s = 0;
+        } else if (state === 'Chờ phê duyệt') {
+            s = 2;
+        }
+        const result = await adminPaymentServices.getPayments(searchValue, 1, 0);
+        console.log(result);
+        setRequestPayment(result.payments);
+        setPageIndex(result.pageIndex);
+        setTotalPages(result.totalPages);
+    };
     useEffect(() => {
-        const fetchApi = async () => {
-            const result = await adminPaymentServices.getPayments('a', '', 0);
-            console.log(result);
-            setRequestPayment(result.payments);
-        };
         fetchApi();
     }, []);
+    useEffect(() => {
+        fetchApi();
+    }, [updatePage]);
+    const handlePaging = (pIndex) => {
+        fetchApi(pIndex);
+    };
+    const renderPages = () => {
+        if (totalPages < 2) {
+            return;
+        }
+        let paging = [];
+        if (pageIndex > 2) {
+            paging.push(
+                <CPaginationItem aria-label="Previous" key="0" onClick={() => handlePaging(0)}>
+                    <span aria-hidden="true">&laquo;</span>
+                </CPaginationItem>,
+            );
+        }
+        for (let i = pageIndex - 1; i < pageIndex; i++) {
+            if (i >= 1) {
+                paging.push(
+                    <CPaginationItem key={i} onClick={() => handlePaging(i - 1)}>
+                        {i}
+                    </CPaginationItem>,
+                );
+            }
+        }
+        paging.push(
+            <CPaginationItem active className={cx('active-page')} key={pageIndex}>
+                {pageIndex}
+            </CPaginationItem>,
+        );
+        for (let y = pageIndex + 1; y <= pageIndex + 1; y++) {
+            if (y <= totalPages) {
+                paging.push(
+                    <CPaginationItem key={y} onClick={() => handlePaging(y - 1)}>
+                        {y}
+                    </CPaginationItem>,
+                );
+            }
+        }
+        if (pageIndex < totalPages - 1) {
+            paging.push(
+                <CPaginationItem aria-label="Next" key="9999" onClick={() => handlePaging(totalPages - 1)}>
+                    <span aria-hidden="true">&raquo;</span>
+                </CPaginationItem>,
+            );
+        }
+        return paging;
+    };
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
             return <th key={index}>{properties}</th>;
@@ -52,13 +116,20 @@ function Payment() {
                         </select>
                     </div>
                     <div className={cx('subCareer-search')}>
-                        <Search title="Tìm kiếm mã nạp" />
+                        <GlobalSearch
+                            title="Tìm kiếm mã nạp"
+                            onPending={(value) => {
+                                setSearchValue(value);
+                            }}
+                            onSearch={(value) => handlePaging(value)}
+                        />
                     </div>
                     {show && (
                         <RequestPopup
                             request={request}
                             callback={() => {
                                 setShow(false);
+                                setUpdatePage(Math.random());
                             }}
                         />
                     )}
@@ -83,17 +154,7 @@ function Payment() {
                     </tbody>
                 </table>
                 <CPagination aria-label="Page navigation example" className={cx('table-paging')}>
-                    <CPaginationItem aria-label="Previous" disabled>
-                        <span aria-hidden="true">&laquo;</span>
-                    </CPaginationItem>
-                    <CPaginationItem active className={cx('active-page')}>
-                        1
-                    </CPaginationItem>
-                    <CPaginationItem>2</CPaginationItem>
-                    <CPaginationItem>3</CPaginationItem>
-                    <CPaginationItem aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </CPaginationItem>
+                    {renderPages()}
                 </CPagination>
             </div>
         </div>

@@ -28,6 +28,14 @@ export const updateStaff = async (staff) => {
         console.log(error);
     }
 };
+export const banStaff = async (id) => {
+    try {
+        const res = await httpRequest.put(`api/admin/ban-staff?id=${id}`);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
 export const deleteStaff = async (staff) => {
     try {
         const res = await httpRequest.deleteMetohd('add/staff', {

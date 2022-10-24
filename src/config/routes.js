@@ -27,6 +27,7 @@ const routes = {
     jobApply: '/freelancer/jobApply',
     updateFreelancer: '/freelancer/updateProfile',
     viewDetailFreelancer: '/freelancer/viewProfile',
+    viewDetailPost: '/freelancer/viewDetailPost',
     recruiterProfile: '/recruiter/profile',
     searchFreelancer: '/recruiter/search',
     postManagement: '/recruiter/postManagement',

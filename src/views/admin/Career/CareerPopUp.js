@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import Modal from 'react-bootstrap/Modal';
 import { CFormInput } from '@coreui/react';
 
+import * as adminCareerServices from '../../../services/adminCareerServices';
 import CustomButton from '../../../components/Button';
 import styles from './Career.module.scss';
 const cx = classNames.bind(styles);
@@ -23,11 +24,16 @@ function CareerPopUp({ career, callback }) {
         }
     }, []);
     const handleAdd = () => {
-        const staff = {
-            name,
+        const fetchApi = async () => {
+            let result = '';
+            if(career.id){
+                await adminCareerServices.updateCareer(career.id,name);
+            }else await adminCareerServices.addCareer(name);
+            console.log(result);
         };
+        fetchApi();
         handleClose();
-        console.log(staff);
+        console.log(name);
     };
     return (
         <div className={cx('career-popup')}>

@@ -25,9 +25,9 @@ function ServicePopUp({ user, service, callback }) {
     const [price, setPrice] = useState('');
     const [titleButton, setTitleButton] = useState('Thêm mới');
     const [titlePopup, setTitlePopup] = useState('Thêm mới một dịch vụ');
-    const handleClose = () => {
+    const handleClose = (service) => {
         setShow(false);
-        callback();
+        callback(service);
     };
     useEffect(() => {
         console.log(userCurrent);
@@ -65,16 +65,17 @@ function ServicePopUp({ user, service, callback }) {
                     id: 2,
                 },
             ],
-            role: { id: users.find((user) => user.name === userCurrent).id },
+            role: { id: users.find((user) => user.id == userCurrent).id },
         };
-        handleClose();
+        //handleClose(service);
+
         console.log(service);
-        const fetchApi = async () => {
-            const result = await adminServiceServices.addService(service);
-            console.log(result);
-            setBenefits(result);
-        };
-        fetchApi();
+        // const fetchApi = async () => {
+        //     const result = await adminServiceServices.addService(service);
+        //     console.log(result);
+        //     setBenefits(result);
+        // };
+        // fetchApi();
     };
     const handleUpdate = () => {
         const service = {
@@ -90,7 +91,7 @@ function ServicePopUp({ user, service, callback }) {
                     id: 2,
                 },
             ],
-            role: { id: users.find((user) => user.name === userCurrent).id },
+            role: { id: users.find((user) => user.id == userCurrent).id },
         };
         handleClose();
         console.log(service);

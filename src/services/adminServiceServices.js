@@ -1,8 +1,8 @@
 import * as httpRequest from '../utils/httpRequest';
 
-export const getServices = async (name, pageIndex) => {
+export const getServices = async (roleId, name, pageIndex) => {
     try {
-        const res = await httpRequest.get(`api/admin/service?name=${name}&pageIndex=${pageIndex}`);
+        const res = await httpRequest.get(`api/admin/service?roleId=${roleId}&name=${name}&pageIndex=${pageIndex}`);
         return res;
     } catch (error) {
         console.log(error);
@@ -40,9 +40,9 @@ export const updateStaff = async (service) => {
         console.log(error);
     }
 };
-export const deleteStaff = async (id) => {
+export const deleteService = async (id) => {
     try {
-        const res = await httpRequest.deleteMetohd(`admin/delete-service?id=${id}`);
+        const res = await httpRequest.deleteMetohd(`api/admin/delete-service?id=${id}`);
         return res;
     } catch (error) {
         console.log(error);

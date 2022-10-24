@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 
+import images from '../../assets/images';
 import Config from '../../config';
 import styles from './UserItem.module.scss';
 
@@ -16,10 +17,10 @@ function UserItem({ data }) {
             }}
             className={cx('wrapper')}
         >
-            <img className={cx('avatar')} src={data.avatar} alt={data.full_name} />
+            <img className={cx('avatar')} src={images.trang} alt={data.fullName} />
             <div className={cx('info')}>
                 <h4 className={cx('name')}>
-                    <span>{data.full_name}</span>
+                    <span>{data.fullName}</span>
                 </h4>
                 <span className={cx('email')}>{data.email}</span>
             </div>

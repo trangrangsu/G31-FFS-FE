@@ -3,24 +3,8 @@ import * as httpRequest from '../utils/httpRequest';
 export const getPayments = async (keyword, status, pageIndex) => {
     try {
         const res = await httpRequest.get(
-            `api/staff/payment?keyword=${keyword}&status=${status}&pageIndex=${pageIndex}`,
+            `api/staff/paymentSearch?keyword=${keyword}&status=${status}&pageIndex=${pageIndex}`,
         );
-        return res;
-    } catch (error) {
-        console.log(error);
-    }
-};
-export const getBenefits = async () => {
-    try {
-        const res = await httpRequest.get(`api/admin/benefit`);
-        return res;
-    } catch (error) {
-        console.log(error);
-    }
-};
-export const getBenefitService = async (id) => {
-    try {
-        const res = await httpRequest.get(`api/admin/benefits-service?id=${id}`);
         return res;
     } catch (error) {
         console.log(error);

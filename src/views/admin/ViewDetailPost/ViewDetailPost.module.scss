@@ -5,3 +5,161 @@
     width: 1200px;
     margin: var(--default-margin-top-title-admin) auto;
 }
+.detail-title {
+    display: flex;
+    margin-bottom: 40px;
+    .title {
+        width: 100%;
+    }
+
+}
+.margin-bottom{
+    margin-bottom: 10px;
+}
+.title-header{
+    background-color: #1C62A3;
+    width: 100%;
+    height: 60px;
+    font-weight: bold;
+    font-size: 24px;
+    color: white;
+    padding: 15px;
+}
+.content{
+    width: 100%;
+    background-color: #ffffff;
+    padding: 10px;
+}
+.info{
+    font-size:14px;
+    color: gray;
+    a{
+        font-size:14px;
+        padding: 0;
+        text-decoration: none;
+        color: gray;
+        &:hover{
+            color: rgb(62, 98, 196);
+        }
+    }
+}
+.description{
+    font-size:18px;
+    background-color: #f0e8e8;
+    padding: 10px;
+    border-radius: 5px;
+}
+.attach{
+    margin-top: 10px;
+    font-size: 18px;
+    display: flex;
+    flex-direction: row;
+    a{
+        font-size:18px;
+        padding: 0;
+        text-decoration: none;
+        color: black;
+        
+        &:hover{
+            color: rgb(62, 98, 196);
+        }
+        span{
+            margin-top: -1px;
+        }
+    }
+    p{
+        margin: 0;
+    }
+}
+
+.row1{
+    display: flex;
+    flex-direction: row;
+    background-color: #ffffff;
+}
+.subCareer{
+    padding: 20px;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    div{
+        width: max-content;
+        background-color: #8FB0D7;
+        border-radius: 10px;
+        margin-right: 5px;
+        padding: 3px 5px;
+        p{
+            line-height: 18px;
+            font-size: 14px;
+            margin: 0;
+        }
+    }
+}
+.label{
+    font-size: 20px;
+    font-weight: 600;
+}
+.Skills{
+    padding: 20px 0;
+}
+.container-skill{
+    display: flex;
+    flex-direction: row;
+    div{
+        width: max-content;
+        background-color: #8FB0D7;
+        border-radius: 10px;
+        margin-right: 5px;
+        padding: 3px 5px;
+        
+        p{
+            line-height: 18px;
+            font-size: 14px;
+            margin: 0;
+        }
+    }
+}
+.row2{
+    background-color: #ffffff;
+    padding: 20px;
+    div{
+        width: max-content;
+        background-color: #8FB0D7;
+        border-radius: 10px;
+        margin-right: 5px;
+        padding: 3px 5px;
+        
+        p{
+            line-height: 18px;
+            font-size: 14px;
+            margin: 0;
+        }
+    }
+}
+.padding{
+    padding: 20px;
+    background-color: #ffffff;
+}
+.top{
+    display: flex;
+    flex-direction: row;
+    p{
+        margin-left: 5px;
+        margin-bottom: 0;
+    }
+    svg{
+        margin-top: 2px;
+    }
+}
+.bottom{
+    font-size: 14px;
+    margin-left: 20px;
+    color: grey;
+    margin-top: -5px;
+}
+.btn-post{
+    font-size: 18px;
+    + .btn-post{
+        margin-left: 10px;
+    }
+}

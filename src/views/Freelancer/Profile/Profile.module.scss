@@ -17,6 +17,7 @@
     margin-bottom: 10px;
     border: 1px solid #A8A2A2;
     border-radius: 10px;
+    background-color: #fff;
 }
 .greeting-title {
     font-size: 25px;
@@ -41,6 +42,7 @@
     flex-direction: column;
     border: 1px solid #A8A2A2;
     border-radius: 10px;
+    background-color: #fff;
 }
 // basic
 .profile-basic{
@@ -247,8 +249,9 @@
 }
 .cv-right{
     margin-left: 20px;
-    margin-bottom: 10px;
-    p{
+    margin-bottom: 4px;
+    a{
+        display: block;
         margin: 0;
     }
     svg{

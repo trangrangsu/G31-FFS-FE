@@ -8,7 +8,7 @@ import * as adminSubCareerServices from '../../../services/adminSubCareerService
 import * as adminCareerServices from '../../../services/adminCareerServices';
 import SubCareerPopUp from './SubCareerPopUp';
 import Button from '../../../components/Button';
-import Search from '../../../components/Search';
+import GlobalSearch from '../../../components/GlobalSearch';
 import styles from './SubCareer.module.scss';
 const cx = classNames.bind(styles);
 
@@ -19,19 +19,97 @@ function SubCareer() {
 
     const [show, setShow] = useState(false);
     const [subCareerInfo, setSubCareerInfo] = useState({});
-    const [career, setCareer] = useState('');
+    const [career, setCareer] = useState(1);
+    const [searchValue, setSearchValue] = useState('');
+    const [pageIndex, setPageIndex] = useState(0);
+    const [totalPages, setTotalPages] = useState(5);
+    const getCareerApi = async () => {
+        const result2 = await adminCareerServices.getAllCareers();
+        console.log(result2);
+        setListCareers(result2);
+        setCareer(result2[0].id);
+    };
+    const getSubCareerApi = async (pIndex) => {
+        const result1 = await adminSubCareerServices.getSubCareers(career, searchValue, pIndex);
+        console.log(result1);
+        setSubCareers(result1.subCareers);
+        setPageIndex(result1.pageIndex);
+        setTotalPages(result1.totalPages);
+    };
+    const addSubCareerApi = async (careerId, name) => {
+        const result1 = await adminSubCareerServices.addSubCareer(careerId, name);
+        console.log(result1);
+        getSubCareerApi();
+    };
+    const updateSubCareerApi = async (careerId, id, name) => {
+        const result1 = await adminSubCareerServices.updateSubCareer(careerId, id, name);
+        console.log(result1);
+        getSubCareerApi();
+    };
+    const deleteSubCareerApi = async (id) => {
+        const result1 = await adminSubCareerServices.deleteSubCareer(id);
+        console.log(result1);
+        getSubCareerApi();
+    };
     useEffect(() => {
-        const fetchApi = async () => {
-            const result1 = await adminSubCareerServices.getSubCareers(1, '', 0);
-            const result2 = await adminCareerServices.getCareers('', 0);
-            console.log(result1);
-            console.log(result2);
-            setSubCareers(result1.subCareers);
-            setListCareers(result2.careers);
-            setCareer(listCareers[0].name);
-        };
-        fetchApi();
+        getCareerApi();
+        getSubCareerApi();
     }, []);
+    useEffect(() => {
+        getSubCareerApi();
+    }, [career]);
+    useEffect(() => {
+        if (searchValue === '') {
+            getSubCareerApi();
+        }
+    }, [searchValue]);
+    const handlePaging = (pIndex) => {
+        getSubCareerApi(pIndex);
+    };
+    const renderPages = () => {
+        if (totalPages < 2) {
+            return;
+        }
+        let paging = [];
+        if (pageIndex > 2) {
+            paging.push(
+                <CPaginationItem aria-label="Previous" key="0" onClick={() => handlePaging(0)}>
+                    <span aria-hidden="true">&laquo;</span>
+                </CPaginationItem>,
+            );
+        }
+        for (let i = pageIndex - 1; i < pageIndex; i++) {
+            if (i >= 1) {
+                paging.push(
+                    <CPaginationItem key={i} onClick={() => handlePaging(i - 1)}>
+                        {i}
+                    </CPaginationItem>,
+                );
+            }
+        }
+        paging.push(
+            <CPaginationItem active className={cx('active-page')} key={pageIndex}>
+                {pageIndex}
+            </CPaginationItem>,
+        );
+        for (let y = pageIndex + 1; y <= pageIndex + 1; y++) {
+            if (y <= totalPages) {
+                paging.push(
+                    <CPaginationItem key={y} onClick={() => handlePaging(y - 1)}>
+                        {y}
+                    </CPaginationItem>,
+                );
+            }
+        }
+        if (pageIndex < totalPages - 1) {
+            paging.push(
+                <CPaginationItem aria-label="Next" key="9999" onClick={() => handlePaging(totalPages - 1)}>
+                    <span aria-hidden="true">&raquo;</span>
+                </CPaginationItem>,
+            );
+        }
+        return paging;
+    };
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
             return <th key={index}>{properties}</th>;
@@ -46,7 +124,14 @@ function SubCareer() {
         setShow(true);
     };
     const handDelete = (subCareerInfo) => {
-        alert('delete');
+        deleteSubCareerApi(subCareerInfo.id);
+    };
+    const handleAction = (subCareer) => {
+        if (!subCareer.id) {
+            addSubCareerApi(subCareer.careerId, subCareer.name);
+        } else {
+            updateSubCareerApi(subCareer.careerId, subCareer.id, subCareer.name);
+        }
     };
     return (
         <div className={cx('wrapper')}>
@@ -69,7 +154,13 @@ function SubCareer() {
                         </select>
                     </div>
                     <div className={cx('subCareer-search')}>
-                        <Search title="Tìm kiếm ngành nghề chi tiết" />
+                        <GlobalSearch
+                            title="Tìm kiếm ngành nghề chi tiết"
+                            onPending={(value) => {
+                                setSearchValue(value);
+                            }}
+                            onSearch={(value) => handlePaging(value)}
+                        />
                     </div>
                     {show && (
                         <SubCareerPopUp
@@ -77,6 +168,9 @@ function SubCareer() {
                             subCareer={subCareerInfo}
                             callback={() => {
                                 setShow(false);
+                            }}
+                            onAction={(subCareer) => {
+                                handleAction(subCareer);
                             }}
                         />
                     )}
@@ -106,17 +200,7 @@ function SubCareer() {
                     </tbody>
                 </table>
                 <CPagination aria-label="Page navigation example" className={cx('table-paging')}>
-                    <CPaginationItem aria-label="Previous" disabled>
-                        <span aria-hidden="true">&laquo;</span>
-                    </CPaginationItem>
-                    <CPaginationItem active className={cx('active-page')}>
-                        1
-                    </CPaginationItem>
-                    <CPaginationItem>2</CPaginationItem>
-                    <CPaginationItem>3</CPaginationItem>
-                    <CPaginationItem aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </CPaginationItem>
+                    {renderPages()}
                 </CPagination>
             </div>
         </div>

@@ -66,7 +66,6 @@ function Comment({ userId }) {
         }
     };
     useEffect(() => {
-        console.log(commentValue);
         if (commentValue !== '') setDisabled(false);
         else setDisabled(true);
     }, [commentValue]);
