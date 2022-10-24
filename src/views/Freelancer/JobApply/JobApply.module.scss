@@ -1,3 +1,184 @@
 .wrapper {
-    margin: 120px;
+    margin-top: 70px;
+
+    .container {
+        width: 900px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        border: 1px solid #a8a2a2;
+        border-radius: 20px;
+  
+        font-style: normal;
+        
+        .head{
+            width: 100%;
+            margin: 0 auto;
+            border-bottom: 1px solid #a8a2a2;
+          
+
+            .page-title {
+                margin-left: 20px;
+                color: #5e5353;
+                font-weight: 500;
+                font-size: 25px;
+            }
+    
+            .mini-nav {
+                margin-left: 20px;
+          
+                :hover {
+                    background-color: #c2e3fc;
+                }
+                :active {
+                    border-bottom: 1px solid #5e5353;
+                }
+                .nav-item {
+                    margin-bottom: 3px;
+                    display: inline-block;
+                    font-weight: bold;
+                }
+                .nav-item2 {
+                    margin-bottom: 3px;
+                    display: inline-block;
+                    margin-left: 10px;
+                    padding-left: 10px;
+                    border-left: 1px solid #5e5353;
+                    // font-weight: bold;
+                }
+        }
+        }
+        .list-post {
+            width: 100%;
+            margin: 0 auto;
+           
+            :hover {
+                background-color: #c2e3fc;
+            }
+            .post {               
+                padding:20px;
+                border-bottom: 1px solid #7e7a7a;
+                .row1 {
+                    width: 100%;
+                    font-size: 25px;          
+                    .post-title {       
+                        width: 50%;
+                        display: inline-block;                       
+                        font-weight: 700;
+                        font-size: 80%;
+                        color: #030303;
+                    }
+                    // Status chấp thuận
+                    .post-status {   
+                        width: max-content;
+                        margin-left: 330px;
+                        text-align: right;
+                        display: inline-block;  
+                        font-size: 50%; 
+                        border: 1px solid #7e7a7a;
+                        border-radius: 20px;
+                        padding:4px;
+                        color: white;
+                        background-color: rgb(24, 136, 24);
+                    }
+                    // Status Từ chối
+                    // .post-status {   
+                    //     width: max-content;
+                    //     margin-left: 330px;
+                    //     text-align: right;
+                    //     display: inline-block;  
+                    //     font-size: 50%; 
+                    //     border: 1px solid #7e7a7a;
+                    //     border-radius: 20px;
+                    //     padding:4px;
+                    //     color: white;
+                    //     background-color: #e00202;
+                    // }
+                }
+                .row2 {
+                    font-size: 25px;
+                    padding-bottom:10px;
+                    .post-payment-budget {
+                        margin-top: 30px;
+                        font-weight: 500;
+                        font-size: 50%;
+                        color: #76797e;
+                        .payment-type {
+                            display: inline-block;
+                        }
+                        .budget {
+                            display: inline-block;
+                        }
+                    }
+                    .post-posted-time-status {                   
+                        margin-bottom: 2px;
+                        margin-top: 3px;
+                        font-size: 60%;
+                        color: #76797e;
+                        .posted-time {
+                            display: inline-block;
+                        }
+
+                        //Đang tuyển
+                        .status {
+                            margin-left: 10px;
+                            align-items: center;
+                            padding: 3px;                   
+                            font-size: 60%;
+                            color: #000000;
+                            display: inline-block;
+                            background: #97d3ff;
+                            border-radius: 30px;
+                            text-align: center;
+                        }
+
+                        //đóng bài
+                        // .status {
+                        //     margin-left: 10px;
+                        //     align-items: center;
+                        //     padding: 3px;                   
+                        //     font-size: 60%;
+                        //     color: white;
+                        //     display: inline-block;
+                        //     background: #e00202;
+                        //     border-radius: 30px;
+                        //     text-align: center;
+                        // }
+                    }
+                }
+            }
+        }
+
+        .paging {
+            margin-left: 720px;
+            .table-paging {
+                margin-top: 10px;
+                color: rgba(22, 24, 35, 0.5) !important;
+                .active-page span {
+                    background-color: #7cbdec !important;
+                    border-color: #4f5d73 !important;
+                    color: var(--white) !important;
+                }
+                li a {
+                    color: rgba(22, 24, 35, 0.8) !important;
+                }
+            }
+        }
+
+        .action-popup {
+            width: 100%;
+            font-size: 13px;
+            color: #000000;
+            border: 1px solid #000000;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 5px 10px #999797;
+
+            .action {
+                margin-bottom: 5px;
+            }
+            :hover {
+                background-color: #a8a2a2;
+            }
+        }
+    }
 }
