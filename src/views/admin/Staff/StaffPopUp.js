@@ -13,6 +13,7 @@ function StaffPopUp({ staff, callback }) {
         setShow(false);
         callback();
     };
+    const [id, setID] = useState('');
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -24,6 +25,7 @@ function StaffPopUp({ staff, callback }) {
 
     useEffect(() => {
         if (staff.id) {
+            setID(staff.id);
             setFullName(staff.fullname);
             setEmail(staff.email);
             setPhone(staff.phone);
@@ -36,6 +38,7 @@ function StaffPopUp({ staff, callback }) {
     const handleAdd = () => {
         if (password === passwordConfirm) {
             const staff = {
+                id,
                 fullName,
                 email,
                 password,

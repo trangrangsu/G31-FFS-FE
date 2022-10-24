@@ -1,0 +1,72 @@
+.wrapper {
+    padding: 24px;
+}
+.label{
+    font-size: 18px;
+    font-weight: 600;
+}
+.row{
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+}
+.birthday{
+    height: 65px;
+}
+.date-picker{
+    fieldset {
+        height: 46px;
+        margin-top: 5px;
+    }
+    div {
+        &:hover {
+            fieldset {
+                border-color: rgba(0, 0, 0, 0.23) !important;
+            }
+        }
+    }
+}
+.gender{
+    margin-left: 55px;
+}
+.container-gender{
+    height: 46px;
+    border: 1px solid rgba(0, 0, 0, 0.23);
+    border-radius: 5px;
+    padding: 10px 30px;
+    display: flex;
+    flex-direction: row;
+    div{
+        margin: 0 30px;
+    }
+}
+.left{
+    width: 375px;
+    margin-right: 16px;
+}
+.right{
+    width: 375px;
+}
+.margin-top{
+    margin-top: 20px;
+}
+.city-btn{
+    height: 38px;
+    width: 350px;
+    padding: 7px;
+    border: 1px solid rgba(0, 0, 0, 0.23);
+    border-radius: 5px;
+}
+.more-btn{
+    height: 38px;
+    width: 353px;
+    padding: 7px;
+    border: 1px solid rgba(0, 0, 0, 0.23);
+    border-radius: 5px;
+}
+.save-btn{
+    margin-top: 20px;
+    margin-left: 320px;
+    padding: 2px 10px;
+    font-size: 22px;
+}

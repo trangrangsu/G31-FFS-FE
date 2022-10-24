@@ -1,8 +1,9 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { useNavigate } from 'react-router-dom';
 import { CPagination, CPaginationItem } from '@coreui/react';
 
+import * as adminRecruiterServices from '../../../services/adminRecruiterServices';
 import Config from '../../../config';
 import Search from '../../../components/Search';
 import styles from './Recruiter.module.scss';
@@ -11,64 +12,15 @@ const cx = classNames.bind(styles);
 function Recruiter() {
     const navigate = useNavigate();
     const headers = ['ID', 'Email', 'Họ và tên', 'Số dư tài khoản', 'Trạng thái tài khoản'];
-    const recruiters = [
-        {
-            id: 1,
-            email: 'nguyenbacquyet@gmail.com',
-            fullname: 'Nguyen Bac Quyet',
-            accountbalance: '20000',
-            isbanned: 'True',
-        },
-        {
-            id: 2,
-            email: 'nguyenbacquyet@gmail.com',
-            fullname: 'Nguyen Huu Tuyen',
-            accountbalance: '20000',
-            isbanned: 'False',
-        },
-        {
-            id: 3,
-            email: 'nguyenbacquyet@gmail.com',
-            fullname: 'Nguyen Van Manh',
-            accountbalance: '20000',
-            isbanned: 'True',
-        },
-        {
-            id: 4,
-            email: 'nguyenbacquyet@gmail.com',
-            fullname: 'Nguyen Van Nam',
-            accountbalance: '20000',
-            isbanned: 'False',
-        },
-        {
-            id: 5,
-            email: 'nguyenbacquyet@gmail.com',
-            fullname: 'Bien Van Cong',
-            accountbalance: '20000',
-            isbanned: 'False',
-        },
-        {
-            id: 6,
-            email: 'nguyenbacquyet@gmail.com',
-            fullname: 'Nguyen Ba Trang',
-            accountbalance: '20000',
-            isbanned: 'False',
-        },
-        {
-            id: 7,
-            email: 'nguyenbacquyet@gmail.com',
-            fullname: 'Nguyen Bac Quyet',
-            accountbalance: '20000',
-            isbanned: 'False',
-        },
-        {
-            id: 8,
-            email: 'nguyenbacquyet@gmail.com',
-            fullname: 'Nguyen Bac Quyet',
-            accountbalance: '20000',
-            isbanned: 'False',
-        },
-    ];
+    const [recruiters, setRecruiters] = useState([]);
+    useEffect(() => {
+        const fetchApi = async () => {
+            const result = await adminRecruiterServices.getRecruiters('', 0);
+            console.log(result);
+            setRecruiters(result.recruiters);
+        };
+        fetchApi();
+    }, []);
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
             return <th key={index}>{properties}</th>;
@@ -96,9 +48,9 @@ function Recruiter() {
                                 <tr key={recruiters.id} onClick={() => handleClickUser(recruiters.id)}>
                                     <td>{recruiters.id}</td>
                                     <td>{recruiters.email}</td>
-                                    <td>{recruiters.fullname}</td>
-                                    <td>{recruiters.accountbalance}</td>
-                                    <td>{recruiters.isbanned}</td>
+                                    <td>{recruiters.fullName}</td>
+                                    <td>{recruiters.accountBalance}</td>
+                                    <td>{recruiters.isBanned ? 'Cấm' : 'Hoạt động'}</td>
                                 </tr>
                             );
                         })}

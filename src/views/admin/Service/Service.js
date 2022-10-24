@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { CPagination, CPaginationItem } from '@coreui/react';
 import { faTrashCan, faPenClip } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import * as adminServiceServices from '../../../services/adminServiceServices';
 import DetailService from './DetailService';
 import ServicePopUp from './ServicePopUp';
 import Button from '../../../components/Button';
@@ -12,46 +13,24 @@ import styles from './Service.module.scss';
 const cx = classNames.bind(styles);
 function Service() {
     const headers = ['ID', 'TÊN DỊCH VỤ', 'THỜI GIAN', 'GIÁ TIỀN', 'CHỈNH SỬA', 'XÓA'];
-    const services = [
-        {
-            id: 1,
-            name: 'FBasic',
-            duration: 90,
-            price: 600000,
-        },
-        {
-            id: 2,
-            name: 'FVip-1',
-            duration: 90,
-            price: 600000,
-        },
-        {
-            id: 3,
-            name: 'FVip-2',
-            duration: 180,
-            price: 1200000,
-        },
-        {
-            id: 4,
-            name: 'FVip-3',
-            duration: 360,
-            price: 2400000,
-        },
-        {
-            id: 5,
-            name: 'FPro',
-            duration: 90,
-            price: 1000000,
-        },
-    ];
     const users = [
         { id: 1, name: 'Freelancer' },
         { id: 2, name: 'Recruiter' },
     ];
+    const [services, setServices] = useState([]);
     const [show, setShow] = useState(false);
     const [showDetail, setShowDetail] = useState(false);
     const [serviceInfo, setServiceInfo] = useState({});
     const [user, setUser] = useState(users[0].name);
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            const result = await adminServiceServices.getServices('', 0);
+            console.log(result);
+            setServices(result.services);
+        };
+        fetchApi();
+    }, []);
 
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
@@ -125,7 +104,7 @@ function Service() {
                             return (
                                 <tr key={service.id}>
                                     <td onClick={() => handleViewDetail(service)}>{service.id}</td>
-                                    <td onClick={() => handleViewDetail(service)}>{service.name}</td>
+                                    <td onClick={() => handleViewDetail(service)}>{service.serviceName}</td>
                                     <td onClick={() => handleViewDetail(service)}>{service.duration}</td>
                                     <td onClick={() => handleViewDetail(service)}>{service.price}</td>
                                     <td>

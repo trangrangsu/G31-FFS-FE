@@ -2,6 +2,7 @@ const routes = {
     home: '/',
     login: '/login',
     register: '/register',
+    verifyOTP: '/verification',
     changePassword: '/changePassword',
     userReport: '/report',
     recharge: '/recharge',

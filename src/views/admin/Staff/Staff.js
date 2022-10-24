@@ -13,56 +13,6 @@ const cx = classNames.bind(styles);
 
 function Staff() {
     const headers = ['ID', 'Email', 'Họ và tên', 'Số điện thoại', 'Địa chỉ', 'Trạng thái', 'Chỉnh Sửa', 'Xóa'];
-    // const staffs = [
-    //     {
-    //         id: 1,
-    //         email: 'nguyenbacquyet@gmail.com',
-    //         fullname: 'Nguyen Bac Quyet',
-    //         phone: '0337177679',
-    //         address: 'SN02-Ngõ 17-Ngách 13-Đường Hà Hoàng-Hà Tĩnh',
-    //         status: '1',
-    //     },
-    //     {
-    //         id: 2,
-    //         email: 'nguyenbacquyet@gmail.com',
-    //         fullname: 'Nguyen Bac Quyet',
-    //         phone: '0337177679',
-    //         address: 'SN02-Ngõ 17-Ngách 13-Đường Hà Hoàng-Hà Tĩnh',
-    //         status: '1',
-    //     },
-    //     {
-    //         id: 3,
-    //         email: 'nguyenbacquyet@gmail.com',
-    //         fullname: 'Nguyen Bac Quyet',
-    //         phone: '0337177679',
-    //         address: 'SN02-Ngõ 17-Ngách 13-Đường Hà Hoàng-Hà Tĩnh',
-    //         status: '1',
-    //     },
-    //     {
-    //         id: 4,
-    //         email: 'nguyenbacquyet@gmail.com',
-    //         fullname: 'Nguyen Bac Quyet',
-    //         phone: '0337177679',
-    //         address: 'SN02-Ngõ 17-Ngách 13-Đường Hà Hoàng-Hà Tĩnh',
-    //         status: '1',
-    //     },
-    //     {
-    //         id: 5,
-    //         email: 'nguyenbacquyet@gmail.com',
-    //         fullname: 'Nguyen Bac Quyet',
-    //         phone: '0337177679',
-    //         address: 'SN02-Ngõ 17-Ngách 13-Đường Hà Hoàng-Hà Tĩnh',
-    //         status: '0',
-    //     },
-    //     {
-    //         id: 6,
-    //         email: 'nguyenbacquyet@gmail.com',
-    //         fullname: 'Nguyen Bac Quyet',
-    //         phone: '0337177679',
-    //         address: 'SN02-Ngõ 17-Ngách 13-Đường Hà Hoàng-Hà Tĩnh',
-    //         status: '0',
-    //     },
-    // ];
     const [show, setShow] = useState(false);
     const [staffInfo, setStaffInfo] = useState({});
     const [staffs, setStaffs] = useState([]);
@@ -73,9 +23,9 @@ function Staff() {
     };
     useEffect(() => {
         const fetchApi = async () => {
-            const result = await staffService.getStaffs(1);
+            const result = await staffService.getStaffs('', 0);
             console.log(result);
-            setStaffs(result);
+            setStaffs(result.staffs);
         };
         fetchApi();
     }, []);
@@ -123,7 +73,7 @@ function Staff() {
                                         <td>{staff.fullname}</td>
                                         <td>{staff.phone}</td>
                                         <td>{staff.address}</td>
-                                        <td>{staff.status === '1' ? 'Hoạt động' : 'Không hoạt động'}</td>
+                                        <td>{staff.isActive ? 'Hoạt động' : 'Không hoạt động'}</td>
                                         <td>
                                             {' '}
                                             <FontAwesomeIcon icon={faPenClip} onClick={() => handUpdate(staff)} />

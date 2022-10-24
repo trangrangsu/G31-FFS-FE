@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { CPagination, CPaginationItem } from '@coreui/react';
 import { faTrashCan, faPenClip } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import * as adminCareerServices from '../../../services/adminCareerServices';
 import CustomButton from '../../../components/Button';
 import Search from '../../../components/Search';
 import CareerPopUp from './CareerPopUp.js';
@@ -12,34 +13,17 @@ const cx = classNames.bind(styles);
 
 function Career() {
     const headers = ['ID', 'Tên Ngành Nghề', 'Chỉnh Sửa', 'Xóa'];
-    const careers = [
-        {
-            id: 1,
-            name: 'Công Nghệ Thông tin',
-        },
-        {
-            id: 2,
-            name: 'Bất Động Sản',
-        },
-        {
-            id: 3,
-            name: 'Bán Hàng',
-        },
-        {
-            id: 4,
-            name: 'Thiết Kế',
-        },
-        {
-            id: 5,
-            name: 'Tư Vấn',
-        },
-        {
-            id: 6,
-            name: 'Xây dựng',
-        },
-    ];
+    const [careers, setCareer] = useState([]);
     const [show, setShow] = useState(false);
     const [careerInfo, setCareerInfo] = useState({});
+    useEffect(() => {
+        const fetchApi = async () => {
+            const result = await adminCareerServices.getCareers('', 0);
+            console.log(result);
+            setCareer(result.careers);
+        };
+        fetchApi();
+    }, []);
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
             return <th key={index}>{properties}</th>;
