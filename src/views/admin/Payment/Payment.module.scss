@@ -141,7 +141,10 @@
 }
 .form-btn{
     margin-top: 20px;
+    display: flex;
+    flex-direction: row;
     button{
-        margin: 0 70px;
+        margin: 0 auto;
+        font-size: 18px;
     }
 }

@@ -4,42 +4,23 @@ import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import * as adminPostServices from '../../../services/adminPostServices';
 import Config from '../../../config';
 import Button from '../../../components/Button';
 import styles from './ViewDetailPost.module.scss';
 import { faSackDollar } from '@fortawesome/free-solid-svg-icons';
 const cx = classNames.bind(styles);
 function ViewDetailPost() {
-    const [flag, setFlag] = useState(false);
     const [searchParams, setSearchParams] = useSearchParams();
-    const post = {
-        postID: '1',
-        createBy: {
-            id: '2',
-            name: 'Cong Ty TNHH Cong',
-        },
-        jobTitle: 'Tuyển lập trình viên Web gấp!',
-        subCareer: 'Kỹ thuật mạng',
-        description:
-            'Chúng tôi đang có dự án 1000$ cần tuyển người gấp. Chúng tôi đang có dự án 1000$ cần tuyển người gấp',
-        attach: 'attach.pdf',
-        paymentType: 'Theo dự án',
-        budget: '20.000.000',
-        time: '24-10-2022 10:55',
-        area: 'Hà Nội',
-        isActive: true,
-        isApproved: -1,
-        listSkills: [
-            {
-                id: 1,
-                name: 'Java',
-            },
-            {
-                id: 2,
-                name: 'English',
-            },
-        ],
+    const [post, setPost] = useState({ createBy: '', listSkills: [] });
+    const fetchApi = async () => {
+        const result = await adminPostServices.getDetailPost(searchParams.get('id'));
+        console.log(result);
+        setPost(result);
     };
+    useEffect(() => {
+        fetchApi();
+    }, []);
     const handleApprove = () => {
         console.log('approve');
     };
