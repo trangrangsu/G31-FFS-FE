@@ -129,9 +129,11 @@ function StaffPopUp({ staff, callback }) {
                                 onChange={(e) => setAddress(e.target.value)}
                                 className={cx('input-info')}
                             />
-                            <CustomButton admin className={cx('btn-add')} onClick={handleAdd}>
-                                {titleButton}
-                            </CustomButton>
+                            <div className={cx('center')}>
+                                <CustomButton approve className={cx('btn-add')} onClick={handleAdd}>
+                                    {titleButton}
+                                </CustomButton>
+                            </div>
                         </div>
                     </div>
                 </Modal.Body>

@@ -140,11 +140,19 @@ function Career() {
                                     <td>{career.name}</td>
                                     <td>
                                         {' '}
-                                        <FontAwesomeIcon icon={faPenClip} onClick={() => handUpdate(career)} />
+                                        <FontAwesomeIcon
+                                            icon={faPenClip}
+                                            onClick={() => handUpdate(career)}
+                                            className={cx('hover')}
+                                        />
                                     </td>
                                     <td>
                                         {' '}
-                                        <FontAwesomeIcon icon={faTrashCan} onClick={() => handDelete(career)} />
+                                        <FontAwesomeIcon
+                                            icon={faTrashCan}
+                                            onClick={() => handDelete(career)}
+                                            className={cx('hover')}
+                                        />
                                     </td>
                                 </tr>
                             );

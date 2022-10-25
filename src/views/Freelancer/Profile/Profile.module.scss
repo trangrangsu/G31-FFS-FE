@@ -115,6 +115,7 @@
         width: 16px;
         height: 16px;
         margin-left: 5px;
+        color: #2ca7d0;
         &:hover{
             cursor: pointer;
             color:#567396;
@@ -130,6 +131,7 @@
     svg{
         width: 14px;
         height: 14px;
+        color: #2ca7d0;
     }
     p {
         margin: 0 10px;
@@ -174,6 +176,7 @@
         height: 16px;
         margin-left: 10px;
         margin-bottom: 5px;
+        color: #2ca7d0;
         &:hover{
             cursor: pointer;
             color:#567396;
@@ -205,9 +208,10 @@
         margin-top: 3px;
         margin-left: 8px;
         float: right;
+        color: #f22f2f;
         &:hover{
             cursor: pointer;
-            color: rgb(236, 89, 89);
+            color: #f01818;
         }
     }
 }
@@ -229,6 +233,7 @@
             width: 18px;
             height: 18px;
             margin-left: 10px;
+            color: #2ca7d0;
         &:hover{
             cursor: pointer;
             color:#567396;
@@ -246,6 +251,7 @@
 }
 .cv-left{
     font-size: 40px;
+    color: #2ca7d0;
 }
 .cv-right{
     margin-left: 20px;
@@ -255,9 +261,10 @@
         margin: 0;
     }
     svg{
+        color: #f22f2f;
         &:hover{
             cursor: pointer;
-            color:#567396;
+            color:#f01818;
         }
     }
 }

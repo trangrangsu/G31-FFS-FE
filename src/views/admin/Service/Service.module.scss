@@ -55,6 +55,12 @@
         }
     }
 }
+.hover{
+    &:hover{
+        cursor: pointer;
+        color: #444444;
+    }
+}
 .service-list {
     position: relative;
     width: fit-content;
@@ -114,6 +120,7 @@
 }
 
 // Popup
+
 .pop-up{
     display: flex;
     flex-direction: column;
@@ -131,7 +138,7 @@
     font-weight: bold;
     padding: 3px;
     border-radius: 5px;
-    box-shadow: 0px 2px 5px 1px grey;
+    //box-shadow: 0px 2px 5px 1px grey;
     margin-right: 10px;
 }
 .service-list-popup{
@@ -139,7 +146,7 @@
     width: fit-content;
     height: 30px;
     border-radius: 5px;
-    box-shadow: 0px 2px 5px grey;
+    //box-shadow: 0px 2px 5px grey;
     ::after {
         content: '<>';
         font: 17px "Consolas", monospace;
@@ -173,7 +180,8 @@
         background-color: #ffffff;
         background-image: none;
         border: none;
-        box-shadow: 0px 2px 5px grey;
+        //box-shadow: 0px 2px 5px grey;
+        border: 1px solid rgb(194, 193, 193);
         &:focus-visible{
             outline: none;
         }
@@ -191,7 +199,7 @@
 .input-field{
     width: 250px;
     display: inline;
-    box-shadow: 0px 1px 5px 1px grey;
+    //box-shadow: 0px 1px 5px 1px grey;
 }
 .benefit-container{
     display: flex;
@@ -199,7 +207,8 @@
 .benefits{
     flex: 1;
     border-radius: 5px;
-    box-shadow: 0px 1px 5px 1px grey;
+    border: 1px solid rgb(194, 193, 193);
+    //box-shadow: 0px 1px 5px 1px grey;
 }
 .row-benefit{
     display: flex;
@@ -227,4 +236,5 @@
 .btn-add{
     margin-top: 20px;
     margin-left: 38%;
+    font-size: 18px;
 }

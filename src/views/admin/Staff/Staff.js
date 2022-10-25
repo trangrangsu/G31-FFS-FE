@@ -141,13 +141,18 @@ function Staff() {
                                         <td>{staff.isActive ? 'Hoạt động' : 'Không hoạt động'}</td>
                                         <td>
                                             {' '}
-                                            <FontAwesomeIcon icon={faPenClip} onClick={() => handUpdate(staff)} />
+                                            <FontAwesomeIcon
+                                                icon={faPenClip}
+                                                onClick={() => handUpdate(staff)}
+                                                className={cx('hover')}
+                                            />
                                         </td>
                                         <td>
                                             {' '}
                                             <FontAwesomeIcon
                                                 icon={faPersonCircleExclamation}
                                                 onClick={() => handDelete(staff)}
+                                                className={cx('hover')}
                                             />
                                         </td>
                                     </tr>

@@ -112,13 +112,16 @@ function RequestPopup({ request, callback, onUpdate }) {
                                             onChange={(e) => setDescription(e.target.value)}
                                         />
                                     </div>
-                                    <div className={cx('form-btn')}>
-                                        <CustomButton primary onClick={handleApprove}>
-                                            Duyệt
-                                        </CustomButton>
-                                        <CustomButton primary onClick={handleDeny}>
-                                            Từ chối
-                                        </CustomButton>
+                                    <div className={cx('wrapper-btn')}>
+                                        <div className={cx('label')}></div>
+                                        <div className={cx('form-btn')}>
+                                            <CustomButton approve onClick={handleApprove}>
+                                                Xác nhận
+                                            </CustomButton>
+                                            <CustomButton deny onClick={handleDeny}>
+                                                Từ chối
+                                            </CustomButton>
+                                        </div>
                                     </div>
                                 </>
                             ) : (

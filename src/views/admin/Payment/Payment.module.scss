@@ -127,7 +127,6 @@
     font-weight: bold;
     padding: 3px;
     border-radius: 5px;
-    box-shadow: 0px 2px 5px 1px grey;
     margin-right: 10px;
 }
 .row-input{
@@ -137,14 +136,18 @@
 .input-field{
     width: 350px;
     display: inline;
-    box-shadow: 0px 1px 5px 1px grey;
+
+}
+.wrapper-btn{
+    display: flex;
+    flex-direction: row;
 }
 .form-btn{
     margin-top: 20px;
     display: flex;
-    flex-direction: row;
+    justify-content: space-between;
+    width: 350px;
     button{
-        margin: 0 auto;
-        font-size: 18px;
+        font-size: 16px;
     }
 }

@@ -161,8 +161,14 @@
 
     }
 }
-
+.hover{
+    &:hover{
+        cursor: pointer;
+        color: #444444;
+    }
+}
 // btn add
 .btn-add{
     margin-left: 38%;
+    font-size: 18px;
 }

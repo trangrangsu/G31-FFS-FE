@@ -70,7 +70,7 @@ function SubCareerPopUp({ career, subCareer, callback, onAction }) {
                             <label className={cx('input-label')}>Sub career</label>
                         </div>
                     </div>
-                    <CustomButton admin className={cx('btn-add')} onClick={handleAdd}>
+                    <CustomButton approve className={cx('btn-add')} onClick={handleAdd}>
                         {titleButton}
                     </CustomButton>
                 </Modal.Body>

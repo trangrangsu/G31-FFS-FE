@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { useNavigate } from 'react-router-dom';
 import { CPagination, CPaginationItem } from '@coreui/react';
@@ -32,6 +32,12 @@ function Post() {
         setPageIndex(result.pageIndex);
         setTotalPages(result.totalPages);
     };
+    useEffect(() => {
+        fetchApi();
+    }, []);
+    useEffect(() => {
+        fetchApi();
+    }, [state]);
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
             return <th key={index}>{properties}</th>;
@@ -128,26 +134,16 @@ function Post() {
                             return (
                                 <tr key={post.id} onClick={() => handleViewDetail(post)}>
                                     <td>{post.id}</td>
-                                    <td>{post.time}</td>
-                                    <td>{post.create_by}</td>
-                                    <td>{post.job_title}</td>
+                                    <td>{post.createdDate}</td>
+                                    <td>{post.createdBy}</td>
+                                    <td>{post.jobTitle}</td>
                                 </tr>
                             );
                         })}
                     </tbody>
                 </table>
                 <CPagination aria-label="Page navigation example" className={cx('table-paging')}>
-                    <CPaginationItem aria-label="Previous" disabled>
-                        <span aria-hidden="true">&laquo;</span>
-                    </CPaginationItem>
-                    <CPaginationItem active className={cx('active-page')}>
-                        1
-                    </CPaginationItem>
-                    <CPaginationItem>2</CPaginationItem>
-                    <CPaginationItem>3</CPaginationItem>
-                    <CPaginationItem aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </CPaginationItem>
+                    {renderPages()}
                 </CPagination>
             </div>
         </div>

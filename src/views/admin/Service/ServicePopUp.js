@@ -108,7 +108,7 @@ function ServicePopUp({ user, service, callback }) {
                 <Modal.Header closeButton>
                     <Modal.Title>{titlePopup}</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className={cx('background-color')}>
                     <div className={cx('pop-up')}>
                         <div className={cx('user-box')}>
                             <label className={cx('label')}>Vai trò</label>
@@ -183,11 +183,11 @@ function ServicePopUp({ user, service, callback }) {
                         </div>
                     </div>
                     {service.id ? (
-                        <CustomButton admin className={cx('btn-add')} onClick={handleUpdate}>
+                        <CustomButton approve className={cx('btn-add')} onClick={handleUpdate}>
                             {titleButton}
                         </CustomButton>
                     ) : (
-                        <CustomButton admin className={cx('btn-add')} onClick={handleAdd}>
+                        <CustomButton approve className={cx('btn-add')} onClick={handleAdd}>
                             {titleButton}
                         </CustomButton>
                     )}
