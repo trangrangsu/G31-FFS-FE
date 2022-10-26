@@ -4,6 +4,10 @@
 $enable-ltr: true;
 $enable-rtl: true;
 
+// Import Antd
+@import "antd/dist/antd.css";
+
+
 // Import CoreUI for React components library
 @import '@coreui/coreui/scss/coreui';
 
