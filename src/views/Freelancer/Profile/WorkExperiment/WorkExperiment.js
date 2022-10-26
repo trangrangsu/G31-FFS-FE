@@ -12,8 +12,8 @@ function WorkExperiment({ workExp, onEdit, onDelete }) {
             <div className={cx('name')}>
                 <p>{workExp.companyName}</p>
                 <div>
-                    <FontAwesomeIcon icon={faPenToSquare} onClick={() => onEdit(workExp)} />
-                    <FontAwesomeIcon icon={faTrashCan} onClick={() => onDelete(workExp.id)} />
+                    <FontAwesomeIcon icon={faPenToSquare} onClick={() => onEdit(workExp)} className={cx('left')} />
+                    <FontAwesomeIcon icon={faTrashCan} onClick={() => onDelete(workExp.id)} className={cx('right')} />
                 </div>
             </div>
             <p className={cx('bold')}>{workExp.position}</p>

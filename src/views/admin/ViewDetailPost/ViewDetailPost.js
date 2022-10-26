@@ -3,54 +3,61 @@ import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate } from 'react-router-dom';
 
+import * as adminPostServices from '../../../services/adminPostServices';
 import Config from '../../../config';
 import Button from '../../../components/Button';
 import styles from './ViewDetailPost.module.scss';
 import { faSackDollar } from '@fortawesome/free-solid-svg-icons';
 const cx = classNames.bind(styles);
 function ViewDetailPost() {
-    const [flag, setFlag] = useState(false);
+    const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
-    const post = {
-        postID: '1',
-        createBy: {
-            id: '2',
-            name: 'Cong Ty TNHH Cong',
-        },
-        jobTitle: 'Tuyển lập trình viên Web gấp!',
-        subCareer: 'Kỹ thuật mạng',
-        description:
-            'Chúng tôi đang có dự án 1000$ cần tuyển người gấp. Chúng tôi đang có dự án 1000$ cần tuyển người gấp',
-        attach: 'attach.pdf',
-        paymentType: 'Theo dự án',
-        budget: '20.000.000',
-        time: '24-10-2022 10:55',
-        area: 'Hà Nội',
-        isActive: true,
-        isApproved: -1,
-        listSkills: [
-            {
-                id: 1,
-                name: 'Java',
-            },
-            {
-                id: 2,
-                name: 'English',
-            },
-        ],
+    const [post, setPost] = useState({ createBy: '', listSkills: [] });
+    //const [isApproved, setIsApproved] = useState();
+    const fetchApi = async () => {
+        const result = await adminPostServices.getDetailPost(searchParams.get('id'));
+        console.log(result);
+        setPost(result);
+    };
+    useEffect(() => {
+        fetchApi();
+    }, []);
+    const updateApi = async (data) => {
+        const result = await adminPostServices.updatePost(data);
+        console.log(result);
+        setPost(result);
     };
     const handleApprove = () => {
-        console.log('approve');
+        const data = {
+            id: searchParams.get('id'),
+            approveBy: 'LS1g5vkE9S',
+            status: '1',
+        };
+        updateApi(data);
+        navigateManage();
     };
     const handleDeny = () => {
-        console.log('deny');
+        const data = {
+            id: searchParams.get('id'),
+            approveBy: 'LS1g5vkE9S',
+            status: '0',
+        };
+        updateApi(data);
+        navigateManage();
+    };
+    const navigateManage = () => {
+        const to = {
+            pathname: Config.routes.post,
+        };
+        navigate(to);
     };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <div className={cx('detail-title')}>
-                    <h1 className={cx('title')}>Thông Tin chi tiết</h1>
+                    <h1 className={cx('title')}>Thông Tin chi tiết bài đăng</h1>
                 </div>
                 <div className={cx('margin-bottom')}>
                     <h1 className={cx('title-header')}>{post.jobTitle}</h1>
@@ -114,12 +121,12 @@ function ViewDetailPost() {
                         <p className={cx('bottom')}>{post.paymentType}</p>
                     </div>
                 </div>
-                {post.isApproved === -1 && (
+                {post.isApproved === 2 && (
                     <div>
-                        <Button primary className={cx('btn-post')} onClick={handleApprove}>
-                            Chấp nhận
+                        <Button approve className={cx('btn-post')} onClick={handleApprove}>
+                            Xác nhận
                         </Button>
-                        <Button primary className={cx('btn-post')} onClick={handleDeny}>
+                        <Button deny className={cx('btn-post')} onClick={handleDeny}>
                             Từ chối
                         </Button>
                     </div>

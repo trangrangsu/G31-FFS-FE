@@ -188,11 +188,19 @@ function SubCareer() {
                                     <td>{subCareer.name}</td>
                                     <td>
                                         {' '}
-                                        <FontAwesomeIcon icon={faPenClip} onClick={() => handUpdate(subCareer)} />
+                                        <FontAwesomeIcon
+                                            icon={faPenClip}
+                                            onClick={() => handUpdate(subCareer)}
+                                            className={cx('hover')}
+                                        />
                                     </td>
                                     <td>
                                         {' '}
-                                        <FontAwesomeIcon icon={faTrashCan} onClick={() => handDelete(subCareer)} />
+                                        <FontAwesomeIcon
+                                            icon={faTrashCan}
+                                            onClick={() => handDelete(subCareer)}
+                                            className={cx('hover')}
+                                        />
                                     </td>
                                 </tr>
                             );

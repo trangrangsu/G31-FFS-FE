@@ -71,7 +71,7 @@ function Search({ type, title, className, onSearch, onPending }) {
                         <PopperWrapper>
                             <h4 className={cx('search-title')}>User</h4>
                             {searchResult.map((userItem) => (
-                                <UserItem data={userItem} key={userItem.id} />
+                                <UserItem data={userItem} key={userItem.id} type={type} />
                             ))}
                         </PopperWrapper>
                     </div>

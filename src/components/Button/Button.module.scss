@@ -58,7 +58,39 @@
         background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), #1C62A3;
     }
 }
+.approve{
+    color: var(--white);
+    background-color: var(--approve);
+    border-color: var(--approve);
 
+    &:hover {
+        color: var(--white);
+        border-color: var(--approve);
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), #00a102;
+    }
+}
+.deny{
+    color: var(--white);
+    background-color: var(--deny);
+    border-color: var(--deny);
+
+    &:hover {
+        color: var(--white);
+        border-color: var(--deny);
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), #b50000;
+    }
+}
+.close{
+    color: var(--white);
+    background-color: var(--close);
+    border-color: var(--close);
+
+    &:hover {
+        color: var(--white);
+        border-color: var(--close);
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), #7b92b4;
+    }
+}
 .outline {
     color: var(--primary);
     border-color: currentColor;

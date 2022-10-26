@@ -16,6 +16,7 @@ import {
 import { faSquarePlus, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { ref, getDownloadURL, listAll } from 'firebase/storage';
 
+import images from '../../../assets/images';
 import * as firebase from '../../../firebase/firebase';
 import WorkExpPopup from './WorkExpPopup';
 import PricePopup from './PricePopup';
@@ -110,24 +111,9 @@ const Profile = ({ freelancerId }) => {
     const [workExp, setWorkExp] = useState({});
     const [workExps, setWorkExps] = useState([]);
     const [gender, setGender] = useState('Nam');
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState(images.defaultAvatar);
     const handleShowBasicInfo = () => {
         setShowBasicInfo(true);
-    };
-    const downloadFile = async (userId, type) => {
-        const ImageService = ref(firebase.storage, `${userId}/${type}`);
-        await listAll(ImageService)
-            .then((res) => {
-                res.items.forEach(async (itemRef) => {
-                    await getDownloadURL(ref(firebase.storage, itemRef._location.path_)).then((url) => {
-                        console.log(url);
-                        imgRef.current.src = url;
-                    });
-                });
-            })
-            .catch((error) => {
-                console.log('Lỗi');
-            });
     };
     useEffect(() => {
         setFullName(freelancer.fullName);
@@ -143,9 +129,10 @@ const Profile = ({ freelancerId }) => {
         setEducations(freelancer.educations);
         setSkills(freelancer.skills);
         setWorkExps(freelancer.workExps);
-        downloadFile(freelancer.id, 'avatar');
-        //firebase.downloadFile(freelancer.id, 'avatar', imgRef.current.src);
     }, []);
+    useEffect(() => {
+        firebase.downloadFile(1, 'avatar', 'SH881994.JPG', setImage);
+    }, [image]);
     const setGenderBy = (gender) => {
         if (gender === '1') {
             setGender('Nam');

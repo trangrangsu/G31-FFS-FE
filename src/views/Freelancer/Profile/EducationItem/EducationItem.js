@@ -12,8 +12,8 @@ function EducationItem({ education, onEdit, onDelete }) {
             <div className={cx('name')}>
                 <p>{education.university}</p>
                 <div>
-                    <FontAwesomeIcon icon={faPenToSquare} onClick={() => onEdit(education)} />
-                    <FontAwesomeIcon icon={faTrashCan} onClick={() => onDelete(education.id)} />
+                    <FontAwesomeIcon icon={faPenToSquare} onClick={() => onEdit(education)} className={cx('left')} />
+                    <FontAwesomeIcon icon={faTrashCan} onClick={() => onDelete(education.id)} className={cx('right')} />
                 </div>
             </div>
             <p className={cx('bold')}>{education.major}</p>

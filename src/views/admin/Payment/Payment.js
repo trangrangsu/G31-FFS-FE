@@ -29,15 +29,23 @@ function Payment() {
         } else if (state === 'Chờ phê duyệt') {
             s = 2;
         }
-        const result = await adminPaymentServices.getPayments(searchValue, 1, 0);
+        const result = await adminPaymentServices.getPayments(searchValue, s, pIndex);
         console.log(result);
         setRequestPayment(result.payments);
         setPageIndex(result.pageIndex);
         setTotalPages(result.totalPages);
     };
+    const updateApi = async (data) => {
+        const result = await adminPaymentServices.updatePayment(data);
+        console.log(result);
+        fetchApi();
+    };
     useEffect(() => {
         fetchApi();
     }, []);
+    useEffect(() => {
+        fetchApi();
+    }, [state]);
     useEffect(() => {
         fetchApi();
     }, [updatePage]);
@@ -130,6 +138,9 @@ function Payment() {
                             callback={() => {
                                 setShow(false);
                                 setUpdatePage(Math.random());
+                            }}
+                            onUpdate={(data) => {
+                                updateApi(data);
                             }}
                         />
                     )}

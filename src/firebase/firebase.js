@@ -28,11 +28,9 @@ export const upLoadFile = async (userId, type, file) => {
     return mess;
 };
 
-export const downloadFile = async (userId, type, img) => {
-    const userRef = ref(storage, `${userId}/${type}/issue_18_10.png`);
+export const downloadFile = async (userId, type, img, setImage) => {
+    const userRef = ref(storage, `${userId}/${type}/${img}`);
     await getDownloadURL(userRef).then((url) => {
-        console.log(url);
-        img = url;
+        setImage(url);
     });
-    //return urlFile;
 };

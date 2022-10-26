@@ -188,11 +188,19 @@ function Service() {
                                     <td onClick={() => handleViewDetail(service)}>{service.price}</td>
                                     <td>
                                         {' '}
-                                        <FontAwesomeIcon icon={faPenClip} onClick={() => handUpdate(service)} />
+                                        <FontAwesomeIcon
+                                            icon={faPenClip}
+                                            onClick={() => handUpdate(service)}
+                                            className={cx('hover')}
+                                        />
                                     </td>
                                     <td>
                                         {' '}
-                                        <FontAwesomeIcon icon={faTrashCan} onClick={() => handDelete(service)} />
+                                        <FontAwesomeIcon
+                                            icon={faTrashCan}
+                                            onClick={() => handDelete(service)}
+                                            className={cx('hover')}
+                                        />
                                     </td>
                                 </tr>
                             );

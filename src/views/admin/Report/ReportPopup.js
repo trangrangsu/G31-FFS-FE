@@ -21,7 +21,7 @@ function ReportPopup({ title, detail, callback }) {
                 </Modal.Header>
                 <Modal.Body>
                     <div className={cx('detail')}>{detail}</div>
-                    <CustomButton admin className={cx('btn-close')} onClick={handleClose}>
+                    <CustomButton close className={cx('btn-close')} onClick={handleClose}>
                         Đóng
                     </CustomButton>
                 </Modal.Body>

@@ -2,47 +2,25 @@ import * as httpRequest from '../utils/httpRequest';
 
 export const getPosts = async (name, status, pageIndex) => {
     try {
-        const res = await httpRequest.get(`api/staff/post?name=${name}&status=${status}&pageIndex=${pageIndex}`);
+        const res = await httpRequest.get(`api/staff/post?status=${status}&pageIndex=${pageIndex}&keyword=${name}`);
         return res;
     } catch (error) {
         console.log(error);
     }
 };
-export const getBenefits = async () => {
+export const getDetailPost = async (id) => {
     try {
-        const res = await httpRequest.get(`api/admin/benefit`);
+        const res = await httpRequest.get(`api/staff/postDetail?id=${id}`);
         return res;
     } catch (error) {
         console.log(error);
     }
 };
-export const getBenefitService = async (id) => {
+export const updatePost = async (data) => {
     try {
-        const res = await httpRequest.get(`api/admin/benefits-service?id=${id}`);
-        return res;
-    } catch (error) {
-        console.log(error);
-    }
-};
-export const addService = async (service) => {
-    try {
-        const res = await httpRequest.post(`api/admin/add-service`, service);
-        return res;
-    } catch (error) {
-        console.log(error);
-    }
-};
-export const updateStaff = async (service) => {
-    try {
-        const res = await httpRequest.put('api/admin/update-service', service);
-        return res;
-    } catch (error) {
-        console.log(error);
-    }
-};
-export const deleteStaff = async (id) => {
-    try {
-        const res = await httpRequest.deleteMetohd(`admin/delete-service?id=${id}`);
+        const res = await httpRequest.put(
+            `api/staff/post/update?id=${data.id}&status=${data.status}&approveBy=${data.approveBy}`,
+        );
         return res;
     } catch (error) {
         console.log(error);

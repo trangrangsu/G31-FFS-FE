@@ -34,9 +34,10 @@
     box-shadow: none !important;
     font-size: .95rem !important;
     font-weight: 600 !important;
+    border: none;
     &:hover{
         background-color: rgb(0 0 0 / 20%);
-        box-shadow: 0 4px 10px 0 rgb(0 0 0 / 20%), 0 4px 20px 0 rgb(0 0 0 / 10%) !important;
+        border: none;
     }
 }
 
@@ -57,12 +58,14 @@
     background: rgb(192, 33, 33);
 }
 .notification{
+    color: #0080dd;
     &:hover{
         cursor: pointer;
     }
 }
 .wallet{
     margin-left: 14px;
+    color: #0080dd;
     &:hover{
         cursor: pointer;
     }

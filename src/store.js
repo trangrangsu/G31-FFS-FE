@@ -4,7 +4,7 @@ const initialState = {
     sidebarShow: true,
     account: {
         id: '123',
-        role: 2,
+        role: 1,
     },
     country: [
         'Canada',

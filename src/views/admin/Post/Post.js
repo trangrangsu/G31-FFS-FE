@@ -1,83 +1,43 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { useNavigate } from 'react-router-dom';
 import { CPagination, CPaginationItem } from '@coreui/react';
 
+import * as adminPostServices from '../../../services/adminPostServices';
 import Config from '../../../config';
-import Search from '../../../components/Search';
+import GlobalSearch from '../../../components/GlobalSearch';
 import styles from './Post.module.scss';
 const cx = classNames.bind(styles);
 function Post() {
     const navigate = useNavigate();
     const status = ['Tất cả', 'Đã phê duyệt', 'Không phê duyệt', 'Chờ phê duyệt'];
     const headers = ['ID', 'THỜI GIAN ĐĂNG', 'NGƯỜI ĐĂNG', 'TIÊU ĐỀ'];
-    const posts = [
-        {
-            id: 1,
-            time: '20-10-2022',
-            create_by: 'Công ty A',
-            job_title: 'Tuyển kỹ sư Nhật Bản',
-            isApproved: 2,
-        },
-        {
-            id: 2,
-            time: '20-10-2022',
-            create_by: 'Công ty A',
-            job_title: 'Tuyển kỹ sư Nhật Bản',
-            isApproved: 2,
-        },
-        {
-            id: 3,
-            time: '20-10-2022',
-            create_by: 'Công ty A',
-            job_title: 'Tuyển kỹ sư Nhật Bản',
-            isApproved: 2,
-        },
-        {
-            id: 4,
-            time: '20-10-2022',
-            create_by: 'Công ty A',
-            job_title: 'Tuyển kỹ sư Nhật Bản',
-            isApproved: 2,
-        },
-        {
-            id: 5,
-            time: '20-10-2022',
-            create_by: 'Công ty A',
-            job_title: 'Tuyển kỹ sư Nhật Bản',
-            isApproved: 1,
-        },
-        {
-            id: 6,
-            time: '20-10-2022',
-            create_by: 'Công ty A',
-            job_title: 'Tuyển kỹ sư Nhật Bản',
-            isApproved: 1,
-        },
-        {
-            id: 7,
-            time: '20-10-2022',
-            create_by: 'Công ty A',
-            job_title: 'Tuyển kỹ sư Nhật Bản',
-            isApproved: 1,
-        },
-        {
-            id: 8,
-            time: '20-10-2022',
-            create_by: 'Công ty A',
-            job_title: 'Tuyển kỹ sư Nhật Bản',
-            isApproved: 0,
-        },
-        {
-            id: 9,
-            time: '20-10-2022',
-            create_by: 'Công ty A',
-            job_title: 'Tuyển kỹ sư Nhật Bản',
-            isApproved: 0,
-        },
-    ];
+    const [posts, setPost] = useState([]);
     const [state, setState] = useState(status[0]);
-
+    const [searchValue, setSearchValue] = useState('');
+    const [pageIndex, setPageIndex] = useState(0);
+    const [totalPages, setTotalPages] = useState(5);
+    const fetchApi = async (pIndex) => {
+        let s = -1;
+        if (state === 'Đã phê duyệt') {
+            s = 1;
+        } else if (state === 'Không phê duyệt') {
+            s = 0;
+        } else if (state === 'Chờ phê duyệt') {
+            s = 2;
+        }
+        const result = await adminPostServices.getPosts(searchValue, s, pIndex);
+        console.log(result);
+        setPost(result.posts);
+        setPageIndex(result.pageIndex);
+        setTotalPages(result.totalPages);
+    };
+    useEffect(() => {
+        fetchApi();
+    }, []);
+    useEffect(() => {
+        fetchApi();
+    }, [state]);
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
             return <th key={index}>{properties}</th>;
@@ -89,6 +49,53 @@ function Post() {
             search: `?id=${post.id}`,
         };
         navigate(to);
+    };
+    const handlePaging = (pIndex) => {
+        fetchApi(pIndex);
+    };
+    const renderPages = () => {
+        if (totalPages < 2) {
+            return;
+        }
+        let paging = [];
+        if (pageIndex > 2) {
+            paging.push(
+                <CPaginationItem aria-label="Previous" key="0" onClick={() => handlePaging(0)}>
+                    <span aria-hidden="true">&laquo;</span>
+                </CPaginationItem>,
+            );
+        }
+        for (let i = pageIndex - 1; i < pageIndex; i++) {
+            if (i >= 1) {
+                paging.push(
+                    <CPaginationItem key={i} onClick={() => handlePaging(i - 1)}>
+                        {i}
+                    </CPaginationItem>,
+                );
+            }
+        }
+        paging.push(
+            <CPaginationItem active className={cx('active-page')} key={pageIndex}>
+                {pageIndex}
+            </CPaginationItem>,
+        );
+        for (let y = pageIndex + 1; y <= pageIndex + 1; y++) {
+            if (y <= totalPages) {
+                paging.push(
+                    <CPaginationItem key={y} onClick={() => handlePaging(y - 1)}>
+                        {y}
+                    </CPaginationItem>,
+                );
+            }
+        }
+        if (pageIndex < totalPages - 1) {
+            paging.push(
+                <CPaginationItem aria-label="Next" key="9999" onClick={() => handlePaging(totalPages - 1)}>
+                    <span aria-hidden="true">&raquo;</span>
+                </CPaginationItem>,
+            );
+        }
+        return paging;
     };
     return (
         <div className={cx('wrapper')}>
@@ -108,7 +115,13 @@ function Post() {
                         </select>
                     </div>
                     <div className={cx('post-search')}>
-                        <Search title="Tìm kiếm bài đăng" />
+                        <GlobalSearch
+                            title="Tìm kiếm bài đăng"
+                            onPending={(value) => {
+                                setSearchValue(value);
+                            }}
+                            onSearch={(value) => handlePaging(value)}
+                        />
                     </div>
                 </div>
 
@@ -121,26 +134,16 @@ function Post() {
                             return (
                                 <tr key={post.id} onClick={() => handleViewDetail(post)}>
                                     <td>{post.id}</td>
-                                    <td>{post.time}</td>
-                                    <td>{post.create_by}</td>
-                                    <td>{post.job_title}</td>
+                                    <td>{post.createdDate}</td>
+                                    <td>{post.createdBy}</td>
+                                    <td>{post.jobTitle}</td>
                                 </tr>
                             );
                         })}
                     </tbody>
                 </table>
                 <CPagination aria-label="Page navigation example" className={cx('table-paging')}>
-                    <CPaginationItem aria-label="Previous" disabled>
-                        <span aria-hidden="true">&laquo;</span>
-                    </CPaginationItem>
-                    <CPaginationItem active className={cx('active-page')}>
-                        1
-                    </CPaginationItem>
-                    <CPaginationItem>2</CPaginationItem>
-                    <CPaginationItem>3</CPaginationItem>
-                    <CPaginationItem aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </CPaginationItem>
+                    {renderPages()}
                 </CPagination>
             </div>
         </div>

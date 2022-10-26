@@ -7,7 +7,7 @@ import CustomButton from '../../../components/Button';
 import styles from './Payment.module.scss';
 const cx = classNames.bind(styles);
 
-function RequestPopup({ request, callback }) {
+function RequestPopup({ request, callback, onUpdate }) {
     const [show, setShow] = useState(true);
     const [description, setDescription] = useState('');
     const [titlePopup, setTitlePopup] = useState('Thông tin chi tiết yêu cầu');
@@ -16,8 +16,26 @@ function RequestPopup({ request, callback }) {
         setShow(false);
         callback();
     };
-    const handleApprove = () => {};
-    const handleDeny = () => {};
+    const handleApprove = () => {
+        const data = {
+            id: request.id,
+            status: 1,
+            approveBy: 'LS1g5vkE9S',
+            responseMessage: description,
+        };
+        onUpdate(data);
+        handleClose();
+    };
+    const handleDeny = () => {
+        const data = {
+            id: request.id,
+            status: 0,
+            approveBy: 'LS1g5vkE9S',
+            responseMessage: description,
+        };
+        onUpdate(data);
+        handleClose();
+    };
     useEffect(() => {}, []);
     return (
         <div className={cx('request-popup')}>
@@ -82,7 +100,7 @@ function RequestPopup({ request, callback }) {
                             ) : (
                                 ''
                             )}
-                            {request.state === 2 ? (
+                            {request.status === 2 ? (
                                 <>
                                     <div className={cx('row-input')}>
                                         <label className={cx('label')}>Mô tả</label>
@@ -94,13 +112,16 @@ function RequestPopup({ request, callback }) {
                                             onChange={(e) => setDescription(e.target.value)}
                                         />
                                     </div>
-                                    <div className={cx('form-btn')}>
-                                        <CustomButton admin onClick={handleApprove}>
-                                            Duyệt
-                                        </CustomButton>
-                                        <CustomButton admin onClick={handleDeny}>
-                                            Từ chối
-                                        </CustomButton>
+                                    <div className={cx('wrapper-btn')}>
+                                        <div className={cx('label')}></div>
+                                        <div className={cx('form-btn')}>
+                                            <CustomButton approve onClick={handleApprove}>
+                                                Xác nhận
+                                            </CustomButton>
+                                            <CustomButton deny onClick={handleDeny}>
+                                                Từ chối
+                                            </CustomButton>
+                                        </div>
                                     </div>
                                 </>
                             ) : (

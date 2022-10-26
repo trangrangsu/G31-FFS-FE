@@ -21,15 +21,28 @@
     div{
         float: right;
         margin-right: 10px;
-        svg{
-            width: 15px;
-            height: 15px;
-            margin-left: 10px;
-            &:hover{
-                cursor: pointer;
-                color:#567396;
-            }
-        }
+
     }
     
+}
+.left{
+    width: 15px;
+    height: 15px;
+    margin-left: 10px;
+    color: #2ca7d0;
+    &:hover{
+        cursor: pointer;
+        color:#567396;
+    }
+    
+}
+.right{
+    width: 15px;
+    height: 15px;
+    margin-left: 10px;
+    color: #f22f2f;
+    &:hover{
+        cursor: pointer;
+        color:#f01818;
+    }
 }

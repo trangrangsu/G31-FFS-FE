@@ -4,6 +4,10 @@
 $enable-ltr: true;
 $enable-rtl: true;
 
+// Import Antd
+@import "antd/dist/antd.css";
+
+
 // Import CoreUI for React components library
 @import '@coreui/coreui/scss/coreui';
 
@@ -48,6 +52,9 @@ $enable-rtl: true;
     --white: #fff;
     --font-family: 'ProximaNova', sans-serif;
     --text-color: #161823;
+    --approve:#00b302;
+    --deny:#c90000;
+    --close:#89a2c8;
 
     // Default layout
     --default-layout-header-height: 60px;
@@ -57,7 +64,7 @@ $enable-rtl: true;
     --default-margin-top-title-admin: 80px;
 
     // search
-    --search-border-radius: 13px;
+    --search-border-radius: 5px;
     --search-height: 43px;
     --search-top-spacer: 9px;
     --search-button-width: 52px;

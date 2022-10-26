@@ -26,9 +26,9 @@ function CareerPopUp({ career, callback }) {
     const handleAdd = () => {
         const fetchApi = async () => {
             let result = '';
-            if(career.id){
-                await adminCareerServices.updateCareer(career.id,name);
-            }else await adminCareerServices.addCareer(name);
+            if (career.id) {
+                await adminCareerServices.updateCareer(career.id, name);
+            } else await adminCareerServices.addCareer(name);
             console.log(result);
         };
         fetchApi();
@@ -53,7 +53,7 @@ function CareerPopUp({ career, callback }) {
                                 className={cx('input')}
                             />
                         </div>
-                        <CustomButton admin className={cx('btn-add')} onClick={handleAdd}>
+                        <CustomButton approve className={cx('btn-add')} onClick={handleAdd}>
                             {titleButton}
                         </CustomButton>
                     </div>

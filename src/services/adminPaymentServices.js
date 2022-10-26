@@ -10,25 +10,12 @@ export const getPayments = async (keyword, status, pageIndex) => {
         console.log(error);
     }
 };
-export const addService = async (service) => {
+
+export const updatePayment = async (data) => {
     try {
-        const res = await httpRequest.post(`api/admin/add-service`, service);
-        return res;
-    } catch (error) {
-        console.log(error);
-    }
-};
-export const updateStaff = async (service) => {
-    try {
-        const res = await httpRequest.put('api/admin/update-service', service);
-        return res;
-    } catch (error) {
-        console.log(error);
-    }
-};
-export const deleteStaff = async (id) => {
-    try {
-        const res = await httpRequest.deleteMetohd(`admin/delete-service?id=${id}`);
+        const res = await httpRequest.put(
+            `api/staff/payment/update?id=${data.id}&status=${data.status}&approveBy=${data.approveBy}&responseMessage=${data.responseMessage}`,
+        );
         return res;
     } catch (error) {
         console.log(error);
