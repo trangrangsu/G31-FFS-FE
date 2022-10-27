@@ -70,3 +70,31 @@
     padding: 2px 10px;
     font-size: 22px;
 }
+.rule{
+    margin-top: 20px;
+}
+.rule-text{
+    margin-left: 10px;
+}
+.rule-btn{
+    font-size: 18px;
+    padding: 0px;
+    color:#1c62a3;
+    text-decoration: none;
+    &:hover{
+        text-decoration: underline;
+        color: #195893;
+    }
+}
+.validate{
+    color: red;
+    div{
+        border-color: red;
+    }
+    input{
+        border-color: red;
+    }
+    + div{
+        border-color: red;
+    }
+}

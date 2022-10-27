@@ -9,6 +9,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import TextField from '@mui/material/TextField';
 import dayjs from 'dayjs';
+import { Checkbox } from 'antd';
 
 import Combox from '../Popper/Combox';
 import CareerMenu from '../Popper/CareerMenu';
@@ -78,22 +79,34 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
         },
     ];
     const [name, setName] = useState('');
-    const [gender, setGender] = useState('1');
+    const [gender, setGender] = useState(true);
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
     const [address, setAddress] = useState('');
     const [city, setCity] = useState('');
-    const [country, setCountry] = useState('');
-    const [subCareer, setSubCareer] = useState('chọn chuyên ngành');
+    const [country, setCountry] = useState('Việt Nam');
+    const [subCareerId, setsubCareerID] = useState(1);
+    const [subCareer, setSubCareer] = useState('Chọn chuyên ngành');
     const [value, setValue] = useState(dayjs('10-10-2022'));
     const [checked1, setChecked1] = useState(false);
     const [checked2, setChecked2] = useState(false);
-    const [checked3, setChecked3] = useState(false);
+    const [checked4, setChecked4] = useState(false);
+    const [titleBtn, setTitleBtn] = useState('Đăng ký');
+    const [register, setRegister] = useState(true);
+    const [nameValidate, setNameValidate] = useState(false);
+    const [phoneValidate, setPhoneValidate] = useState(false);
+    const [emailValidate, setEmailValidate] = useState(false);
+    const [addressValidate, setAddressValidate] = useState(false);
+    const [cityValidate, setCityValidate] = useState(false);
+    const [subCareerValidate, setSubCareerValidate] = useState(false);
+    const [ruleValidate, setRulsValidate] = useState(false);
+
     const countries = useSelector((state) => state.country);
     const cities = useSelector((state) => state.city);
 
     useEffect(() => {
-        if (freelancer.id !== undefined) {
+        console.log(freelancer);
+        if (freelancer !== undefined) {
             setName(freelancer.fullName);
             setGender(freelancer.gender);
             setPhone(freelancer.phone);
@@ -103,12 +116,57 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
             setCountry(freelancer.country);
             setSubCareer(freelancer.subCareer);
             setValue(dayjs(freelancer.birthdate));
+            setTitleBtn('Lưu');
+            setRegister(false);
         }
     }, []);
     const handleSave = () => {
+        let count = 0;
+        if (name === '') {
+            count++;
+            setNameValidate(true);
+        } else {
+            setNameValidate(false);
+        }
+        if (phone === '') {
+            count++;
+            setPhoneValidate(true);
+        } else {
+            setPhoneValidate(false);
+        }
+        if (address === '') {
+            count++;
+            setAddressValidate(true);
+        } else {
+            setAddressValidate(false);
+        }
+        if (city === '') {
+            count++;
+            setCityValidate(true);
+        } else {
+            setCityValidate(false);
+        }
+        if (email === '') {
+            count++;
+            setEmailValidate(true);
+        } else {
+            setEmailValidate(false);
+        }
+        if (subCareer === 'Chọn chuyên ngành') {
+            count++;
+            setSubCareerValidate(true);
+        } else {
+            setSubCareerValidate(false);
+        }
+        if (checked4 === false) {
+            count++;
+            setRulsValidate(true);
+        } else {
+            setRulsValidate(false);
+        }
+        if (count !== 0) return;
         getGender();
         const f = {
-            id: freelancer.id,
             fullName: name,
             gender: gender,
             phone: phone,
@@ -116,9 +174,12 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
             city: city,
             country: country,
             email: email,
-            birthdate: value.$D + '-' + (value.$M + 1) + '-' + value.$y,
-            subCareer: subCareer,
+            birthdate: value.$y + '-' + (value.$M + 1) + '-' + value.$D,
+            subCareer: subCareerId,
         };
+        if (freelancer !== undefined) {
+            f.id = freelancer.id;
+        }
         onClick(f);
     };
     const handleCoutryChange = (value) => {
@@ -128,16 +189,16 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
         setCity(value);
     };
     const handleMenuChange = (careerItem) => {
+        setsubCareerID(careerItem.id);
         setSubCareer(careerItem.name);
     };
     const getGender = () => {
-        if (checked1) setGender('1');
-        else if (checked2) setGender('0');
-        else setGender('2');
+        if (checked1) setGender(true);
+        else if (checked2) setGender(false);
     };
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('name')}>
+            <div className={cx('name', nameValidate ? 'validate' : '')}>
                 <label className={cx('label')}>Họ và tên *</label>
                 <CFormInput type="text" value={name} spellCheck={false} onChange={(e) => setName(e.target.value)} />
             </div>
@@ -179,19 +240,11 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
                             defaultChecked={gender === '0' ? true : false}
                             onChange={() => setChecked2(!checked2)}
                         />
-                        <CFormCheck
-                            type="radio"
-                            name="flexRadioDefault"
-                            id="other"
-                            label="Khác"
-                            defaultChecked={gender === '2' ? true : false}
-                            onChange={() => setChecked3(!checked3)}
-                        />
                     </div>
                 </div>
             </div>
             <div className={cx('row')}>
-                <div className={cx('left')}>
+                <div className={cx('left', phoneValidate ? 'validate' : '')}>
                     <label className={cx('label')}>Số điện thoại *</label>
                     <CFormInput
                         type="text"
@@ -200,7 +253,7 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
                         onChange={(e) => setPhone(e.target.value)}
                     />
                 </div>
-                <div className={cx('right')}>
+                <div className={cx('right', emailValidate ? 'validate' : '')}>
                     <label className={cx('label')}>Email *</label>
                     <CFormInput
                         type="text"
@@ -210,7 +263,7 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
                     />
                 </div>
             </div>
-            <div className={cx('margin-top')}>
+            <div className={cx('margin-top', addressValidate ? 'validate' : '')}>
                 <label className={cx('label')}>Địa chỉ *</label>
                 <CFormInput
                     type="text"
@@ -228,7 +281,7 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
                         </div>
                     </Combox>
                 </div>
-                <div className={cx('right')}>
+                <div className={cx('right', cityValidate ? 'validate' : '')}>
                     <label className={cx('label')}>Tỉnh thành *</label>
                     <Combox array={cities} onChange={handleCityChange} hideOnClick>
                         <div className={cx('city-btn')}>
@@ -238,15 +291,25 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
                 </div>
             </div>
             <div className={cx('margin-top')}>
-                <label className={cx('label')}>Chuyên ngành của bạn *</label>
+                <label className={cx('label', subCareerValidate ? 'validate' : '')}>Chuyên ngành của bạn *</label>
                 <CareerMenu careers={careers} onChange={handleMenuChange} hideOnClick>
                     <div className={cx('more-btn')}>
                         <p>{subCareer}</p>
                     </div>
                 </CareerMenu>
             </div>
+            {register && (
+                <div className={cx('rule', ruleValidate ? 'validate' : '')}>
+                    <Checkbox onChange={() => setChecked4(!checked4)}></Checkbox>
+                    <span className={cx('rule-text')}>Vâng, tôi hiểu và đồng ý với </span>
+                    <Button text href="#" className={cx('rule-btn')}>
+                        các điều khoản
+                    </Button>
+                    <span> của lanceddy</span>
+                </div>
+            )}
             <Button primary onClick={handleSave} className={cx('save-btn')}>
-                Lưu
+                {titleBtn}
             </Button>
         </div>
     );

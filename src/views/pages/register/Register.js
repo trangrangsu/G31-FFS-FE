@@ -1,72 +1,60 @@
-import React from 'react';
-import { MDBInput } from 'mdb-react-ui-kit';
-import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+import { useState } from 'react';
 import { CFormCheck } from '@coreui/react';
 import classNames from 'classnames/bind';
-import { useNavigate } from 'react-router-dom';
 
+import * as registerServices from '../../../services/registerServices';
+import FreelancerBasicInfo from '../../../components/FreelancerBasicInfo';
 import config from '../../../config';
 import Button from '../../../components/Button';
 import styles from './Register.module.scss';
 const cx = classNames.bind(styles);
+
+const fetchApi = async (freelancer) => {
+    const result = await registerServices.register(freelancer);
+    console.log(result);
+};
 const Register = () => {
-    const navigate = useNavigate();
-    const handRegister = () => {
-        const to = {
-            pathname: config.routes.verifyOTP,
-        };
-        navigate(to);
+    const [isFreelancer, setIsFreelancer] = useState(false);
+    const [isRecruiter, setIsRecruiter] = useState(false);
+
+    const handleCallBack = (freelance) => {
+        if (isFreelancer) {
+            freelance.role = 'freelancer';
+        } else {
+            freelance.role = 'recruiter';
+        }
+        console.log(freelance);
+        fetchApi(freelance);
     };
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('form')}>
-                <div className={cx('title')}>
-                    <p>Đăng ký</p>
-                </div>
-                <div className={cx('container')}>
-                    <MDBInput label="Họ và tên *" id="form1" type="text" className={cx('custom')} />
-                </div>
-                <div className={cx('container')}>
-                    <MDBInput label="Mật khẩu *" id="form2" type="password" className={cx('custom')} />
-                </div>
-                <div className={cx('container')}>
-                    <MDBInput label="Xác nhận mật khẩu *" id="form3" type="password" className={cx('custom')} />
-                </div>
-                <div className={cx('container')}>
-                    <MDBInput label="Email *" id="form6" type="email" className={cx('custom')} />
-                </div>
-                <div className={cx('role-form')}>
-                    <label className={cx('label')}>Tôi muốn đăng ký làm</label>
-                    <div className={cx('content')}>
-                        <CFormCheck
-                            type="radio"
-                            name="role"
-                            id="freelancer"
-                            label="Freelancer"
-                            className={cx('freelancer')}
-                            defaultChecked
-                        />
-                        <CFormCheck
-                            type="radio"
-                            name="role"
-                            id="recruiter"
-                            label="Recruiter"
-                            className={cx('recruiter')}
-                        />
-                    </div>
-                    <div className={cx('left-top')}></div>
-                    <div className={cx('right-top')}></div>
-                </div>
-                <Button text rounded className={cx('btn')} onClick={handRegister}>
-                    ĐĂNG KÝ
-                </Button>
-                <span className={cx('text')}>
-                    {' '}
-                    Đã có tài khoản?
+            <div className={cx('container')}>
+                <h1 className={cx('title')}>Đăng ký</h1>
+                <p className={cx('under-title')}>
+                    <span className={cx('gray-500')}>Đã có tài khoản?</span>
                     <Button text to={config.routes.login} className={cx('link')}>
                         Đăng nhập
                     </Button>
-                </span>
+                </p>
+                <div className={cx('role')}>
+                    <CFormCheck
+                        type="radio"
+                        name="role"
+                        id="freelancer"
+                        label="Tôi muốn tuyển dụng"
+                        className={cx('freelancer')}
+                        onChange={() => setIsFreelancer(!isFreelancer)}
+                    />
+                    <CFormCheck
+                        type="radio"
+                        name="role"
+                        id="recruiter"
+                        label="Tôi muốn tìm việc"
+                        className={cx('recruiter')}
+                        onChange={() => setIsRecruiter(!isRecruiter)}
+                    />
+                </div>
+                {isFreelancer && <FreelancerBasicInfo onClick={handleCallBack} />}
             </div>
         </div>
     );

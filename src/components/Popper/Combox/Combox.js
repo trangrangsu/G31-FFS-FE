@@ -57,14 +57,7 @@ function Combox({ children, array = [], hideOnClick = false, onChange = defaultF
     );
 
     return (
-        <Tippy
-            interactive
-            trigger="click"
-            delay={[0, 500]}
-            hideOnClick={hideOnClick}
-            placement="bottom-start"
-            render={renderResult}
-        >
+        <Tippy interactive hideOnClick={hideOnClick} placement="bottom-start" render={renderResult}>
             {children}
         </Tippy>
     );

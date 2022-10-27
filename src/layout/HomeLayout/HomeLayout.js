@@ -15,7 +15,7 @@ function HomeLayout({ children }) {
     };
     return (
         <div className={cx('wrapper')}>
-            <UserHeader />
+            <Header />
             <div className={cx('content')}>{children}</div>
             <Footer />
         </div>
