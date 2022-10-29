@@ -12,6 +12,8 @@
 }
 .birthday{
     height: 65px;
+    margin-right: 16px;
+    width: 49%;
 }
 .date-picker{
     fieldset {
@@ -27,7 +29,7 @@
     }
 }
 .gender{
-    margin-left: 55px;
+    width: 49%;
 }
 .container-gender{
     height: 46px;
@@ -41,11 +43,11 @@
     }
 }
 .left{
-    width: 375px;
+    width: 49%;
     margin-right: 16px;
 }
 .right{
-    width: 375px;
+    width: 49%;
 }
 .margin-top{
     margin-top: 20px;

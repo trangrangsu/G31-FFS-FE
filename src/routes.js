@@ -20,6 +20,8 @@ const ViewDetailPostAdmin = React.lazy(() => import('./views/admin/ViewDetailPos
 const ContentHome = React.lazy(() => import('./views/pages/ContentHome'));
 const Login = React.lazy(() => import('./views/pages/login'));
 const Register = React.lazy(() => import('./views/pages/register'));
+const ResetPassword = React.lazy(() => import('./views/pages/ResetPassword'));
+const ForgetPassword = React.lazy(() => import('./views/pages/ForgetPassword'));
 const UpdateRecruiterProfile = React.lazy(() => import('./views/recruiter/Update'));
 const ViewDetailFreelancer = React.lazy(() => import('./views/pages/ViewDetailFreelancer'));
 const PostJob = React.lazy(() => import('./views/recruiter/Post'));
@@ -43,6 +45,8 @@ export const routes = [
     { path: config.routes.home, element: ContentHome, layout: HomeLayout },
     { path: config.routes.login, element: Login, layout: HomeLayout },
     { path: config.routes.register, element: Register, layout: HomeLayout },
+    { path: config.routes.forgetPassword, element: ForgetPassword, layout: HomeLayout },
+    { path: config.routes.resetPassword, element: ResetPassword, layout: HomeLayout },
     { path: config.routes.dashboard, element: Dashboard },
     { path: config.routes.freelancer, element: Freelancer },
     { path: config.routes.recruiter, element: Recruiter },

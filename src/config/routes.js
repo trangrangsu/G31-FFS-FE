@@ -4,6 +4,8 @@ const routes = {
     register: '/register',
     verifyOTP: '/verify',
     changePassword: '/changePassword',
+    forgetPassword: '/forgetPassword',
+    resetPassword: '/reset-password',
     userReport: '/report',
     recharge: '/recharge',
     rechargeHistory: '/rechargeHistory',

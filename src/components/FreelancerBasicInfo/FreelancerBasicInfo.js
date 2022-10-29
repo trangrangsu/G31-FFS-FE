@@ -82,12 +82,15 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
     const [gender, setGender] = useState(true);
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
+    const [emailEdit, setEmailEdit] = useState(false);
     const [address, setAddress] = useState('');
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('Việt Nam');
     const [subCareerId, setsubCareerID] = useState(1);
     const [subCareer, setSubCareer] = useState('Chọn chuyên ngành');
     const [value, setValue] = useState(dayjs('10-10-2022'));
+    const [password, setPassword] = useState('');
+    const [passwordConfirm, setPasswordConfirm] = useState('');
     const [checked1, setChecked1] = useState(false);
     const [checked2, setChecked2] = useState(false);
     const [checked4, setChecked4] = useState(false);
@@ -99,6 +102,7 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
     const [addressValidate, setAddressValidate] = useState(false);
     const [cityValidate, setCityValidate] = useState(false);
     const [subCareerValidate, setSubCareerValidate] = useState(false);
+    const [passwordValidate, setPasswordValidate] = useState(false);
     const [ruleValidate, setRulsValidate] = useState(false);
 
     const countries = useSelector((state) => state.country);
@@ -118,9 +122,11 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
             setValue(dayjs(freelancer.birthdate));
             setTitleBtn('Lưu');
             setRegister(false);
+            setEmailEdit(true);
         }
     }, []);
     const handleSave = () => {
+        console.log('ahihi');
         let count = 0;
         if (name === '') {
             count++;
@@ -158,12 +164,22 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
         } else {
             setSubCareerValidate(false);
         }
-        if (checked4 === false) {
-            count++;
-            setRulsValidate(true);
-        } else {
-            setRulsValidate(false);
+        if (freelancer === undefined) {
+            if (checked4 === false) {
+                count++;
+                setRulsValidate(true);
+            } else {
+                setRulsValidate(false);
+            }
+            if (password === '' || password !== passwordConfirm) {
+                setPasswordValidate(true);
+                count++;
+            } else {
+                setPasswordValidate(false);
+            }
         }
+
+        console.log('ahihi');
         if (count !== 0) return;
         getGender();
         const f = {
@@ -176,6 +192,7 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
             email: email,
             birthdate: value.$y + '-' + (value.$M + 1) + '-' + value.$D,
             subCareer: subCareerId,
+            password: password,
         };
         if (freelancer !== undefined) {
             f.id = freelancer.id;
@@ -204,7 +221,7 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
             </div>
             <div className={cx('row')}>
                 <div className={cx('birthday')}>
-                    <label className={cx('label')}>Ngày sinh của bạn *</label>
+                    <label className={cx('label')}>Ngày sinh *</label>
                     <StyledEngineProvider>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <Stack spacing={1}>
@@ -222,14 +239,14 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
                     </StyledEngineProvider>
                 </div>
                 <div className={cx('gender')}>
-                    <label className={cx('label')}>Ngày sinh của bạn *</label>
+                    <label className={cx('label')}>Giới tính *</label>
                     <div className={cx('container-gender')}>
                         <CFormCheck
                             type="radio"
                             name="flexRadioDefault"
                             id="male"
                             label="Nam"
-                            defaultChecked={gender === '1' ? true : false}
+                            defaultChecked={gender}
                             onChange={() => setChecked1(!checked1)}
                         />
                         <CFormCheck
@@ -256,6 +273,7 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
                 <div className={cx('right', emailValidate ? 'validate' : '')}>
                     <label className={cx('label')}>Email *</label>
                     <CFormInput
+                        readOnly={emailEdit}
                         type="text"
                         value={email}
                         spellCheck={false}
@@ -263,6 +281,28 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
                     />
                 </div>
             </div>
+            {register && (
+                <div className={cx('row')}>
+                    <div className={cx('left', phoneValidate ? 'validate' : '')}>
+                        <label className={cx('label', passwordValidate ? 'validate' : '')}>Mật khẩu *</label>
+                        <CFormInput
+                            type="password"
+                            value={password}
+                            spellCheck={false}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </div>
+                    <div className={cx('right', emailValidate ? 'validate' : '')}>
+                        <label className={cx('label', passwordValidate ? 'validate' : '')}>Xác nhận mật khẩu *</label>
+                        <CFormInput
+                            type="password"
+                            value={passwordConfirm}
+                            spellCheck={false}
+                            onChange={(e) => setPasswordConfirm(e.target.value)}
+                        />
+                    </div>
+                </div>
+            )}
             <div className={cx('margin-top', addressValidate ? 'validate' : '')}>
                 <label className={cx('label')}>Địa chỉ *</label>
                 <CFormInput

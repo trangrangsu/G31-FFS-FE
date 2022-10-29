@@ -9,14 +9,15 @@ import Button from '../../../components/Button';
 import styles from './Register.module.scss';
 const cx = classNames.bind(styles);
 
-const fetchApi = async (freelancer) => {
-    const result = await registerServices.register(freelancer);
-    console.log(result);
-};
 const Register = () => {
     const [isFreelancer, setIsFreelancer] = useState(false);
     const [isRecruiter, setIsRecruiter] = useState(false);
-
+    const [isRegister, setIsRegister] = useState(false);
+    const fetchApi = async (freelancer) => {
+        const result = await registerServices.register(freelancer);
+        console.log(result);
+        setIsRegister(true);
+    };
     const handleCallBack = (freelance) => {
         if (isFreelancer) {
             freelance.role = 'freelancer';
@@ -43,7 +44,7 @@ const Register = () => {
                         id="freelancer"
                         label="Tôi muốn tuyển dụng"
                         className={cx('freelancer')}
-                        onChange={() => setIsFreelancer(!isFreelancer)}
+                        onChange={() => setIsRecruiter(!isRecruiter)}
                     />
                     <CFormCheck
                         type="radio"
@@ -51,10 +52,15 @@ const Register = () => {
                         id="recruiter"
                         label="Tôi muốn tìm việc"
                         className={cx('recruiter')}
-                        onChange={() => setIsRecruiter(!isRecruiter)}
+                        onChange={() => setIsFreelancer(!isFreelancer)}
                     />
                 </div>
                 {isFreelancer && <FreelancerBasicInfo onClick={handleCallBack} />}
+                {isFreelancer && isRegister && (
+                    <div className={cx('message')}>
+                        <p>Yêu cầu của bạn đã được chấp nhận. Hãy kiểm tra email để xác nhận tài khoản</p>
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -19,9 +19,9 @@ const VerifyOTP = () => {
     return (
         <div className={cx('wrapper')}>
             {isVerified && (
-                <div>
-                    <p>Tài khoản của bạn đã được xác nhận</p>
-                    <p>Hãy đặng nhập để bắt đầu trải nghiệm những dịch vụ tuyệt vời trên lanceddy</p>
+                <div className={cx('content')}>
+                    <p className={cx('top')}>Tài khoản của bạn đã được xác nhận</p>
+                    <p>Hãy đăng nhập để bắt đầu trải nghiệm những dịch vụ tuyệt vời trên lanceddy</p>
                 </div>
             )}
         </div>

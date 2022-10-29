@@ -8,6 +8,7 @@ const images = {
     cong: require('../../assets/images/cong.jpg'),
     tuyen: require('../../assets/images/tuyen.jpg'),
     quyet: require('../../assets/images/quyet.jpg'),
+    toad: require('../../assets/images/toad.png'),
 };
 
 export default images;

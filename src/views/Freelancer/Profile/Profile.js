@@ -33,7 +33,7 @@ const cx = classNames.bind(styles);
 const Profile = ({ freelancerId }) => {
     const freelancer = {
         id: '1',
-        gender: '1',
+        gender: true,
         phone: '0337177679',
         fullName: 'Nguyễn Hữu Tuyên',
         address: 'SN02/07 ngõ 18 Tân Xã - Thạch Thất',
