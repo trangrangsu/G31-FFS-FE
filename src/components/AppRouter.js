@@ -13,7 +13,7 @@ const loading = (
 function AppRouter() {
     const dispatch = useDispatch();
     const account = useSelector((state) => state.account);
-    console.log(account);
+    // console.log(account);
     return (
         <Router>
             <Suspense fallback={loading}>

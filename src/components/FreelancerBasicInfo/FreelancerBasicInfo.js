@@ -109,7 +109,6 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
     const cities = useSelector((state) => state.city);
 
     useEffect(() => {
-        console.log(freelancer);
         if (freelancer !== undefined) {
             setName(freelancer.fullName);
             setGender(freelancer.gender);
@@ -126,7 +125,6 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
         }
     }, []);
     const handleSave = () => {
-        console.log('ahihi');
         let count = 0;
         if (name === '') {
             count++;
@@ -179,9 +177,19 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
             }
         }
 
-        console.log('ahihi');
         if (count !== 0) return;
         getGender();
+        let birthday = value.$y + '-';
+        if (value.$M + 1 < 10) {
+            birthday += '0' + (value.$M + 1) + '-';
+        } else {
+            birthday += value.$M + 1 + '-';
+        }
+        if (value.$D < 10) {
+            birthday += '0' + value.$D;
+        } else {
+            birthday += value.$D;
+        }
         const f = {
             fullName: name,
             gender: gender,
@@ -190,8 +198,9 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
             city: city,
             country: country,
             email: email,
-            birthdate: value.$y + '-' + (value.$M + 1) + '-' + value.$D,
+            birthdate: birthday,
             subCareer: subCareerId,
+            subCareerName: subCareer,
             password: password,
         };
         if (freelancer !== undefined) {
@@ -228,7 +237,7 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
                                 <DesktopDatePicker
                                     className={cx('date-picker')}
                                     value={value}
-                                    minDate={'2017-01-01'}
+                                    minDate={'1970-01-01'}
                                     onChange={(newValue) => {
                                         setValue(newValue);
                                     }}

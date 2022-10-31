@@ -1,11 +1,13 @@
 import { createStore } from 'redux';
+import * as transactionServices from './services/transactionServices';
+
+const userId = sessionStorage.getItem('userId');
+console.log(userId);
 
 const initialState = {
     sidebarShow: true,
-    account: {
-        id: '123',
-        role: 1,
-    },
+    account: {},
+    accountBalance: 0,
     country: [
         'Canada',
         'Sint Maarten',

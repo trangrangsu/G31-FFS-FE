@@ -13,8 +13,10 @@ function WorkExpPopup({ workExp, callback, onclose }) {
     const [companyName, setCompanyName] = useState('');
     const [position, setPosition] = useState('');
     const [description, setDescription] = useState('');
-    const [from, setFrom] = useState('');
-    const [to, setTo] = useState('');
+    const [monthFrom, setMonthFrom] = useState('');
+    const [yearFrom, setYearFrom] = useState('');
+    const [monthTo, setMonthTo] = useState('');
+    const [yearTo, setYearTo] = useState('');
     const handleClose = () => {
         setShow(false);
         onclose();
@@ -24,8 +26,10 @@ function WorkExpPopup({ workExp, callback, onclose }) {
             setCompanyName(workExp.companyName);
             setPosition(workExp.position);
             setDescription(workExp.description);
-            setFrom(workExp.from);
-            setTo(workExp.to);
+            setMonthFrom(workExp.monthFrom);
+            setYearFrom(workExp.yearFrom);
+            setMonthTo(workExp.monthTo);
+            setYearTo(workExp.yearTo);
             setTitle('Chỉnh sửa');
         }
     }, []);
@@ -34,11 +38,10 @@ function WorkExpPopup({ workExp, callback, onclose }) {
         workExp.companyName = companyName;
         workExp.position = position;
         workExp.description = description;
-        workExp.from = from;
-        workExp.to = to;
-        if (!workExp.id) {
-            workExp.id = 4;
-        }
+        workExp.monthFrom = monthFrom;
+        workExp.yearFrom = yearFrom;
+        workExp.monthTo = monthTo;
+        workExp.yearTo = yearTo;
         callback(workExp);
     };
     return (
@@ -67,17 +70,36 @@ function WorkExpPopup({ workExp, callback, onclose }) {
                 </div>
                 <div className={cx('row')}>
                     <div className={cx('left')}>
-                        <label className={cx('label')}>Từ năm *</label>
+                        <label className={cx('label')}>Từ tháng *</label>
                         <CFormInput
                             type="text"
-                            value={from}
+                            value={monthFrom}
                             spellCheck={false}
-                            onChange={(e) => setFrom(e.target.value)}
+                            onChange={(e) => setMonthFrom(e.target.value)}
+                        />
+                        <label className={cx('label')}>năm *</label>
+                        <CFormInput
+                            type="text"
+                            value={yearFrom}
+                            spellCheck={false}
+                            onChange={(e) => setYearFrom(e.target.value)}
                         />
                     </div>
                     <div>
-                        <label className={cx('label')}>Đến năm *</label>
-                        <CFormInput type="text" value={to} spellCheck={false} onChange={(e) => setTo(e.target.value)} />
+                        <label className={cx('label')}>Đến tháng *</label>
+                        <CFormInput
+                            type="text"
+                            value={monthTo}
+                            spellCheck={false}
+                            onChange={(e) => setMonthTo(e.target.value)}
+                        />
+                        <label className={cx('label')}>năm *</label>
+                        <CFormInput
+                            type="text"
+                            value={yearTo}
+                            spellCheck={false}
+                            onChange={(e) => setYearTo(e.target.value)}
+                        />
                     </div>
                 </div>
                 <div className={cx('column')}>

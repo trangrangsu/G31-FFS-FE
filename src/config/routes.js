@@ -9,7 +9,6 @@ const routes = {
     userReport: '/report',
     recharge: '/recharge',
     rechargeHistory: '/rechargeHistory',
-    statistic: '/statistic',
     userService: '/service',
     dashboard: '/admin/dashboard',
     freelancer: '/admin/freelancer',
@@ -30,9 +29,11 @@ const routes = {
     viewDetailFreelancer: '/freelancer/viewProfile',
     viewDetailPost: '/freelancer/viewDetailPost',
     recruiterProfile: '/recruiter/profile',
+    statisticFreelancer: '/freelancer/statistic',
     searchFreelancer: '/recruiter/search',
     postManagement: '/recruiter/postManagement',
     updateRecruiter: '/recruiter/updateProfile',
+    statisticRecruiter: '/recruiter/statistic',
     postJob: '/recruiter/postJob',
 };
 

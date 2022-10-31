@@ -3,6 +3,8 @@ import classNames from 'classnames/bind';
 import { CFormInput } from '@coreui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import * as loginServices from '../../../services/loginServices';
 import images from '../../../assets/images';
@@ -10,17 +12,56 @@ import Button from '../../../components/Button';
 import config from '../../../config';
 import styles from './Login.module.scss';
 const cx = classNames.bind(styles);
-const fetchApi = async (user) => {
-    const result = await loginServices.login(user);
-    console.log(result);
-};
+
 const Login = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailValidate, setEmailValidate] = useState(false);
     const [passValidate, setPassValidate] = useState(false);
     const [show, setShow] = useState(false);
 
+    useEffect(() => {
+        dispatch({ type: 'set', account: {} });
+        sessionStorage.setItem('token', '');
+    }, []);
+
+    const fetchApi = async (user) => {
+        const result = await loginServices.login(user);
+        console.log(result);
+        if (typeof result === 'object') {
+            dispatch({ type: 'set', account: result });
+            dispatch({ type: 'set', accountBalance: result.accountBalance });
+            sessionStorage.setItem('userId', result.userId);
+            sessionStorage.setItem('token', result.tokenType + ' ' + result.accessToken);
+            let to = {};
+            switch (result.role) {
+                case 'freelancer':
+                    to = {
+                        pathname: config.routes.searchJob,
+                    };
+                    break;
+                case 'recruiter':
+                    to = {
+                        pathname: config.routes.postManagement,
+                    };
+                    break;
+                case 'admin':
+                    to = {
+                        pathname: config.routes.dashboard,
+                    };
+                    break;
+                case 'staff':
+                    to = {
+                        pathname: config.routes.freelancer,
+                    };
+                    break;
+                default:
+            }
+            navigate(to);
+        }
+    };
     const handleClick = () => {
         setShow(!show);
     };
@@ -31,7 +72,6 @@ const Login = () => {
                 password,
             };
             fetchApi(user);
-            console.log(email);
         } else {
             if (email === '') setEmailValidate(true);
             else setEmailValidate(false);

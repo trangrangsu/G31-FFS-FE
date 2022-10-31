@@ -1,3 +1,61 @@
 .wrapper {
     margin: 120px;
+    min-height: 600px;
+}
+.container{
+    display: flex;
+    flex-direction: row;
+    width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 30px;
+    padding-top: 0;
+}
+.left{
+    width: 49%;
+    padding: 24px;
+    font-size: 20px;
+}
+.label{
+    font-weight: 600;
+}
+.input{
+    width: 95%;
+    margin: 10px 0 40px 13px;
+}
+.mess-approve{
+    color: green;
+    font-size: 18px;
+    margin: 0;
+}
+.mess-error{
+    color: red;
+    font-size: 18px;
+    margin: 0;
+}
+.btn{
+    width: 100%;
+    margin-bottom: 20px;
+}
+.right{
+    width: 49%;
+    padding-left: 24px;
+    margin-top: -20px;
+}
+.list{
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+    margin-left: 40px;
+    li{
+        padding-bottom: 24px;
+        svg{
+            color: green;
+            margin-right: 5px;
+        }
+    }
+}
+.img{
+    width: 460px;
+    height: 200px;
 }
