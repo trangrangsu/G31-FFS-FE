@@ -36,9 +36,6 @@ function EducationPopup({ education, callback, onclose }) {
         education.level = level;
         education.from = from;
         education.to = to;
-        if (!education.id) {
-            education.id = 4;
-        }
         callback(education);
     };
     return (

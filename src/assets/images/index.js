@@ -9,6 +9,7 @@ const images = {
     cong: require('../../assets/images/cong.jpg'),
     tuyen: require('../../assets/images/tuyen.jpg'),
     quyet: require('../../assets/images/quyet.jpg'),
+    paypal: require('../../assets/images/Paypal.jpg'),
     toad: require('../../assets/images/toad.png'),
     sales: require('../../assets/images/sales.jpg'),
 };
