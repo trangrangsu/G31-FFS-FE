@@ -11,7 +11,7 @@ function HomeFooter() {
             <div className={cx('container')}>
                 <div className={cx('left')}>
                     <div className={cx('logo')}>
-                        <img src={images.logo} alt="logo" />
+                        <img src={images.logo1} alt="logo" />
                     </div>
                     <div className={cx('social')}>
                         <a href="https://www.facebook.com">
