@@ -1,3 +1,191 @@
 .wrapper {
     margin: 120px;
+    .container {
+        width: 1200px;
+        height: 1200px;
+        padding: 5px;
+        margin: 0 auto;
+        background: #ffffff;
+        font-size: 25px;
+
+        .left {
+            width: 28%;
+            height: 100%;
+         
+            border: 1px solid #a8a2a2;
+            display: inline-block;
+            .left-component {
+                .list-career {
+                    width: 100%;
+                    color: black;
+                    background: white;
+                    .career{
+                        font-size: 60%;
+                       
+                    }
+                    .sub-career{
+                        font-size: 60%;
+                    }
+                }
+            }
+        }
+
+        .right {
+            width: 70%;
+            margin-left: 15px;
+            border-radius: 20px;
+            height: 100%;
+            border: 1px solid #a8a2a2;
+            display: inline-block;
+            float: right;
+            .right-component {
+                margin: 5px 10px;
+
+                .banner {
+                    border: 1px solid #a8a2a2;
+                    border-radius: 20px;
+                }
+                .search-input {
+                    display: inline-block;
+                    width: 63%;
+                    padding-left: 5px;
+                    height: 30px;
+                    font-size: 70%;
+                    border-top-left-radius: 10px;
+                    border-bottom-left-radius: 10px;
+                    font-weight: 700;
+                    border: 1px solid #a8a2a2;
+                    color: #787474;
+                }
+                .combobox-filter {
+                    display: inline-block;
+                    font-size: 70%;
+
+                    .select-location {
+                        display: inline-block;
+                    }
+                    .select-budget {
+                        display: inline-block;
+                    }
+                }
+                .btn-search {
+                    font-size: 70%;
+                    width: 5%;
+                    padding-left: 5px;
+                    border-top-right-radius: 10px;
+                    border-bottom-right-radius: 10px;
+                    background: #3f77e2;
+                    color: black;
+                    font-size: 70%;
+                    display: inline-block;
+                }
+                .btn-search:hover {
+                    background: #2655ad;
+                }
+
+                .list-post {
+                    border: 1px solid #a8a2a2;
+                    border-radius: 20px;
+                    .list-post-title {
+                        font-weight: 500;
+                        font-size: 90%;
+                        padding-left: 10px;
+                        border-bottom: 1px solid #a8a2a2;
+                    }
+                    .post {
+                        padding: 10px;
+                        .row1 {
+                            font-size: 90%;
+                            .post-title {
+                                font-weight: 500;
+                                display: inline-block;
+                                color: black;
+                            }
+                            .post-action {
+                                display: inline-block;
+                                margin-left: 250px;
+                                .ic-action-apply {
+                                    margin-left: 20px;
+                                    display: inline-block;
+                                }
+                                .ic-action-save {
+                                    margin-left: 15px;
+                                    display: inline-block;
+                                }
+                            }
+                        }
+
+                        .row2 {
+                            font-size: 50%;
+                            margin-bottom: 5px;
+                            color: #8b8b8b;
+                            font-weight: 500;
+                            .post-payment {
+                                display: inline-block;
+                            }
+                            .post-budget {
+                                display: inline-block;
+                            }
+                            .post-posted-time {
+                                display: inline-block;
+                            }
+                        }
+                        .row3 {
+                            font-size: 50%;
+                            .post-description {
+                                display: inline-block;
+                            }
+                        }
+                        .row4 {
+                            width: 30%;
+                            margin-top: 20px;
+                            font-size: 50%;
+                            .post-subcareer {
+                                display: inline-block;
+                                padding-top: 2px;
+                                padding-bottom: 2px;
+                                padding-left: 6px;
+                                padding-right: 6px;
+                                color: white;
+                                display: inline-block;
+                                border-radius: 5px;
+                                background: #2b6cf7;
+                            }
+                        }
+                        .row5 {
+                            margin-top: 10px;
+                            font-size: 45%;
+                            .skill {
+                                display: inline-block;
+                                color: #5f5f5f;
+                                display: inline-block;
+                                padding-top: 2px;
+                                padding-bottom: 2px;
+                                padding-left: 6px;
+                                padding-right: 6px;
+                                background: #b2bdc9;
+                                border-radius: 15px;
+                                color: #444343;
+                                display: inline-block;
+                                margin-right: 4px;
+                            }
+                        }
+                        .row6 {
+                            margin-top: 10px;
+                            font-size: 40%;
+                            .post-star-point {
+                                display: inline-block;
+                                .ic-star {
+                                    display: inline-block;
+                                }
+                            }
+                            .post-location {
+                                display: inline-block;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

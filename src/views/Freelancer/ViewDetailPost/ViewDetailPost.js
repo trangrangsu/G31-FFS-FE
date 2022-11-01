@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faSackDollar, faStar } from '@fortawesome/free-solid-svg-icons';
 import { faHeart, faBookmark } from '@fortawesome/free-regular-svg-icons';
+
 import styles from './ViewDetailPost.module.scss';
 const cx = classNames.bind(styles);
 const post = {
