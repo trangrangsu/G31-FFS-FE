@@ -16,6 +16,14 @@ export const forgetPassword = async (email) => {
         console.log(error);
     }
 };
+export const getInfoUser = async (userId) => {
+    try {
+        const res = await httpRequest.get(`api/user/getInfoUser?userId=${userId}`);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
 export const resetPassword = async (code) => {
     try {
         const res = await httpRequest.getNoAuthen(`reset/verify-token?resetPasswordToken=${code}`);

@@ -9,9 +9,9 @@ export const getProfileFreelancer = async (id) => {
     }
 };
 
-export const getListSkillsFreelancer = async (id) => {
+export const getListSkillsFreelancer = async (id, skill) => {
     try {
-        const res = await httpRequest.get(`api/freelancer/skill?freelancerId=${id}`);
+        const res = await httpRequest.get(`api/freelancer/skill?freelancerId=${id}&skill=${skill}`);
         return res;
     } catch (error) {
         console.log(error);
@@ -29,7 +29,7 @@ export const addSkill = async (id, skill) => {
 
 export const deleteSkill = async (id, skill) => {
     try {
-        const res = await httpRequest.deleteMetohd(`api/freelancer/delete-skill?freelancerId=${id}`, skill);
+        const res = await httpRequest.deleteMetohd(`api/freelancer/delete-skill?freelancerId=${id}&skillId=${skill}`);
         return res;
     } catch (error) {
         console.log(error);
@@ -101,6 +101,23 @@ export const editByField = async (freelancerId, fieldName, value) => {
 export const editByPopup = async (freelancer) => {
     try {
         const res = await httpRequest.put(`api/freelancer/update-profiles`, freelancer);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getFeedbacks = async (id, pageIndex) => {
+    try {
+        const res = await httpRequest.get(`api/user/feedback?id=${id}&pageIndex=${pageIndex}`);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const addFeedback = async (feedback) => {
+    try {
+        const res = await httpRequest.post(`api/user/addFeedback`, feedback);
         return res;
     } catch (error) {
         console.log(error);

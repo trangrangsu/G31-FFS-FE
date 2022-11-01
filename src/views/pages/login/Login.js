@@ -33,6 +33,7 @@ const Login = () => {
         if (typeof result === 'object') {
             dispatch({ type: 'set', account: result });
             dispatch({ type: 'set', accountBalance: result.accountBalance });
+            dispatch({ type: 'set', accountAvatar: result.avatar });
             sessionStorage.setItem('userId', result.userId);
             sessionStorage.setItem('token', result.tokenType + ' ' + result.accessToken);
             let to = {};
