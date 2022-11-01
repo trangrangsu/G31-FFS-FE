@@ -19,7 +19,7 @@ function WorkExperiment({ workExp, onEdit, onDelete }) {
             <p className={cx('bold')}>{workExp.position}</p>
             <p>{workExp.description}</p>
             <p>
-                {workExp.from} - {workExp.to}
+                {workExp.monthFrom} - {workExp.yearFrom} đến {workExp.monthTo} - {workExp.yearTo}
             </p>
         </div>
     );

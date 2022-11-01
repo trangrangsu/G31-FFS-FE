@@ -29,7 +29,7 @@ const AppSidebar = () => {
             <CSidebarBrand className="d-none d-md-flex" to="/"></CSidebarBrand>
             <CSidebarNav>
                 <SimpleBar>
-                    <AppSidebarNav items={account.role === 1 ? navAdmin : navStaff} />
+                    <AppSidebarNav items={account.role === 'admin' ? navAdmin : navStaff} />
                 </SimpleBar>
             </CSidebarNav>
             <CSidebarToggler

@@ -1,4 +1,5 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,13 +13,17 @@ import images from '../../assets/images';
 import Button from '../../components/Button';
 import styles from './UserHeader.module.scss';
 import { Notification, Wallet } from '../Icons/Icons';
+import * as firebase from '../../firebase/firebase';
 
 const cx = classNames.bind(styles);
 const MENU_ITEMS = [
     {
         icon: <FontAwesomeIcon icon={faAddressCard} />,
         title: 'Hồ sơ',
-        to: config.routes.freelancerProfile,
+        to: {
+            pathname: config.routes.freelancerProfile,
+            search: '',
+        },
         custom: true,
     },
     {
@@ -43,9 +48,18 @@ const MENU_ITEMS = [
 ];
 
 function UserHeader() {
-    const dispatch = useDispatch();
     const account = useSelector((state) => state.account);
-    const currentUser = true;
+    const accountBalance = useSelector((state) => state.accountBalance).toFixed(1);
+    const accountAvatar = useSelector((state) => state.accountAvatar);
+    const [image, setImage] = useState(images.defaultAvatar);
+    if (account.role !== 'freelancer') {
+        console.log(account.role);
+        MENU_ITEMS[0].to.pathname = config.routes.recruiterProfile;
+        MENU_ITEMS[0].to.search = `?id=${account.userId}`;
+    } else {
+        console.log(account.role);
+        MENU_ITEMS[0].to.search = `?id=${account.userId}`;
+    }
     const handleMenuChange = (menuItem) => {
         switch (menuItem.type) {
             case 'language':
@@ -54,6 +68,9 @@ function UserHeader() {
             default:
         }
     };
+    useEffect(() => {
+        firebase.downloadFile(account.userId, 'avatar', accountAvatar, setImage);
+    }, [accountAvatar]);
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -62,13 +79,16 @@ function UserHeader() {
                 </Link>
 
                 <div className={cx('middle-side')}>
-                    {currentUser ? (
+                    {account.role === 'freelancer' ? (
                         <>
                             <Button rounded to={config.routes.searchJob} className={cx('btn', 'middle-btn')}>
                                 Tìm việc
                             </Button>
                             <Button rounded to={config.routes.jobApply} className={cx('btn', 'middle-btn')}>
                                 Quản lý công việc
+                            </Button>
+                            <Button rounded to={config.routes.statisticFreelancer} className={cx('btn', 'middle-btn')}>
+                                Thông kê
                             </Button>
                         </>
                     ) : (
@@ -82,11 +102,12 @@ function UserHeader() {
                             <Button rounded to={config.routes.post} className={cx('btn', 'middle-btn')}>
                                 Đăng tuyển dụng
                             </Button>
+                            <Button rounded to={config.routes.statisticRecruiter} className={cx('btn', 'middle-btn')}>
+                                Thông kê
+                            </Button>
                         </>
                     )}
-                    <Button rounded to={config.routes.statistic} className={cx('btn', 'middle-btn')}>
-                        Thông kê
-                    </Button>
+
                     <Button rounded to={config.routes.userService} className={cx('btn', 'middle-btn')}>
                         Dịch vụ
                     </Button>
@@ -112,7 +133,7 @@ function UserHeader() {
                             <div className={cx('wallet-popup')} tabIndex="-1" {...attrs}>
                                 <div className={cx('wallet-info')}>
                                     <span className={cx('wallet-label')}>Số dư: </span>
-                                    <span className={cx('wallet-cash')}>20000 VND</span>
+                                    <span className={cx('wallet-cash')}>{accountBalance} USD</span>
                                 </div>
                                 <div className={cx('wallet-action')}>
                                     <Button to={config.routes.recharge} text className={cx('wallet-btn')}>
@@ -129,8 +150,8 @@ function UserHeader() {
                             <Wallet height="25px" width="25px" />
                         </div>
                     </HeadlessTippy>
-                    <Menu items={MENU_ITEMS} onChange={handleMenuChange}>
-                        <Image className={cx('user-avatar')} src={images.trang} alt="Nguyen Van A" />
+                    <Menu items={MENU_ITEMS} hideOnClick onChange={handleMenuChange}>
+                        <Image className={cx('user-avatar')} src={image} alt="Nguyen Van A" />
                     </Menu>
                 </div>
             </div>

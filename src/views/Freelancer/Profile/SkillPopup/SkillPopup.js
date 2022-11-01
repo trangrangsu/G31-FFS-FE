@@ -52,7 +52,7 @@ function SkillPopup({ userID, callback, onclose }) {
                             </div>
                         ))}
                     </div>
-                    <SearchSkill title="Nhập kỹ năng tại đây" onClick={handleAddSkill} />
+                    <SearchSkill title="Nhập kỹ năng tại đây" userID={userID} onClick={handleAddSkill} />
                 </div>
                 <div className={cx('row')}>
                     <Button primary onClick={handleAdd} className={cx('save-btn')}>

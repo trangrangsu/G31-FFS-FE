@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,8 +13,10 @@ import {
     faVenusMars,
 } from '@fortawesome/free-solid-svg-icons';
 import { faSquarePlus, faTrashCan } from '@fortawesome/free-regular-svg-icons';
-import { ref, getDownloadURL, listAll } from 'firebase/storage';
+import { useSearchParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
+import * as freelancerProfileServices from '../../../services/freelancerProfileServices';
 import images from '../../../assets/images';
 import * as firebase from '../../../firebase/firebase';
 import WorkExpPopup from './WorkExpPopup';
@@ -30,73 +31,21 @@ import EducationItem from './EducationItem';
 import Image from '../../../components/Image';
 import styles from './Profile.module.scss';
 const cx = classNames.bind(styles);
-const Profile = ({ freelancerId }) => {
-    const freelancer = {
-        id: '1',
-        gender: '1',
-        phone: '0337177679',
-        fullName: 'Nguyễn Hữu Tuyên',
-        address: 'SN02/07 ngõ 18 Tân Xã - Thạch Thất',
-        city: 'Hà Nội',
-        country: 'Việt Nam',
-        skills: [
-            { id: 1, name: 'Java' },
-            { id: 2, name: 'SQL' },
-            { id: 3, name: 'C++' },
-        ],
-        costPerHour: '200.000',
-        email: 'congbv@fpt.edu.vn',
-        description:
-            'Tôi là một lập trình viên tiềm năng, hãy tuyển tôi,tôi có kĩ năng làm việc trong nhiều tập đoàn lớn, với hoài bão và ý chí, có kiến thức về lập trình backend và các thể loại khác',
-        cv: 'tuyen.pdf',
-        educations: [
-            {
-                id: '1',
-                university: 'Đại học FPT',
-                major: 'Kỹ thuật phần mềm',
-                level: 'Cử nhân',
-                from: '2018',
-                to: '2022',
-            },
-            {
-                id: '2',
-                university: 'Đại học Kinh Công',
-                major: 'Thiết kế đồ họa',
-                level: 'Kỹ sư',
-                from: '2018',
-                to: '2022',
-            },
-        ],
-        workExps: [
-            {
-                id: '1',
-                companyName: 'FPT Software',
-                position: 'Intern',
-                from: '2016',
-                to: '2018',
-                description: 'Tôi triển khai làm front-end sản phẩm website giới thiệu',
-            },
-            {
-                id: '2',
-                companyName: 'FPT Software',
-                position: 'Intern',
-                from: '2016',
-                to: '2018',
-                description: 'Tôi triển khai làm front-end sản phẩm website giới thiệu',
-            },
-        ],
-        star: '5',
-        birthdate: '15-10-2022',
-        subCareer: 'Lập Trình viên',
-    };
+const Profile = () => {
     const imgRef = useRef();
-    const [fullName, setFullName] = useState();
-    const [birthdate, setBirthdate] = useState();
-    const [subCareer, setSubCareer] = useState();
-    const [phone, setPhone] = useState();
-    const [email, setEmail] = useState();
-    const [address, setAddress] = useState();
-    const [city, setCity] = useState();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [freelancerId, setFreelancerId] = useState(searchParams.get('id'));
+    const [freelancer, setFreelancer] = useState({});
+    const [fullName, setFullName] = useState('');
+    const [birthdate, setBirthdate] = useState('');
+    const [subCareer, setSubCareer] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [address, setAddress] = useState('');
+    const [city, setCity] = useState('');
+    const [avatar, setAvatar] = useState('');
+    const [cv, setCv] = useState('');
+    const [cvUrl, setCvUrl] = useState('#');
     const [showBasicInfo, setShowBasicInfo] = useState(false);
     const [showEducation, setShowEducation] = useState(false);
     const [showPrice, setShowPrice] = useState(false);
@@ -115,44 +64,105 @@ const Profile = ({ freelancerId }) => {
     const handleShowBasicInfo = () => {
         setShowBasicInfo(true);
     };
+    const fetchApi = async () => {
+        const result = await freelancerProfileServices.getProfileFreelancer(freelancerId);
+        console.log(result);
+        setFreelancer(result);
+        setFullName(result.fullName);
+        setBirthdate(result.birthDate);
+        setSubCareer(result.subCareer);
+        setPhone(result.phone);
+        setEmail(result.email);
+        setAddress(result.address);
+        setCity(result.city);
+        setPrice(result.costPerHour);
+        setDescription(result.description);
+        setGenderBy(result.gender);
+        if (result.educations !== null) {
+            setEducations(result.educations);
+        }
+        if (result.skills !== null) {
+            setSkills(result.skills);
+        }
+        if (result.workExps !== null) {
+            setWorkExps(result.workExps);
+        }
+        if (result.cv !== null) {
+            setCv(result.cv);
+        }
+        if (result.avatar !== null) {
+            setAvatar(result.avatar);
+        }
+    };
+    const editPopupApi = async (freelancer) => {
+        const result = await freelancerProfileServices.editByPopup(freelancer);
+        console.log(result);
+    };
+    const addSkillApi = async (skill) => {
+        const result = await freelancerProfileServices.addSkill(freelancerId, skill);
+        console.log(result);
+    };
+    const deleteSkillApi = async (skill) => {
+        const result = await freelancerProfileServices.deleteSkill(freelancerId, skill);
+        console.log(result);
+    };
+    const addEducationApi = async (education) => {
+        const result = await freelancerProfileServices.addEducation(freelancerId, education);
+        console.log(result);
+    };
+    const updateEducationApi = async (education) => {
+        const result = await freelancerProfileServices.updateEducation(education);
+        console.log(result);
+    };
+    const deleteEducationApi = async (id) => {
+        const result = await freelancerProfileServices.deleteEducation(id);
+        console.log(result);
+    };
+    const addWorkExpApi = async (workExp) => {
+        const result = await freelancerProfileServices.addWorkExp(freelancerId, workExp);
+        console.log(result);
+    };
+    const updateWorkExpApi = async (workExp) => {
+        const result = await freelancerProfileServices.updateWorkExp(workExp);
+        console.log(result);
+    };
+    const deleteWorkExpApi = async (id) => {
+        const result = await freelancerProfileServices.deleteWorkExp(id);
+        console.log(result);
+    };
+    const editByFieldApi = async (fieldName, value) => {
+        const result = await freelancerProfileServices.editByField(freelancerId, fieldName, value);
+        console.log(result);
+    };
     useEffect(() => {
-        setFullName(freelancer.fullName);
-        setBirthdate(freelancer.birthdate);
-        setSubCareer(freelancer.subCareer);
-        setPhone(freelancer.phone);
-        setEmail(freelancer.email);
-        setAddress(freelancer.address);
-        setCity(freelancer.city);
-        setPrice(freelancer.costPerHour);
-        setDescription(freelancer.description);
-        setGenderBy(freelancer.gender);
-        setEducations(freelancer.educations);
-        setSkills(freelancer.skills);
-        setWorkExps(freelancer.workExps);
+        fetchApi();
     }, []);
     useEffect(() => {
-        firebase.downloadFile(1, 'avatar', 'SH881994.JPG', setImage);
-    }, [image]);
+        console.log(avatar);
+        if (avatar !== '') firebase.downloadFile(freelancerId, 'avatar', avatar, setImage);
+    }, [avatar]);
+    useEffect(() => {
+        if (cv !== '') firebase.downloadFile(freelancerId, 'cv', cv, setCvUrl);
+    }, [cv]);
     const setGenderBy = (gender) => {
-        if (gender === '1') {
+        if (gender === true) {
             setGender('Nam');
-        } else if (gender === '0') {
+        } else if (gender === false) {
             setGender('Nữ');
-        } else {
-            setGender('Khác');
         }
     };
     const handleCallBack = (freelance) => {
         setShowBasicInfo(false);
-        console.log(freelance);
         setFullName(freelance.fullName);
         setBirthdate(freelance.birthdate);
-        setSubCareer(freelance.subCareer);
+        setSubCareer(freelance.subCareerName);
         setPhone(freelance.phone);
         setEmail(freelance.email);
         setAddress(freelance.address);
         setCity(freelance.city);
         setGenderBy(freelance.gender);
+        console.log(freelance);
+        editPopupApi(freelance);
     };
     const handleCallBackEducation = (education) => {
         setShowEducation(false);
@@ -160,8 +170,13 @@ const Profile = ({ freelancerId }) => {
         setEducations((pre) => {
             if (index > -1) {
                 pre[index] = education;
+                updateEducationApi(education);
                 return [...pre];
-            } else return [...pre, education];
+            } else {
+                console.log(education);
+                addEducationApi(education);
+                return [...pre, education];
+            }
         });
     };
     const handleCallBackWorkExp = (workExp) => {
@@ -169,13 +184,18 @@ const Profile = ({ freelancerId }) => {
         const index = workExps.findIndex((work) => work.id === workExp.id);
         setWorkExps((pre) => {
             if (index > -1) {
+                updateWorkExpApi(workExp);
                 pre[index] = workExp;
                 return [...pre];
-            } else return [...pre, workExp];
+            } else {
+                addWorkExpApi(workExp);
+                return [...pre, workExp];
+            }
         });
     };
     const handleOnDeleteEducation = (id) => {
         const index = educations.findIndex((edu) => edu.id === id);
+        deleteEducationApi(id);
         setEducations((pre) => {
             pre.splice(index, 1);
             return [...pre];
@@ -187,12 +207,14 @@ const Profile = ({ freelancerId }) => {
     };
     const handleCallBackSkill = (skills) => {
         setShowSkill(false);
-        console.log(skills);
+        addSkillApi(skills);
         setSkills((prev) => {
             return [...prev, ...skills];
         });
     };
     const handleDeleteSkill = (skill) => {
+        console.log(skill);
+        deleteSkillApi(skill.id);
         setSkills((prev) => {
             return prev.filter((s) => s.id !== skill.id);
         });
@@ -200,17 +222,22 @@ const Profile = ({ freelancerId }) => {
     const handleCallBackDescription = (description) => {
         setShowDescription(false);
         setDescription(description);
+        editByFieldApi('description', description);
     };
     const handleCallBackPrice = (price) => {
         setShowPrice(false);
         setPrice(price);
+        editByFieldApi('costPerHour', price);
     };
     const handleOnEditWorkExp = (workExp) => {
+        console.log(workExp);
         setShowWorkEpx(true);
         setWorkExp(workExp);
     };
     const handleOnDeleteWorkExp = (id) => {
         const index = workExps.findIndex((work) => work.id === id);
+        console.log(id);
+        deleteWorkExpApi(id);
         setWorkExps((pre) => {
             pre.splice(index, 1);
             return [...pre];
@@ -249,16 +276,17 @@ const Profile = ({ freelancerId }) => {
                                     <Image src={image} alt="avatar" ref={imgRef} />
                                 </div>
                                 <div className={cx('avatar-upload')}>
-                                    <label htmlFor="myfile">
+                                    <label htmlFor="myfile1">
                                         <FontAwesomeIcon icon={faPenToSquare} />
                                     </label>
                                     <input
                                         type="file"
-                                        id="myfile"
+                                        id="myfile1"
                                         name="myfile"
                                         onChange={(e) => {
-                                            console.log(e.target.files[0]);
-                                            firebase.upLoadFile(freelancer.id, 'avatar', e.target.files[0]);
+                                            console.log(e.target.files[0].name);
+                                            editByFieldApi('avatar', e.target.files[0].name);
+                                            firebase.upLoadFile(freelancerId, 'avatar', e.target.files[0]);
                                             previewFile();
                                         }}
                                     ></input>
@@ -352,16 +380,28 @@ const Profile = ({ freelancerId }) => {
                                     <label htmlFor="myfile">
                                         <FontAwesomeIcon icon={faSquarePlus} />
                                     </label>
-                                    <input type="file" id="myfile" name="myfile"></input>
+                                    <input
+                                        type="file"
+                                        id="myfile"
+                                        name="myfile"
+                                        onChange={(e) => {
+                                            console.log(e.target.files[0]);
+                                            setCv(e.target.files[0].name);
+                                            editByFieldApi('cv', e.target.files[0].name);
+                                            firebase.upLoadFile(freelancerId, 'cv', e.target.files[0]);
+                                        }}
+                                    ></input>
                                 </div>
                                 <div className={cx('cv-content')}>
                                     <div className={cx('cv-left')}>
                                         <FontAwesomeIcon icon={faFileLines} />
                                     </div>
-                                    <div className={cx('cv-right')}>
-                                        <a href="#">{freelancer.cv}</a>
-                                        <FontAwesomeIcon icon={faTrashCan} />
-                                    </div>
+                                    {cv !== '' && (
+                                        <div className={cx('cv-right')}>
+                                            <a href={cvUrl}>{cv}</a>
+                                            <FontAwesomeIcon icon={faTrashCan} />
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -414,7 +454,7 @@ const Profile = ({ freelancerId }) => {
                         </div>
                     </div>
                     <div className={cx('feedback')}>
-                        <Feedback userId="1" />
+                        <Feedback userId={freelancerId} />
                     </div>
                 </div>
             </div>
@@ -429,11 +469,11 @@ const Profile = ({ freelancerId }) => {
                 />
             )}
             {showSkill && (
-                <SkillPopup userID={freelancer.id} callback={handleCallBackSkill} onclose={() => setShowSkill(false)} />
+                <SkillPopup userID={freelancerId} callback={handleCallBackSkill} onclose={() => setShowSkill(false)} />
             )}
             {showDescription && (
                 <DescriptionPopup
-                    description={freelancer.description}
+                    description={description}
                     callback={handleCallBackDescription}
                     onclose={() => setShowDescription(false)}
                 />
@@ -450,8 +490,5 @@ const Profile = ({ freelancerId }) => {
             )}
         </div>
     );
-};
-Profile.propTypes = {
-    freelancerId: PropTypes.string.isRequired,
 };
 export default Profile;

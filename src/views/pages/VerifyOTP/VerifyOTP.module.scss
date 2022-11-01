@@ -1,92 +1,21 @@
 .wrapper {
     margin: 120px;
-}
-.form {
-    background: #fff;
-    border: 1px solid #8e76e4;
-    margin: 0 auto;
-    max-width: 530px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-}
-.title {
-    font-size: 30px;
-    font-weight: 700;
-    margin-bottom: 5px;
-    text-align: center;
-}
-.message{
-    background-color: #7CED95;
-    height: 100px;
+    height: 291px;
     p{
-        text-align: center;
-        padding: 25px;
+        align-content: center;
     }
 }
-.input{
-    margin: 20px 0;
-}
-.custom {
-    padding: 10px !important;
-    + label {
-        padding: 10px 0 10px 5px !important;
-    }
-    &:focus {
-        border: none;
-
-        + label {
-            color: #6aa0f7 !important;
-            transform: translateY(-1rem) translateY(0.1rem) scale(0.8) !important;
-
-            + div {
-                border: none;
-            }
-            + div > div {
-                border-color: #6aa0f7 !important;
-            }
-            + div > div:nth-child(1) {
-                border-right: none !important;
-                box-shadow: -1px 0 0 0 #6aa0f7, 0 -1px 0 0 #6aa0f7, 0 1px 0 0 #6aa0f7 !important;
-            }
-            + div > :nth-child(2) {
-                border-left: none !important;
-                border-right: none !important;
-                border-top: 1px solid transparent !important;
-                box-shadow: 0 1px 0 0 #6aa0f7 !important;
-            }
-            + div > :nth-child(3) {
-                border-left: none !important;
-                box-shadow: 1px 0 0 0 #6aa0f7, 0 -1px 0 0 #6aa0f7, 0 1px 0 0 #6aa0f7 !important;
-            }
-        }
-    }
-}
-.text{
-    font-size: 14px;
+.content{
+    margin: 0 auto;
+    width: 1200px;
+    height: 291px;
+    padding: 20px;
+    background-color: #fff;
     text-align: center;
-    line-height: 24px;
-    font-family: 'Segoe UI';
 }
-.link{
-    font-size: 14px;
-    padding: 0;
-    color: #4F9FEA;
-    border: none;
-    line-height: 24px;
-    font-weight: bold;
-    font-family: 'Segoe UI';
-    min-width: 95px;
-}
-.btn{
-    height: 50px;
-    font-size: 22px;
-    margin-top: 10px;
-    border: 1px solid #6d51d4;
-    background: #6d51d4;
-    color: #fff;
-    &:hover{
-        background:#7451F8;
-        color: #fff;
-    }
+.top{
+    font-weight: 600;
+    color: #5bc53b;
+    font-size: 24px;
+
 }

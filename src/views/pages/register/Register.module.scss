@@ -1,130 +1,47 @@
 .wrapper {
     margin: 120px;
 }
-.form {
+.container {
     background: #fff;
-    border: 1px solid #8e76e4;
+    border: 1px solid #196885;
     margin: 0 auto;
-    max-width: 530px;
+    max-width: 800px;
     padding: 20px;
     display: flex;
     flex-direction: column;
 }
-.title {
-    color: #7451F8;
-    font-size: 30px;
-    font-weight: 700;
-    margin-bottom: 5px;
+.title{
     text-align: center;
+    margin-bottom: 0px;
 }
-.btn {
-    height: 50px;
+.under-title{
+    text-align: center;
+    font-size: 16px;
+}
+.gray-500{
+    color: gray;
+    font-weight: 500;
+}
+.link{
     font-size: 18px;
-    color: #8e76e4;
-    border: 1px solid #8e76e4;
+    padding: 0px;
+    color:#1c62a3;
+    text-decoration: none;
     &:hover{
-        color: #7451F8;
-        border: 1px solid #7451F8;
+        text-decoration: underline;
+        color: #195893;
     }
 }
-.container {
-    margin: 10px 0;
-}
-.margin-right {
-    width: 251px;
-    margin-right: 20px;
-}
-.custom {
-    padding: 10px !important;
-    + label {
-        padding: 10px 0 10px 5px !important;
-    }
-    &:focus {
-        border: none;
-
-        + label {
-            color: #6aa0f7 !important;
-            transform: translateY(-1rem) translateY(0.1rem) scale(0.8) !important;
-
-            + div {
-                border: none;
-            }
-            + div > div {
-                border-color: #6aa0f7 !important;
-            }
-            + div > div:nth-child(1) {
-                border-right: none !important;
-                box-shadow: -1px 0 0 0 #6aa0f7, 0 -1px 0 0 #6aa0f7, 0 1px 0 0 #6aa0f7 !important;
-            }
-            + div > :nth-child(2) {
-                border-left: none !important;
-                border-right: none !important;
-                border-top: 1px solid transparent !important;
-                box-shadow: 0 1px 0 0 #6aa0f7 !important;
-            }
-            + div > :nth-child(3) {
-                border-left: none !important;
-                box-shadow: 1px 0 0 0 #6aa0f7, 0 -1px 0 0 #6aa0f7, 0 1px 0 0 #6aa0f7 !important;
-            }
-        }
-    }
-}
-.role-form {
-    border: 1px solid #bdbdbd;
-    border-top: none;
-    border-radius: 0.25rem;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    position: relative;
-}
-.label {
-    position: absolute;
-    left: 0.75rem;
-    padding-top: 0.37rem;
-    transform-origin: 0 0;
-    margin-bottom: 0;
-    display: inline-block;
-    transform: translateY(-1rem) translateY(0.1rem) scale(0.8) !important;
-    font-size: 18px;
-}
-.content {
+.role{
     display: flex;
     flex-direction: row;
+    margin: 0 auto;
 }
-.freelancer {
-    margin: 20px 50px 15px 50px;
+.freelancer{
+    margin-right: 10px;
 }
-.recruiter {
-    margin: 20px 0 15px 100px;
-}
-.left-top {
-    border-top: 1px solid #bdbdbd;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 5px;
-    height: 10px;
-    border-radius: 0.25rem;
-}
-.right-top {
-    border-top: 1px solid #bdbdbd;
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 325px;
-    height: 10px;
-    border-radius: 0.25rem;
-}
-.text {
-    text-align: center;
-    font-weight: 400;
-    margin-top: 15px;
-}
-.link {
-    font-size: 17px;
-    padding: 0;
-    color: #7451F8;
-    &:hover{
-        color: #7451F8;
-    }
+.message{
+    padding-left: 24px;
+    color: #49be25;
+    font-weight: 600;
 }

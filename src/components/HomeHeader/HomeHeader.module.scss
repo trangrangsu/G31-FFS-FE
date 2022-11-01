@@ -27,7 +27,13 @@
 }
 
 .btn {
-    height: 50px;
+    height: 40px;
     font-size: 18px;
-    box-shadow: 0px 3px 4px grey;
+    text-decoration: none;
+    + .btn{
+        margin-left: 10px;
+    }
+    &:hover{
+        text-decoration: underline;
+    }
 }

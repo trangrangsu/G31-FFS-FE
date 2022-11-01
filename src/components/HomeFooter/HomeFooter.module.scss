@@ -1,9 +1,10 @@
 .wrapper {
     width: 100%;
-    background-color: #eb9b34;
+    background-color: #1c62a3;
     display: flex;
     flex-direction: column;
     align-items: center;
+    color: var(--white);
 }
 .container {
     width: var(--default-layout-width);
@@ -24,7 +25,7 @@
 
     a {
         color: var(--white);
-        background-color: #eb9b34;
+        background-color: #1c62a3;
         margin: 0 15px;
 
         svg {
