@@ -1,3 +1,173 @@
 .wrapper {
     margin: 120px;
+    margin-left: 215px;
+    margin-bottom: 10px;
+}
+
+//container
+.container {
+    width: 900px;
+    height: 300px;
+    align-items: center;
+    background-color: #ced7ee;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #adb4c5;   
+    margin-left: 100px;
+    border-top-color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.111);
+}
+.container-header{
+    width: 900px;
+    height: 100px;
+    display: flex;
+    border: 1px solid #adb4c5; 
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-color: white;
+}
+.container-header h2{
+    padding-top: 30px;
+    padding-left: 50px;
+    color: black;
+}
+.container-header-name{
+    margin-top: 30px;
+    margin-left: 470px;
+    display: flex;
+}
+.faWallet{
+    padding-top: 5px;
+}
+.container-header-name a{
+    padding-left: 5px;
+    font-weight: bold;
+    color: black;
+    position: relative;
+    z-index: 1;
+}
+
+//.container-date
+.container-first{
+    margin-top: 25px;
+    width: 800px;
+    height: 150px;
+    display: flex;
+    border-radius: 5px;
+    border: 1px solid #5673b6; 
+    background-color: white;
+    box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.111);
+    font-size: 17px;
+    position: relative;
+    z-index: 1;
+}
+.container-date-first{
+    width: 250px;
+    height: 70px;
+    margin-top: 55px;
+    margin-left: 10px;
+}
+.container-first tr td{
+    padding: 3px;
+}
+.container-date-first tr td:first-child{
+    color: #063BB7;
+}
+.container-date-second{
+    width: 250px;
+    height: 70px;
+    margin-top: 55px;
+}
+.container-date-second tr td:first-child{
+    color: #063BB7;
+}
+.button-search{
+    width: 150px;
+    height: 40px;
+    margin-left: 100px;
+    margin-top: 55px;
+    background-color: #0074F5;
+    padding-top: 20px;
+    color: white;
+}
+.button-search h6{
+    color: white;
+}
+
+//recharge
+.recharge{
+    margin-top: 10px;
+    width: 900px;
+    height: 560px;
+    background-color: white;
+    border: 1px solid #adb4c5;  
+    align-items: center;
+    margin-left: 100px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.111);
+}
+.recharges {
+    margin-top: 20px;
+    margin-left: 25px;
+    width: 850px;
+    text-align: center;
+    font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    border: 3px solid #ddd;
+    .table-header {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        background-color: #0074F5;
+        color: #fff;
+    }
+    td,
+    th {
+        border: 1px solid #fff;
+        padding: 8px;
+    }
+    tr:nth-child(even) {
+        background-color: #dfdfeb;
+    }
+}
+.table-paging {
+    margin-top: 15px;
+    color: rgba(22, 24, 35, 0.5) !important;
+    .active-page span{
+        background-color: #4f5d73 !important;
+        border-color: #4f5d73 !important;
+        color: var(--white) !important;
+    }
+    li a{
+        color: rgba(22, 24, 35, 0.8) !important;
+    }
+}
+
+//banner
+.mb-bank{
+    width: 200px;
+    height: 870px;
+}
+.bannerSale{
+    width: 100%;
+    position: absolute;
+    // position: fixed;
+    top: 10px;
+    left: 0px;
+    margin-top: 110px;;
+}
+.banner_wrap{
+    width: 900px;
+    margin: auto;
+}
+.bannerSale_left{
+    float: left;
+    margin-left: -225px;
+}
+.bannerSale_right{
+    float: right;
+    margin-right: -220px;
 }
