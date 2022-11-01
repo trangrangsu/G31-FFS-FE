@@ -1,13 +1,9 @@
-import React from 'react';
+import { useState } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faLocationDot, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { faHeart, faBookmark, faComments } from '@fortawesome/free-regular-svg-icons';
-import { ProSidebarProvider } from 'react-pro-sidebar';
-import { Sidebar, Menu, MenuItem, SubMenu, useProSidebar } from 'react-pro-sidebar';
-import { Select } from 'antd';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import { Select, Menu } from 'antd';
 
 import styles from './SearchJob.module.scss';
 
@@ -18,51 +14,97 @@ const handleChange = (value) => {
     console.log(`selected ${value}`);
 };
 
-const listCareer = [
-    {
-        careerName: 'Thiết kế',
-        listSubcareer: ['Thiết kế logo', 'Thiết kế mỹ thuật', 'Kiến trúc', 'Decor phòng ngủ'],
-    },
-    {
-        careerName: 'IT',
-        listSubcareer: ['Lập trình web', 'Lập trình mobie', 'UX/UI'],
-    },
-    {
-        careerName: 'Xây dựng',
-        listSubcareer: ['Tạo bản vẽ', 'Thiết kế phòng ngủ', 'Xây dựng cầu đường', 'Trang trí phòng khách'],
-    },
+function getItem(label, key, icon, children, type) {
+    return {
+        key,
+        icon,
+        children,
+        label,
+        type,
+    };
+}
+const items = [
+    getItem('Navigation Three', 'sub4', null, [
+        getItem('Option 9', '9'),
+        getItem('Option 10', '10'),
+        getItem('Option 11', '11'),
+        getItem('Option 12', '12'),
+    ]),
 ];
-
 const SearchJob = () => {
-    // const { collapseSidebar } = useProSidebar();
+    const careers = [
+        {
+            id: 1,
+            name: 'Thiết kế',
+            subCareers: {
+                data: [
+                    {
+                        subCareerId: 1,
+                        subCareerName: 'Thiết kế logo',
+                    },
+                    {
+                        subCareerId: 2,
+                        subCareerName: 'Thiết kế mỹ thuật',
+                    },
+                    {
+                        subCareerId: 3,
+                        subCareerName: 'Kiến trúc',
+                    },
+                ],
+            },
+        },
+        {
+            id: 2,
+            name: 'IT',
+            subCareers: {
+                data: [
+                    {
+                        subCareerId: 4,
+                        subCareerName: 'Lập trình web',
+                    },
+                    {
+                        subCareerId: 5,
+                        subCareerName: 'Lập trình mobie',
+                    },
+                    {
+                        subCareerId: 6,
+                        subCareerName: 'UX/UI',
+                    },
+                ],
+            },
+        },
+        {
+            id: 3,
+            name: 'Xây dựng',
+            subCareers: {
+                data: [
+                    {
+                        subCareerId: 7,
+                        subCareerName: 'Tạo bản vẽ',
+                    },
+                    {
+                        subCareerId: 8,
+                        subCareerName: 'Xây dựng cầu đường',
+                    },
+                    {
+                        subCareerId: 9,
+                        subCareerName: 'Trang trí phòng khách',
+                    },
+                ],
+            },
+        },
+    ];
+    const renderItemsMenu = (careers) => {};
+    const onClick = (e) => {
+        console.log('click ', e);
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <div className={cx('page-title')}>Tìm kiếm việc làm</div>
                 <div className={cx('left')}>
                     <div className={cx('left-component')}>
-                        <ProSidebarProvider>
-                            <Sidebar className={cx('list-career')}>
-                                <Menu>
-                                    {listCareer.map((career) => {
-                                        return (
-                                            <SubMenu className={cx('career')} label={career.careerName}>
-                                                {career.listSubcareer.map((subcareer) => {
-                                                    return (
-                                                        <MenuItem>
-                                                            <FormControlLabel
-                                                                control={<Checkbox />}
-                                                                label={subcareer}
-                                                            />
-                                                        </MenuItem>
-                                                    );
-                                                })}
-                                            </SubMenu>
-                                        );
-                                    })}
-                                </Menu>
-                            </Sidebar>
-                        </ProSidebarProvider>
+                        <Menu onClick={onClick} mode="inline" items={items} />
                     </div>
                 </div>
                 <div className={cx('right')}>

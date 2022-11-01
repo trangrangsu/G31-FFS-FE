@@ -52,7 +52,7 @@ function UserHeader() {
     const accountBalance = useSelector((state) => state.accountBalance).toFixed(1);
     const accountAvatar = useSelector((state) => state.accountAvatar);
     const [image, setImage] = useState(images.defaultAvatar);
-    if (account.role !== 'freelancer') {
+    if (account.role === 'recruiter') {
         console.log(account.role);
         MENU_ITEMS[0].to.pathname = config.routes.recruiterProfile;
         MENU_ITEMS[0].to.search = `?id=${account.userId}`;

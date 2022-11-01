@@ -1,19 +1,9 @@
-import { object } from 'prop-types';
 import { createStore } from 'redux';
 import * as loginServices from './services/loginServices';
 
 const userId = sessionStorage.getItem('userId');
 console.log(userId);
 
-const fetchApi = async (userId) => {
-    const result = await loginServices.getInfoUser(userId);
-    if (typeof result === object) {
-        initialState.account = result;
-        initialState.accountBalance = result.accountBalance;
-        initialState.accountAvatar = result.avatar;
-    }
-};
-fetchApi(userId);
 const initialState = {
     sidebarShow: true,
     account: {},
@@ -331,7 +321,16 @@ const initialState = {
         'Vĩnh Phúc ',
     ],
 };
-
+const fetchApi = async (userId) => {
+    const result = await loginServices.getInfoUser(userId);
+    console.log(result);
+    if (typeof result === 'object') {
+        initialState.account = result;
+        initialState.accountBalance = result.accountBalance;
+        initialState.accountAvatar = result.avatar;
+    }
+};
+fetchApi(userId);
 const changeState = (state = initialState, { type, ...rest }) => {
     switch (type) {
         case 'set':
