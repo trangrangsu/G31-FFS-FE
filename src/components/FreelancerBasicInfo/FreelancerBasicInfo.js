@@ -11,6 +11,7 @@ import TextField from '@mui/material/TextField';
 import dayjs from 'dayjs';
 import { Checkbox } from 'antd';
 
+import * as careerServices from '../../services/careerServices';
 import Combox from '../Popper/Combox';
 import CareerMenu from '../Popper/CareerMenu';
 import Button from '../Button';
@@ -18,66 +19,7 @@ import styles from './FreelancerBasicInfo.module.scss';
 const cx = classNames.bind(styles);
 
 const FreelancerBasicInfo = ({ freelancer, onClick }) => {
-    const careers = [
-        {
-            id: 1,
-            name: 'Công nghệ thông tin',
-            subCareers: {
-                title: 'Công nghệ thông tin',
-                data: [
-                    {
-                        id: 1,
-                        name: 'Kỹ thuật phần mềm',
-                    },
-                    {
-                        id: 2,
-                        name: 'An toàn thông tin',
-                    },
-                    {
-                        id: 3,
-                        name: 'Khoa học máy tính',
-                    },
-                    {
-                        id: 4,
-                        name: 'Block chain',
-                    },
-                    {
-                        id: 5,
-                        name: 'Internet vạn vật',
-                    },
-                ],
-            },
-        },
-        {
-            id: 2,
-            name: 'Thiết kế',
-            subCareers: {
-                title: 'Thiết kế',
-                data: [
-                    {
-                        id: 6,
-                        name: 'Thiết kế đồ họa',
-                    },
-                    {
-                        id: 7,
-                        name: 'Thiết kế thương hiệu',
-                    },
-                    {
-                        id: 8,
-                        name: 'Thiết kế sáng tạo',
-                    },
-                    {
-                        id: 9,
-                        name: 'Thiết kế tương tác',
-                    },
-                    {
-                        id: 10,
-                        name: 'Thiết kế đa phương tiện',
-                    },
-                ],
-            },
-        },
-    ];
+    const [careers, setCareers] = useState([]);
     const [name, setName] = useState('');
     const [gender, setGender] = useState(true);
     const [phone, setPhone] = useState('');
@@ -107,8 +49,13 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
 
     const countries = useSelector((state) => state.country);
     const cities = useSelector((state) => state.city);
-
+    const getCareeersApi = async () => {
+        const result = await careerServices.getCareers();
+        console.log(result);
+        setCareers(result);
+    };
     useEffect(() => {
+        getCareeersApi();
         if (freelancer !== undefined) {
             setName(freelancer.fullName);
             setGender(freelancer.gender);

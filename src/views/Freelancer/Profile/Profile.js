@@ -14,7 +14,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faSquarePlus, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { useSearchParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 import * as freelancerProfileServices from '../../../services/freelancerProfileServices';
 import images from '../../../assets/images';

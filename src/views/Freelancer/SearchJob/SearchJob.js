@@ -1,211 +1,137 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faLocationDot, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { faHeart, faBookmark, faComments } from '@fortawesome/free-regular-svg-icons';
-import { Select, Menu } from 'antd';
+import { Select, Menu, Input, Pagination } from 'antd';
+import { useSelector } from 'react-redux';
 
+import * as searchPostFreelancerServices from '../../../services/searchPostFreelancerServices';
+import * as careerServices from '../../../services/careerServices';
+import PostItem from './PostItem';
+import Image from '../../../components/Image';
+import images from '../../../assets/images';
 import styles from './SearchJob.module.scss';
 
 const cx = classNames.bind(styles);
-
+const { Search } = Input;
 const { Option } = Select;
-const handleChange = (value) => {
-    console.log(`selected ${value}`);
-};
 
-function getItem(label, key, icon, children, type) {
-    return {
-        key,
-        icon,
-        children,
-        label,
-        type,
-    };
-}
-const items = [
-    getItem('Navigation Three', 'sub4', null, [
-        getItem('Option 9', '9'),
-        getItem('Option 10', '10'),
-        getItem('Option 11', '11'),
-        getItem('Option 12', '12'),
-    ]),
-];
 const SearchJob = () => {
-    const careers = [
-        {
-            id: 1,
-            name: 'Thiết kế',
-            subCareers: {
-                data: [
-                    {
-                        subCareerId: 1,
-                        subCareerName: 'Thiết kế logo',
-                    },
-                    {
-                        subCareerId: 2,
-                        subCareerName: 'Thiết kế mỹ thuật',
-                    },
-                    {
-                        subCareerId: 3,
-                        subCareerName: 'Kiến trúc',
-                    },
-                ],
-            },
-        },
-        {
-            id: 2,
-            name: 'IT',
-            subCareers: {
-                data: [
-                    {
-                        subCareerId: 4,
-                        subCareerName: 'Lập trình web',
-                    },
-                    {
-                        subCareerId: 5,
-                        subCareerName: 'Lập trình mobie',
-                    },
-                    {
-                        subCareerId: 6,
-                        subCareerName: 'UX/UI',
-                    },
-                ],
-            },
-        },
-        {
-            id: 3,
-            name: 'Xây dựng',
-            subCareers: {
-                data: [
-                    {
-                        subCareerId: 7,
-                        subCareerName: 'Tạo bản vẽ',
-                    },
-                    {
-                        subCareerId: 8,
-                        subCareerName: 'Xây dựng cầu đường',
-                    },
-                    {
-                        subCareerId: 9,
-                        subCareerName: 'Trang trí phòng khách',
-                    },
-                ],
-            },
-        },
-    ];
-    const renderItemsMenu = (careers) => {};
-    const onClick = (e) => {
-        console.log('click ', e);
+    const account = useSelector((state) => state.account);
+    const cities = useSelector((state) => state.city);
+    const [careers, setCareers] = useState([]);
+    const [posts, setPosts] = useState([]);
+    const [area, setArea] = useState('');
+    const [keyword, setKeyword] = useState('');
+    const [subCareerId, setSubCareerId] = useState(-1);
+    const [paymentType, setPaymentType] = useState(-1);
+    const [totalResults, setTotalResults] = useState(5);
+
+    const getCareeersApi = async () => {
+        const result = await careerServices.getCareers();
+        setCareers(result);
+    };
+    const getPostsApi = async (area, keyword, subCareerId, paymentType, pageIndex) => {
+        const result = await searchPostFreelancerServices.getPosts(
+            account.userId,
+            area,
+            keyword,
+            subCareerId,
+            paymentType,
+            pageIndex,
+        );
+        setPosts(result.results);
+        setTotalResults(result.totalResults);
+    };
+    useEffect(() => {
+        getCareeersApi();
+        getPostsApi(area, keyword, -1, paymentType, 0);
+    }, []);
+    const renderItemsMenu = (careers) => {
+        return careers.map((career) => {
+            const item = {};
+            item.key = career.id + career.name;
+            item.label = career.name;
+            item.children = career.subCareers.data.map((subCareer) => {
+                const subItem = {};
+                subItem.key = subCareer.id;
+                subItem.label = subCareer.name;
+                return subItem;
+            });
+            return item;
+        });
+    };
+
+    const onSelect = (e) => {
+        setSubCareerId(e.key);
+        getPostsApi(area, keyword, e.key, paymentType, 0);
+    };
+    const onSearch = (value) => {
+        getPostsApi(area, value, subCareerId, paymentType, 0);
+    };
+    const handleChangeArea = (value) => {
+        setArea(value);
+        getPostsApi(value, keyword, subCareerId, paymentType, 0);
+    };
+    const handleChangeBudget = (value) => {
+        setPaymentType(value);
+        getPostsApi(area, keyword, subCareerId, value, 0);
+    };
+    const onChange = (page, pageSize) => {
+        getPostsApi(area, keyword, subCareerId, paymentType, page - 1);
     };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <div className={cx('page-title')}>Tìm kiếm việc làm</div>
-                <div className={cx('left')}>
-                    <div className={cx('left-component')}>
-                        <Menu onClick={onClick} mode="inline" items={items} />
-                    </div>
-                </div>
-                <div className={cx('right')}>
-                    <div className={cx('right-component')}>
-                        <div className={cx('banner')}>
-                            I am looking for a full stack developer who is looking for long time work. I will provide
-                            full details on my website including a test site and list of tasks to begin with. I am
-                            looking for a developer who can offer me good rates for
+                <div className={cx('displayFlex')}>
+                    <div className={cx('left')}>
+                        <div className={cx('left-component')}>
+                            <Menu onSelect={onSelect} mode="inline" theme="light" items={renderItemsMenu(careers)} />
                         </div>
+                        <div className={cx('left-banner')}>
+                            <Image src={images.bannerSearchFreelancer} alt="banner" />
+                        </div>
+                    </div>
+                    <div className={cx('right')}>
                         <div className={cx('right-component')}>
-                            <div className={cx('search-input')}>Search</div>
                             <div className={cx('combobox-filter')}>
                                 <Select
                                     className={cx('select-location')}
                                     defaultValue="Vị trí"
-                                    style={{ width: 130 }}
-                                    onChange={handleChange}
+                                    onChange={handleChangeArea}
                                 >
-                                    <Option value="Vị trí">Vị trí</Option>
-                                    <Option value="Hà Nội">Hà Nội</Option>
-                                    <Option value="Hải Phòng">Hải Phòng</Option>
+                                    <Option value="">Vị trí</Option>
+                                    {cities.map((city, index) => (
+                                        <Option key={index} value={city}>
+                                            {city}
+                                        </Option>
+                                    ))}
                                 </Select>
-
                                 <Select
                                     className={cx('select-budget')}
                                     defaultValue="Ngân sách"
-                                    style={{
-                                        width: 120,
-                                    }}
-                                    onChange={handleChange}
+                                    onChange={handleChangeBudget}
                                 >
-                                    <Option value="Ngân sách">Ngân sách</Option>
-                                    <Option value="200.000đ - 500.000đ">200.000đ - 500.000đ</Option>
-                                    <Option value="500.000đ - 1.000.000đ">500.000đ - 1.000.000đ</Option>
+                                    <Option value="-1">Loại Ngân sách</Option>
+                                    <Option value="1">Theo giờ</Option>
+                                    <Option value="2">Theo dự án</Option>
                                 </Select>
+                                <div className={cx('search-input')}>
+                                    <Search
+                                        placeholder="nhập từ khóa"
+                                        onChange={(e) => setKeyword(e.target.value)}
+                                        onSearch={onSearch}
+                                        enterButton
+                                    />
+                                </div>
                             </div>
-                            <div className={cx('btn-search')}>
-                                {' '}
-                                <FontAwesomeIcon className={cx('ic-search')} icon={faMagnifyingGlass} />
-                            </div>
-                        </div>
-                        <div className={cx('right-component')}>
-                            <div className={cx('list-post')}>
+                            <div className={cx('container-post')}>
                                 <div className={cx('list-post-title')}>Danh sách bài đăng</div>
                                 <div className={cx('post')}>
-                                    <div className={cx('row1')}>
-                                        <div className={cx('post-title')}>
-                                            Thiết kế logo cho công ty quản lý điện CMS
-                                        </div>
-                                        <div className={cx('post-action')}>
-                                            <FontAwesomeIcon className={cx('ic-action-apply')} icon={faHeart} />
-                                            <FontAwesomeIcon className={cx('ic-action-save')} icon={faBookmark} />
-                                        </div>
-                                    </div>
-                                    <div className={cx('row2')}>
-                                        <div className={cx('post-payment')}>Theo giờ - </div>
-                                        <div className={cx('post-budget')}>budget: 200.000vnđ - </div>
-                                        <div className={cx('post-posted-time')}> Đã đăng 5h trước</div>
-                                    </div>
-                                    <div className={cx('row3')}>
-                                        <div className={cx('post-description')}>
-                                            I am looking for a full stack developer who is looking for long time work. I
-                                            will provide full details on my website including a test site and list of
-                                            tasks to begin with. I am looking for a developer who can offer me good
-                                            rates for good quality of work in the quickest time frame. The project
-                                            budget is not fixed but I am looking for the best possible rates but since I
-                                            have lot... more
-                                        </div>
-                                    </div>
-                                    <div className={cx('row4')}>
-                                        <div className={cx('post-subcareer')}>Thiết kế logo</div>
-                                    </div>
-                                    <div className={cx('row5')}>
-                                        <div className={cx('post-list-skill')}>
-                                            <div className={cx('skill')}>UX/UI</div>
-                                            <div className={cx('skill')}>JS</div>
-                                            <div className={cx('skill')}>HTML</div>
-                                            <div className={cx('skill')}>JAVA</div>
-                                        </div>
-                                    </div>
-                                    <div className={cx('row6')}>
-                                        <div className={cx('post-star-point')}>
-                                            <div className={cx('feedback-title')}>AVG feedback</div>
-                                            <div className={cx('ic-feedback')}>
-                                                <FontAwesomeIcon IconclassName={cx('ic-cmt')} icon={faComments} />
-                                            </div>
-                                            <div className={cx('list-star')}>
-                                                <FontAwesomeIcon className={cx('ic-star')} icon={faStar} />
-                                                <FontAwesomeIcon className={cx('ic-star')} icon={faStar} />
-                                                <FontAwesomeIcon className={cx('ic-star')} icon={faStar} />
-                                                <FontAwesomeIcon className={cx('ic-star')} icon={faStar} />
-                                                <FontAwesomeIcon className={cx('ic-star')} icon={faStar} />
-                                            </div>
-                                            <div className={cx('total-number-feedback')}></div>
-                                        </div>
-                                        <div className={cx('post-location')}>
-                                            <FontAwesomeIcon IconclassName={cx('ic-location')} icon={faLocationDot} />
-                                            Hòa Lạc
-                                        </div>
-                                    </div>
+                                    {posts.map((post, index) => (
+                                        <PostItem key={index} post={post} userId={account.userId} />
+                                    ))}
                                 </div>
+                                <Pagination defaultCurrent="1" pageSize="10" total={totalResults} onChange={onChange} />
                             </div>
                         </div>
                     </div>

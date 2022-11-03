@@ -6,7 +6,7 @@ console.log(userId);
 
 const initialState = {
     sidebarShow: true,
-    account: {},
+    account: { role: 'freelancer' },
     accountBalance: 0,
     accountAvatar: '',
     country: [
@@ -330,7 +330,9 @@ const fetchApi = async (userId) => {
         initialState.accountAvatar = result.avatar;
     }
 };
-fetchApi(userId);
+if (userId !== null) {
+    fetchApi(userId);
+}
 const changeState = (state = initialState, { type, ...rest }) => {
     switch (type) {
         case 'set':
