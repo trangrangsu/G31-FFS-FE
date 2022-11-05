@@ -28,7 +28,7 @@ const SearchFreelancer = () => {
                                 Lọc
                             </div>
                         </div>
-                        <div className={cx('filterp')}></div>
+                        {/* <div className={cx('filterp')}></div> */}
                         <div className={cx('choose-item')}>
                             <div className={cx('date')}>
                                 <h5>Chi phí/Giờ</h5>
