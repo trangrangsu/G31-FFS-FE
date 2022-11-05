@@ -1,8 +1,11 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faSackDollar, faStar } from '@fortawesome/free-solid-svg-icons';
 import { faHeart, faBookmark } from '@fortawesome/free-regular-svg-icons';
+import { useSearchParams } from 'react-router-dom';
+
+import * as getPostDetailFreelancerServices from '../../../services/getPostDetailFreelancerServices';
 import styles from './ViewDetailPost.module.scss';
 const cx = classNames.bind(styles);
 const post = {
@@ -28,6 +31,16 @@ const client = {
     starPoint: 5,
 };
 const ViewDetailPost = () => {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const getPostDetailApi = async (postId) => {
+        const result = await getPostDetailFreelancerServices.getPostDetail(postId);
+        console.log(result);
+        if (typeof result === 'object') {
+        }
+    };
+    useEffect(() => {
+        getPostDetailApi(searchParams.get('id'));
+    });
     return (
         <div className={cx('wrapper')}>
             <div className={cx('page-title')}>Chi tiết bài đăng</div>

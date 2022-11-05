@@ -35,7 +35,7 @@ export const navAdmin = [
     },
     {
         component: CNavItem,
-        name: 'Service',
+        name: 'Membership',
         to: config.routes.service,
         icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
     },

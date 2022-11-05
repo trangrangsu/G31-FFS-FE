@@ -1,13 +1,14 @@
 import { createStore } from 'redux';
-import * as transactionServices from './services/transactionServices';
+import * as loginServices from './services/loginServices';
 
 const userId = sessionStorage.getItem('userId');
 console.log(userId);
 
 const initialState = {
     sidebarShow: true,
-    account: {},
+    account: { role: 'freelancer' },
     accountBalance: 0,
+    accountAvatar: '',
     country: [
         'Canada',
         'Sint Maarten',
@@ -320,7 +321,18 @@ const initialState = {
         'Vĩnh Phúc ',
     ],
 };
-
+const fetchApi = async (userId) => {
+    const result = await loginServices.getInfoUser(userId);
+    console.log(result);
+    if (typeof result === 'object') {
+        initialState.account = result;
+        initialState.accountBalance = result.accountBalance;
+        initialState.accountAvatar = result.avatar;
+    }
+};
+if (userId !== null) {
+    fetchApi(userId);
+}
 const changeState = (state = initialState, { type, ...rest }) => {
     switch (type) {
         case 'set':

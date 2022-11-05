@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
@@ -12,6 +13,7 @@ import images from '../../assets/images';
 import Button from '../../components/Button';
 import styles from './UserHeader.module.scss';
 import { Notification, Wallet } from '../Icons/Icons';
+import * as firebase from '../../firebase/firebase';
 
 const cx = classNames.bind(styles);
 const MENU_ITEMS = [
@@ -48,10 +50,14 @@ const MENU_ITEMS = [
 function UserHeader() {
     const account = useSelector((state) => state.account);
     const accountBalance = useSelector((state) => state.accountBalance).toFixed(1);
-    if (account.role !== 'freelancer') {
+    const accountAvatar = useSelector((state) => state.accountAvatar);
+    const [image, setImage] = useState(images.defaultAvatar);
+    if (account.role === 'recruiter') {
+        console.log(account.role);
         MENU_ITEMS[0].to.pathname = config.routes.recruiterProfile;
         MENU_ITEMS[0].to.search = `?id=${account.userId}`;
     } else {
+        console.log(account.role);
         MENU_ITEMS[0].to.search = `?id=${account.userId}`;
     }
     const handleMenuChange = (menuItem) => {
@@ -62,6 +68,9 @@ function UserHeader() {
             default:
         }
     };
+    useEffect(() => {
+        firebase.downloadFile(account.userId, 'avatar', accountAvatar, setImage);
+    }, [accountAvatar]);
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -142,7 +151,7 @@ function UserHeader() {
                         </div>
                     </HeadlessTippy>
                     <Menu items={MENU_ITEMS} hideOnClick onChange={handleMenuChange}>
-                        <Image className={cx('user-avatar')} src={images.trang} alt="Nguyen Van A" />
+                        <Image className={cx('user-avatar')} src={image} alt="Nguyen Van A" />
                     </Menu>
                 </div>
             </div>

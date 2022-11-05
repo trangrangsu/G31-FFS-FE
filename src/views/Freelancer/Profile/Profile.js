@@ -44,6 +44,7 @@ const Profile = () => {
     const [city, setCity] = useState('');
     const [avatar, setAvatar] = useState('');
     const [cv, setCv] = useState('');
+    const [cvUrl, setCvUrl] = useState('#');
     const [showBasicInfo, setShowBasicInfo] = useState(false);
     const [showEducation, setShowEducation] = useState(false);
     const [showPrice, setShowPrice] = useState(false);
@@ -85,9 +86,23 @@ const Profile = () => {
         if (result.workExps !== null) {
             setWorkExps(result.workExps);
         }
+        if (result.cv !== null) {
+            setCv(result.cv);
+        }
+        if (result.avatar !== null) {
+            setAvatar(result.avatar);
+        }
     };
     const editPopupApi = async (freelancer) => {
         const result = await freelancerProfileServices.editByPopup(freelancer);
+        console.log(result);
+    };
+    const addSkillApi = async (skill) => {
+        const result = await freelancerProfileServices.addSkill(freelancerId, skill);
+        console.log(result);
+    };
+    const deleteSkillApi = async (skill) => {
+        const result = await freelancerProfileServices.deleteSkill(freelancerId, skill);
         console.log(result);
     };
     const addEducationApi = async (education) => {
@@ -122,8 +137,12 @@ const Profile = () => {
         fetchApi();
     }, []);
     useEffect(() => {
-        firebase.downloadFile(1, 'avatar', 'SH881994.JPG', setImage);
-    }, [image]);
+        console.log(avatar);
+        if (avatar !== '') firebase.downloadFile(freelancerId, 'avatar', avatar, setImage);
+    }, [avatar]);
+    useEffect(() => {
+        if (cv !== '') firebase.downloadFile(freelancerId, 'cv', cv, setCvUrl);
+    }, [cv]);
     const setGenderBy = (gender) => {
         if (gender === true) {
             setGender('Nam');
@@ -187,12 +206,14 @@ const Profile = () => {
     };
     const handleCallBackSkill = (skills) => {
         setShowSkill(false);
-        console.log(skills);
+        addSkillApi(skills);
         setSkills((prev) => {
             return [...prev, ...skills];
         });
     };
     const handleDeleteSkill = (skill) => {
+        console.log(skill);
+        deleteSkillApi(skill.id);
         setSkills((prev) => {
             return prev.filter((s) => s.id !== skill.id);
         });
@@ -214,6 +235,8 @@ const Profile = () => {
     };
     const handleOnDeleteWorkExp = (id) => {
         const index = workExps.findIndex((work) => work.id === id);
+        console.log(id);
+        deleteWorkExpApi(id);
         setWorkExps((pre) => {
             pre.splice(index, 1);
             return [...pre];
@@ -252,15 +275,16 @@ const Profile = () => {
                                     <Image src={image} alt="avatar" ref={imgRef} />
                                 </div>
                                 <div className={cx('avatar-upload')}>
-                                    <label htmlFor="myfile">
+                                    <label htmlFor="myfile1">
                                         <FontAwesomeIcon icon={faPenToSquare} />
                                     </label>
                                     <input
                                         type="file"
-                                        id="myfile"
+                                        id="myfile1"
                                         name="myfile"
                                         onChange={(e) => {
-                                            console.log(e.target.files[0]);
+                                            console.log(e.target.files[0].name);
+                                            editByFieldApi('avatar', e.target.files[0].name);
                                             firebase.upLoadFile(freelancerId, 'avatar', e.target.files[0]);
                                             previewFile();
                                         }}
@@ -355,16 +379,28 @@ const Profile = () => {
                                     <label htmlFor="myfile">
                                         <FontAwesomeIcon icon={faSquarePlus} />
                                     </label>
-                                    <input type="file" id="myfile" name="myfile"></input>
+                                    <input
+                                        type="file"
+                                        id="myfile"
+                                        name="myfile"
+                                        onChange={(e) => {
+                                            console.log(e.target.files[0]);
+                                            setCv(e.target.files[0].name);
+                                            editByFieldApi('cv', e.target.files[0].name);
+                                            firebase.upLoadFile(freelancerId, 'cv', e.target.files[0]);
+                                        }}
+                                    ></input>
                                 </div>
                                 <div className={cx('cv-content')}>
                                     <div className={cx('cv-left')}>
                                         <FontAwesomeIcon icon={faFileLines} />
                                     </div>
-                                    <div className={cx('cv-right')}>
-                                        <a href="#">{cv}</a>
-                                        <FontAwesomeIcon icon={faTrashCan} />
-                                    </div>
+                                    {cv !== '' && (
+                                        <div className={cx('cv-right')}>
+                                            <a href={cvUrl}>{cv}</a>
+                                            <FontAwesomeIcon icon={faTrashCan} />
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -417,7 +453,7 @@ const Profile = () => {
                         </div>
                     </div>
                     <div className={cx('feedback')}>
-                        <Feedback userId="1" />
+                        <Feedback userId={freelancerId} />
                     </div>
                 </div>
             </div>

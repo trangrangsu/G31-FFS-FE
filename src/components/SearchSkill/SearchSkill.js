@@ -21,22 +21,13 @@ function SearchSkill({ title, userID, className, onClick }) {
     const [loading, setLoading] = useState(false);
 
     const debouncedValue = useDebounce(searchValue, 500);
-    const getListSkillsFreelancerApi = async () => {
-        const result = await freelancerProfileServices.getListSkillsFreelancer(userID);
-        console.log(result);
-        setSearchResult(result);
-    };
-    useEffect(() => {
-        setSearchResult(['Java', 'SQL', 'C++']);
-    }, []);
     useEffect(() => {
         if (!debouncedValue.trim()) {
             setSearchResult([]);
             return;
         }
         const getListSkillsFreelancerApi = async () => {
-            const result = await freelancerProfileServices.getListSkillsFreelancer(userID);
-            console.log(result);
+            const result = await freelancerProfileServices.getListSkillsFreelancer(userID, debouncedValue);
             setSearchResult(result);
         };
         getListSkillsFreelancerApi();

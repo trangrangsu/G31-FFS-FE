@@ -35,6 +35,7 @@ const routes = {
     updateRecruiter: '/recruiter/updateProfile',
     statisticRecruiter: '/recruiter/statistic',
     postJob: '/recruiter/postJob',
+    postApplyManagement: '/recruiter/postApplyManagement',
 };
 
 export default routes;

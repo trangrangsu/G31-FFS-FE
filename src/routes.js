@@ -40,6 +40,7 @@ const ViewDetailPost = React.lazy(() => import('./views/freelancer/ViewDetailPos
 const RecruiterProfile = React.lazy(() => import('./views/recruiter/Profile'));
 const SearchFreelancer = React.lazy(() => import('./views/recruiter/SearchFreelancer'));
 const PostManagement = React.lazy(() => import('./views/recruiter/PostManagement'));
+const PostApplyManagement = React.lazy(() => import('./views/recruiter/PostApplyManagement'));
 const VerifyOTP = React.lazy(() => import('./views/pages/VerifyOTP'));
 
 // Public routes
@@ -82,6 +83,7 @@ export const routes = [
     { path: config.routes.recruiterProfile, element: RecruiterProfile, layout: UserLayout },
     { path: config.routes.searchFreelancer, element: SearchFreelancer, layout: UserLayout },
     { path: config.routes.postManagement, element: PostManagement, layout: UserLayout },
+    { path: config.routes.postApplyManagement, element: PostApplyManagement, layout: UserLayout },
     { path: config.routes.statisticRecruiter, element: StatisticRecruiter, layout: UserLayout },
 ];
 
@@ -134,6 +136,7 @@ export const recruiterRoutes = [
     { path: config.routes.searchFreelancer, element: SearchFreelancer, layout: UserLayout },
     { path: config.routes.postManagement, element: PostManagement, layout: UserLayout },
     { path: config.routes.postJob, element: PostJob, layout: UserLayout },
+    { path: config.routes.postApplyManagement, element: PostApplyManagement, layout: UserLayout },
 ];
 
 export default routes;
