@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 
 import * as registerServices from '../../../services/registerServices';
 import FreelancerBasicInfo from '../../../components/FreelancerBasicInfo';
+import RecruiterBasicInfo from '../../../components/RecruiterBasicInfo/RecruiterBasicInfo';
 import config from '../../../config';
 import Button from '../../../components/Button';
 import styles from './Register.module.scss';
@@ -16,16 +17,18 @@ const Register = () => {
     const fetchApi = async (freelancer) => {
         const result = await registerServices.register(freelancer);
         console.log(result);
-        setIsRegister(true);
-    };
-    const handleCallBack = (freelance) => {
-        if (isFreelancer) {
-            freelance.role = 'freelancer';
-        } else {
-            freelance.role = 'recruiter';
+        if (result !== undefined) {
+            setIsRegister(true);
         }
-        console.log(freelance);
-        fetchApi(freelance);
+    };
+    const handleCallBack = (user) => {
+        if (isFreelancer) {
+            user.role = 'freelancer';
+        } else {
+            user.role = 'recruiter';
+        }
+        console.log(user);
+        fetchApi(user);
     };
     return (
         <div className={cx('wrapper')}>
@@ -44,7 +47,10 @@ const Register = () => {
                         id="freelancer"
                         label="Tôi muốn tuyển dụng"
                         className={cx('freelancer')}
-                        onChange={() => setIsRecruiter(!isRecruiter)}
+                        onChange={() => {
+                            setIsRecruiter(true);
+                            setIsFreelancer(false);
+                        }}
                     />
                     <CFormCheck
                         type="radio"
@@ -52,11 +58,15 @@ const Register = () => {
                         id="recruiter"
                         label="Tôi muốn tìm việc"
                         className={cx('recruiter')}
-                        onChange={() => setIsFreelancer(!isFreelancer)}
+                        onChange={() => {
+                            setIsFreelancer(true);
+                            setIsRecruiter(false);
+                        }}
                     />
                 </div>
                 {isFreelancer && <FreelancerBasicInfo onClick={handleCallBack} />}
-                {isFreelancer && isRegister && (
+                {isRecruiter && <RecruiterBasicInfo onClick={handleCallBack} />}
+                {(isFreelancer || isRecruiter) && isRegister && (
                     <div className={cx('message')}>
                         <p>Yêu cầu của bạn đã được chấp nhận. Hãy kiểm tra email để xác nhận tài khoản</p>
                     </div>

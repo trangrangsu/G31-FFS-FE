@@ -14,6 +14,7 @@ const JobApply = () => {
     const [status, setStatus] = useState(-1);
     const [posts, setPosts] = useState([]);
     const [totalResults, setTotalResults] = useState(0);
+    const [type, setType] = useState('apply');
 
     const getAllJobRequestApi = async (status, pageIndex) => {
         const result = await freelancerJobManagementServices.getAllJobRequest(account.userId, status, pageIndex);
@@ -40,11 +41,13 @@ const JobApply = () => {
     };
     const handleApplied = () => {
         setActive(true);
+        setType('apply');
         getAllJobRequestApi(status, 0);
     };
     const handleSaved = () => {
         setActive(false);
         setStatus(-1);
+        setType('save');
         getAllJobSavedApi(0);
     };
     const onChangePage = (page, pageSize) => {
@@ -95,7 +98,7 @@ const JobApply = () => {
                         </div>
                     )}
                     {posts.map((post) => (
-                        <PostItem key={post.postID} post={post} />
+                        <PostItem key={post.postID} post={post} type={type} userId={account.userId} />
                     ))}
                 </div>
                 {totalResults > 10 && (

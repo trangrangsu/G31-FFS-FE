@@ -1,18 +1,46 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faLocationDot, faBookmark as faBookmarkSolid } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark } from '@fortawesome/free-regular-svg-icons';
+import { Tooltip } from 'antd';
 
+import * as searchPostFreelancerServices from '../../../services/searchPostFreelancerServices';
 import config from '../../../config';
 import Button from '../../../components/Button';
 import styles from './JobApply.module.scss';
 
 const cx = classNames.bind(styles);
 
-function PostItem({ post }) {
+function PostItem({ post, type, userId }) {
     const navigate = useNavigate();
+    const [titleTooltip, setTitleTolltip] = useState('Huỷ lưu');
+    const [isSolidBookmark, setIsSolidBookmark] = useState(true);
+    const [message, setMessage] = useState('');
 
+    useEffect(() => {
+        if (post.isApproved === 1) {
+            setMessage('Chấp nhận');
+        }
+        if (post.isApproved === 0) {
+            setMessage('Từ chối');
+        }
+        if (post.isApproved === 2) {
+            setMessage('Đang chờ');
+        }
+    }, []);
+    const addJobSavedApi = async (postID) => {
+        const result = await searchPostFreelancerServices.addJobSaved(userId, postID);
+        console.log(result);
+    };
+    useEffect(() => {
+        if (isSolidBookmark) {
+            setTitleTolltip('Huỷ lưu');
+        } else {
+            setTitleTolltip('Lưu');
+        }
+    }, [isSolidBookmark]);
     const handleViewDetail = () => {
         const to = {
             pathname: config.routes.viewDetailPost,
@@ -20,13 +48,32 @@ function PostItem({ post }) {
         };
         navigate(to);
     };
+    const handleSave = () => {
+        setIsSolidBookmark(!isSolidBookmark);
+        addJobSavedApi(post.postID);
+    };
     return (
         <div className={cx('wrapper-post')}>
             <div className={cx('row-1')}>
                 <Button className={cx('post-title')} onClick={handleViewDetail}>
                     {post.jobTitle}
                 </Button>
-                <div></div>
+                <div>
+                    {type === 'save' && (
+                        <Tooltip title={titleTooltip} placement="bottom">
+                            <FontAwesomeIcon
+                                className={cx('action-save')}
+                                icon={isSolidBookmark ? faBookmarkSolid : faBookmark}
+                                onClick={handleSave}
+                            />
+                        </Tooltip>
+                    )}
+                    {type === 'apply' && (
+                        <div className={cx('message', 'message' + post.isApproved)}>
+                            <p>{message}</p>
+                        </div>
+                    )}
+                </div>
             </div>
             <div className={cx('row-2')}>
                 <div className={cx('post-payment')}>{post.paymentType}</div>

@@ -103,7 +103,7 @@ const RechargeHistory = () => {
                                     return (
                                         <tr key={recharge.id}>
                                             <td>{recharge.paymentCode}</td>
-                                            <td>{recharge.amount}</td>
+                                            <td>{recharge.amount} $</td>
                                             <td>{recharge.dateRequest}</td>
                                         </tr>
                                     );

@@ -1,0 +1,23 @@
+.label{
+    font-size: 18px;
+    font-weight: 600;
+}
+.column{
+    margin-bottom: 10px;
+}
+.row{
+    display: flex;
+    flex-direction: row;
+}
+.left{
+    margin-right: 80px;
+}
+.save-btn{
+    margin-top: 20px;
+    padding: 0;
+    font-size: 20px;
+    min-width: 92px;
+    + button{
+        margin-left: 10px;
+    }
+}

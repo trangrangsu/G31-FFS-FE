@@ -39,7 +39,7 @@
         }
 
         .paging {
-
+            padding: 10px;
         }
     }
 }
@@ -73,19 +73,31 @@
     }
 }
 
-.action-apply{
-    margin-right: 10px;
-    color: #e2383b;
-
+.action-save{
+    color: #e09044;
+    font-size: 24px;
     &:hover{
         cursor: pointer;
     }
 }
-.action-save{
-    color: #e09044;
-    &:hover{
-        cursor: pointer;
+.message{
+    padding: 5px;
+    border-radius: 5px;
+
+    p{
+        margin: 0;
+        font-weight: 600;
+        color: white;
     }
+}
+.message1{
+    background-color: #25be30;
+}
+.message0{
+    background-color: #d03032;
+}
+.message2{
+    background-color: #B15C0D;
 }
 .row-2{
     display: flex;

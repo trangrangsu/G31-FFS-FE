@@ -1,5 +1,7 @@
 .wrapper {
     margin-top: 70px;
+    display: flex;
+    flex-direction: column;
 }
 
 .page-title {
@@ -8,6 +10,7 @@
     font-size: 25px;
     padding:15px;
     font-weight: 600;
+    background-color: #ffffff;
 }
 
 .container {
@@ -15,20 +18,20 @@
     margin: 0 auto;
     font-size: 25px;
     background-color: #ffffff;
-    border: 1px solid #a8a2a2;
-    border-radius: 20px;
-    font-style: normal;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    padding: 24px;
 
     .left {
         width: 70%;
-        display: inline-block;
         border-right: 1px solid #a8a2a2;
-
+        padding-right: 20px;
         .left-component {
             padding-left: 30px;
             padding: 10px;
             border-top: 1px solid #a8a2a2;
+            min-height: 150px;
             .post-title {
                 font-weight: bold;
                 align-items: center;
@@ -52,6 +55,7 @@
                 margin-top: 5px;
                 font-size: 60%;
                 color: #8b8b8b;
+                margin-bottom: 0;
             }
             .post-location {
                 margin-top: 5px;
@@ -71,13 +75,14 @@
 
             .post-description {
                 width: 98%;
-                margin-top: 10px;
-                margin-bottom: 50px;
-                font-size: 60%;
+                padding: 10px;
+                min-height: 100px;
+                font-size: 70%;
             }
 
             .post-budget-ic {
                 font-size: 100%;
+                color: orange;
                 position: absolute;
                 display: inline-block;
             }
@@ -144,36 +149,36 @@
     }
     .right {
         width: 30%;
-        float: right;
-     
-
+        padding-left: 20px;
         .right-component {
             padding-left: 10px;
             border-top: 1px solid #a8a2a2;
 
             .action {
-                margin: 30px 60px;
-                font-size: 80%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px;
+                min-height: 150px;
+
                 .btn-apply {
-                    padding: 4px 8px;
-                    background: #5bb0ff;
-                    border: 1px solid #5bb0ff;
-                    border-radius: 30px;
-                    text-align: center;
+                    width: 200px;
+                    background: #244666;
+                    border-radius: 20px;
                     margin-bottom: 10px;
-                }
-                .btn-apply:hover {
-                    background: #208ef5;
+                    font-size: 22px;
+                    padding: 0;
+                    color: white;
+
                 }
                 .btn-save {
-                    padding: 2px 4px;
-                    background: #d9d9d9;
-                    border: 1px solid #1e3791;
-                    text-align: center;
-                    border-radius: 30px;
-                }
-                .btn-save:hover {
-                    background: #8a8484;
+                    width: 200px;
+                    background: #244666;
+                    border-radius: 20px;
+                    font-size: 22px;
+                    padding: 0;
+                    color: white;
+
                 }
             }
 
@@ -202,6 +207,9 @@
                     color: #a8a2a2;
                     display: inline-block;
                     margin-left: 8px;
+                    p{
+                        margin: 0;
+                    }
                 }
             }
 
@@ -214,6 +222,9 @@
                     font-size: 50%;
                     font-weight: 500;
                     color: #a8a2a2;
+                    p{
+                        margin: 0;
+                    }
                 }
             }
 
@@ -241,27 +252,13 @@
                 font-weight: 600;
             }
             .company-link {
-                margin-top: 16px;
-                width: 95%;
-                padding: 6px 12px;
+                padding: 1px 12px;
                 font-size: 70%;
                 background: #89b7fc;
                 color: #303e71;
                 border-radius: 5px;
-            }
-
-            .btn-copy {
-                width: fit-content;
-                height: fit-content;
-                margin-top: 4px;
-                font-size: 70%;
-                font-weight: 600;
-                color: #2946e0;
-                display: block;
-
-            }
-            .btn-copy:hover{
-                background-color: #89b7fc;
+                text-decoration: none;
+                margin-bottom: 2%;
             }
         }
     }
@@ -275,4 +272,65 @@
     margin-top: 15px;
     font-size: 70%;
     padding-bottom: 100px;
+}
+.document{
+    font-size: 18px;
+    text-decoration: none;
+    font-weight: 600;
+}
+.container-subCareer-skill{
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+}
+.action-apply{
+    margin-right: 10px;
+    color: #e2383b;
+
+    &:hover{
+        cursor: pointer;
+    }
+}
+.action-save{
+    color: #e09044;
+    &:hover{
+        cursor: pointer;
+    }
+}
+.action-message{
+    display: flex;
+    flex-direction: column;
+    min-height: 150px;
+    font-size: 22px;
+    // background: #89b7fc;
+    // color: #303e71;
+    background: #283655;
+    color: white;
+    margin-bottom: 3%;
+    padding: 10px;
+    border-radius: 10px;
+    p{
+        margin: 0;
+        margin-bottom: 5px;
+        
+    }
+}
+.btn-link{
+    padding: 0;
+    text-decoration: none;
+    font-size: 22px;
+    background: #283655;
+    color: #96a7cc;
+    font-weight: 600;
+    min-width: 80px !important;
+    &:hover{
+        color: #96a7cc;
+    }
+}
+.btn-company{
+    padding: 0;
+}
+.footer{
+    margin: 0 auto;
+    margin-bottom: 1%;
 }

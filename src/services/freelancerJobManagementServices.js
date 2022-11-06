@@ -1,15 +1,9 @@
 import * as httpRequest from '../utils/httpRequest';
 
-//freelancerJobManagementServices.js
-//year-month-day from,to: null pageNo:0
-//http://localhost:8080/api/freelancer/getAllJobRequest?freelancerId=2&status=2
-
-//http://localhost:8080/api/freelancer/getAllJobSaved?freelancerId=2
-
-export const getAllJobRequest = async (freelancerId, status, pageNo) => {
+export const getAllJobRequest = async (freelancerId, status, pageIndex) => {
     try {
         const res = await httpRequest.get(
-            `api/freelancer/getAllJobRequest?freelancerId=${freelancerId}&status=${status}&pageNo=${pageNo}`,
+            `api/freelancer/getAllJobRequest?freelancerId=${freelancerId}&status=${status}&pageIndex=${pageIndex}`,
         );
         return res;
     } catch (error) {
