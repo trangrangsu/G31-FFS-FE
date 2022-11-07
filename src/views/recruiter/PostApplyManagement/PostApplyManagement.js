@@ -1,68 +1,151 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLocationDot, faStar } from '@fortawesome/free-solid-svg-icons';
-import { Input } from 'antd';
-import images from '../../../assets/images';
-import Image from '../../../components/Image';
-import { Pagination } from 'antd';
-import { Select } from 'antd';
+import { useSelector } from 'react-redux';
+import { Input, Select, Cascader, Pagination } from 'antd';
+
+import FreelancerItem from '../FreelancerItem';
+import Button from '../../../components/Button';
+
 import styles from './PostApplyManagement.module.scss';
+
 const cx = classNames.bind(styles);
-
 const { Search } = Input;
-const numberFreelancerAvaialble = 30;
-
-const skills = ['Python', 'C++', 'OOP', 'UX/UI'];
 const { Option } = Select;
+
+const numberFreelancerAvaialble = 30;
 const listFreelancer = [
     {
+        id: 1,
         avatar: '',
         userName: 'CongBV',
         subCareer: 'Lập trình viên mobie',
-        location: 'Hòa Lạc',
-        numberSkillRelevant: 4,
-        listSkill: ['Python', 'C++', 'OOP', 'UX/UI'],
+        area: 'Hòa Lạc',
+        description: 'tôi là lập trình viên.tôi là lập trình viên.tôi là lập trình viên.tôi là lập trình viên.',
+        costPerHour: '60,000',
+        skills: [
+            { id: 1, name: 'Python' },
+            { id: 2, name: 'C++' },
+            { id: 3, name: 'OOP' },
+            { id: 4, name: 'UX/UI' },
+        ],
         avgStartPoint: 4.5,
         totalFeedBack: 10,
     },
     {
+        id: 2,
         avatar: '',
         userName: 'ManhNV',
         subCareer: 'Lập trình viên website',
-        location: 'Bắc Giang',
-        numberSkillRelevant: 3,
-        listSkill: ['JS', 'HTML', 'CSS', 'React', 'UX/UI'],
+        area: 'Bắc Giang',
+        description: 'tôi là lập trình viên.tôi là lập trình viên.tôi là lập trình viên.tôi là lập trình viên.',
+        costPerHour: '60,000',
+        skills: [
+            { id: 1, name: 'Python' },
+            { id: 2, name: 'C++' },
+            { id: 3, name: 'OOP' },
+            { id: 4, name: 'UX/UI' },
+        ],
         avgStartPoint: 5.0,
         totalFeedBack: 45,
     },
     {
+        id: 3,
         avatar: '',
         userName: 'TuyenNH',
         subCareer: 'Designer',
-        location: 'Hà Nội',
-        numberSkillRelevant: 2,
-        listSkill: ['UX/UI', 'Photoshop', 'Adobe'],
+        area: 'Hà Nội',
+        description: 'tôi là lập trình viên.tôi là lập trình viên.tôi là lập trình viên.tôi là lập trình viên.',
+        costPerHour: '60,000',
+        skills: [
+            { id: 1, name: 'Python' },
+            { id: 2, name: 'C++' },
+            { id: 3, name: 'OOP' },
+            { id: 4, name: 'UX/UI' },
+        ],
         avgStartPoint: 5.0,
         totalFeedBack: 20,
     },
     {
+        id: 4,
         avatar: '',
         userName: 'TrangNB',
         subCareer: 'Thiết kế website font-end',
-        location: 'Bắc Ninh',
-        numberSkillRelevant: 4,
-        listSkill: ['JS', 'HTML', 'CSS', 'React', 'UX/UI'],
+        area: 'Bắc Ninh',
+        description: 'tôi là lập trình viên.tôi là lập trình viên.tôi là lập trình viên.tôi là lập trình viên.',
+        costPerHour: '60,000',
+        skills: [
+            { id: 1, name: 'Python' },
+            { id: 2, name: 'C++' },
+            { id: 3, name: 'OOP' },
+            { id: 4, name: 'UX/UI' },
+        ],
         avgStartPoint: 4.5,
         totalFeedBack: 30,
     },
 ];
 function PostApplyManagement() {
+    const cities = useSelector((state) => state.city);
+    const skills = [
+        {
+            id: 1,
+            name: 'Java',
+        },
+        {
+            id: 2,
+            name: 'C#',
+        },
+        {
+            id: 3,
+            name: 'Python',
+        },
+        {
+            id: 4,
+            name: 'English',
+        },
+        {
+            id: 5,
+            name: 'China',
+        },
+        {
+            id: 6,
+            name: 'Photoshop',
+        },
+    ];
+    const [active, setActive] = useState(1);
+    const [city, setCity] = useState('');
+    const [subCareerId, setSubCareerId] = useState(-1);
+    const [careers, setCareers] = useState([{ id: 1, name: 'cntt', subCareers: { data: [{ id: 1, name: 'cntt' }] } }]);
+
+    const onChangeArea = (value) => {
+        console.log(`selected ${value}`);
+        setCity(value);
+    };
+    const onSearchFreelancer = (value) => console.log(value);
+    const renderItemsMenu = (careers) => {
+        return careers.map((career) => {
+            const item = {};
+            item.value = career.id + career.name;
+            item.label = career.name;
+            item.children = career.subCareers.data.map((subCareer) => {
+                const subItem = {};
+                subItem.value = subCareer.id;
+                subItem.label = subCareer.name;
+                return subItem;
+            });
+            return item;
+        });
+    };
+    const onSelect = (e) => {
+        setSubCareerId(e.key);
+        //getPostsApi(area, keyword, e.key, paymentType, 0);
+    };
     const handleChange = (value) => {
         console.log(`selected ${value}`);
     };
-    const onSearch = (value) => console.log(value);
-    const [image, setImage] = useState(images.defaultAvatar);
+    const onChangeCareer = (value) => {
+        console.log(value);
+    };
+    const displayRender = (labels) => labels[labels.length - 1];
     return (
         <div className={cx('wrapper')}>
             <div className={cx('nav')}>
@@ -72,32 +155,73 @@ function PostApplyManagement() {
             <div className={cx('container')}>
                 <div className={cx('list-freelancer')}>
                     <div className={cx('list-head')}>
-                        <div className={cx('head-item1')}>Ứng tuyển</div>
-                        <div className={cx('head-item2')}>Chấp thuận</div>
-                        <div className={cx('head-item3')}>Từ chối</div>
+                        <Button className={cx('head-item', active === 1 ? 'active' : '')} onClick={() => setActive(1)}>
+                            Ứng tuyển
+                        </Button>
+                        <Button className={cx('head-item', active === 2 ? 'active' : '')} onClick={() => setActive(2)}>
+                            Chấp thuận
+                        </Button>
+                        <Button className={cx('head-item', active === 3 ? 'active' : '')} onClick={() => setActive(3)}>
+                            Từ chối
+                        </Button>
                     </div>
                     <div className={cx('search-area')}>
-                        <div className={cx('search-input')}>
-                            <Select
-                                defaultValue="Skill"
-                                style={{
-                                    width: 150,
-                                }}
-                                onChange={handleChange}
-                            >
-                                {skills.map((skill) => {
-                                    return <Option value={skill}>{skill}</Option>;
-                                })}
-                            </Select>
-
-                            <Search
-                                placeholder="input something"
-                                style={{
-                                    width: 500,
-                                }}
-                                onSearch={onSearch}
-                                enterButton
-                            />
+                        <div className={cx('row')}>
+                            <div className={cx('area')}>
+                                <Select
+                                    showSearch
+                                    placeholder="chọn khu vực"
+                                    optionFilterProp="children"
+                                    onChange={onChangeArea}
+                                    style={{ width: '200px' }}
+                                    filterOption={(input, option) =>
+                                        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                    }
+                                    options={cities.map((city) => {
+                                        return { value: city, label: city };
+                                    })}
+                                />
+                            </div>
+                            <div className={cx('input')}>
+                                <Search
+                                    placeholder="nhập từ khóa"
+                                    className={cx('input-keyword')}
+                                    onSearch={onSearchFreelancer}
+                                    enterButton
+                                />
+                            </div>
+                        </div>
+                        <div className={cx('row')}>
+                            <div className={cx('career')}>
+                                <Cascader
+                                    placeholder="chọn chuyên ngành"
+                                    style={{ width: '200px' }}
+                                    options={renderItemsMenu(careers)}
+                                    expandTrigger="hover"
+                                    displayRender={displayRender}
+                                    onChange={onChangeCareer}
+                                />
+                            </div>
+                            <div className={cx('skill')}>
+                                <Select
+                                    mode="multiple"
+                                    style={{
+                                        width: '100%',
+                                    }}
+                                    placeholder="chọn kỹ năng"
+                                    onChange={handleChange}
+                                    optionLabelProp="label"
+                                    filterOption={(input, option) =>
+                                        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                    }
+                                >
+                                    {skills.map((skill) => (
+                                        <Option key={skill.id} value={skill.id} label={skill.name}>
+                                            <div>{skill.name}</div>
+                                        </Option>
+                                    ))}
+                                </Select>
+                            </div>
                         </div>
 
                         <div className={cx('total-number-freelancer')}>
@@ -107,60 +231,11 @@ function PostApplyManagement() {
                     </div>
                     {listFreelancer.map((freelancer) => {
                         return (
-                            <div className={cx('freelancer')}>
-                                <div className={cx('left')}>
-                                    <div className={cx('avatar')}>
-                                        <Image src={image} alt="avatar" />
-                                    </div>
-                                </div>
-                                <div className={cx('right')}>
-                                    <div className={cx('row1')}>
-                                        <div className={cx('freelancer-username')}>{freelancer.userName}</div>
-                                        <div className={cx('action')}>
-                                            <div className={cx('btn-approve')}>Chấp thuận</div>
-                                            <div className={cx('btn-deny')}>Từ chối</div>
-                                        </div>
-                                    </div>
-                                    <div className={cx('row2')}>
-                                        <div className={cx('freelancer-subcareer')}>{freelancer.subCareer}</div>
-
-                                        <div className={cx('row3')}>
-                                            {/* <div className={cx('number-skill-relevant')}>
-                                                Có {freelancer.numberSkillRelevant} kĩ năng phù hợp
-                                            </div> */}
-                                            <div className={cx('freelancer-location')}>
-                                                <FontAwesomeIcon icon={faLocationDot} />
-                                                {freelancer.location}
-                                            </div>
-                                        </div>
-                                        <div className={cx('row4')}>
-                                            <div className={cx('skills')}>
-                                                {freelancer.listSkill.map((skill) => {
-                                                    return <div className={cx('skill')}>{skill}</div>;
-                                                })}
-                                                ;
-                                            </div>
-                                        </div>
-                                        <div className={cx('row5')}>
-                                            {' '}
-                                            <div className={cx('left-area')}>
-                                                <div className={cx('feedback-title')}>AVG star</div>
-                                                <div className={cx('ic-feedback')}>
-                                                    <FontAwesomeIcon IconclassName={cx('ic-cmt')} icon={faStar} />
-                                                </div>
-                                            </div>
-                                            <div className={cx('right-area')}>
-                                                <div className={cx('avg-star-point')}>
-                                                    {freelancer.avgStartPoint} điểm
-                                                </div>
-                                                <div className={cx('total-number-feedback')}>
-                                                    Tổng số {freelancer.totalFeedBack} phản hồi
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <FreelancerItem
+                                key={freelancer.id}
+                                freelancer={freelancer}
+                                type={active === 1 ? 'apply' : 'view'}
+                            />
                         );
                     })}
                 </div>

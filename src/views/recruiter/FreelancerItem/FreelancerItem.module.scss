@@ -1,0 +1,161 @@
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    border-bottom: 1px solid #a8a2a2;
+}
+.left {
+    width: 18%;
+    .avatar {
+        img {
+            margin-top: 6px;
+            height: 110px;
+            width: 110px;
+            background-color: #bbb;
+            border-radius: 50%;
+            background: rgb(129, 180, 247);
+        }
+    }
+}
+.right {
+    width: 100%;
+    margin-left: 10px;
+    .row1 {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        .freelancer-username {
+            display: flex;
+            flex-direction: row;
+        }
+        .action {
+            font-weight: 600;
+            display: flex;
+            flex-direction: row;
+
+            .btn-approve {
+                height: 32px;
+                padding: 2px;
+                font-size: 20px;
+                border-radius: 15px;
+                color: white;
+                background: #4385e9;
+                border: 1px solid #4385e9;
+                margin-right: 10px;
+                &:hover {
+                    background: #29589e;
+                }
+            }
+            .btn-deny {
+                height: 32px;
+                padding: 2px;
+                font-size: 20px;
+                border-radius: 15px;
+                border: 1px solid #a8a2a2;
+                color: #4385e9;
+                background: white;
+                &:hover {
+                    background: rgb(129, 128, 128);
+                    color: white;
+                }
+            }
+        }
+    }
+    .row2 {
+        width: 100%;
+        .freelancer-subcareer {
+            font-size: 16px;
+            padding: 1px 8px 1px 8px;
+            background: #bd2af0;
+            border-radius: 15px;
+            color: white;
+            display: inline-block;
+            text-align: center;
+        }
+    }
+    .row3 {
+        margin-top: 5px;
+        width: 80%;
+        font-size: 16px;
+
+    }
+    .row4 {
+        margin-top: 5px;
+        display: inline-block;
+        font-size: 16px;
+        .skills {
+            .skill {
+                display: inline-block;
+                padding: 1px 6px 1px 6px;
+                background: #b2bdc9;
+                border-radius: 15px;
+                color: #444343;
+                display: inline-block;
+                margin-right: 4px;
+            }
+        }
+    }
+    .row5 {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;        
+        .left-area {
+            display: inline-block;
+            .feedback-title {
+                font-size: 14px;
+                vertical-align: text-top;
+                font-weight: 600;
+                color: black;
+            }
+            .ic-feedback {
+                font-size: 16px;
+                color: rgb(230, 230, 67);
+                text-align: center;
+            }
+        }
+        .right-area {
+            display: inline-block;
+            margin-left: 5px;
+            .avg-star-point {
+                font-size: 14px;
+                font-weight: 600;
+                color: #868585;
+            }
+            .total-number-feedback {
+                font-size: 12px;
+                color: #a8a2a2;
+            }
+        }
+    }
+}
+.name{
+    font-weight: 700;
+    color: #2472e6;
+    font-size: 28px;
+    p{
+        margin: 0;
+    }
+}
+.freelancer-location {
+    color: #616466;
+    display: flex;
+    flex-direction: row;
+    font-size: 16px;
+    padding: 10px 0 0 10px;
+    p{
+        margin: 0;
+        margin-left: 5px;
+    }
+}
+.cost{
+    display: flex;
+    flex: 1;
+    p{
+        margin-bottom: 0;
+        margin-left: 1%;
+        font-size: 16px;
+    }
+}

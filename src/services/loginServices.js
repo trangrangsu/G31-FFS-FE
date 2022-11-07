@@ -40,3 +40,16 @@ export const changePassword = async (user) => {
         console.log(error);
     }
 };
+// {
+//     "email": "congbvhe141326@fpt.edu.vn",
+//      "oldPassword":"congthanh123",
+//     "password": "123456"
+//   }
+export const changePasswordAuthentication = async (user) => {
+    try {
+        const res = await httpRequest.put('changePassword', user);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};

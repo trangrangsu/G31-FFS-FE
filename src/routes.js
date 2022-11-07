@@ -25,7 +25,6 @@ const ResetPassword = React.lazy(() => import('./views/pages/ResetPassword'));
 const ForgetPassword = React.lazy(() => import('./views/pages/ForgetPassword'));
 const UpdateRecruiterProfile = React.lazy(() => import('./views/recruiter/Update'));
 const ViewDetailFreelancer = React.lazy(() => import('./views/pages/ViewDetailFreelancer'));
-const PostJob = React.lazy(() => import('./views/recruiter/Post'));
 const ChangePassword = React.lazy(() => import('./views/pages/ChangePassword'));
 const UserReport = React.lazy(() => import('./views/pages/UserReport'));
 const Recharge = React.lazy(() => import('./views/pages/Recharge'));
@@ -37,6 +36,7 @@ const FreelancerProfile = React.lazy(() => import('./views/freelancer/Profile'))
 const SearchJob = React.lazy(() => import('./views/freelancer/SearchJob'));
 const JobApply = React.lazy(() => import('./views/freelancer/JobApply'));
 const ViewDetailPost = React.lazy(() => import('./views/freelancer/ViewDetailPost'));
+const PostJob = React.lazy(() => import('./views/recruiter/Post'));
 const RecruiterProfile = React.lazy(() => import('./views/recruiter/Profile'));
 const SearchFreelancer = React.lazy(() => import('./views/recruiter/SearchFreelancer'));
 const PostManagement = React.lazy(() => import('./views/recruiter/PostManagement'));

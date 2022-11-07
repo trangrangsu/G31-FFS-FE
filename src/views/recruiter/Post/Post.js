@@ -1,24 +1,118 @@
+import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
-import styles from './Post.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import 'mdb-react-ui-kit/dist/css/mdb.min.css';
-import { Button, Select } from 'antd';
+import { useSelector } from 'react-redux';
+import { Cascader, Select, Input, Button, message, Upload, InputNumber } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+import { faPenToSquare, faFileLines, faUserCheck, faMoneyCheckDollar } from '@fortawesome/free-solid-svg-icons';
 
-import {
-    faPenToSquare,
-    faFileLines,
-    faUserCheck,
-    faMoneyCheckDollar,
-    faUpload,
-} from '@fortawesome/free-solid-svg-icons';
+import * as careerServices from '../../../services/careerServices';
+import * as recruiterCreatePostServices from '../../../services/recruiterCreatePostServices';
+import styles from './Post.module.scss';
+
 const cx = classNames.bind(styles);
 const { Option } = Select;
-const handleChange = (value) => {
-    console.log(`selected ${value}`);
-};
+const { TextArea } = Input;
 
-const skills = ['Python', 'C++', 'OOP', 'UX/UI'];
 function Post() {
+    const cities = useSelector((state) => state.city);
+    const account = useSelector((state) => state.account);
+    const [careers, setCareers] = useState([{ id: 1, name: 'cntt', subCareers: { data: [{ id: 1, name: 'cntt' }] } }]);
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [city, setCity] = useState('');
+    const [typePayment, setTypePayment] = useState('1');
+    const [amount, setAmount] = useState(0);
+    const [subCareer, setSubCareer] = useState(1);
+    const [attach, setAttach] = useState('');
+    const [skills, setSkills] = useState([]);
+    const [skillPost, setSkillPost] = useState('');
+
+    const props = {
+        name: 'file',
+        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+        headers: {
+            authorization: 'authorization-text',
+        },
+        onChange(info) {
+            if (info.file.status !== 'uploading') {
+                console.log(info.file, info.fileList);
+            }
+            if (info.file.status === 'done') {
+                setAttach(info.file.name);
+                message.success(`${info.file.name} file uploaded successfully`);
+            } else if (info.file.status === 'error') {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        },
+    };
+    const getCareeersApi = async () => {
+        const result = await careerServices.getCareers();
+        setCareers(result);
+    };
+    const getSkillApi = async () => {
+        const result = await recruiterCreatePostServices.getSkills();
+        console.log(result);
+        setSkills(result);
+    };
+    const createPostApi = async (post) => {
+        const result = await recruiterCreatePostServices.createPost(post);
+        if (result) {
+            message.success('Đăng bài thành công');
+        } else {
+            message.error('Đăng bài thất bại');
+        }
+    };
+
+    useEffect(() => {
+        getCareeersApi();
+        getSkillApi();
+    }, []);
+    const renderItemsMenu = (careers) => {
+        return careers.map((career) => {
+            const item = {};
+            item.value = career.id + career.name;
+            item.label = career.name;
+            item.children = career.subCareers.data.map((subCareer) => {
+                const subItem = {};
+                subItem.value = subCareer.id;
+                subItem.label = subCareer.name;
+                return subItem;
+            });
+            return item;
+        });
+    };
+    const displayRender = (labels) => labels[labels.length - 1];
+    const onChangeCareer = (value) => {
+        setSubCareer(value[1]);
+    };
+    const onChangeArea = (value) => {
+        setCity(value);
+    };
+    const handleChangeTypePayment = (value) => {
+        setTypePayment(value);
+        if (value === '1') {
+            setAmount(20000);
+        }
+    };
+    const handleSubmit = () => {
+        const post = {};
+        post.recruiterId = account.userId;
+        post.jobTitle = title;
+        post.subCareerId = subCareer;
+        post.description = description;
+        post.attach = attach;
+        post.paymentType = typePayment;
+        post.budget = amount;
+        post.area = city;
+        post.skillIds = skillPost;
+        createPostApi(post);
+        console.log(post);
+    };
+    const handleChangeSkill = (value) => {
+        setSkillPost(value);
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
@@ -31,19 +125,23 @@ function Post() {
                         <div className={cx('right-post')}>
                             <label className={cx('label-title')}>Việc cần tuyển Freelancer</label>
                             <label className={cx('label-subTitle')}>Chọn lĩnh vực cần tuyển</label>
-                            <select className={cx('form-select')} aria-label="Default select example">
-                                <option selected>
-                                    <label className={cx('form-label')}>--Tên Lĩnh Vực--</label>
-                                </option>
-                                <option value="2">Lập trình web</option>
-                                <option value="3">Ứng dụng di động</option>
-                                <option value="8">Việc lập trình khác</option>
-                            </select>
+                            <div>
+                                <Cascader
+                                    size="large"
+                                    placeholder="chọn chuyên ngành"
+                                    style={{ width: '400px' }}
+                                    options={renderItemsMenu(careers)}
+                                    expandTrigger="hover"
+                                    displayRender={displayRender}
+                                    onChange={onChangeCareer}
+                                />
+                            </div>
                             <label className={cx('label-subTitle')}>Đặt tên cụ thể cho công việc tuyển dụng</label>
-                            <input
-                                type="text"
-                                className={cx('form-input')}
+                            <Input
+                                size="large"
+                                value={title}
                                 placeholder="Ví dụ: Thiết kế website quản lí công ty"
+                                onChange={(e) => setTitle(e.target.value)}
                             />
                         </div>
                     </div>
@@ -51,13 +149,21 @@ function Post() {
                         <FontAwesomeIcon icon={faFileLines} className={cx('icon-post')} />
                         <div className={cx('right-post')}>
                             <label className={cx('label-title')}>Thông tin đầy đủ về yêu cầu tuyển dụng</label>
-                            <textarea
-                                className={cx('form-area')}
-                                rows="5"
-                                placeholder="Ví dụ:Cần thiết kế website có chức năng bán hàng, quản lí kho...."
-                            ></textarea>
-                            <label className={cx('label-attach')}>Tài liệu đính kèm</label>
-                            <input type="file" className={cx('attach')}></input>
+                            <TextArea
+                                placeholder="Diễn tả công việc"
+                                value={description}
+                                autoSize={{
+                                    minRows: 6,
+                                    maxRows: 10,
+                                }}
+                                allowClear
+                                onChange={(e) => setDescription(e.target.value)}
+                            />
+                            <div className={cx('upload')}>
+                                <Upload {...props}>
+                                    <Button icon={<UploadOutlined />}>tải tài liệu</Button>
+                                </Upload>
+                            </div>
                             <label className={cx('label-subTitle')}>Kỹ năng yêu cầu Freelancer phải có</label>
                             <div className={cx('input-skill')}>
                                 <Select
@@ -66,25 +172,21 @@ function Post() {
                                         width: '60%',
                                     }}
                                     placeholder="Kĩ năng yêu cầu"
-                                    onChange={handleChange}
+                                    onChange={handleChangeSkill}
                                     optionLabelProp="label"
+                                    filterOption={(input, option) =>
+                                        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                    }
                                 >
                                     {skills.map((skill) => {
                                         return (
-                                            <Option value={skill} label={skill}>
-                                                <div className="demo-option-label-item">{skill}</div>
+                                            <Option key={skill.id} value={skill.id} label={skill.name}>
+                                                <div className="demo-option-label-item">{skill.name}</div>
                                             </Option>
                                         );
                                     })}
                                 </Select>
                             </div>
-
-                            <label className={cx('label-subTitle')}>Hạn cuối đăng kí công việc</label>
-                            <input
-                                type="date"
-                                className={cx('form-input', 'deadline')}
-                                placeholder="Ví dụ: Thiết kế website quản lí công ty"
-                            />
                         </div>
                     </div>
                     <div className={cx('more-req')}>
@@ -92,15 +194,21 @@ function Post() {
                         <div className={cx('right-post')}>
                             <label className={cx('label-title')}>Yêu cầu khác với Freelancer </label>
                             <label className={cx('label-subTitle')}>Cần tuyển freelancer làm việc tại</label>
-                            <select className={cx('form-select')} aria-label="Default select example">
-                                <option selected>
-                                    <label className={cx('form-label')}>--Nơi cần thuê--</label>
-                                </option>
-                                <option value="0">Toàn Quốc</option>
-                                <option value="24">Hà Nội</option>
-                                <option value="31">TP. Hồ Chí Minh</option>
-                                <option value="15">Đà Nẵng</option>
-                            </select>
+                            <div>
+                                <Select
+                                    showSearch
+                                    placeholder="chọn khu vực"
+                                    optionFilterProp="children"
+                                    onChange={onChangeArea}
+                                    style={{ width: '400px' }}
+                                    filterOption={(input, option) =>
+                                        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                    }
+                                    options={cities.map((city) => {
+                                        return { value: city, label: city };
+                                    })}
+                                />
+                            </div>
                         </div>
                     </div>
                     <div className={cx('budget-post')}>
@@ -108,24 +216,45 @@ function Post() {
                         <div className={cx('right-post')}>
                             <label className={cx('label-title')}> Ngân sách dự kiến cho công việc này</label>
                             <label className={cx('label-subTitle')}>Hình thức trả lương</label>
-                            <select className={cx('form-select', 'payment')} aria-label="Default select example">
-                                <option selected>
-                                    <label className={cx('form-label')}>--Hình thức thanh toán--</label>
-                                </option>
-                                <option value="1">Thanh toán theo giờ</option>
-                                <option value="2">Thanh toán theo dự án</option>
-                            </select>
+                            <div>
+                                <Select
+                                    defaultValue={typePayment}
+                                    style={{
+                                        width: '400px',
+                                    }}
+                                    onChange={handleChangeTypePayment}
+                                    options={[
+                                        {
+                                            value: '1',
+                                            label: 'Thanh toán theo giờ',
+                                        },
+                                        {
+                                            value: '2',
+                                            label: 'Thanh toán theo dự án',
+                                        },
+                                    ]}
+                                />
+                            </div>
                             <label className={cx('label-subTitle')}>
-                                {' '}
-                                Số tiền tối đa có thể trả cho công việc này là:{' '}
+                                Số tiền tối đa có thể trả cho công việc này là
                             </label>
-                            <input type="number" className={cx('form-input')} placeholder="VNĐ" />
+                            <div>
+                                <InputNumber
+                                    style={{
+                                        width: '300px',
+                                    }}
+                                    value={amount}
+                                    formatter={(value) => `${value} VND`}
+                                    parser={(value) => value.replace(' VND', '')}
+                                    onChange={(e) => setAmount(e)}
+                                />
+                            </div>
                         </div>
                     </div>
                     <div className={cx('submit-button')}>
-                        <button type="submit" class="btn btn-primary">
-                            Submit
-                        </button>
+                        <Button type="primary" size="large" onClick={handleSubmit}>
+                            Đăng
+                        </Button>
                         <p>
                             Khi đăng việc, tôi xác nhận đồng ý các{' '}
                             <a href="/page/dieu-khoan-su-dung-danh-cho-khach-hang" target="_blank">

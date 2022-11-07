@@ -3,7 +3,9 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLocationDot, faPenToSquare, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { useSearchParams } from 'react-router-dom';
+import { message } from 'antd';
 
+import * as recruiterProfileServices from '../../../services/recruiterProfileServices';
 import CompanyInfoPopup from './CompanyInfoPopup';
 import BasicPopup from './BasicPopup';
 import Feedback from '../../freelancer/Profile/Feedback';
@@ -16,11 +18,79 @@ const cx = classNames.bind(styles);
 const Profile = () => {
     const imgRef = useRef();
     const [searchParams, setSearchParams] = useSearchParams();
-    const [recruiterId, setFreelancerId] = useState(searchParams.get('id'));
+    const [recruiterId, setRecruiterId] = useState(searchParams.get('id'));
     const [image, setImage] = useState(images.defaultAvatar);
     const [recruiter, setRecruiter] = useState({});
     const [showBasicInfo, setShowBasicInfo] = useState(false);
     const [showCompanyInfo, setShowCompanyInfo] = useState(false);
+    const [avatar, setAvatar] = useState('');
+    const [fullName, setFullName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [address, setAddress] = useState('');
+    const [city, setCity] = useState('');
+    const [country, setCountry] = useState('');
+    const [taxNumber, setTaxNumber] = useState('');
+    const [website, setWebsite] = useState('');
+    const [career, setCareer] = useState({});
+    const [companyName, setCompanyName] = useState('');
+    const [companyIntro, setCompanyIntro] = useState('');
+
+    const fetchApi = async () => {
+        const result = await recruiterProfileServices.getProfile(recruiterId);
+        console.log(result);
+        setRecruiter(result);
+        setFullName(result.fullName);
+        setEmail(result.email);
+        setPhone(result.phone);
+        setAddress(result.address);
+        setCity(result.city);
+        setCountry(result.country);
+        setTaxNumber(result.taxNumber);
+        setWebsite(result.website);
+        if (result.career !== null) {
+            setCareer(result.career);
+        }
+        setCompanyName(result.companyName);
+        setCompanyIntro(result.companyIntro);
+        if (result.avatar !== null) {
+            setAvatar(result.avatar);
+        }
+    };
+    const updateProfileApi = async (recruiter) => {
+        const result = await recruiterProfileServices.updateProfile(recruiter);
+        console.log(result);
+        if (result) {
+            message.success('cập nhật thành công');
+        } else {
+            message.error('cập nhật thất bại');
+        }
+    };
+    const updateAvatarApi = async (avatar) => {
+        const result = await recruiterProfileServices.updateAvatar(recruiterId, avatar);
+        console.log(result);
+        if (result) {
+            message.success('cập nhật thành công');
+        } else {
+            message.error('cập nhật thất bại');
+        }
+    };
+    const updateProfileRecruiterApi = async (recruiter) => {
+        const result = await recruiterProfileServices.updateProfileRecruiter(recruiter);
+        console.log(result);
+        if (result) {
+            message.success('cập nhật thành công');
+        } else {
+            message.error('cập nhật thất bại');
+        }
+    };
+    useEffect(() => {
+        fetchApi();
+    }, []);
+    useEffect(() => {
+        console.log(avatar);
+        if (avatar !== '') firebase.downloadFile(recruiterId, 'avatar', avatar, setImage);
+    }, [avatar]);
     function previewFile() {
         var file = document.querySelector('input[type=file]').files[0];
         var reader = new FileReader();
@@ -40,11 +110,23 @@ const Profile = () => {
     };
     const handleCallBack = (recruiter) => {
         setShowBasicInfo(false);
-        console.log(recruiter);
+        recruiter.id = recruiterId;
+        setFullName(recruiter.fullName);
+        setEmail(recruiter.email);
+        setPhone(recruiter.phone);
+        setAddress(recruiter.address);
+        setCity(recruiter.city);
+        setCountry(recruiter.country);
+        updateProfileApi(recruiter);
     };
     const handleCallCompanyInfo = (companyInfo) => {
         setShowCompanyInfo(false);
-        console.log(companyInfo);
+        setTaxNumber(companyInfo.taxNumber);
+        setWebsite(companyInfo.website);
+        setCareer(companyInfo.careerInfo);
+        setCompanyName(companyInfo.companyName);
+        setCompanyIntro(companyInfo.companyIntro);
+        updateProfileRecruiterApi(companyInfo);
     };
     return (
         <div className={cx('wrapper')}>
@@ -70,7 +152,7 @@ const Profile = () => {
                                         name="myfile"
                                         onChange={(e) => {
                                             console.log(e.target.files[0].name);
-                                            //editByFieldApi('avatar', e.target.files[0].name);
+                                            updateAvatarApi(e.target.files[0].name);
                                             firebase.upLoadFile(recruiterId, 'avatar', e.target.files[0]);
                                             previewFile();
                                         }}
@@ -79,25 +161,27 @@ const Profile = () => {
                             </div>
                         </div>
                         <div className={cx('person-name')}>
-                            <p>Nguyeenx Ba Trang</p>
+                            <p>{fullName}</p>
                         </div>
                         <div className={cx('column')}>
                             <div className={cx('email')}>
                                 <div className={cx('info-item')}>
                                     <FontAwesomeIcon icon={faEnvelope} />
-                                    <p>trangnb@</p>
+                                    <p>{email}</p>
                                 </div>
                             </div>
                             <div className={cx('phone')}>
                                 <div className={cx('info-item')}>
                                     <FontAwesomeIcon icon={faPhone} />
-                                    <p>0987654321</p>
+                                    <p>{phone}</p>
                                 </div>
                             </div>
                             <div className={cx('address')}>
                                 <div className={cx('info-item')}>
                                     <FontAwesomeIcon icon={faLocationDot} />
-                                    <p>ha noi</p>
+                                    <p>
+                                        {address} - {city} - {country}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -117,20 +201,21 @@ const Profile = () => {
                         <div className={cx('left')}>
                             <div className={cx('info-item2')}>
                                 <label>Mã số thuế: </label>
-                                <p>122-333-333</p>
+                                <p>{taxNumber}</p>
                             </div>
                             <div className={cx('info-item2')}>
                                 <label>Website: </label>
-                                <p>trangnb</p>
+                                {website !== null && <a href={website}>{website}</a>}
                             </div>
                             <div className={cx('info-item2')}>
                                 <label>Ngành nghề: </label>
-                                <p>ha noi</p>
+                                <p>{career.name}</p>
                             </div>
                         </div>
                         <div className={cx('right')}>
-                            <h1 className={cx('company-name')}>trang</h1>
-                            <p>I'm am</p>
+                            {companyName !== null && <h1 className={cx('company-name')}>{companyName}</h1>}
+                            {companyName === null && <p>chưa có thông tin công ty</p>}
+                            <p>{companyIntro}</p>
                         </div>
                     </div>
                 </div>

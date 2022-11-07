@@ -4,33 +4,53 @@ import { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { CFormInput, CFormTextarea, CFormSelect } from '@coreui/react';
 
+import * as adminCareerServices from '../../../../services/adminCareerServices';
 import Button from '../../../../components/Button';
 import styles from './CompanyInfoPopup.module.scss';
 const cx = classNames.bind(styles);
 function CompanyInfoPopup({ companyInfo, callback, onclose }) {
     const [show, setShow] = useState(true);
     const [title, setTitle] = useState('Thêm mới');
+    const [companyName, setCompanyName] = useState('');
     const [taxNumber, setTaxNumber] = useState('');
     const [website, setWebsite] = useState('');
     const [career, setCareer] = useState(0);
+    const [careers, setCareers] = useState([]);
     const [description, setDescription] = useState('');
 
+    const fetchApi = async () => {
+        const result = await adminCareerServices.getAllCareers();
+        console.log(result);
+        setCareers(result);
+    };
+
+    useEffect(() => {
+        fetchApi();
+        if (companyInfo.id) {
+            setTitle('Chỉnh sửa');
+            setCompanyName(companyInfo.companyName);
+            setTaxNumber(companyInfo.taxNumber);
+            setWebsite(companyInfo.website);
+            setCareer(companyInfo.career);
+            setDescription(companyInfo.companyIntro);
+        }
+    }, []);
     const handleClose = () => {
         setShow(false);
         onclose();
     };
-    useEffect(() => {
-        if (companyInfo.id) {
-            setTitle('Chỉnh sửa');
-        }
-    }, []);
     const handleAdd = () => {
         setShow(false);
+        companyInfo.companyName = companyName;
         companyInfo.taxNumber = taxNumber;
         companyInfo.website = website;
         companyInfo.career = career;
+        companyInfo.careerInfo = findCareer(career);
         companyInfo.description = description;
         callback(companyInfo);
+    };
+    const findCareer = (id) => {
+        return careers.find((career) => career.id == id);
     };
     return (
         <Modal show={show} onHide={handleClose}>
@@ -38,6 +58,15 @@ function CompanyInfoPopup({ companyInfo, callback, onclose }) {
                 <Modal.Title>{title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                <div className={cx('column')}>
+                    <label className={cx('label')}>Tên công ty</label>
+                    <CFormInput
+                        type="text"
+                        value={companyName}
+                        spellCheck={false}
+                        onChange={(e) => setCompanyName(e.target.value)}
+                    />
+                </div>
                 <div className={cx('column')}>
                     <label className={cx('label')}>Mã số thuế</label>
                     <CFormInput
@@ -59,12 +88,13 @@ function CompanyInfoPopup({ companyInfo, callback, onclose }) {
                 <div className={cx('column')}>
                     <label className={cx('label')}>Ngành nghề</label>
                     <CFormSelect
-                        onChange={(e) => setCareer(e.target.value)}
-                        options={[
-                            { label: 'cntt', value: '1' },
-                            { label: 'tkdh', value: '2' },
-                            { label: 'qtkd', value: '3' },
-                        ]}
+                        value={career.id}
+                        onChange={(e) => {
+                            setCareer(e.target.value);
+                        }}
+                        options={careers.map((career) => {
+                            return { label: career.name, value: career.id };
+                        })}
                     />
                 </div>
                 <div className={cx('column')}>

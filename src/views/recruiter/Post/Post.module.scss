@@ -1,7 +1,7 @@
 .wrapper {
     .container {
         margin: 100px auto;
-        width: 1000px;
+        width: 900px;
         height: fit-content;
         background-color: #fff !important;
         .form-select {
@@ -39,8 +39,8 @@
         }
         .icon-post {
             color: black;
-            height: 50px;
-            width: 50px;
+            height: 30px;
+            width: 30px;
             margin-right: 40px;
         }
         .right-post {
@@ -57,6 +57,8 @@
         }
         .label-subTitle {
             font-size: 18px;
+            margin-top: 1%;
+            margin-bottom: 1%;
         }
         .career-post {
             padding: 16px;
@@ -125,11 +127,14 @@
             box-shadow: rgba(0, 0, 0, 0.2) 0 0 10px;
             button {
                 margin-bottom: 20px;
-
                 font-weight: bold;
             }
         }
     }
+}
+
+.form-Post{
+    padding: 20px;
 }
 
 .input-skill{
@@ -142,3 +147,6 @@
 .demo-option-label-item > span {
     margin-right: 6px;
   }
+.upload{
+    margin: 10px 0;
+}

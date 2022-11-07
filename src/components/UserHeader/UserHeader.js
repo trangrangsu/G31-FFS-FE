@@ -99,7 +99,7 @@ function UserHeader() {
                             <Button rounded to={config.routes.searchFreelancer} className={cx('btn', 'middle-btn')}>
                                 Tìm freelancer
                             </Button>
-                            <Button rounded to={config.routes.post} className={cx('btn', 'middle-btn')}>
+                            <Button rounded to={config.routes.postJob} className={cx('btn', 'middle-btn')}>
                                 Đăng tuyển dụng
                             </Button>
                             <Button rounded to={config.routes.statisticRecruiter} className={cx('btn', 'middle-btn')}>
