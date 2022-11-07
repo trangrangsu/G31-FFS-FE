@@ -1,9 +1,10 @@
 import * as httpRequest from '../utils/httpRequest';
 
+//year-month-day from,to: null pageNo:0
 export const getTransactionHistory = async (userId, from, to, pageNo) => {
     try {
         const res = await httpRequest.get(
-            `api/user/transaction-history?userId=${userId}&from=${from}&to=${to}&pageNo=${pageNo}`,
+            `api/user/searchTransaction?userId=${userId}&from=${from}&to=${to}&pageNo=${pageNo}`,
         );
         return res;
     } catch (error) {

@@ -1,3 +1,195 @@
 .wrapper {
     margin: 120px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.container {
+    width: 900px;
+    height: 1310px;
+    border: 1px solid #adb4c5;  
+    background-color: #fff; 
+}
+.header{
+    width: 898px;
+    height: 150px;
+    display: flex;
+    background-color: #fff;
+}
+.header h1{
+    margin-top: 30px;
+    margin-left: 20px;
+}
+.btn-post{
+    margin-top: 70px;
+    margin-left: 320px;
+    font-size: 20px;
+    height: 50px;
+    color: #fff;
+    background-color: #55ABFB;
+}
+.btn-post:hover{
+    background-color: rgb(138, 181, 209);
+}
+.search{
+    width: 898px;
+    height: 450px; 
+}
+.filter{
+    width: 900px;
+    height: 440px;  
+}
+.filter-search{
+    width: 898px;
+    height: 100px;
+    background-color: #fff;
+    border-top: 1px solid #adb4c5;   
+    display: flex;
+}
+.search-now{
+    width: 600px;
+    height: 30px;
+    margin-top: 30px;
+    margin-left: 50px;
+}
+.button{
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding-top: 5px;
+    margin-top: 30px;
+    background-color: #55ABFB;
+}
+.button-first{
+    width: 90px;
+    height: 30px;
+    text-align: center;
+    padding-top: 5px;
+    margin-top: 30px;
+    margin-left: 80px;
+    color: white;
+    background-color: #55ABFB;
+}
+// .filterp{
+//     width: 700px;
+//     margin-left: 100px;
+//     background-color: #F2F2F2;
+//     border-bottom: 1px solid #adb4c5;   
+// }
+.choose-item{
+    width: 898px;
+    height: 250px;
+    display: flex; 
+    background-color: #cacceb;
+}
+
+//date
+.date{
+    margin-left: 50px;
+    width: 300px;
+    height: 250px;
+    display: block;
+}
+.date h5{
+   padding-top: 30px;
+   padding-left: 10px;
+   margin-bottom: 20px;
+   font-weight: bold;
+}
+.date input{
+    margin: .6rem;
+}
+.faCircle{
+    font-size: 15px;
+    margin-left: 40px;
+    margin-bottom: 20px;
+}
+
+//career
+.career{
+    width: 300px;
+    height: 250px;
+}
+.career-first{
+    padding-top: 30px;
+}
+.career-first h5{
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.career-first select{
+    width: 200px;
+    height: 30px;
+}
+
+//address
+.address{
+    margin-top: 40px;
+    display: block;
+}
+.address h5{
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.button-second{
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding-top: 3px;
+    background-color: #55ABFB;
+}
+.search-first{
+    width: 170px;
+    height: 30px;
+}
+
+//skills
+.skills{
+    width: 300px;
+    height: 250px;
+    padding-top: 30px;
+}
+.skills h5{
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.skills select{
+    width: 200px;
+    height: 30px;
+}
+
+//button close
+.button-close{
+    width: 898px;
+    height: 100px;
+    display: flex;
+    background-color: #cacceb;
+}
+.btn-closes{
+    margin-top: 30px;
+    margin-left: 80px;
+    font-size: 20px;
+    height: 40px;
+    color: #55ABFB;
+    border: 1px solid #adb4c5;
+}
+.btn-closes:hover{
+    background-color: rgb(180, 214, 214);
+}
+.infor-person{
+    width: 898px;
+    height: 50px;
+    background-color: #fff;
+}
+.infor-person p{
+    padding-top: 30px;
+    padding-left: 600px;
+    color: #55ABFB;
+}
+//infor
+.infor-freelancer{
+    width: 898px;
+    height: 650px;
+    background-color: #fff;
 }

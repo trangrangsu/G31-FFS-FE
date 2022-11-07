@@ -8,3 +8,11 @@ export const getReports = async (keyword, pageIndex) => {
         console.log(error);
     }
 };
+export const addReport = async (data) => {
+    try {
+        const res = await httpRequest.post(`api/user/addReport`, data);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};

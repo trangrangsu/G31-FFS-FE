@@ -12,6 +12,8 @@ const images = {
     paypal: require('../../assets/images/Paypal.jpg'),
     toad: require('../../assets/images/toad.png'),
     sales: require('../../assets/images/sales.jpg'),
+    bannerSearchFreelancer: require('../../assets/images/banner-search-freelancer.jpg'),
+    bannerAloNgayFreelancer: require('../../assets/images/banner-AloNgay.jpg'),
 };
 
 export default images;
