@@ -1,0 +1,48 @@
+.wrapper{
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    p{
+        font-size: 15px;
+        margin: 0;
+    }
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0px 1px 5px 1px #A8A2A2;
+}
+.name{
+    p{
+        float: left;
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0;
+    }
+    div{
+        float: right;
+        margin-right: 10px;
+
+    }
+    
+}
+.left{
+    width: 15px;
+    height: 15px;
+    margin-left: 10px;
+    color: #2ca7d0;
+    &:hover{
+        cursor: pointer;
+        color:#567396;
+    }
+    
+}
+.right{
+    width: 15px;
+    height: 15px;
+    margin-left: 10px;
+    color: #f22f2f;
+    &:hover{
+        cursor: pointer;
+        color:#f01818;
+    }
+}

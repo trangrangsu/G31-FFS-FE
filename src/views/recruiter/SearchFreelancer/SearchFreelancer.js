@@ -3,158 +3,102 @@ import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
-import { Input, Radio, Space, Menu, Select, Pagination } from 'antd';
+import { Input, Radio, Space, Select, Pagination, Cascader } from 'antd';
 
+import * as recruiterCreatePostServices from '../../../services/recruiterCreatePostServices';
 import * as careerServices from '../../../services/careerServices';
+import * as recruiterSearchServices from '../../../services/recruiterSearchServices';
 import styles from './SearchFreelancer.module.scss';
 import Button from '../../../components/Button';
 import FreelancerItem from '../FreelancerItem';
 
-const { Option } = Select;
 const cx = classNames.bind(styles);
+const { Option } = Select;
 const { Search } = Input;
+
 const SearchFreelancer = () => {
-    const person = [{ person1: '30' }];
     const cities = useSelector((state) => state.city);
     const [showFilter, setShowFilter] = useState(false);
     const [valuePrice, setValuePrice] = useState(1);
-    const [subCareerId, setSubCareerId] = useState(-1);
-    const [city, setCity] = useState('Hà nội');
-    const [careers, setCareers] = useState([]);
+    const [subCareer, setSubCareer] = useState(-1);
+    const [freelancers, setFreelancers] = useState([]);
+    const [city, setCity] = useState('');
+    const [careers, setCareers] = useState([{ id: 1, name: 'cntt', subCareers: { data: [{ id: 1, name: 'cntt' }] } }]);
+    const [skill, setSkill] = useState([-1]);
+    const [skills, setSkills] = useState([]);
+    const [totalResults, setTotalResults] = useState(0);
+    const [keyWord, setKeyWord] = useState('');
 
-    const skills = [
-        {
-            id: 1,
-            name: 'Java',
-        },
-        {
-            id: 2,
-            name: 'C#',
-        },
-        {
-            id: 3,
-            name: 'Python',
-        },
-        {
-            id: 4,
-            name: 'English',
-        },
-        {
-            id: 5,
-            name: 'China',
-        },
-        {
-            id: 6,
-            name: 'Photoshop',
-        },
-    ];
+    const getSkillApi = async () => {
+        const result = await recruiterCreatePostServices.getSkills();
+        setSkills(result);
+    };
 
-    const freelancers = [
-        {
-            id: 1,
-            avatar: '',
-            userName: 'CongBV',
-            subCareer: 'Lập trình viên mobie',
-            area: 'Hòa Lạc',
-            description: 'tôi là lập trình viên.tôi là lập trình viên.tôi là lập trình viên.tôi là lập trình viên.',
-            costPerHour: '60,000',
-            skills: [
-                { id: 1, name: 'Python' },
-                { id: 2, name: 'C++' },
-                { id: 3, name: 'OOP' },
-                { id: 4, name: 'UX/UI' },
-            ],
-            avgStartPoint: 4.5,
-            totalFeedBack: 10,
-        },
-        {
-            id: 2,
-            avatar: '',
-            userName: 'ManhNV',
-            subCareer: 'Lập trình viên website',
-            area: 'Bắc Giang',
-            description: 'tôi là lập trình viên.tôi là lập trình viên.tôi là lập trình viên.tôi là lập trình viên.',
-            costPerHour: '60,000',
-            skills: [
-                { id: 1, name: 'Python' },
-                { id: 2, name: 'C++' },
-                { id: 3, name: 'OOP' },
-                { id: 4, name: 'UX/UI' },
-            ],
-            avgStartPoint: 5.0,
-            totalFeedBack: 45,
-        },
-        {
-            id: 3,
-            avatar: '',
-            userName: 'TuyenNH',
-            subCareer: 'Designer',
-            area: 'Hà Nội',
-            description: 'tôi là lập trình viên.tôi là lập trình viên.tôi là lập trình viên.tôi là lập trình viên.',
-            costPerHour: '60,000',
-            skills: [
-                { id: 1, name: 'Python' },
-                { id: 2, name: 'C++' },
-                { id: 3, name: 'OOP' },
-                { id: 4, name: 'UX/UI' },
-            ],
-            avgStartPoint: 5.0,
-            totalFeedBack: 20,
-        },
-        {
-            id: 4,
-            avatar: '',
-            userName: 'TrangNB',
-            subCareer: 'Thiết kế website font-end',
-            area: 'Bắc Ninh',
-            skills: [
-                { id: 1, name: 'Python' },
-                { id: 2, name: 'C++' },
-                { id: 3, name: 'OOP' },
-                { id: 4, name: 'UX/UI' },
-            ],
-            avgStartPoint: 4.5,
-            totalFeedBack: 30,
-        },
-    ];
     const getCareeersApi = async () => {
         const result = await careerServices.getCareers();
         setCareers(result);
     };
+    const searchFreelancerApi = async (keyWord, pageIndex) => {
+        const result = await recruiterSearchServices.searchFreelancer(
+            keyWord,
+            valuePrice,
+            city,
+            subCareer,
+            skill,
+            pageIndex,
+        );
+        console.log(result);
+        if (typeof result === 'object') {
+            setFreelancers(result.results);
+            setTotalResults(result.totalResults);
+        }
+    };
 
     useEffect(() => {
-        //getCareeersApi();
-        //getPostsApi(area, keyword, -1, paymentType, 0);
+        getCareeersApi();
+        getSkillApi();
+        searchFreelancerApi(keyWord, 0);
     }, []);
 
-    const onSearchFreelancer = (value) => console.log(value);
+    const onSearchFreelancer = (value) => {
+        searchFreelancerApi(value, 0);
+    };
     const onChangePrice = (e) => {
         setValuePrice(e.target.value);
     };
     const renderItemsMenu = (careers) => {
         return careers.map((career) => {
             const item = {};
-            item.key = career.id + career.name;
+            item.value = career.name + career.id;
             item.label = career.name;
             item.children = career.subCareers.data.map((subCareer) => {
                 const subItem = {};
-                subItem.key = subCareer.id;
+                subItem.value = subCareer.id;
                 subItem.label = subCareer.name;
                 return subItem;
             });
             return item;
         });
     };
-    const onSelect = (e) => {
-        setSubCareerId(e.key);
-        //getPostsApi(area, keyword, e.key, paymentType, 0);
+
+    const displayRender = (labels) => labels[labels.length - 1];
+    const onChangeCareer = (value) => {
+        if (value === undefined) {
+            setSubCareer(-1);
+        } else setSubCareer(value[1]);
     };
     const onChangeArea = (value) => {
-        console.log(`selected ${value}`);
-        setCity(value);
+        if (value === undefined) {
+            setCity('');
+        } else setCity(value);
     };
     const handleChange = (value) => {
-        console.log(`selected ${value}`);
+        if (value.length === 0) {
+            setSkill(-1);
+        } else setSkill(value);
+    };
+    const onChangePage = (page, pageSize) => {
+        searchFreelancerApi(keyWord, page - 1);
     };
     return (
         <div className={cx('wrapper')}>
@@ -167,6 +111,8 @@ const SearchFreelancer = () => {
                     <div className={cx('filter')}>
                         <div className={cx('filter-search')}>
                             <Search
+                                value={keyWord}
+                                onChange={(e) => setKeyWord(e.target.value)}
                                 placeholder="nhập từ khóa"
                                 className={cx('input-keyword')}
                                 onSearch={onSearchFreelancer}
@@ -198,17 +144,22 @@ const SearchFreelancer = () => {
                                     <div className={cx('career')}>
                                         <div className={cx('career-first')}>
                                             <h5>Lĩnh vực</h5>
-                                            <Menu
-                                                onSelect={onSelect}
-                                                mode="inline"
-                                                theme="light"
-                                                items={renderItemsMenu(careers)}
-                                            />
+                                            <div>
+                                                <Cascader
+                                                    placeholder="chọn chuyên ngành"
+                                                    style={{ width: '200px' }}
+                                                    options={renderItemsMenu(careers)}
+                                                    expandTrigger="hover"
+                                                    displayRender={displayRender}
+                                                    onChange={onChangeCareer}
+                                                />
+                                            </div>
                                         </div>
                                         <div className={cx('address')}>
                                             <h5>Địa điểm</h5>
                                             <Select
                                                 showSearch
+                                                allowClear
                                                 placeholder="chọn khu vực"
                                                 optionFilterProp="children"
                                                 onChange={onChangeArea}
@@ -252,21 +203,16 @@ const SearchFreelancer = () => {
                             </>
                         )}
                     </div>
-                    {person.map((persons) => {
-                        return (
-                            <div className={cx('infor-person')}>
-                                <p>
-                                    Có<b> {persons.person1} </b>
-                                    người ứng tuyển phù hợp
-                                </p>
-                            </div>
-                        );
-                    })}
                     <div className={cx('infor-freelancer')}>
-                        {freelancers.map((freelancer) => (
-                            <FreelancerItem key={freelancer.id} freelancer={freelancer} type="view" />
+                        {freelancers.map((freelancer, index) => (
+                            <FreelancerItem key={index} freelancer={freelancer} type="view" />
                         ))}
                     </div>
+                    {totalResults > 10 && (
+                        <div className={cx('paging')}>
+                            <Pagination defaultCurrent="1" pageSize="10" total={totalResults} onChange={onChangePage} />
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

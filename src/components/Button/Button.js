@@ -74,7 +74,7 @@ function Button({
 }
 
 Button.propTypes = {
-    to: PropTypes.string,
+    //to: PropTypes.string,
     href: PropTypes.string,
     primary: PropTypes.bool,
     approve: PropTypes.bool,

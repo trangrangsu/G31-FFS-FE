@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useSelector } from 'react-redux';
-import { Cascader, Select, Input, Button, message, Upload, InputNumber } from 'antd';
+import { useSelector, useDispatch } from 'react-redux';
+import { Cascader, Select, Input, Button, message, Upload, InputNumber, Popconfirm } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { faPenToSquare, faFileLines, faUserCheck, faMoneyCheckDollar } from '@fortawesome/free-solid-svg-icons';
+import {
+    faPenToSquare,
+    faFileLines,
+    faUserCheck,
+    faMoneyCheckDollar,
+    faSquarePlus,
+} from '@fortawesome/free-solid-svg-icons';
 
+import * as firebase from '../../../firebase/firebase';
 import * as careerServices from '../../../services/careerServices';
 import * as recruiterCreatePostServices from '../../../services/recruiterCreatePostServices';
 import styles from './Post.module.scss';
@@ -15,37 +22,25 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 function Post() {
+    const text = 'Phí đăng bài là 0.5$';
+
+    const dispatch = useDispatch();
     const cities = useSelector((state) => state.city);
     const account = useSelector((state) => state.account);
+    const accountBalance = useSelector((state) => state.accountBalance);
+
     const [careers, setCareers] = useState([{ id: 1, name: 'cntt', subCareers: { data: [{ id: 1, name: 'cntt' }] } }]);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [city, setCity] = useState('');
     const [typePayment, setTypePayment] = useState('1');
-    const [amount, setAmount] = useState(0);
+    const [amount, setAmount] = useState(20000);
     const [subCareer, setSubCareer] = useState(1);
     const [attach, setAttach] = useState('');
     const [skills, setSkills] = useState([]);
     const [skillPost, setSkillPost] = useState('');
+    const [file, setFile] = useState({});
 
-    const props = {
-        name: 'file',
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-        headers: {
-            authorization: 'authorization-text',
-        },
-        onChange(info) {
-            if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (info.file.status === 'done') {
-                setAttach(info.file.name);
-                message.success(`${info.file.name} file uploaded successfully`);
-            } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-    };
     const getCareeersApi = async () => {
         const result = await careerServices.getCareers();
         setCareers(result);
@@ -57,10 +52,14 @@ function Post() {
     };
     const createPostApi = async (post) => {
         const result = await recruiterCreatePostServices.createPost(post);
-        if (result) {
+        if (result !== false) {
+            firebase.upLoadFile(account.userId, result, file);
             message.success('Đăng bài thành công');
         } else {
             message.error('Đăng bài thất bại');
+        }
+        if (!account.isMemberShip) {
+            dispatch({ type: 'set', accountBalance: accountBalance - 0.5 });
         }
     };
 
@@ -68,6 +67,7 @@ function Post() {
         getCareeersApi();
         getSkillApi();
     }, []);
+
     const renderItemsMenu = (careers) => {
         return careers.map((career) => {
             const item = {};
@@ -160,9 +160,16 @@ function Post() {
                                 onChange={(e) => setDescription(e.target.value)}
                             />
                             <div className={cx('upload')}>
-                                <Upload {...props}>
-                                    <Button icon={<UploadOutlined />}>tải tài liệu</Button>
-                                </Upload>
+                                <label htmlFor="myfile">Tải tài liệu</label>
+                                <input
+                                    type="file"
+                                    id="myfile"
+                                    name="myfile"
+                                    onChange={(e) => {
+                                        setAttach(e.target.files[0].name);
+                                        setFile(e.target.files[0]);
+                                    }}
+                                ></input>
                             </div>
                             <label className={cx('label-subTitle')}>Kỹ năng yêu cầu Freelancer phải có</label>
                             <div className={cx('input-skill')}>
@@ -252,9 +259,23 @@ function Post() {
                         </div>
                     </div>
                     <div className={cx('submit-button')}>
-                        <Button type="primary" size="large" onClick={handleSubmit}>
-                            Đăng
-                        </Button>
+                        {account.isMemberShip ? (
+                            <Button type="primary" size="large" onClick={handleSubmit}>
+                                Đăng
+                            </Button>
+                        ) : (
+                            <Popconfirm
+                                placement="top"
+                                title={text}
+                                onConfirm={handleSubmit}
+                                okText="Đăng"
+                                cancelText="Hủy"
+                            >
+                                <Button type="primary" size="large">
+                                    Đăng
+                                </Button>
+                            </Popconfirm>
+                        )}
                         <p>
                             Khi đăng việc, tôi xác nhận đồng ý các{' '}
                             <a href="/page/dieu-khoan-su-dung-danh-cho-khach-hang" target="_blank">

@@ -1,120 +1,102 @@
-import Tippy from '@tippyjs/react';
-import React from 'react';
-import { CPagination, CPaginationItem } from '@coreui/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLock } from '@fortawesome/free-solid-svg-icons';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
+import { Input, Select, Pagination } from 'antd';
+import { useSelector } from 'react-redux';
+
+import * as recruiterPostManagementServices from '../../../services/recruiterPostManagementServices';
+import PostItem from './PostItem';
 import styles from './PostManagement.module.scss';
+
+const { Search } = Input;
 const cx = classNames.bind(styles);
 const PostManagement = () => {
-    const postElement = [
-        {
-            postTitle: 'Chông trẻ 3-6 tuổi',
-            paymentType: 'Theo giờ',
-            postedTime: 3,
-            status: 'Đã duyệt',
-            postApply: 11,
-            postApprove: 20,
-            postDeny: 10,
-        },
-        {
-            postTitle: 'Thiết kế logo cho công ty điện CMS',
-            paymentType: 'Theo giờ',
-            budget: 500000.0,
-            postedTime: 5,
-            status: 'Đã duyệt',
-            postApply: 10,
-            postApprove: 16,
-            postDeny: 18,
-        },
-        {
-            postTitle: 'Thiết kế UX/UI',
-            paymentType: 'Cố định',
-            budget: 500000,
-            postedTime: 11,
-            status: 'Đã duyệt',
-            postApply: 20,
-            postApprove: 15,
-            postDeny: 10,
-        },
-        {
-            postTitle: 'Chỉnh sửa video cho công ty SEO',
-            paymentType: 'Cố định',
-            postedTime: 10,
-            status: 'Đã duyệt',
-            postApply: 10,
-            postApprove: 15,
-            postDeny: 20,
-        },
-    ];
+    const account = useSelector((state) => state.account);
+    const [status, setStatus] = useState(-1);
+    const [keyWord, setKeyWord] = useState('');
+    const [posts, setPosts] = useState([]);
+    const [totalResults, setTotalResults] = useState(0);
+
+    const getAllJobPostedApi = async (status, pageIndex) => {
+        const result = await recruiterPostManagementServices.getAllJobPosted(
+            keyWord,
+            account.userId,
+            pageIndex,
+            status,
+        );
+        console.log(result);
+        if (typeof result === 'object') {
+            setPosts(result.results);
+            setTotalResults(result.totalResults);
+        }
+    };
+
+    useEffect(() => {
+        getAllJobPostedApi(status, 0);
+    }, []);
+
+    const onSearch = (value) => {
+        getAllJobPostedApi(status, 0);
+    };
+    const handleChange = (value) => {
+        setStatus(value);
+        getAllJobPostedApi(value, 0);
+    };
+    const onChangePage = (page, pageSize) => {
+        getAllJobPostedApi(status, page - 1);
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <div className={cx('head')}>
                     <div className={cx('page-title')}>Danh sách bài đăng</div>
-                    <div className={cx('mini-nav')}>
-                        <div className={cx('nav-item')}>Đã duyệt</div>
-                        <div className={cx('nav-item2')}>Chờ duyệt</div>
+                    <div className={cx('search')}>
+                        <div>
+                            <Select
+                                defaultValue="-1"
+                                style={{
+                                    width: 160,
+                                }}
+                                onChange={handleChange}
+                                options={[
+                                    {
+                                        value: '-1',
+                                        label: 'Tất cả',
+                                    },
+                                    {
+                                        value: '2',
+                                        label: 'Đang chờ',
+                                    },
+                                    {
+                                        value: '1',
+                                        label: 'Đã chấp nhận',
+                                    },
+                                    {
+                                        value: '0',
+                                        label: 'Không chấp nhận',
+                                    },
+                                ]}
+                            />
+                        </div>
+                        <div className={cx('search-input')}>
+                            <Search
+                                style={{ width: '500px' }}
+                                placeholder="nhập từ khóa"
+                                value={keyWord}
+                                onClick={(e) => setKeyWord(e.target.value)}
+                                onSearch={onSearch}
+                                enterButton
+                            />
+                        </div>
                     </div>
                 </div>
-                <div className={cx('list-post')}>
-                    {postElement.map((post) => {
-                        return (
-                            <div className={cx('post')}>
-                                <div className={cx('row1')}>
-                                    <div className={cx('post-title')}>{post.postTitle}</div>
-
-                                    <Tippy delay={[0, 50]} content="Đóng bài" placement="bottom">
-                                        <div className={cx('btn-close')}>
-                                            {' '}
-                                            <FontAwesomeIcon icon={faLock} />
-                                        </div>
-                                    </Tippy>
-                                </div>
-                                <div className={cx('row2')}>
-                                    <div className={cx('left')}>
-                                        <div className={cx('post-payment')}>
-                                            <div className={cx('payment-type')}>{post.paymentType}</div>
-                                        </div>
-                                        <div className={cx('post-posted-time-status')}>
-                                            <div className={cx('posted-time')}>Đã đăng {post.postedTime}h trước</div>
-                                            <div className={cx('status')}>{post.status}</div>
-                                        </div>
-                                    </div>
-                                    <div className={cx('right')}>
-                                        <div className={cx('component')}>
-                                            <div className={cx('component-number')}>{post.postApply}</div>
-                                            <div className={cx('component-title')}>Apply</div>
-                                        </div>
-                                        <div className={cx('component')}>
-                                            <div className={cx('component-number')}>{post.postApprove}</div>
-                                            <div className={cx('component-title')}>Approve</div>
-                                        </div>
-                                        <div className={cx('component')}>
-                                            <div className={cx('component-number')}>{post.postDeny}</div>
-                                            <div className={cx('component-title')}>Deny</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-                <div className={cx('paging')}>
-                    <CPagination aria-label="Page navigation example" className={cx('table-paging')}>
-                        <CPaginationItem aria-label="Previous" disabled>
-                            <span aria-hidden="true">&laquo;</span>
-                        </CPaginationItem>
-                        <CPaginationItem active className={cx('active-page')}>
-                            1
-                        </CPaginationItem>
-                        <CPaginationItem>2</CPaginationItem>
-                        <CPaginationItem>3</CPaginationItem>
-                        <CPaginationItem aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </CPaginationItem>
-                    </CPagination>
-                </div>
+                {posts.map((post) => (
+                    <PostItem post={post} key={post.jobId} />
+                ))}
+                {totalResults > 10 && (
+                    <div className={cx('paging')}>
+                        <Pagination defaultCurrent="1" pageSize="10" total={totalResults} onChange={onChangePage} />
+                    </div>
+                )}
             </div>
         </div>
     );

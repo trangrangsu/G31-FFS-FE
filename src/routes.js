@@ -59,7 +59,6 @@ export const routes = [
     { path: config.routes.viewDetailRecruiterAdmin, element: ViewDetailRecruiterAdmin },
     { path: config.routes.viewDetailPostAdmin, element: ViewDetailPostAdmin },
     { path: config.routes.updateRecruiter, element: UpdateRecruiterProfile, layout: HomeLayout },
-    { path: config.routes.viewDetailFreelancer, element: ViewDetailFreelancer, layout: HomeLayout },
 
     { path: config.routes.home, element: ContentHome, layout: HomeLayout },
     { path: config.routes.login, element: Login, layout: HomeLayout },
@@ -85,6 +84,7 @@ export const routes = [
     { path: config.routes.postManagement, element: PostManagement, layout: UserLayout },
     { path: config.routes.postApplyManagement, element: PostApplyManagement, layout: UserLayout },
     { path: config.routes.statisticRecruiter, element: StatisticRecruiter, layout: UserLayout },
+    { path: config.routes.viewDetailFreelancer, element: ViewDetailFreelancer, layout: UserLayout },
 ];
 
 // Admin routes

@@ -1,149 +1,111 @@
 .wrapper {
-    margin-top: 70px;
+    margin-top: 60px;
 
     .container {
         width: 900px;
         margin: 0 auto;
-        margin-bottom: 10px;
         background-color: #ffffff;
-        border: 1px solid #a8a2a2;
-        border-radius: 20px;
-       
-        font-style: normal;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
 
         .head {
             width: 100%;
             margin: 0 auto;
             border-bottom: 1px solid #a8a2a2;
             .page-title {
-                margin-left: 20px;
                 color: #5e5353;
-                font-weight: 500;
-                font-size: 25px;
-            }
-
-            .mini-nav {
-                margin-left: 20px;
-                :hover {
-                    background-color: #c2e3fc;
-                }
-                :active {
-                    border-bottom: 1px solid #5e5353;
-                }
-                .nav-item {
-                    margin-bottom: 3px;
-                    display: inline-block;
-                    font-weight: bold;
-                }
-                .nav-item2 {
-                    margin-bottom: 3px;
-                    display: inline-block;
-                    margin-left: 10px;
-                    padding-left: 10px;
-                    border-left: 1px solid #5e5353;
-                    // font-weight: bold;
-                }
+                font-weight: 600;
+                font-size: 32px;
+                text-align: center;
+                padding: 5%;
             }
         }
-        .list-post {
-            width: 100%;
-            margin: 0 auto;
-            :hover {
-                background-color: #c2e3fc;
-            }
-            .post {
-                padding: 20px;
-                border-bottom: 1px solid #7e7a7a;
-                .row1 {
-                    width: 100%;
-                    font-size: 25px;
-                    .post-title {
-                        width: 50%;
-                        display: inline-block;
-                        font-weight: 700;
-                        font-size: 80%;
-                        color: #030303;
-                    }
-                    .btn-close {
-                        margin-left: 380px;
-                        width: max-content;
-                        display: inline-block;
-                        font-size: 20px;
-                        color: rgb(0, 0, 0);
-                    }
-                }
-                .row2 {
-                    font-size: 25px;
-                    padding-bottom: 10px;
-                    .left {
-                        display: inline-block;
-                        .post-payment {
-                            margin-top: 30px;
-                            font-weight: 500;
-                            font-size: 50%;
-                            color: #76797e;
-                            .payment-type {
-                                display: inline-block;
-                            }
-                        }
-                        .post-posted-time-status {
-                            margin-bottom: 2px;
-                            margin-top: 3px;
-                            font-size: 60%;
-                            color: #76797e;
-                            .posted-time {
-                                display: inline-block;
-                            }
-                            .status {
-                                margin-left: 10px;
-                                align-items: center;
-                                padding: 4px;
-                                font-size: 80%;
-                                color: #000000;
-                                display: inline-block;
-                                background: #97d3ff;
-                                border-radius: 30px;
-                                text-align: center;
-                            }
-                        }
-                    }
-                    .right {
-                        display: inline-block;
-                        font-size: 25px;
-                        margin-left: 350px;
-                        .component {
-                            font-size: 20px;
-                            display: inline-block;
-                            margin-left: 30px;
-                            .component-number {
-                                text-align: center;
-                            }
-                            .component-title {
-                                font-size: 20px;
-                                color: #76797e;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         .paging {
-            margin-left: 715px;
-            .table-paging {
-                margin-top: 10px;
-                color: rgba(22, 24, 35, 0.5) !important;
-                .active-page span {
-                    background-color: #7cbdec !important;
-                    border-color: #4f5d73 !important;
-                    color: var(--white) !important;
-                }
-                li a {
-                    color: rgba(22, 24, 35, 0.8) !important;
-                }
-            }
+            margin-top: 1%;
         }
     }
 }
 
-/* CSS */
+.search{
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+    padding-left: 2%;
+}
+.search-input{
+    padding-left: 2%;
+}
+
+// postItem
+
+.wrapper-post{
+    padding: 20px 10px 10px 10px;
+    border-bottom: 1px solid #a8a2a2;
+}
+.row-1{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.post-title{
+    font-size: 24px;
+    text-decoration: none;
+    color: #358ccb;
+    padding: 0;
+    &:hover{
+        cursor: pointer;
+        text-decoration: underline;
+        color: #2a70a3;
+    }
+}
+.message{
+    padding: 5px;
+    border-radius: 5px;
+
+    p{
+        margin: 0;
+        font-weight: 600;
+        color: white;
+    }
+}
+.message1{
+    background-color: #25be30;
+}
+.message0{
+    background-color: #d03032;
+}
+.message2{
+    background-color: #B15C0D;
+}
+.row-2{
+    display: flex;
+    flex-direction: row;
+    font-size: 14px;
+    margin-left: 5px;
+    color: gray;
+}
+
+.post-posted-time{
+    margin-left: 5px;
+}
+.row-3{
+    font-size: 18px;
+    margin-left: 5px;
+    margin-left: 20px;
+}
+.row-4{
+    color: white;
+    background-color: #2A61F0;
+    display: inline-block;
+    border-radius: 10px;
+    margin: 10px;
+    margin-left: 0;
+}
+.post-subCareer{
+    margin: 0;
+    font-size: 18px;
+    padding: 2px 10px;
+    line-height: 20px;
+}
+
