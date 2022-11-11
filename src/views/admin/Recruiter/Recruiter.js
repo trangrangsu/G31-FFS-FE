@@ -18,7 +18,7 @@ function Recruiter() {
     const [totalPages, setTotalPages] = useState(5);
     const fetchApi = async (pIndex) => {
         const result = await adminRecruiterServices.getRecruiters(searchValue, pIndex);
-        setRecruiters(result.recruiters);
+        setRecruiters(result.results);
         setPageIndex(result.pageIndex);
         setTotalPages(result.totalPages);
     };

@@ -27,7 +27,7 @@ function Staff() {
     const fetchApi = async (pIndex) => {
         const result = await staffService.getStaffs(searchValue, pIndex);
         console.log(result);
-        setStaffs(result.staffs);
+        setStaffs(result.results);
         console.log(result.pageIndex);
         setPageIndex(result.pageIndex);
         setTotalPages(result.totalPages);

@@ -26,3 +26,22 @@ export const addJobRequest = async (freelancerId, jobId) => {
         console.log(error);
     }
 };
+
+export const getProfileFreelancer = async (recruiterId, freelancerId) => {
+    try {
+        const res = await httpRequest.get(
+            `api/freelancer/getProfileRecruiter?recruiterId=${recruiterId}&freelancerId=${freelancerId}`,
+        );
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const updateAccountBalance = async (userId, fee) => {
+    try {
+        const res = await httpRequest.put(`api/user/updateAccountBalance?userId=${userId}&fee=${fee}`);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};

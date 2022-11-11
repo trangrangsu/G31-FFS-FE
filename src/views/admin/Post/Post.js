@@ -28,7 +28,7 @@ function Post() {
         }
         const result = await adminPostServices.getPosts(searchValue, s, pIndex);
         console.log(result);
-        setPost(result.posts);
+        setPost(result.results);
         setPageIndex(result.pageIndex);
         setTotalPages(result.totalPages);
     };

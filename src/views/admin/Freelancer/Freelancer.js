@@ -18,7 +18,7 @@ function Freelancer() {
     const [totalPages, setTotalPages] = useState(5);
     const fetchApi = async (pIndex) => {
         const result = await adminFreelancerService.getFreelancers(searchValue, pIndex);
-        setFreelancers(result.freelancers);
+        setFreelancers(result.results);
         setPageIndex(result.pageIndex);
         setTotalPages(result.totalPages);
     };

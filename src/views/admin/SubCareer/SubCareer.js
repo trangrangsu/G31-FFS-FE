@@ -32,7 +32,7 @@ function SubCareer() {
     const getSubCareerApi = async (pIndex) => {
         const result1 = await adminSubCareerServices.getSubCareers(career, searchValue, pIndex);
         console.log(result1);
-        setSubCareers(result1.subCareers);
+        setSubCareers(result1.results);
         setPageIndex(result1.pageIndex);
         setTotalPages(result1.totalPages);
     };

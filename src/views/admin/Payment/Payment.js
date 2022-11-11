@@ -3,52 +3,33 @@ import classNames from 'classnames/bind';
 import { CPagination, CPaginationItem } from '@coreui/react';
 
 import * as adminPaymentServices from '../../../services/adminPaymentServices';
-import RequestPopup from './RequestPopup';
 import GlobalSearch from '../../../components/GlobalSearch';
 import styles from './Payment.module.scss';
 const cx = classNames.bind(styles);
 function Payment() {
     const status = ['Tất cả', 'Đã phê duyệt', 'Không phê duyệt', 'Chờ phê duyệt'];
 
-    const headers = ['MÃ NẠP', 'ID KHÁCH HÀNG', 'SỐ TIỀN', 'NGÀY YÊU CẦU', 'NGÀY PHÊ DUYỆT'];
+    const headers = ['MÃ NẠP', 'ID KHÁCH HÀNG', 'SỐ TIỀN'];
 
-    const [updatePage, setUpdatePage] = useState(0);
-    const [requestPayment, setRequestPayment] = useState([]);
-    const [show, setShow] = useState(false);
-    const [request, setRequest] = useState({});
+    const [requests, setRequests] = useState([]);
     const [state, setState] = useState(status[0]);
     const [searchValue, setSearchValue] = useState('');
     const [pageIndex, setPageIndex] = useState(0);
     const [totalPages, setTotalPages] = useState(5);
     const fetchApi = async (pIndex) => {
-        let s = -1;
-        if (state === 'Đã phê duyệt') {
-            s = 1;
-        } else if (state === 'Không phê duyệt') {
-            s = 0;
-        } else if (state === 'Chờ phê duyệt') {
-            s = 2;
-        }
-        const result = await adminPaymentServices.getPayments(searchValue, s, pIndex);
+        const result = await adminPaymentServices.getPayments(searchValue, -1, pIndex);
         console.log(result);
-        setRequestPayment(result.payments);
+        setRequests(result.results);
         setPageIndex(result.pageIndex);
         setTotalPages(result.totalPages);
     };
-    const updateApi = async (data) => {
-        const result = await adminPaymentServices.updatePayment(data);
-        console.log(result);
-        fetchApi();
-    };
     useEffect(() => {
-        fetchApi();
+        fetchApi(pageIndex);
     }, []);
     useEffect(() => {
         fetchApi();
     }, [state]);
-    useEffect(() => {
-        fetchApi();
-    }, [updatePage]);
+
     const handlePaging = (pIndex) => {
         fetchApi(pIndex);
     };
@@ -102,10 +83,6 @@ function Payment() {
         });
     };
 
-    const handleViewDetail = (request) => {
-        setRequest(request);
-        setShow(true);
-    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
@@ -132,18 +109,6 @@ function Payment() {
                             onSearch={(value) => handlePaging(value)}
                         />
                     </div>
-                    {show && (
-                        <RequestPopup
-                            request={request}
-                            callback={() => {
-                                setShow(false);
-                                setUpdatePage(Math.random());
-                            }}
-                            onUpdate={(data) => {
-                                updateApi(data);
-                            }}
-                        />
-                    )}
                 </div>
 
                 <table className={cx('subCareers')}>
@@ -151,17 +116,13 @@ function Payment() {
                         <tr>{renderTableHeader()}</tr>
                     </thead>
                     <tbody>
-                        {requestPayment.map((request) => {
-                            return (
-                                <tr key={request.code} onClick={() => handleViewDetail(request)}>
-                                    <td>{request.code}</td>
-                                    <td>{request.user_id}</td>
-                                    <td>{request.money}</td>
-                                    <td>{request.dateRequest}</td>
-                                    <td>{request.dateApprove}</td>
-                                </tr>
-                            );
-                        })}
+                        {requests.map((request) => (
+                            <tr key={request.id}>
+                                <td>{request.code}</td>
+                                <td>{request.userId}</td>
+                                <td>{request.money}</td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
                 <CPagination aria-label="Page navigation example" className={cx('table-paging')}>

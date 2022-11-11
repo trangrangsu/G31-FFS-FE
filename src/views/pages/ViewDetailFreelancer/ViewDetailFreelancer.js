@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { Button, Popconfirm } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faCakeCandles,
@@ -13,7 +14,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useSearchParams } from 'react-router-dom';
 
-import * as freelancerProfileServices from '../../../services/freelancerProfileServices';
+//import * as freelancerProfileServices from '../../../services/freelancerProfileServices';
+import * as recruiterPostManagementServices from '../../../services/recruiterPostManagementServices';
 import images from '../../../assets/images';
 import * as firebase from '../../../firebase/firebase';
 import Feedback from './Feedback';
@@ -25,8 +27,11 @@ import styles from './ViewDetailFreelancer.module.scss';
 const cx = classNames.bind(styles);
 
 function ViewDetailFreelancer() {
+    const text = 'Phí xem thông tin là 0.5$';
     const imgRef = useRef();
+    const dispatch = useDispatch();
     const account = useSelector((state) => state.account);
+    const accountBalance = useSelector((state) => state.accountBalance);
     const [searchParams, setSearchParams] = useSearchParams();
     const [freelancerId, setFreelancerId] = useState(searchParams.get('id'));
     const [fullName, setFullName] = useState('');
@@ -46,9 +51,11 @@ function ViewDetailFreelancer() {
     const [workExps, setWorkExps] = useState([]);
     const [gender, setGender] = useState('Nam');
     const [image, setImage] = useState(images.defaultAvatar);
+    const [buyService, setBuyService] = useState(false);
+    const [isApplied, setIsApplied] = useState(false);
 
     const fetchApi = async () => {
-        const result = await freelancerProfileServices.getProfileFreelancer(freelancerId);
+        const result = await recruiterPostManagementServices.getProfileFreelancer(freelancerId, account.userId);
         console.log(result);
         setFullName(result.fullName);
         setBirthdate(result.birthDate);
@@ -60,6 +67,7 @@ function ViewDetailFreelancer() {
         setPrice(result.costPerHour);
         setDescription(result.description);
         setGenderBy(result.gender);
+        setIsApplied(result.isApplied);
         if (result.educations !== null) {
             setEducations(result.educations);
         }
@@ -76,7 +84,13 @@ function ViewDetailFreelancer() {
             setAvatar(result.avatar);
         }
     };
-
+    const updateAccountBalanceApi = async () => {
+        const result = await recruiterPostManagementServices.updateAccountBalance(account.userId, 0.5);
+        if (result) {
+            setBuyService(true);
+            dispatch({ type: 'set', accountBalance: accountBalance - 0.5 });
+        }
+    };
     useEffect(() => {
         fetchApi();
     }, []);
@@ -94,7 +108,9 @@ function ViewDetailFreelancer() {
             setGender('Nữ');
         }
     };
-
+    const handleSubmit = () => {
+        updateAccountBalanceApi();
+    };
     const handleOnDeleteEducation = (id) => {};
     const handleOnEditEducation = (education) => {};
     const handleOnEditWorkExp = (workExp) => {};
@@ -131,22 +147,30 @@ function ViewDetailFreelancer() {
                             </div>
                             <div className={cx('info-right')}>
                                 <div className={cx('info-space')}></div>
-                                {/* <div className={cx('info-item')}>
-                                    <FontAwesomeIcon icon={faPhone} />
-                                    <p>{phone}</p>
-                                </div>
-                                <div className={cx('info-item')}>
-                                    <FontAwesomeIcon icon={faEnvelope} />
-                                    <p>{email}</p>
-                                </div> */}
-                                <div className={cx('info-item')}>
-                                    <FontAwesomeIcon icon={faPhone} />
-                                    <p>**********</p>
-                                </div>
-                                <div className={cx('info-item')}>
-                                    <FontAwesomeIcon icon={faEnvelope} />
-                                    <p>***************</p>
-                                </div>
+                                {(isApplied || account.isMemberShip || buyService) && (
+                                    <>
+                                        <div className={cx('info-item')}>
+                                            <FontAwesomeIcon icon={faPhone} />
+                                            <p>{phone}</p>
+                                        </div>
+                                        <div className={cx('info-item')}>
+                                            <FontAwesomeIcon icon={faEnvelope} />
+                                            <p>{email}</p>
+                                        </div>
+                                    </>
+                                )}
+                                {!isApplied && !account.isMemberShip && !buyService && (
+                                    <>
+                                        <div className={cx('info-item')}>
+                                            <FontAwesomeIcon icon={faPhone} />
+                                            <p>**********</p>
+                                        </div>
+                                        <div className={cx('info-item')}>
+                                            <FontAwesomeIcon icon={faEnvelope} />
+                                            <p>***************</p>
+                                        </div>
+                                    </>
+                                )}
 
                                 <div className={cx('info-item')}>
                                     <FontAwesomeIcon icon={faLocationDot} />
@@ -155,6 +179,21 @@ function ViewDetailFreelancer() {
                                     </p>
                                 </div>
                             </div>
+                            {!isApplied && !account.isMemberShip && !buyService && (
+                                <div>
+                                    <Popconfirm
+                                        placement="top"
+                                        title={text}
+                                        onConfirm={handleSubmit}
+                                        okText="Xem thông tin"
+                                        cancelText="Hủy"
+                                    >
+                                        <Button type="primary" size="large">
+                                            Thông tin liên hệ
+                                        </Button>
+                                    </Popconfirm>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className={cx('profile-complicate')}>

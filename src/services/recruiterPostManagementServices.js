@@ -72,3 +72,11 @@ export const getProfileFreelancer = async (id, recruiterId) => {
         console.log(error);
     }
 };
+export const updateAccountBalance = async (userId, fee) => {
+    try {
+        const res = await httpRequest.put(`api/user/updateAccountBalance?userId=${userId}&fee=${fee}`);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};

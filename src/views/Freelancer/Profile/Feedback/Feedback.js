@@ -40,7 +40,7 @@ function Feedback({ userId }) {
                             <p className={cx('star-average-big')}>{starAverage.toFixed(1)}</p>
                             <div>
                                 <FontAwesomeIcon icon={faStar} />
-                                <p>{totalFeedback} lượt đánh giá</p>
+                                <p>{totalItems} lượt đánh giá</p>
                             </div>
                         </div>
                         {currentUserId !== userId && <Comment userId={userId} />}
@@ -52,7 +52,7 @@ function Feedback({ userId }) {
                         )}
                     </>
                 )}
-                {totalFeedback === 0 && <p>Chưa có đánh giá</p>}
+                {totalItems === 0 && <p>Chưa có đánh giá</p>}
             </div>
         </div>
     );

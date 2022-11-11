@@ -14,6 +14,7 @@ import Button from '../../components/Button';
 import styles from './UserHeader.module.scss';
 import { Notification, Wallet } from '../Icons/Icons';
 import * as firebase from '../../firebase/firebase';
+import NotificationItem from './NotificationItem';
 
 const cx = classNames.bind(styles);
 const MENU_ITEMS = [
@@ -52,14 +53,16 @@ function UserHeader() {
     const accountBalance = useSelector((state) => state.accountBalance).toFixed(1);
     const accountAvatar = useSelector((state) => state.accountAvatar);
     const [image, setImage] = useState(images.defaultAvatar);
+    if (account.role === 'freelancer') {
+        console.log(account.role);
+        MENU_ITEMS[0].to.search = `?id=${account.userId}`;
+    }
     if (account.role === 'recruiter') {
         console.log(account.role);
         MENU_ITEMS[0].to.pathname = config.routes.recruiterProfile;
         MENU_ITEMS[0].to.search = `?id=${account.userId}`;
-    } else {
-        console.log(account.role);
-        MENU_ITEMS[0].to.search = `?id=${account.userId}`;
     }
+
     const handleMenuChange = (menuItem) => {
         switch (menuItem.type) {
             case 'language':
@@ -116,9 +119,14 @@ function UserHeader() {
                     <HeadlessTippy
                         interactive
                         trigger="click"
-                        offset={[30, 10]}
-                        placement="bottom-end"
-                        render={(attrs) => <div className={cx('notification-list')} tabIndex="-1" {...attrs}></div>}
+                        //offset={[30, 10]}
+                        placement="bottom-start"
+                        render={(attrs) => (
+                            <div className={cx('notification-list')} tabIndex="-1" {...attrs}>
+                                <h2>Thông báo</h2>
+                                <NotificationItem />
+                            </div>
+                        )}
                     >
                         <div className={cx('notification')}>
                             <Notification height="25px" width="25px" />
@@ -128,7 +136,7 @@ function UserHeader() {
                         interactive
                         trigger="click"
                         offset={[30, 10]}
-                        placement="bottom-end"
+                        placement="bottom-start"
                         render={(attrs) => (
                             <div className={cx('wallet-popup')} tabIndex="-1" {...attrs}>
                                 <div className={cx('wallet-info')}>

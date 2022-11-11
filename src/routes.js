@@ -25,6 +25,7 @@ const ResetPassword = React.lazy(() => import('./views/pages/ResetPassword'));
 const ForgetPassword = React.lazy(() => import('./views/pages/ForgetPassword'));
 const UpdateRecruiterProfile = React.lazy(() => import('./views/recruiter/Update'));
 const ViewDetailFreelancer = React.lazy(() => import('./views/pages/ViewDetailFreelancer'));
+const ViewDetailRecruiter = React.lazy(() => import('./views/pages/ViewDetailRecruiter'));
 const ChangePassword = React.lazy(() => import('./views/pages/ChangePassword'));
 const UserReport = React.lazy(() => import('./views/pages/UserReport'));
 const Recharge = React.lazy(() => import('./views/pages/Recharge'));
@@ -85,6 +86,7 @@ export const routes = [
     { path: config.routes.postApplyManagement, element: PostApplyManagement, layout: UserLayout },
     { path: config.routes.statisticRecruiter, element: StatisticRecruiter, layout: UserLayout },
     { path: config.routes.viewDetailFreelancer, element: ViewDetailFreelancer, layout: UserLayout },
+    { path: config.routes.viewDetailRecruiter, element: ViewDetailRecruiter, layout: UserLayout },
 ];
 
 // Admin routes
@@ -122,6 +124,7 @@ export const freelancerRoutes = [
     { path: config.routes.freelancerProfile, element: FreelancerProfile, layout: UserLayout },
     { path: config.routes.searchJob, element: SearchJob, layout: UserLayout },
     { path: config.routes.jobApply, element: JobApply, layout: UserLayout },
+    { path: config.routes.viewDetailRecruiter, element: ViewDetailRecruiter, layout: UserLayout },
 ];
 
 // Recruiter
@@ -137,6 +140,7 @@ export const recruiterRoutes = [
     { path: config.routes.postManagement, element: PostManagement, layout: UserLayout },
     { path: config.routes.postJob, element: PostJob, layout: UserLayout },
     { path: config.routes.postApplyManagement, element: PostApplyManagement, layout: UserLayout },
+    { path: config.routes.viewDetailFreelancer, element: ViewDetailFreelancer, layout: UserLayout },
 ];
 
 export default routes;

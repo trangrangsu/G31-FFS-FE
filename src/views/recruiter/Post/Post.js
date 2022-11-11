@@ -2,15 +2,8 @@ import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSelector, useDispatch } from 'react-redux';
-import { Cascader, Select, Input, Button, message, Upload, InputNumber, Popconfirm } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
-import {
-    faPenToSquare,
-    faFileLines,
-    faUserCheck,
-    faMoneyCheckDollar,
-    faSquarePlus,
-} from '@fortawesome/free-solid-svg-icons';
+import { Cascader, Select, Input, Button, message, InputNumber, Popconfirm } from 'antd';
+import { faPenToSquare, faFileLines, faUserCheck, faMoneyCheckDollar } from '@fortawesome/free-solid-svg-icons';
 
 import * as firebase from '../../../firebase/firebase';
 import * as careerServices from '../../../services/careerServices';
@@ -22,7 +15,7 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 function Post() {
-    const text = 'Phí đăng bài là 0.5$';
+    const text = 'Phí đăng bài là 1$';
 
     const dispatch = useDispatch();
     const cities = useSelector((state) => state.city);
@@ -59,7 +52,7 @@ function Post() {
             message.error('Đăng bài thất bại');
         }
         if (!account.isMemberShip) {
-            dispatch({ type: 'set', accountBalance: accountBalance - 0.5 });
+            dispatch({ type: 'set', accountBalance: accountBalance - 1 });
         }
     };
 

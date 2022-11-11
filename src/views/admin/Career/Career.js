@@ -22,7 +22,7 @@ function Career() {
     const [totalPages, setTotalPages] = useState(5);
     const fetchApi = async (pIndex) => {
         const result = await adminCareerServices.getCareers(searchValue, pIndex);
-        setCareer(result.careers);
+        setCareer(result.results);
         setPageIndex(result.pageIndex);
         setTotalPages(result.totalPages);
     };

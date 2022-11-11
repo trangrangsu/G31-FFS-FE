@@ -39,6 +39,18 @@ export const navAdmin = [
         to: config.routes.service,
         icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
     },
+    {
+        component: CNavItem,
+        name: 'Career',
+        to: config.routes.career,
+        icon: <CIcon icon={cilListRich} customClassName="nav-icon" />,
+    },
+    {
+        component: CNavItem,
+        name: 'SubCareer',
+        to: config.routes.subCareer,
+        icon: <CIcon icon={cilList} customClassName="nav-icon" />,
+    },
 ];
 export const navStaff = [
     {
@@ -53,18 +65,7 @@ export const navStaff = [
         to: config.routes.recruiter,
         icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
     },
-    {
-        component: CNavItem,
-        name: 'Career',
-        to: config.routes.career,
-        icon: <CIcon icon={cilListRich} customClassName="nav-icon" />,
-    },
-    {
-        component: CNavItem,
-        name: 'SubCareer',
-        to: config.routes.subCareer,
-        icon: <CIcon icon={cilList} customClassName="nav-icon" />,
-    },
+
     {
         component: CNavItem,
         name: 'Payment',

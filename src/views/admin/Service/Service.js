@@ -29,9 +29,7 @@ function Service() {
     const fetchApi = async (pIndex) => {
         const result = await adminServiceServices.getServices(user, searchValue, pIndex);
         console.log(result);
-        setServices(result.services);
-        setPageIndex(result.pageIndex);
-        setTotalPages(result.totalPage);
+        setServices(result);
     };
     const deleteApi = async (id) => {
         const result = await adminServiceServices.deleteService(id);

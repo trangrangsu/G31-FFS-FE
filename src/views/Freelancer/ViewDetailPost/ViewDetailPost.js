@@ -9,29 +9,42 @@ import {
     faBookmark as faBookmarkSolid,
     faHeart as faHeartSolid,
 } from '@fortawesome/free-solid-svg-icons';
-import { faHeart, faBookmark } from '@fortawesome/free-regular-svg-icons';
+import { faHeart, faBookmark, faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
 import { useSearchParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { message, Modal, Button, Input, Popconfirm } from 'antd';
 
 import images from '../../../assets/images';
 import Image from '../../../components/Image';
 import config from '../../../config';
-import Button from '../../../components/Button';
+import CustomButton from '../../../components/Button';
 import * as getPostDetailFreelancerServices from '../../../services/getPostDetailFreelancerServices';
+import * as recruiterPostManagementServices from '../../../services/recruiterPostManagementServices';
+import * as searchPostFreelancerServices from '../../../services/searchPostFreelancerServices';
 import styles from './ViewDetailPost.module.scss';
 const cx = classNames.bind(styles);
 
 const ViewDetailPost = () => {
+    const text = 'Phí ứng tuyển là 0.5$';
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const account = useSelector((state) => state.account);
+    const accountBalance = useSelector((state) => state.accountBalance);
     const [searchParams, setSearchParams] = useSearchParams();
     const [status, setStatus] = useState(-1);
-    //const [isSave, setIsSave] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [apply, setApply] = useState('Ứng tuyển');
     const [isSolidHeart, setIsSolidHeart] = useState(false);
     const [save, setSave] = useState('Lưu');
     const [isSolidBookmark, setIsSolidBookmark] = useState(false);
     const [postDetail, setPostDetail] = useState({ createBy: {}, listSkills: [] });
+    const [commentValue, setCommentValue] = useState('');
+    const [icon1, setIcon1] = useState(faStarRegular);
+    const [icon2, setIcon2] = useState(faStarRegular);
+    const [icon3, setIcon3] = useState(faStarRegular);
+    const [icon4, setIcon4] = useState(faStarRegular);
+    const [icon5, setIcon5] = useState(faStarRegular);
+    const [star, setStar] = useState(1);
 
     const getPostDetailApi = async (postId) => {
         const result = await getPostDetailFreelancerServices.getPostDetail(postId, account.userId);
@@ -39,14 +52,59 @@ const ViewDetailPost = () => {
         if (typeof result === 'object') {
             setPostDetail(result);
             setStatus(result.isApply);
-            //setIsSave(result.isSave)
             if (result.isSave) {
                 setSave('Bỏ lưu');
                 setIsSolidBookmark(true);
             }
             if (result.isApply === 2) {
                 setApply('Bỏ ứng tuyển');
+                setIsSolidHeart(true);
             }
+        }
+    };
+    const addJobSavedApi = async (postID) => {
+        const result = await searchPostFreelancerServices.addJobSaved(account.userId, postID);
+        console.log(result);
+        if (result) {
+            setIsSolidBookmark(!isSolidBookmark);
+            if (!isSolidBookmark) {
+                setSave('Bỏ lưu');
+            } else {
+                setSave('Lưu');
+            }
+        }
+    };
+    const applyPostApi = async (postID) => {
+        const result = await getPostDetailFreelancerServices.addJobRequest(postID, account.userId);
+        console.log(result);
+        if (result) {
+            dispatch({ type: 'set', accountBalance: accountBalance - 0.5 });
+            setIsSolidHeart(!isSolidHeart);
+            if (!isSolidHeart) {
+                setApply('Bỏ ứng tuyển');
+            } else {
+                setApply('Ứng tuyển');
+            }
+        }
+    };
+    const deleteJobRequestApi = async (postID) => {
+        const result = await getPostDetailFreelancerServices.deleteJobRequest(postID, account.userId);
+        console.log(result);
+        if (result) {
+            setIsSolidHeart(!isSolidHeart);
+            if (!isSolidHeart) {
+                setApply('Bỏ ứng tuyển');
+            } else {
+                setApply('Ứng tuyển');
+            }
+        }
+    };
+    const addFeedbackApi = async (data) => {
+        const result = await recruiterPostManagementServices.addFeedback(data);
+        if (result) {
+            message.info('Đánh giá thành công');
+        } else {
+            message.error('Đánh giá thất bại');
         }
     };
     useEffect(() => {
@@ -54,28 +112,89 @@ const ViewDetailPost = () => {
     }, []);
     const handleViewDetailRecruiter = () => {
         const to = {
-            pathname: config.routes.viewDetailRecruiterAdmin,
+            pathname: config.routes.viewDetailRecruiter,
             search: `?id=${postDetail.createBy.id}`,
         };
         navigate(to);
     };
     const handleApply = () => {
-        setIsSolidHeart(!isSolidHeart);
         if (!isSolidHeart) {
-            setApply('Bỏ ứng tuyển');
+            console.log('apply');
+            applyPostApi(postDetail.postID);
         } else {
-            setApply('Ứng tuyển');
+            console.log('delete');
+            deleteJobRequestApi(postDetail.postID);
         }
     };
     const handleSave = () => {
-        setIsSolidBookmark(!isSolidBookmark);
-        if (!isSolidBookmark) {
-            setSave('Bỏ lưu');
-        } else {
-            setSave('Lưu');
-        }
-        //addJobSavedApi(post.postID);
+        addJobSavedApi(postDetail.postID);
     };
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+    const handleOk = () => {
+        setIsModalOpen(false);
+        const data = {};
+        data.fromUserId = account.userId;
+        data.toUserId = postDetail.createBy.id;
+        data.jobId = postDetail.postID;
+        data.star = star;
+        data.content = commentValue;
+        addFeedbackApi(data);
+        setStar(1);
+        setCommentValue('');
+    };
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+    const handleChange = (e) => {
+        const commentValue = e.target.value;
+        if (!commentValue.startsWith(' ')) {
+            setCommentValue(commentValue);
+        }
+    };
+    const handleOnclick = (value) => {
+        setStar(value);
+        switch (value) {
+            case 1:
+                setIcon1(faStar);
+                setIcon2(faStarRegular);
+                setIcon3(faStarRegular);
+                setIcon4(faStarRegular);
+                setIcon5(faStarRegular);
+                break;
+            case 2:
+                setIcon1(faStar);
+                setIcon2(faStar);
+                setIcon3(faStarRegular);
+                setIcon4(faStarRegular);
+                setIcon5(faStarRegular);
+                break;
+            case 3:
+                setIcon1(faStar);
+                setIcon2(faStar);
+                setIcon3(faStar);
+                setIcon4(faStarRegular);
+                setIcon5(faStarRegular);
+                break;
+            case 4:
+                setIcon1(faStar);
+                setIcon2(faStar);
+                setIcon3(faStar);
+                setIcon4(faStar);
+                setIcon5(faStarRegular);
+                break;
+            case 5:
+                setIcon1(faStar);
+                setIcon2(faStar);
+                setIcon3(faStar);
+                setIcon4(faStar);
+                setIcon5(faStar);
+                break;
+            default:
+        }
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('page-title')}>Chi tiết bài đăng</div>
@@ -96,9 +215,9 @@ const ViewDetailPost = () => {
                     <div className={cx('left-component')}>
                         <div className={cx('post-description')}>{postDetail.description}</div>
                         {postDetail.attach && (
-                            <Button text href={postDetail.attach} className={cx('document')}>
+                            <CustomButton text href={postDetail.attach} className={cx('document')}>
                                 Tài liệu
-                            </Button>
+                            </CustomButton>
                         )}
                     </div>
                     <div className={cx('left-component')}>
@@ -134,20 +253,58 @@ const ViewDetailPost = () => {
                     <div id={cx('head-r')} className={cx('right-component')}>
                         {status === -1 && (
                             <div className={cx('action')}>
-                                <Button
-                                    className={cx('btn-apply')}
-                                    leftIcon={
-                                        <FontAwesomeIcon
-                                            className={cx('action-apply')}
-                                            icon={isSolidHeart ? faHeartSolid : faHeart}
-                                            onClick={handleApply}
-                                        />
-                                    }
-                                    onClick={handleApply}
-                                >
-                                    {apply}
-                                </Button>
-                                <Button
+                                {account.isMemberShip && (
+                                    <CustomButton
+                                        className={cx('btn-apply')}
+                                        leftIcon={
+                                            <FontAwesomeIcon
+                                                className={cx('action-apply')}
+                                                icon={isSolidHeart ? faHeartSolid : faHeart}
+                                                onClick={handleApply}
+                                            />
+                                        }
+                                        onClick={handleApply}
+                                    >
+                                        {apply}
+                                    </CustomButton>
+                                )}
+                                {!account.isMemberShip && !isSolidHeart && (
+                                    <Popconfirm
+                                        placement="top"
+                                        title={text}
+                                        onConfirm={handleApply}
+                                        okText="Ứng tuyển"
+                                        cancelText="Hủy"
+                                    >
+                                        <CustomButton
+                                            className={cx('btn-apply')}
+                                            leftIcon={
+                                                <FontAwesomeIcon
+                                                    className={cx('action-apply')}
+                                                    icon={isSolidHeart ? faHeartSolid : faHeart}
+                                                />
+                                            }
+                                        >
+                                            {apply}
+                                        </CustomButton>
+                                    </Popconfirm>
+                                )}
+                                {!account.isMemberShip && isSolidHeart && (
+                                    <CustomButton
+                                        className={cx('btn-apply')}
+                                        leftIcon={
+                                            <FontAwesomeIcon
+                                                className={cx('action-apply')}
+                                                icon={isSolidHeart ? faHeartSolid : faHeart}
+                                                onClick={handleApply}
+                                            />
+                                        }
+                                        onClick={handleApply}
+                                    >
+                                        {apply}
+                                    </CustomButton>
+                                )}
+                                <CustomButton
                                     className={cx('btn-save')}
                                     leftIcon={
                                         <FontAwesomeIcon
@@ -158,30 +315,37 @@ const ViewDetailPost = () => {
                                     onClick={handleSave}
                                 >
                                     {save}
-                                </Button>
+                                </CustomButton>
                             </div>
                         )}
                         {status === 1 && (
-                            <div className={cx('action-message')}>
-                                <div>
-                                    <p>
-                                        Bạn đã được giao công việc này. Hãy liên lạc với nhà tuyển dụng để bắt đầu công
-                                        việc
-                                    </p>
+                            <>
+                                <div className={cx('action-message')}>
+                                    <div>
+                                        <p>
+                                            Bạn đã được giao công việc này. Hãy liên lạc với nhà tuyển dụng để bắt đầu
+                                            công việc
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p>
+                                            <b>Số điện thoại: </b>
+                                            {postDetail.createBy.phone}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p>
+                                            <b>Email: </b>
+                                            {postDetail.createBy.email}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p>
-                                        <b>Số điện thoại: </b>
-                                        {postDetail.createBy.phone}
-                                    </p>
+                                <div className={cx('comment')}>
+                                    <Button type="primary" onClick={showModal}>
+                                        Đánh giá nhà tuyển dụng
+                                    </Button>
                                 </div>
-                                <div>
-                                    <p>
-                                        <b>Email: </b>
-                                        {postDetail.createBy.email}
-                                    </p>
-                                </div>
-                            </div>
+                            </>
                         )}
                         {status === 0 && (
                             <div className={cx('action-message')}>
@@ -189,15 +353,15 @@ const ViewDetailPost = () => {
                                     <span>
                                         Bạn đã bị từ chối công việc này. Bạn có thể tìm các việc làm hấp dẫn khác
                                     </span>
-                                    <Button to={config.routes.searchJob} className={cx('btn-link')}>
+                                    <CustomButton to={config.routes.searchJob} className={cx('btn-link')}>
                                         tại đây
-                                    </Button>
+                                    </CustomButton>
                                 </div>
                             </div>
                         )}
                         {status === 2 && (
                             <div className={cx('action')}>
-                                <Button
+                                <CustomButton
                                     className={cx('btn-apply')}
                                     leftIcon={
                                         <FontAwesomeIcon
@@ -209,8 +373,8 @@ const ViewDetailPost = () => {
                                     onClick={handleApply}
                                 >
                                     {apply}
-                                </Button>
-                                <Button
+                                </CustomButton>
+                                <CustomButton
                                     className={cx('btn-save')}
                                     leftIcon={
                                         <FontAwesomeIcon
@@ -221,7 +385,7 @@ const ViewDetailPost = () => {
                                     onClick={handleSave}
                                 >
                                     {save}
-                                </Button>
+                                </CustomButton>
                             </div>
                         )}
                     </div>
@@ -249,22 +413,32 @@ const ViewDetailPost = () => {
                             </div>
                         </div>
                         <div className={cx('company-info-name')}>
-                            <Button className={cx('btn-company')} onClick={handleViewDetailRecruiter}>
+                            <CustomButton className={cx('btn-company')} onClick={handleViewDetailRecruiter}>
                                 {postDetail.createBy.companyName}
-                            </Button>
+                            </CustomButton>
                         </div>
                     </div>
                     <div className={cx('right-component')}>
                         <div className={cx('company-title')}>Trang web công ty</div>
-                        <Button href={postDetail.createBy.website} className={cx('company-link')}>
+                        <CustomButton href={postDetail.createBy.website} className={cx('company-link')}>
                             {postDetail.createBy.website}
-                        </Button>
+                        </CustomButton>
                     </div>
                 </div>
             </div>
             <div className={cx('footer')}>
                 <Image src={images.bannerAloNgayFreelancer} alt="footer" />
             </div>
+            <Modal title="Đánh giá" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <Input size="large" placeholder="viết đánh giá tại đây" value={commentValue} onChange={handleChange} />
+                <div className={cx('comment-action-left')}>
+                    <FontAwesomeIcon icon={icon1} onClick={() => handleOnclick(1)} />
+                    <FontAwesomeIcon icon={icon2} onClick={() => handleOnclick(2)} />
+                    <FontAwesomeIcon icon={icon3} onClick={() => handleOnclick(3)} />
+                    <FontAwesomeIcon icon={icon4} onClick={() => handleOnclick(4)} />
+                    <FontAwesomeIcon icon={icon5} onClick={() => handleOnclick(5)} />
+                </div>
+            </Modal>
         </div>
     );
 };

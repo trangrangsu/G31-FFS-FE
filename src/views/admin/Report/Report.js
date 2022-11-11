@@ -19,12 +19,12 @@ function Report() {
     const fetchApi = async (pIndex) => {
         const result = await adminReportServices.getReports(searchValue, pIndex);
         console.log(result);
-        setReports(result.reports);
+        setReports(result.results);
         setPageIndex(result.pageIndex);
         setTotalPages(result.totalPage);
     };
     useEffect(() => {
-        fetchApi();
+        fetchApi(0);
     }, []);
     const handlePaging = (pIndex) => {
         fetchApi(pIndex);
@@ -80,7 +80,7 @@ function Report() {
     };
     const handleViewDetail = (report) => {
         setTitle(report.title);
-        setDetail(report.detail);
+        setDetail(report.content);
         setShow(true);
     };
     return (

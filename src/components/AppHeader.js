@@ -7,16 +7,11 @@ import classNames from 'classnames/bind';
 import Menu from './Popper/Menu';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAddressCard, faEllipsisVertical, faRightFromBracket, faUnlock } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faRightFromBracket, faUnlock } from '@fortawesome/free-solid-svg-icons';
 import styles from './Component.module.scss';
 
 const cx = classNames.bind(styles);
 const MENU_ITEMS = [
-    {
-        icon: <FontAwesomeIcon icon={faAddressCard} />,
-        title: 'Xem hồ sơ',
-        to: '/staff/Profile',
-    },
     {
         icon: <FontAwesomeIcon icon={faUnlock} />,
         title: 'Đổi mật khẩu',
@@ -44,7 +39,7 @@ const AppHeader = () => {
                     <CNavItem></CNavItem>
                 </CHeaderNav>
                 <CHeaderNav className="ms-3">
-                    <Menu items={MENU_ITEMS}>
+                    <Menu items={MENU_ITEMS} hideOnClick>
                         <button className={cx('more-btn')}>
                             <FontAwesomeIcon icon={faEllipsisVertical} />
                         </button>
