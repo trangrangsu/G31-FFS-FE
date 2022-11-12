@@ -15,7 +15,6 @@ import styles from './ViewDetailRecruiter.module.scss';
 const cx = classNames.bind(styles);
 
 function ViewDetailFreelancer() {
-    const text = 'Phí xem thông tin là 0.5$';
     const dispatch = useDispatch();
     const account = useSelector((state) => state.account);
     const accountBalance = useSelector((state) => state.accountBalance);
@@ -38,6 +37,7 @@ function ViewDetailFreelancer() {
     const [companyIntro, setCompanyIntro] = useState('');
     const [buyService, setBuyService] = useState(false);
     const [isApplied, setIsApplied] = useState(false);
+    const text = 'Phí xem thông tin là ' + account.feeViewProfile + '$';
 
     const fetchApi = async () => {
         const result = await searchPostFreelancerServices.getProfileFreelancer(recruiterId, account.userId);
@@ -62,10 +62,10 @@ function ViewDetailFreelancer() {
         }
     };
     const updateAccountBalanceApi = async () => {
-        const result = await searchPostFreelancerServices.updateAccountBalance(account.userId, 0.5);
+        const result = await searchPostFreelancerServices.updateAccountBalance(account.userId, account.feeViewProfile);
         if (result) {
             setBuyService(true);
-            dispatch({ type: 'set', accountBalance: accountBalance - 0.5 });
+            dispatch({ type: 'set', accountBalance: accountBalance - account.feeViewProfile });
         }
     };
     useEffect(() => {

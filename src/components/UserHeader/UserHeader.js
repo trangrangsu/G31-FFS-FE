@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag, faRightFromBracket, faAddressCard, faUnlock } from '@fortawesome/free-solid-svg-icons';
 import HeadlessTippy from '@tippyjs/react/headless';
 
+import * as notificationServices from '../../services/notificationServices';
 import Image from '../Image';
 import Menu from '../Popper/Menu';
 import config from '../../config';
@@ -53,6 +54,7 @@ function UserHeader() {
     const accountBalance = useSelector((state) => state.accountBalance).toFixed(1);
     const accountAvatar = useSelector((state) => state.accountAvatar);
     const [image, setImage] = useState(images.defaultAvatar);
+    const [notifications, setNotifications] = useState([]);
     if (account.role === 'freelancer') {
         console.log(account.role);
         MENU_ITEMS[0].to.search = `?id=${account.userId}`;
@@ -71,9 +73,17 @@ function UserHeader() {
             default:
         }
     };
+    const getNoticationApi = async () => {
+        const result = await notificationServices.getNotifications(account.userId);
+        console.log(result);
+        setNotifications(result);
+    };
     useEffect(() => {
         firebase.downloadFile(account.userId, 'avatar', accountAvatar, setImage);
     }, [accountAvatar]);
+    const handleViewNotification = () => {
+        getNoticationApi();
+    };
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -124,11 +134,13 @@ function UserHeader() {
                         render={(attrs) => (
                             <div className={cx('notification-list')} tabIndex="-1" {...attrs}>
                                 <h2>Thông báo</h2>
-                                <NotificationItem />
+                                {notifications.map((notification) => (
+                                    <NotificationItem key={notification.postId} item={notification} />
+                                ))}
                             </div>
                         )}
                     >
-                        <div className={cx('notification')}>
+                        <div className={cx('notification')} onClick={handleViewNotification}>
                             <Notification height="25px" width="25px" />
                         </div>
                     </HeadlessTippy>

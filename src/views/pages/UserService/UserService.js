@@ -16,11 +16,13 @@ const UserService = () => {
     const dispatch = useDispatch();
     const [services, setServices] = useState([{ serviceName: '' }, { serviceName: '' }, { serviceName: '' }]);
     const [currentService, setCurrentService] = useState({ benefits: [] });
+    const [benefits, setBenefits] = useState([]);
     const getServicesApi = async () => {
         const result = await userServiceServices.getServices('freelancer');
         console.log(result);
-        setServices(result);
-        setCurrentService(result[0]);
+        setServices(result.services);
+        setCurrentService(result.services[0]);
+        setBenefits(result.benefits);
     };
     const buyServiceApi = async () => {
         const result = await userServiceServices.buyService(account.userId, currentService.id);
@@ -115,7 +117,7 @@ const UserService = () => {
                                 <b>{currentService.duration}</b>
                             </div>
                             <div className={cx('service-detail-item2')}>
-                                {currentService.benefits.map((benefit) => {
+                                {benefits.map((benefit) => {
                                     return (
                                         <div className={cx('row-detail')} key={benefit.id}>
                                             <tbody>

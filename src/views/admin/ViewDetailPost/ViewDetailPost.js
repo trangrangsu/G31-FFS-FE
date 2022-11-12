@@ -4,7 +4,9 @@ import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
+import * as firebase from '../../../firebase/firebase';
 import * as adminPostServices from '../../../services/adminPostServices';
 import Config from '../../../config';
 import Button from '../../../components/Button';
@@ -15,15 +17,22 @@ function ViewDetailPost() {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const [post, setPost] = useState({ createBy: '', listSkills: [] });
+    const account = useSelector((state) => state.account);
+    const [documentURL, setDocumentURL] = useState('#');
     //const [isApproved, setIsApproved] = useState();
     const fetchApi = async () => {
         const result = await adminPostServices.getDetailPost(searchParams.get('id'));
         console.log(result);
         setPost(result);
+        setDocumentURL(result.attach);
     };
     useEffect(() => {
         fetchApi();
     }, []);
+    useEffect(() => {
+        if (document !== '' && post.createBy.id !== undefined)
+            firebase.downloadFile(post.createBy.id, searchParams.get('id'), document, setDocumentURL);
+    }, [document]);
     const updateApi = async (data) => {
         const result = await adminPostServices.updatePost(data);
         console.log(result);
@@ -32,7 +41,7 @@ function ViewDetailPost() {
     const handleApprove = () => {
         const data = {
             id: searchParams.get('id'),
-            approveBy: 'LS1g5vkE9S',
+            approveBy: account.userId,
             status: '1',
         };
         updateApi(data);
@@ -41,7 +50,7 @@ function ViewDetailPost() {
     const handleDeny = () => {
         const data = {
             id: searchParams.get('id'),
-            approveBy: 'LS1g5vkE9S',
+            approveBy: account.userId,
             status: '0',
         };
         updateApi(data);
@@ -80,7 +89,7 @@ function ViewDetailPost() {
                         </div>
                         <div className={cx('attach')}>
                             <p>Đính kèm:</p>
-                            <Button href={post.attach}>{post.attach}</Button>
+                            <Button href={documentURL}>{post.attach}</Button>
                         </div>
                     </div>
                 </div>
@@ -97,8 +106,8 @@ function ViewDetailPost() {
                             <label className={cx('label')}>Kỹ năng</label>
                             <div className={cx('container-skill')}>
                                 {post.listSkills.map((skill) => (
-                                    <div>
-                                        <p key={skill.id}>{skill.name}</p>
+                                    <div key={skill.id}>
+                                        <p>{skill.name}</p>
                                     </div>
                                 ))}
                             </div>

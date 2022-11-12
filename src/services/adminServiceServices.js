@@ -1,8 +1,8 @@
 import * as httpRequest from '../utils/httpRequest';
 
-export const getServices = async (roleId, name, pageIndex) => {
+export const getServices = async (roleId) => {
     try {
-        const res = await httpRequest.get(`api/admin/service?roleId=${roleId}&name=${name}&pageIndex=${pageIndex}`);
+        const res = await httpRequest.get(`api/admin/service?roleId=${roleId}`);
         return res;
     } catch (error) {
         console.log(error);
@@ -32,9 +32,9 @@ export const addService = async (service) => {
         console.log(error);
     }
 };
-export const updateStaff = async (service) => {
+export const updateService = async (serviceId, price) => {
     try {
-        const res = await httpRequest.put('api/admin/update-service', service);
+        const res = await httpRequest.put(`api/admin/update-service?serviceId=${serviceId}&price=${price}`);
         return res;
     } catch (error) {
         console.log(error);
@@ -43,6 +43,16 @@ export const updateStaff = async (service) => {
 export const deleteService = async (id) => {
     try {
         const res = await httpRequest.deleteMetohd(`api/admin/delete-service?id=${id}`);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+//fee
+export const editFee = async (feeId, price) => {
+    try {
+        const res = await httpRequest.put(`api/admin/editFee?feeId=${feeId}&price=${price}`);
         return res;
     } catch (error) {
         console.log(error);

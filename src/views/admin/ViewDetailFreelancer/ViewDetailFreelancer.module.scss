@@ -156,6 +156,12 @@
     }
 
 }
+.action{
+    flex: 1;
+    button{
+        float: right;
+    }
+}
 .skills{
     display: flex;
     flex-direction: row;

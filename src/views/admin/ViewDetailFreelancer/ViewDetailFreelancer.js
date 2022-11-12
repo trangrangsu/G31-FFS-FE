@@ -3,8 +3,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { faUserPen, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ref, getDownloadURL, listAll } from 'firebase/storage';
 
+import { Star } from '../../../components/Icons';
 import BanPopUp from './BanPopUp';
 import images from '../../../assets/images';
 import * as firebase from '../../../firebase/firebase';
@@ -24,31 +24,30 @@ function ViewDetailFreelancer() {
     const [image, setImage] = useState(images.defaultAvatar);
     const [show, setShow] = useState(false);
     const [searchParams, setSearchParams] = useSearchParams();
+    const [avatar, setAvatar] = useState('');
+    const [cv, setCv] = useState('');
+    const [cvUrl, setCvUrl] = useState('#');
     const fetchApi = async () => {
         const result = await adminFreelancerService.getFreelancer(searchParams.get('id'));
         console.log(result);
-        downloadFile(result.id, 'avatar');
         setFreelancer(result);
         setBanFlag(result.isBanned);
+        if (result.avatar !== null) {
+            setAvatar(result.avatar);
+        }
+        if (result.cv !== null) {
+            setCv(result.cv);
+        }
     };
     useEffect(() => {
         fetchApi();
     }, []);
-    const downloadFile = async (userId, type) => {
-        const ImageService = ref(firebase.storage, `${userId}/${type}`);
-        await listAll(ImageService)
-            .then((res) => {
-                res.items.forEach(async (itemRef) => {
-                    await getDownloadURL(ref(firebase.storage, itemRef._location.path_)).then((url) => {
-                        console.log(url);
-                        imgRef.current.src = url;
-                    });
-                });
-            })
-            .catch((error) => {
-                console.log('Lỗi');
-            });
-    };
+    useEffect(() => {
+        if (avatar !== '') firebase.downloadFile(freelancer.id, 'avatar', avatar, setImage);
+    }, [avatar]);
+    useEffect(() => {
+        if (cv !== '') firebase.downloadFile(freelancer.id, 'cv', cv, setCvUrl);
+    }, [cv]);
     const handleShowBanPopup = () => {
         setShow(true);
     };
@@ -63,17 +62,28 @@ function ViewDetailFreelancer() {
                 <div className={cx('freelancer-info')}>
                     <div className={cx('left-info')}>
                         <div className={cx('img-info')}>
-                            <Image className={cx('avatar-info')} src={image} alt="Girl in a jacket" ref={imgRef} />
+                            <Image className={cx('avatar-info')} src={image} alt="avatar" ref={imgRef} />
                         </div>
                         <div className={cx('left-detail')}>
                             <div className={cx('fullname')}>{freelancer.fullName}</div>
                             <div className={cx('sub-career')}>{freelancer.subCareer}</div>
                             <div>
-                                Đánh giá: {freelancer.star}{' '}
-                                <FontAwesomeIcon icon={faStar} className={cx('icon-user')} />
+                                <label>Đánh giá:</label>
+                                {freelancer.star === 0 ? (
+                                    <p>Chưa có đánh giá</p>
+                                ) : (
+                                    <p>
+                                        {freelancer.star} <Star />
+                                    </p>
+                                )}
                             </div>
                             <div>Chi phí: {freelancer.costPerHour}</div>
-                            <div>CV:{freelancer.cv}</div>
+                            {cv !== '' && (
+                                <div className={cx('cv-right')}>
+                                    <p>CV:</p>
+                                    <a href={cvUrl}>{cv}</a>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className={cx('right-info')}>
@@ -83,6 +93,15 @@ function ViewDetailFreelancer() {
                             <div>Số diện thoại: {freelancer.phone}</div>
                             <div>Địa chỉ: {freelancer.address}</div>
                         </div>
+                    </div>
+                    <div className={cx('action')}>
+                        <Button
+                            admin
+                            className={cx(!banFlag ? 'btn-warning' : 'btn-info')}
+                            onClick={handleShowBanPopup}
+                        >
+                            {!banFlag ? 'Khóa tài khoản' : 'Mở khóa'}
+                        </Button>
                     </div>
                 </div>
                 <div className={cx('description')}>
@@ -141,9 +160,6 @@ function ViewDetailFreelancer() {
                         })}
                     </div>
                 </div>
-                <Button admin className={cx(!banFlag ? 'btn-warning' : 'btn-info')} onClick={handleShowBanPopup}>
-                    {!banFlag ? 'Khóa tài khoản' : 'Mở khóa'}
-                </Button>
             </div>
             {show && (
                 <BanPopUp

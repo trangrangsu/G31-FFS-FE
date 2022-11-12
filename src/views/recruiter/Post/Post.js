@@ -15,13 +15,11 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 function Post() {
-    const text = 'Phí đăng bài là 1$';
-
     const dispatch = useDispatch();
     const cities = useSelector((state) => state.city);
     const account = useSelector((state) => state.account);
     const accountBalance = useSelector((state) => state.accountBalance);
-
+    const text = 'Phí đăng bài là ' + account.feePostJob + '$';
     const [careers, setCareers] = useState([{ id: 1, name: 'cntt', subCareers: { data: [{ id: 1, name: 'cntt' }] } }]);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -52,7 +50,7 @@ function Post() {
             message.error('Đăng bài thất bại');
         }
         if (!account.isMemberShip) {
-            dispatch({ type: 'set', accountBalance: accountBalance - 1 });
+            dispatch({ type: 'set', accountBalance: accountBalance - account.feePostJob });
         }
     };
 

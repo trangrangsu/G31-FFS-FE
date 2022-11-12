@@ -5,8 +5,8 @@ import { faUserPen, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSearchParams } from 'react-router-dom';
 import * as adminRecruiterServices from '../../../services/adminRecruiterServices';
-import { ref, getDownloadURL, listAll } from 'firebase/storage';
 
+import { Star } from '../../../components/Icons';
 import Image from '../../../components/Image';
 import * as firebase from '../../../firebase/firebase';
 import BanPopUp from './BanPopUp';
@@ -17,6 +17,7 @@ const cx = classNames.bind(styles);
 function ViewDetailRecruiter() {
     const [banFlag, setBanFlag] = useState(false);
     const imgRef = useRef();
+    const [avatar, setAvatar] = useState('');
     const [recruiter, setRecruiter] = useState({ career: { name: '' } });
     const [image, setImage] = useState(images.defaultAvatar);
     const [show, setShow] = useState(false);
@@ -25,26 +26,18 @@ function ViewDetailRecruiter() {
         const fetchApi = async () => {
             const result = await adminRecruiterServices.getRecruiter(searchParams.get('id'));
             console.log(result);
-            downloadFile(result.id, 'avatar');
             setRecruiter(result);
+            setBanFlag(result.isBanned);
+            if (result.avatar !== null) {
+                setAvatar(result.avatar);
+            }
         };
         fetchApi();
     }, []);
-    const downloadFile = async (userId, type) => {
-        const ImageService = ref(firebase.storage, `${userId}/${type}`);
-        await listAll(ImageService)
-            .then((res) => {
-                res.items.forEach(async (itemRef) => {
-                    await getDownloadURL(ref(firebase.storage, itemRef._location.path_)).then((url) => {
-                        console.log(url);
-                        imgRef.current.src = url;
-                    });
-                });
-            })
-            .catch((error) => {
-                console.log('Lỗi');
-            });
-    };
+    useEffect(() => {
+        if (avatar !== '') firebase.downloadFile(recruiter.id, 'avatar', avatar, setImage);
+    }, [avatar]);
+
     const handleShowBanPopup = () => {
         setShow(true);
     };
@@ -62,10 +55,16 @@ function ViewDetailRecruiter() {
                             <Image className={cx('avatar-info')} src={image} alt="Girl in a jacket" ref={imgRef} />
                         </div>
                         <div className={cx('left-detail')}>
-                            <div className={cx('companyname')}>{recruiter.companyName}</div>
-                            <div className={cx('career')}>{recruiter.career.name}</div>
+                            <div className={cx('companyname')}>{recruiter.fullName}</div>
                             <div>
-                                Đánh giá: {recruiter.star} <FontAwesomeIcon icon={faStar} className={cx('icon-user')} />
+                                <label>Đánh giá:</label>
+                                {recruiter.star === 0 ? (
+                                    <p>Chưa có đánh giá</p>
+                                ) : (
+                                    <p>
+                                        {recruiter.star} <Star />
+                                    </p>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -73,9 +72,16 @@ function ViewDetailRecruiter() {
                         <div className={cx('right-detail')}>
                             <div>Phone: {recruiter.phone}</div>
                             <div>Email: {recruiter.email}</div>
-                            <div>Tax-Number: {recruiter.taxNumber}</div>
-                            <div>Website: {recruiter.website}</div>
                         </div>
+                    </div>
+                    <div className={cx('action')}>
+                        <Button
+                            admin
+                            className={cx(!banFlag ? 'btn-warning' : 'btn-info')}
+                            onClick={handleShowBanPopup}
+                        >
+                            {!banFlag ? 'Khóa tài khoản' : 'Mở khóa'}
+                        </Button>
                     </div>
                 </div>
                 <div className={cx('address-content')}>
@@ -86,13 +92,25 @@ function ViewDetailRecruiter() {
                 </div>
                 <div className={cx('description-content')}>
                     <div className={cx('description-title')}>
-                        <p>Mô tả công ty</p>
+                        <p>{recruiter.companyName}</p>
                     </div>
-                    <div className={cx('description')}>{recruiter.companyIntro}</div>
+                    <div className={cx('padding')}>
+                        <div className={cx('description')}>{recruiter.companyIntro}</div>
+                        <div className={cx('background-color')}>
+                            <label className={cx('label')}>Ngành nghề:</label>
+                            <p>{recruiter.career.name}</p>
+                        </div>
+                        <div className={cx('background-color')}>
+                            <label className={cx('label')}>Tax-Number:</label> <p>{recruiter.taxNumber}</p>
+                        </div>
+                        <div className={cx('background-color')}>
+                            <label className={cx('label')}>Website:</label>{' '}
+                            <Button text href={recruiter.website} className={cx('document')}>
+                                {recruiter.website}
+                            </Button>
+                        </div>
+                    </div>
                 </div>
-                <Button admin className={cx(!banFlag ? 'btn-warning' : 'btn-info')} onClick={handleShowBanPopup}>
-                    {!banFlag ? 'Khóa tài khoản' : 'Mở khóa'}
-                </Button>
             </div>
             {show && (
                 <BanPopUp

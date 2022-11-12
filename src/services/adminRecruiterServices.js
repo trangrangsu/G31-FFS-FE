@@ -1,16 +1,26 @@
 import * as httpRequest from '../utils/httpRequest';
 
-export const getRecruiters = async (name, pageIndex) => {
+export const getRecruiterActives = async (name, pageIndex, status) => {
     try {
-        const res = await httpRequest.get(`api/admin/recruiter?name=${name}&pageIndex=${pageIndex}`);
+        const res = await httpRequest.get(
+            `api/admin/recruiterActivated?pageIndex=${pageIndex}&status=${status}&keyword=${name}`,
+        );
         return res;
     } catch (error) {
         console.log(error);
     }
 };
-export const getTop5 = async (name) => {
+export const getRecruiterNotActives = async (name, pageIndex) => {
     try {
-        const res = await httpRequest.get(`api/admin/top5-recruiter?name=${name}`);
+        const res = await httpRequest.get(`api/admin/recruiterNotActivated?pageIndex=${pageIndex}&keyword=${name}`);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const getTop5 = async (name, isActive) => {
+    try {
+        const res = await httpRequest.get(`api/admin/top5-recruiter?name=${name}&isActive=${isActive}`);
         return res;
     } catch (error) {
         console.log(error);
@@ -45,6 +55,14 @@ export const setBan = async (userId, typeBan, bannedBy) => {
 export const unBan = async (userId) => {
     try {
         const res = await httpRequest.put(`api/admin/unban-user?userId=${userId}`);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const approveRecruiter = async (userId) => {
+    try {
+        const res = await httpRequest.put(`api/admin/approveRecruiter?userId=${userId}`);
         return res;
     } catch (error) {
         console.log(error);

@@ -46,6 +46,8 @@ function Button({
         Comp = Link;
     } else if (href) {
         props.href = href;
+        props.target = '_blank';
+
         Comp = 'a';
     }
 

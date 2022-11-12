@@ -9,7 +9,7 @@ const cx = classNames.bind(styles);
 function Payment() {
     const status = ['Tất cả', 'Đã phê duyệt', 'Không phê duyệt', 'Chờ phê duyệt'];
 
-    const headers = ['MÃ NẠP', 'ID KHÁCH HÀNG', 'SỐ TIỀN'];
+    const headers = ['MÃ NẠP', 'ID KHÁCH HÀNG', 'SỐ TIỀN', 'THỜI GIAN'];
 
     const [requests, setRequests] = useState([]);
     const [state, setState] = useState(status[0]);
@@ -89,7 +89,7 @@ function Payment() {
                 <h1 className={cx('title')}>Danh sách Yêu Cầu Nạp Tiền</h1>
 
                 <div className={cx('request-filter')}>
-                    <div className={cx('request-list')}>
+                    {/* <div className={cx('request-list')}>
                         <select value={state} onChange={(e) => setState(e.target.value)}>
                             {status.map((state, index) => {
                                 return (
@@ -99,7 +99,7 @@ function Payment() {
                                 );
                             })}
                         </select>
-                    </div>
+                    </div> */}
                     <div className={cx('subCareer-search')}>
                         <GlobalSearch
                             title="Tìm kiếm mã nạp"
@@ -118,9 +118,10 @@ function Payment() {
                     <tbody>
                         {requests.map((request) => (
                             <tr key={request.id}>
-                                <td>{request.code}</td>
+                                <td>{request.paymentCode}</td>
                                 <td>{request.userId}</td>
                                 <td>{request.money}</td>
+                                <td>{request.dateRequest}</td>
                             </tr>
                         ))}
                     </tbody>

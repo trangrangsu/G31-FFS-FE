@@ -80,7 +80,12 @@ const Login = () => {
             else setPassValidate(false);
         }
     };
-
+    function enterPress(e) {
+        var code = e.keyCode ? e.keyCode : e.which;
+        if (code == 13) {
+            handleLogin();
+        }
+    }
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
@@ -112,6 +117,7 @@ const Login = () => {
                                     value={password}
                                     spellCheck={false}
                                     onChange={(e) => setPassword(e.target.value)}
+                                    onKeyDown={(e) => enterPress(e)}
                                 />
                                 {show ? (
                                     <FontAwesomeIcon icon={faEye} className={cx('input-icon')} onClick={handleClick} />

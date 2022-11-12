@@ -13,7 +13,7 @@ import UserItem from '../UserItem';
 import styles from './Search.module.scss';
 const cx = classNames.bind(styles);
 
-function Search({ type, title, className, onSearch, onPending }) {
+function Search({ type, title, className, isActive, onSearch, onPending }) {
     const [searchValue, setSearchValue] = useState('');
     const [searchResult, setSearchResult] = useState([]);
     const [showResult, setShowResult] = useState(false);
@@ -34,7 +34,7 @@ function Search({ type, title, className, onSearch, onPending }) {
             if (type === 'f') {
                 result = await adminFreelancerService.getTop5(debouncedValue);
             } else {
-                result = await adminRecruiterServices.getTop5(debouncedValue);
+                result = await adminRecruiterServices.getTop5(debouncedValue, isActive);
             }
             console.log(result);
             setSearchResult(result);

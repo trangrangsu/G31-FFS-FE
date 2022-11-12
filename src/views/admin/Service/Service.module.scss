@@ -1,8 +1,8 @@
 .wrapper {
     padding: 0;
     .container {
-        width: var(--default-layout-width);
-        margin: var(--default-margin-top-title-admin) auto;
+        width: 100%;
+        margin: 0 auto;
         .title {
             text-align: center;
             font-family: arial, sans-serif;
@@ -10,6 +10,7 @@
         .subcareer-filter {
             display: flex;
             margin-bottom: 5px;
+            margin-left: 10%;
             .button-popup{
                 margin-right: 10px;
             }
@@ -27,11 +28,12 @@
             }
         }
         .subCareers {
-            width: 100%;
+            width: 80%;
             text-align: center;
             font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
             border-collapse: collapse;
             border: 3px solid #ddd;
+            margin: 0 auto;
             td,
             th {
                 border: 1px solid #fff;
@@ -147,25 +149,7 @@
     height: 30px;
     border-radius: 5px;
     //box-shadow: 0px 2px 5px grey;
-    ::after {
-        content: '<>';
-        font: 17px "Consolas", monospace;
-        color: #333;
-        -webkit-transform: rotate(90deg);
-        -moz-transform: rotate(90deg);
-        -ms-transform: rotate(90deg);
-        transform: rotate(90deg);
-        right: 11px;
-        /*Adjust for position however you want*/
-        
-        top: 18px;
-        padding: 0 0 2px;
-        border-bottom: 1px solid #999;
-        /*left line */
-        
-        position: absolute;
-        pointer-events: none;
-      }
+
     select {
         display: block;
         width: 100%;
@@ -201,40 +185,47 @@
     display: inline;
     //box-shadow: 0px 1px 5px 1px grey;
 }
-.benefit-container{
-    display: flex;
-}
-.benefits{
-    flex: 1;
-    border-radius: 5px;
-    border: 1px solid rgb(194, 193, 193);
-    //box-shadow: 0px 1px 5px 1px grey;
-}
-.row-benefit{
-    display: flex;
-    flex-direction: row;
-    //border-bottom: #999 solid 1px;
-    input{
-        margin: 20px 5px 0;
-    }
-    div{
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
-    div div{
-        border-left: none;
-        border-top: none;
-    }
-}
-//view detail
-.name-title{
-    text-align: center;
-    color: #1C62A3;
-}
+
 // btn add
 .btn-add{
     margin-top: 20px;
     margin-left: 38%;
     font-size: 18px;
+}
+.benefits{
+    width: 80%;
+    font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+    margin: 0 auto;
+    margin-top: 2%;
+    p{
+        font-size: 24px;
+    }
+    li{
+        list-style-type: none;
+        svg{
+            color: green;
+            margin-right: 1%;
+        }
+    }
+}
+.fee{
+    width: 80%;
+    font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+    margin: 0 auto;
+    margin-top: 2%;
+}
+.fee-title{
+    font-size: 24px;
+}
+.fee-item{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1%;
+    p{
+        margin: 0;
+        width: 135px;
+    }
+}
+.input{
+    margin: 0;
 }

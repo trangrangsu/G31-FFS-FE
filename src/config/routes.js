@@ -4,6 +4,7 @@ const routes = {
     register: '/register',
     verifyOTP: '/verify',
     changePassword: '/changePassword',
+    changePasswordForAdmin: '/changePasswordForAdmin',
     forgetPassword: '/forgetPassword',
     resetPassword: '/reset-password',
     userReport: '/report',

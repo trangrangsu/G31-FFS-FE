@@ -25,7 +25,6 @@ import styles from './ViewDetailPost.module.scss';
 const cx = classNames.bind(styles);
 
 const ViewDetailPost = () => {
-    const text = 'Phí ứng tuyển là 0.5$';
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const account = useSelector((state) => state.account);
@@ -45,6 +44,7 @@ const ViewDetailPost = () => {
     const [icon4, setIcon4] = useState(faStarRegular);
     const [icon5, setIcon5] = useState(faStarRegular);
     const [star, setStar] = useState(1);
+    const text = 'Phí ứng tuyển là ' + account.feeApplyJob + '$';
 
     const getPostDetailApi = async (postId) => {
         const result = await getPostDetailFreelancerServices.getPostDetail(postId, account.userId);
@@ -78,7 +78,7 @@ const ViewDetailPost = () => {
         const result = await getPostDetailFreelancerServices.addJobRequest(postID, account.userId);
         console.log(result);
         if (result) {
-            dispatch({ type: 'set', accountBalance: accountBalance - 0.5 });
+            dispatch({ type: 'set', accountBalance: accountBalance - account.feeApplyJob });
             setIsSolidHeart(!isSolidHeart);
             if (!isSolidHeart) {
                 setApply('Bỏ ứng tuyển');
@@ -119,10 +119,8 @@ const ViewDetailPost = () => {
     };
     const handleApply = () => {
         if (!isSolidHeart) {
-            console.log('apply');
             applyPostApi(postDetail.postID);
         } else {
-            console.log('delete');
             deleteJobRequestApi(postDetail.postID);
         }
     };

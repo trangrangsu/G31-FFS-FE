@@ -88,7 +88,6 @@ const Profile = () => {
         fetchApi();
     }, []);
     useEffect(() => {
-        console.log(avatar);
         if (avatar !== '') firebase.downloadFile(recruiterId, 'avatar', avatar, setImage);
     }, [avatar]);
     function previewFile() {

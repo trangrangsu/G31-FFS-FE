@@ -1,45 +1,71 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
-import { CPagination, CPaginationItem } from '@coreui/react';
-import { faTrashCan, faPenClip } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faPenClip } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { InputNumber, Button, message } from 'antd';
 
 import * as adminServiceServices from '../../../services/adminServiceServices';
-import DetailService from './DetailService';
 import ServicePopUp from './ServicePopUp';
-import Button from '../../../components/Button';
-import GlobalSearch from '../../../components/GlobalSearch';
 import styles from './Service.module.scss';
 const cx = classNames.bind(styles);
 function Service() {
-    const headers = ['ID', 'TÊN DỊCH VỤ', 'THỜI GIAN', 'GIÁ TIỀN', 'CHỈNH SỬA', 'XÓA'];
+    const headers = ['ID', 'TÊN DỊCH VỤ', 'THỜI GIAN', 'GIÁ TIỀN', 'CHỈNH SỬA'];
     const users = [
         { id: 3, name: 'Freelancer' },
         { id: 4, name: 'Recruiter' },
     ];
+    const inputRefPost = useRef();
+    const inputRefApply = useRef();
+    const inputRefView = useRef();
     const [services, setServices] = useState([]);
     const [show, setShow] = useState(false);
-    const [showDetail, setShowDetail] = useState(false);
     const [serviceInfo, setServiceInfo] = useState({});
     const [user, setUser] = useState(users[0].id);
-    const [searchValue, setSearchValue] = useState('');
-    const [pageIndex, setPageIndex] = useState(0);
-    const [totalPages, setTotalPages] = useState(5);
+    const [postEdit, setPostEdit] = useState(false);
+    const [applyEdit, setApplyEdit] = useState(false);
+    const [viewEdit, setViewEdit] = useState(false);
+    const [postValue, setPostValue] = useState(1);
+    const [applyValue, setApplyValue] = useState(0.5);
+    const [viewValue, setViewValue] = useState(0.5);
+    const [benefits, setBenefit] = useState([]);
+    const [fees, setFees] = useState([]);
+    const fetchApi = async () => {
+        const result = await adminServiceServices.getServices(user);
+        console.log(result);
+        setServices(result.services);
+        setBenefit(result.benefits);
+        setFees(result.fees);
+        setPostValue(result.fees[0].price);
+        setApplyValue(result.fees[1].price);
+        setViewValue(result.fees[2].price);
+    };
 
-    const fetchApi = async (pIndex) => {
-        const result = await adminServiceServices.getServices(user, searchValue, pIndex);
+    const updateServiceApi = async (service) => {
+        const result = await adminServiceServices.updateService(service.id, service.price);
         console.log(result);
-        setServices(result);
+        if (result) {
+            const index = services.findIndex((s) => s.id === service.id);
+            setServices((pre) => {
+                pre[index].price = service.price;
+                return [...pre];
+            });
+        }
     };
-    const deleteApi = async (id) => {
-        const result = await adminServiceServices.deleteService(id);
+    const editFeeApi = async (feeId, price, flag) => {
+        const result = await adminServiceServices.editFee(feeId, price);
         console.log(result);
-        fetchApi();
-    };
-    const addApi = async (service) => {
-        const result = await adminServiceServices.addService(service);
-        console.log(result);
-        fetchApi();
+        if (result) {
+            message.success('Sửa thành công');
+        } else {
+            message.error('Sửa thất bại');
+            if (flag === 'post') {
+                setPostValue(fees[0].price);
+            } else if (flag === 'apply') {
+                setApplyValue(fees[1].price);
+            } else {
+                setViewValue(fees[2].price);
+            }
+        }
     };
     useEffect(() => {
         fetchApi();
@@ -47,75 +73,49 @@ function Service() {
     useEffect(() => {
         fetchApi();
     }, [user]);
-    const handlePaging = (pIndex) => {
-        fetchApi(pIndex);
-    };
-    const renderPages = () => {
-        console.log(totalPages + ' ' + pageIndex);
-        if (totalPages < 2) {
-            return;
-        }
-        let paging = [];
-        if (pageIndex > 2) {
-            paging.push(
-                <CPaginationItem aria-label="Previous" key="0" onClick={() => handlePaging(0)}>
-                    <span aria-hidden="true">&laquo;</span>
-                </CPaginationItem>,
-            );
-        }
-        for (let i = pageIndex - 1; i < pageIndex; i++) {
-            if (i >= 1) {
-                paging.push(
-                    <CPaginationItem key={i} onClick={() => handlePaging(i - 1)}>
-                        {i}
-                    </CPaginationItem>,
-                );
-            }
-        }
-        paging.push(
-            <CPaginationItem active className={cx('active-page')} key={pageIndex}>
-                {pageIndex}
-            </CPaginationItem>,
-        );
-        for (let y = pageIndex + 1; y <= pageIndex + 1; y++) {
-            if (y <= totalPages) {
-                paging.push(
-                    <CPaginationItem key={y} onClick={() => handlePaging(y - 1)}>
-                        {y}
-                    </CPaginationItem>,
-                );
-            }
-        }
-        if (pageIndex < totalPages - 1) {
-            paging.push(
-                <CPaginationItem aria-label="Next" key="9999" onClick={() => handlePaging(totalPages - 1)}>
-                    <span aria-hidden="true">&raquo;</span>
-                </CPaginationItem>,
-            );
-        }
-        return paging;
-    };
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
             return <th key={index}>{properties}</th>;
         });
     };
 
-    const handleShow = () => {
-        setServiceInfo({});
-        setShow(true);
-    };
     const handUpdate = (serviceInfo) => {
         setServiceInfo(serviceInfo);
         setShow(true);
     };
-    const handDelete = (serviceInfo) => {
-        deleteApi(serviceInfo.id);
-        console.log('delete');
+    const handEditPricePost = () => {
+        if (!postEdit) {
+            setPostEdit(true);
+            inputRefPost.current.focus({
+                cursor: 'end',
+            });
+        }
+        if (postEdit) {
+            setPostEdit(false);
+            editFeeApi(fees[0].id, postValue, 'post');
+        }
     };
-    const handleViewDetail = (service) => {
-        setServiceInfo(service);
-        setShowDetail(true);
+    const handEditPriceApply = () => {
+        if (!applyEdit) {
+            setApplyEdit(true);
+            inputRefApply.current.focus({
+                cursor: 'end',
+            });
+        } else {
+            setApplyEdit(false);
+            editFeeApi(fees[1].id, applyValue, 'apply');
+        }
+    };
+    const handEditPriceView = () => {
+        if (!viewEdit) {
+            setViewEdit(true);
+            inputRefView.current.focus({
+                cursor: 'end',
+            });
+        } else {
+            setViewEdit(false);
+            editFeeApi(fees[2].id, viewValue, 'view');
+        }
     };
     return (
         <div className={cx('wrapper')}>
@@ -123,9 +123,6 @@ function Service() {
                 <h1 className={cx('title')}>Danh sách Dịch vụ</h1>
 
                 <div className={cx('subcareer-filter')}>
-                    <Button admin className={cx('button-popup')} onClick={handleShow}>
-                        Thêm mới
-                    </Button>
                     <div className={cx('service-list')}>
                         <select
                             value={user}
@@ -143,35 +140,17 @@ function Service() {
                             })}
                         </select>
                     </div>
-                    <div className={cx('subCareer-search')}>
-                        <GlobalSearch
-                            title="Tìm kiếm dịch vụ"
-                            onPending={(value) => {
-                                setSearchValue(value);
-                            }}
-                            onSearch={(value) => handlePaging(value)}
-                        />
-                    </div>
                     {show && (
                         <ServicePopUp
                             user={user}
                             service={serviceInfo}
                             callback={(service) => {
                                 setShow(false);
-                                addApi(service);
-                            }}
-                        />
-                    )}
-                    {showDetail && (
-                        <DetailService
-                            serviceName={serviceInfo.name}
-                            callback={() => {
-                                setShowDetail(false);
+                                updateServiceApi(service);
                             }}
                         />
                     )}
                 </div>
-
                 <table className={cx('subCareers')}>
                     <thead className={cx('table-header')}>
                         <tr>{renderTableHeader()}</tr>
@@ -180,10 +159,10 @@ function Service() {
                         {services.map((service) => {
                             return (
                                 <tr key={service.id}>
-                                    <td onClick={() => handleViewDetail(service)}>{service.id}</td>
-                                    <td onClick={() => handleViewDetail(service)}>{service.serviceName}</td>
-                                    <td onClick={() => handleViewDetail(service)}>{service.duration}</td>
-                                    <td onClick={() => handleViewDetail(service)}>{service.price}</td>
+                                    <td>{service.id}</td>
+                                    <td>{service.serviceName}</td>
+                                    <td>{service.duration}</td>
+                                    <td>{service.price} $</td>
                                     <td>
                                         {' '}
                                         <FontAwesomeIcon
@@ -192,22 +171,99 @@ function Service() {
                                             className={cx('hover')}
                                         />
                                     </td>
-                                    <td>
-                                        {' '}
-                                        <FontAwesomeIcon
-                                            icon={faTrashCan}
-                                            onClick={() => handDelete(service)}
-                                            className={cx('hover')}
-                                        />
-                                    </td>
                                 </tr>
                             );
                         })}
                     </tbody>
                 </table>
-                <CPagination aria-label="Page navigation example" className={cx('table-paging')}>
-                    {renderPages()}
-                </CPagination>
+                <div className={cx('benefits')}>
+                    <p>Các tính năng của gói dịch vụ</p>
+                    <ul>
+                        {benefits.map((benefit) => (
+                            <li key={benefit.id}>
+                                <FontAwesomeIcon icon={faCheck} />
+                                {benefit.name}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                {fees.length > 0 && (
+                    <div className={cx('fee')}>
+                        <p className={cx('fee-title')}>Phí dịch vụ</p>
+                        <div className={cx('fee-item')}>
+                            <p>{fees[0].name}</p>
+                            <div className={cx('input')}>
+                                <InputNumber
+                                    placeholder="$"
+                                    ref={inputRefPost}
+                                    disabled={!postEdit}
+                                    value={postValue}
+                                    formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                    parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+                                    onChange={(e) => setPostValue(e)}
+                                />
+                            </div>
+                            {!postEdit && (
+                                <Button type="primary" onClick={handEditPricePost}>
+                                    Sửa giá
+                                </Button>
+                            )}
+                            {postEdit && (
+                                <Button type="primary" onClick={handEditPricePost}>
+                                    Xác nhận
+                                </Button>
+                            )}
+                        </div>
+                        <div className={cx('fee-item')}>
+                            <p>{fees[1].name}</p>
+                            <div className={cx('input')}>
+                                <InputNumber
+                                    placeholder="$"
+                                    ref={inputRefApply}
+                                    disabled={!applyEdit}
+                                    value={applyValue}
+                                    formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                    parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+                                    onChange={(e) => setApplyValue(e)}
+                                />
+                            </div>
+                            {!applyEdit && (
+                                <Button type="primary" onClick={handEditPriceApply}>
+                                    Sửa giá
+                                </Button>
+                            )}
+                            {applyEdit && (
+                                <Button type="primary" onClick={handEditPriceApply}>
+                                    Xác nhận
+                                </Button>
+                            )}
+                        </div>
+                        <div className={cx('fee-item')}>
+                            <p>{fees[2].name}</p>
+                            <div className={cx('input')}>
+                                <InputNumber
+                                    placeholder="$"
+                                    ref={inputRefView}
+                                    disabled={!viewEdit}
+                                    value={viewValue}
+                                    formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                    parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+                                    onChange={(e) => setViewValue(e)}
+                                />
+                            </div>
+                            {!viewEdit && (
+                                <Button type="primary" onClick={handEditPriceView}>
+                                    Sửa giá
+                                </Button>
+                            )}
+                            {viewEdit && (
+                                <Button type="primary" onClick={handEditPriceView}>
+                                    Xác nhận
+                                </Button>
+                            )}
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

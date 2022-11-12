@@ -60,6 +60,7 @@ export const routes = [
     { path: config.routes.viewDetailRecruiterAdmin, element: ViewDetailRecruiterAdmin },
     { path: config.routes.viewDetailPostAdmin, element: ViewDetailPostAdmin },
     { path: config.routes.updateRecruiter, element: UpdateRecruiterProfile, layout: HomeLayout },
+    { path: config.routes.changePasswordForAdmin, element: ChangePassword },
 
     { path: config.routes.home, element: ContentHome, layout: HomeLayout },
     { path: config.routes.login, element: Login, layout: HomeLayout },

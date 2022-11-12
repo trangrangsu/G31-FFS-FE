@@ -33,10 +33,10 @@ function Post() {
         setTotalPages(result.totalPages);
     };
     useEffect(() => {
-        fetchApi();
+        fetchApi(0);
     }, []);
     useEffect(() => {
-        fetchApi();
+        fetchApi(0);
     }, [state]);
     const renderTableHeader = () => {
         return headers.map((properties, index) => {

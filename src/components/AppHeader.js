@@ -15,7 +15,7 @@ const MENU_ITEMS = [
     {
         icon: <FontAwesomeIcon icon={faUnlock} />,
         title: 'Đổi mật khẩu',
-        to: '/changePassword',
+        to: '/changePasswordForAdmin',
     },
     {
         icon: <FontAwesomeIcon icon={faRightFromBracket} />,

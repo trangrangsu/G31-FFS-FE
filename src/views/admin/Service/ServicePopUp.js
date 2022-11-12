@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import Modal from 'react-bootstrap/Modal';
-import { CFormCheck, CAccordion, CAccordionItem, CAccordionHeader, CAccordionBody, CFormInput } from '@coreui/react';
+import { CFormInput } from '@coreui/react';
 
-import * as adminServiceServices from '../../../services/adminServiceServices';
 import CustomButton from '../../../components/Button';
 import styles from './Service.module.scss';
 const cx = classNames.bind(styles);
@@ -14,9 +13,6 @@ function ServicePopUp({ user, service, callback }) {
         { id: 4, name: 'Recruiter' },
     ];
 
-    //const bought = [1, 2, 3];
-    const [bought, setBought] = useState([]);
-    const [benefits, setBenefits] = useState([]);
     const [show, setShow] = useState(true);
     const [userCurrent, setUserCurrent] = useState(user);
     const [id, setId] = useState('');
@@ -31,11 +27,6 @@ function ServicePopUp({ user, service, callback }) {
     };
     useEffect(() => {
         console.log(userCurrent);
-        const sbsApi = async () => {
-            const result = await adminServiceServices.getBenefitService(service.id);
-            console.log(result);
-            setBought(result);
-        };
         if (service.id) {
             setId(service.id);
             setName(service.serviceName);
@@ -43,64 +34,17 @@ function ServicePopUp({ user, service, callback }) {
             setPrice(service.price);
             setTitleButton('Cập nhật');
             setTitlePopup('Chỉnh sửa dịch vụ');
-            sbsApi();
         }
-        const fetchApi = async () => {
-            const result = await adminServiceServices.getBenefits();
-            console.log(result);
-            setBenefits(result);
-        };
-        fetchApi();
     }, []);
-    const handleAdd = () => {
-        const service = {
-            serviceName: name,
-            duration: duration,
-            price: price,
-            benefits: [
-                {
-                    id: 1,
-                },
-                {
-                    id: 2,
-                },
-            ],
-            role: { id: users.find((user) => user.id == userCurrent).id },
-        };
-        //handleClose(service);
-
-        console.log(service);
-        // const fetchApi = async () => {
-        //     const result = await adminServiceServices.addService(service);
-        //     console.log(result);
-        //     setBenefits(result);
-        // };
-        // fetchApi();
-    };
     const handleUpdate = () => {
         const service = {
             id,
             serviceName: name,
             duration: duration,
             price: price,
-            benefits: [
-                {
-                    id: 1,
-                },
-                {
-                    id: 2,
-                },
-            ],
             role: { id: users.find((user) => user.id == userCurrent).id },
         };
-        handleClose();
-        console.log(service);
-        const fetchApi = async () => {
-            const result = await adminServiceServices.addService(service);
-            console.log(result);
-            setBenefits(result);
-        };
-        fetchApi();
+        handleClose(service);
     };
     return (
         <div className={cx('service-popup')}>
@@ -113,21 +57,14 @@ function ServicePopUp({ user, service, callback }) {
                         <div className={cx('user-box')}>
                             <label className={cx('label')}>Vai trò</label>
                             <div className={cx('service-list-popup')}>
-                                <select value={userCurrent} onChange={(e) => setUserCurrent(e.target.value)}>
-                                    {users.map((user, index) => {
-                                        return (
-                                            <option key={index} value={user.id}>
-                                                {user.name}
-                                            </option>
-                                        );
-                                    })}
-                                </select>
+                                <p>{user === 3 ? 'Freelancer' : 'Recruiter'}</p>
                             </div>
                         </div>
                         <div className={cx('input')}>
                             <div className={cx('row-input')}>
                                 <label className={cx('label')}>Tên dịch vụ</label>
                                 <CFormInput
+                                    disabled
                                     size="sm"
                                     className={cx('input-field')}
                                     type="text"
@@ -138,6 +75,7 @@ function ServicePopUp({ user, service, callback }) {
                             <div className={cx('row-input')}>
                                 <label className={cx('label')}>Thời gian</label>
                                 <CFormInput
+                                    disabled
                                     size="sm"
                                     className={cx('input-field')}
                                     type="text"
@@ -156,41 +94,10 @@ function ServicePopUp({ user, service, callback }) {
                                 />
                             </div>
                         </div>
-                        <div className={cx('benefit-container')}>
-                            <label className={cx('label')}>Quyền lợi</label>
-                            <div className={cx('benefits')}>
-                                {benefits.map((benefit) => {
-                                    return (
-                                        <div className={cx('row-benefit')} key={benefit.id}>
-                                            <CFormCheck
-                                                id={benefit.id}
-                                                defaultChecked={
-                                                    bought.find((b) => b.id === benefit.id) ? 'defaultChecked' : ''
-                                                }
-                                            />
-                                            <CAccordion>
-                                                <CAccordionItem itemKey={benefit.id}>
-                                                    <CAccordionHeader>
-                                                        {benefit.name.substring(0, 20) + '...'}
-                                                    </CAccordionHeader>
-                                                    <CAccordionBody>{benefit.name}</CAccordionBody>
-                                                </CAccordionItem>
-                                            </CAccordion>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
                     </div>
-                    {service.id ? (
-                        <CustomButton approve className={cx('btn-add')} onClick={handleUpdate}>
-                            {titleButton}
-                        </CustomButton>
-                    ) : (
-                        <CustomButton approve className={cx('btn-add')} onClick={handleAdd}>
-                            {titleButton}
-                        </CustomButton>
-                    )}
+                    <CustomButton approve className={cx('btn-add')} onClick={handleUpdate}>
+                        {titleButton}
+                    </CustomButton>
                 </Modal.Body>
             </Modal>
         </div>
