@@ -14,7 +14,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useSearchParams } from 'react-router-dom';
 
-//import * as freelancerProfileServices from '../../../services/freelancerProfileServices';
 import * as recruiterPostManagementServices from '../../../services/recruiterPostManagementServices';
 import images from '../../../assets/images';
 import * as firebase from '../../../firebase/firebase';

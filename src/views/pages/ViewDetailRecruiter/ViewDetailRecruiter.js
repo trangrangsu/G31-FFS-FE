@@ -7,7 +7,7 @@ import { Button, Popconfirm } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 
 import * as searchPostFreelancerServices from '../../../services/searchPostFreelancerServices';
-import Feedback from '../../freelancer/Profile/Feedback';
+import Feedback from '../../Freelancer/Profile/Feedback';
 import * as firebase from '../../../firebase/firebase';
 import Image from '../../../components/Image';
 import images from '../../../assets/images';
@@ -22,7 +22,6 @@ function ViewDetailFreelancer() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [recruiterId, setRecruiterId] = useState(searchParams.get('id'));
     const [image, setImage] = useState(images.defaultAvatar);
-    const [recruiter, setRecruiter] = useState({});
     const [avatar, setAvatar] = useState('');
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
@@ -42,7 +41,6 @@ function ViewDetailFreelancer() {
     const fetchApi = async () => {
         const result = await searchPostFreelancerServices.getProfileFreelancer(recruiterId, account.userId);
         console.log(result);
-        setRecruiter(result);
         setFullName(result.fullName);
         setEmail(result.email);
         setPhone(result.phone);

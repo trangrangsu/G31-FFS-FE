@@ -7,9 +7,7 @@ import HeadlessTippy from '@tippyjs/react/headless';
 
 import * as freelancerProfileServices from '../../services/freelancerProfileServices';
 import { useDebounce } from '../../hooks';
-import images from '../../assets/images';
 import { Wrapper as PopperWrapper } from '../../components/Popper';
-import UserItem from '../UserItem';
 import styles from './SearchSkill.module.scss';
 const cx = classNames.bind(styles);
 

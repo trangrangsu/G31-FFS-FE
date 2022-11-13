@@ -8,7 +8,7 @@ import { message } from 'antd';
 import * as recruiterProfileServices from '../../../services/recruiterProfileServices';
 import CompanyInfoPopup from './CompanyInfoPopup';
 import BasicPopup from './BasicPopup';
-import Feedback from '../../freelancer/Profile/Feedback';
+import Feedback from '../../Freelancer/Profile/Feedback';
 import * as firebase from '../../../firebase/firebase';
 import Image from '../../../components/Image';
 import images from '../../../assets/images';
