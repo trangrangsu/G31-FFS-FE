@@ -28,7 +28,7 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
     const [address, setAddress] = useState('');
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('Việt Nam');
-    const [subCareerId, setsubCareerID] = useState(1);
+    const [subCareerId, setsubCareerID] = useState(-1);
     const [subCareer, setSubCareer] = useState('Chọn chuyên ngành');
     const [value, setValue] = useState(dayjs('10-10-2022'));
     const [password, setPassword] = useState('');
@@ -103,7 +103,7 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
         } else {
             setEmailValidate(false);
         }
-        if (subCareer === 'Chọn chuyên ngành') {
+        if (subCareerId === -1) {
             count++;
             setSubCareerValidate(true);
         } else {
