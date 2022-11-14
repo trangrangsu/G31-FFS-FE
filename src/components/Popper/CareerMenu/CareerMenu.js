@@ -14,8 +14,11 @@ const defaultFn = () => {};
 
 function CareerMenu({ children, careers = [], hideOnClick = false, onChange = defaultFn }) {
     const [history, setHistory] = useState([{ data: careers }]);
+    console.log(history);
+    console.log(careers);
     const current = history[history.length - 1];
     const renderItems = () => {
+        console.log(current);
         return current.data.map((item, index) => {
             const isParent = !!item.subCareers;
 

@@ -9,7 +9,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import TextField from '@mui/material/TextField';
 import dayjs from 'dayjs';
-import { Checkbox } from 'antd';
+import { Checkbox, Cascader } from 'antd';
 
 import * as careerServices from '../../services/careerServices';
 import Combox from '../Popper/Combox';
@@ -161,13 +161,33 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
     const handleCityChange = (value) => {
         setCity(value);
     };
-    const handleMenuChange = (careerItem) => {
-        setsubCareerID(careerItem.id);
-        setSubCareer(careerItem.name);
-    };
+    // const handleMenuChange = (careerItem) => {
+    //     setsubCareerID(careerItem.id);
+    //     setSubCareer(careerItem.name);
+    // };
     const getGender = () => {
         if (checked1) setGender(true);
         else if (checked2) setGender(false);
+    };
+    const displayRender = (labels) => labels[labels.length - 1];
+    const onChangeCareer = (value) => {
+        if (value === undefined) {
+            setsubCareerID(-1);
+        } else setsubCareerID(value[1]);
+    };
+    const renderItemsMenu = (careers) => {
+        return careers.map((career) => {
+            const item = {};
+            item.value = career.name + career.id;
+            item.label = career.name;
+            item.children = career.subCareers.data.map((subCareer) => {
+                const subItem = {};
+                subItem.value = subCareer.id;
+                subItem.label = subCareer.name;
+                return subItem;
+            });
+            return item;
+        });
     };
     return (
         <div className={cx('wrapper')}>
@@ -288,11 +308,16 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
             </div>
             <div className={cx('margin-top')}>
                 <label className={cx('label', subCareerValidate ? 'validate' : '')}>Chuyên ngành của bạn *</label>
-                <CareerMenu careers={careers} onChange={handleMenuChange} hideOnClick>
-                    <div className={cx('more-btn')}>
-                        <p>{subCareer}</p>
-                    </div>
-                </CareerMenu>
+                <div>
+                    <Cascader
+                        placeholder="chọn chuyên ngành"
+                        style={{ width: '200px' }}
+                        options={renderItemsMenu(careers)}
+                        expandTrigger="hover"
+                        displayRender={displayRender}
+                        onChange={onChangeCareer}
+                    />
+                </div>
             </div>
             {register && (
                 <div className={cx('rule', ruleValidate ? 'validate' : '')}>
