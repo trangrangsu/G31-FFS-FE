@@ -51,7 +51,11 @@ function Post() {
         navigate(to);
     };
     const handlePaging = (pIndex) => {
-        fetchApi(pIndex);
+        if (typeof pIndex === 'number') {
+            fetchApi(pIndex);
+        } else {
+            fetchApi(0);
+        }
     };
     const renderPages = () => {
         if (totalPages < 2) {

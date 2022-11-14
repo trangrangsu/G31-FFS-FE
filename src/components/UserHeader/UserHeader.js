@@ -87,7 +87,10 @@ function UserHeader() {
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
-                <Link to={config.routes.home} className={cx('logo-link')}>
+                <Link
+                    to={account.role === 'freelancer' ? config.routes.searchJob : config.routes.postManagement}
+                    className={cx('logo-link')}
+                >
                     <img src={images.logo} alt="Lanceddy" />
                 </Link>
 

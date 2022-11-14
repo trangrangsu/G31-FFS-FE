@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -10,7 +10,6 @@ import {
     faHeart as faHeartSolid,
 } from '@fortawesome/free-solid-svg-icons';
 import { faHeart, faBookmark, faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
-import { useSearchParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { message, Modal, Button, Input, Popconfirm } from 'antd';
 
@@ -45,7 +44,7 @@ const ViewDetailPost = () => {
     const [icon5, setIcon5] = useState(faStarRegular);
     const [star, setStar] = useState(1);
     const text = 'Phí ứng tuyển là ' + account.feeApplyJob + '$';
-
+    const { movieID } = useParams();
     const getPostDetailApi = async (postId) => {
         const result = await getPostDetailFreelancerServices.getPostDetail(postId, account.userId);
         console.log(result);
@@ -110,6 +109,10 @@ const ViewDetailPost = () => {
     useEffect(() => {
         getPostDetailApi(searchParams.get('id'));
     }, []);
+    useEffect(() => {
+        console.log('change id');
+        console.log(movieID);
+    }, [movieID]);
     const handleViewDetailRecruiter = () => {
         const to = {
             pathname: config.routes.viewDetailRecruiter,

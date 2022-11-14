@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react';
@@ -16,7 +16,12 @@ const AppSidebar = () => {
     const unfoldable = useSelector((state) => state.sidebarUnfoldable);
     const sidebarShow = useSelector((state) => state.sidebarShow);
     const account = useSelector((state) => state.account);
-
+    const [items, setItems] = useState(navAdmin);
+    useEffect(() => {
+        if (account.role === 'staff') {
+            setItems(navStaff);
+        }
+    }, []);
     return (
         <CSidebar
             position="fixed"
@@ -29,7 +34,7 @@ const AppSidebar = () => {
             <CSidebarBrand className="d-none d-md-flex" to="/"></CSidebarBrand>
             <CSidebarNav>
                 <SimpleBar>
-                    <AppSidebarNav items={account.role === 'admin' ? navAdmin : navStaff} />
+                    <AppSidebarNav items={items} />
                 </SimpleBar>
             </CSidebarNav>
             <CSidebarToggler
