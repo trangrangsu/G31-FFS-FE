@@ -24,6 +24,7 @@ const SearchJob = () => {
     const [subCareerId, setSubCareerId] = useState(-1);
     const [paymentType, setPaymentType] = useState(-1);
     const [totalResults, setTotalResults] = useState(5);
+    const [selectedKeys, setSelectedKeys] = useState(['0']);
 
     const getCareeersApi = async () => {
         const result = await careerServices.getCareers();
@@ -60,9 +61,15 @@ const SearchJob = () => {
         });
     };
 
-    const onSelect = (e) => {
-        setSubCareerId(e.key);
-        getPostsApi(area, keyword, e.key, paymentType, 0);
+    const onClickMenu = (e) => {
+        if (e.key == selectedKeys) {
+            setSelectedKeys(['0']);
+            getPostsApi(area, keyword, -1, paymentType, 0);
+        } else {
+            setSelectedKeys([e.key]);
+            getPostsApi(area, keyword, e.key, paymentType, 0);
+        }
+        console.log(e.key == selectedKeys);
     };
     const onSearch = (value) => {
         getPostsApi(area, value, subCareerId, paymentType, 0);
@@ -85,7 +92,13 @@ const SearchJob = () => {
                 <div className={cx('displayFlex')}>
                     <div className={cx('left')}>
                         <div className={cx('left-component')}>
-                            <Menu onSelect={onSelect} mode="inline" theme="light" items={renderItemsMenu(careers)} />
+                            <Menu
+                                selectedKeys={selectedKeys}
+                                onClick={onClickMenu}
+                                mode="inline"
+                                theme="light"
+                                items={renderItemsMenu(careers)}
+                            />
                         </div>
                         <div className={cx('left-banner')}>
                             <Image src={images.bannerSearchFreelancer} alt="banner" />
@@ -131,7 +144,14 @@ const SearchJob = () => {
                                         <PostItem key={index} post={post} userId={account.userId} />
                                     ))}
                                 </div>
-                                <Pagination defaultCurrent="1" pageSize="10" total={totalResults} onChange={onChange} />
+                                {totalResults > 10 && (
+                                    <Pagination
+                                        defaultCurrent="1"
+                                        pageSize="10"
+                                        total={totalResults}
+                                        onChange={onChange}
+                                    />
+                                )}
                             </div>
                         </div>
                     </div>

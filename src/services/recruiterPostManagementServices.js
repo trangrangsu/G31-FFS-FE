@@ -80,3 +80,11 @@ export const updateAccountBalance = async (userId, fee) => {
         console.log(error);
     }
 };
+export const pushOnTop = async (userId, jobId) => {
+    try {
+        const res = await httpRequest.put(`api/recruiter/pushTop?recruiterId=${userId}&jobId=${jobId}`);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};

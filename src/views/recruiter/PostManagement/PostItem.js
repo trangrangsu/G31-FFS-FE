@@ -1,18 +1,30 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
+import { Button, message as notification } from 'antd';
+import { useSelector } from 'react-redux';
 
-import * as searchPostFreelancerServices from '../../../services/searchPostFreelancerServices';
+import * as recruiterPostManagementServices from '../../../services/recruiterPostManagementServices';
 import config from '../../../config';
-import Button from '../../../components/Button';
+import CustomButton from '../../../components/Button';
 import styles from './PostManagement.module.scss';
 
 const cx = classNames.bind(styles);
 
 function PostItem({ post }) {
     const navigate = useNavigate();
+    const account = useSelector((state) => state.account);
     const [message, setMessage] = useState('');
 
+    const pushOnTopApi = async () => {
+        const result = await recruiterPostManagementServices.pushOnTop(account.userId, post.jobId);
+        console.log(result);
+        if (result) {
+            notification.success('Đẩy top thành công');
+        } else {
+            notification.error('Đẩy top thất bại');
+        }
+    };
     useEffect(() => {
         if (post.status === 1) {
             setMessage('Đã duyệt');
@@ -32,13 +44,23 @@ function PostItem({ post }) {
         };
         navigate(to);
     };
+    const handlePushOnTop = () => {
+        pushOnTopApi();
+    };
     return (
         <div className={cx('wrapper-post')}>
             <div className={cx('row-1')}>
-                <Button className={cx('post-title')} onClick={handleViewDetail}>
+                <CustomButton className={cx('post-title')} onClick={handleViewDetail}>
                     {post.jobTitle}
-                </Button>
-                <div>
+                </CustomButton>
+                <div className={cx('row')}>
+                    {post.status === 1 && (
+                        <div>
+                            <Button type="primary" onClick={handlePushOnTop}>
+                                Đẩy top
+                            </Button>
+                        </div>
+                    )}
                     <div className={cx('message', 'message' + post.status)}>
                         <p>{message}</p>
                     </div>

@@ -38,11 +38,6 @@ function PostItem({ post, userId }) {
                     {post.jobTitle}
                 </Button>
                 <div>
-                    {/* <FontAwesomeIcon
-                        className={cx('action-apply')}
-                        icon={isSolidHeart ? faHeartSolid : faHeart}
-                        onClick={handleApply}
-                    /> */}
                     <Tooltip title="Lưu" placement="bottom">
                         <FontAwesomeIcon
                             className={cx('action-save')}

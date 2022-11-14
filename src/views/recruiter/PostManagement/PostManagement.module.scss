@@ -62,12 +62,16 @@
 .message{
     padding: 5px;
     border-radius: 5px;
-
+    margin-left: 10px;
     p{
         margin: 0;
         font-weight: 600;
         color: white;
     }
+}
+.row{
+    display: flex;
+    flex-direction: row;
 }
 .message1{
     background-color: #25be30;
