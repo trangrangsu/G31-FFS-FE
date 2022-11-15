@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -44,7 +44,7 @@ const ViewDetailPost = () => {
     const [icon5, setIcon5] = useState(faStarRegular);
     const [star, setStar] = useState(1);
     const text = 'Phí ứng tuyển là ' + account.feeApplyJob + '$';
-    const { movieID } = useParams();
+
     const getPostDetailApi = async (postId) => {
         const result = await getPostDetailFreelancerServices.getPostDetail(postId, account.userId);
         console.log(result);
@@ -106,13 +106,10 @@ const ViewDetailPost = () => {
             message.error('Đánh giá thất bại');
         }
     };
+
     useEffect(() => {
         getPostDetailApi(searchParams.get('id'));
-    }, []);
-    useEffect(() => {
-        console.log('change id');
-        console.log(movieID);
-    }, [movieID]);
+    }, [searchParams]);
     const handleViewDetailRecruiter = () => {
         const to = {
             pathname: config.routes.viewDetailRecruiter,

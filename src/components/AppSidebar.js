@@ -16,7 +16,7 @@ const AppSidebar = () => {
     const unfoldable = useSelector((state) => state.sidebarUnfoldable);
     const sidebarShow = useSelector((state) => state.sidebarShow);
     const account = useSelector((state) => state.account);
-
+    console.log(account.role);
     return (
         <CSidebar
             position="fixed"

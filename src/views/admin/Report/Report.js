@@ -16,7 +16,7 @@ function Report() {
     const [searchValue, setSearchValue] = useState('');
     const [pageIndex, setPageIndex] = useState(0);
     const [totalPages, setTotalPages] = useState(5);
-    const fetchApi = async (pIndex) => {
+    const fetchApi = async (searchValue, pIndex) => {
         const result = await adminReportServices.getReports(searchValue, pIndex);
         console.log(result);
         setReports(result.results);
@@ -24,10 +24,13 @@ function Report() {
         setTotalPages(result.totalPage);
     };
     useEffect(() => {
-        fetchApi(0);
+        fetchApi(searchValue, 0);
     }, []);
     const handlePaging = (pIndex) => {
-        fetchApi(pIndex);
+        fetchApi(searchValue, pIndex);
+    };
+    const handleSearch = (value) => {
+        fetchApi(value, 0);
     };
     const renderPages = () => {
         if (totalPages < 2) {
@@ -95,7 +98,7 @@ function Report() {
                             onPending={(value) => {
                                 setSearchValue(value);
                             }}
-                            onSearch={(value) => handlePaging(value)}
+                            onSearch={(value) => handleSearch(value)}
                         />
                     </div>
                     {show && (

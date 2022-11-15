@@ -24,7 +24,7 @@ function Staff() {
             return <th key={index}>{properties}</th>;
         });
     };
-    const fetchApi = async (pIndex) => {
+    const fetchApi = async (searchValue, pIndex) => {
         const result = await staffService.getStaffs(searchValue, pIndex);
         console.log(result);
         setStaffs(result.results);
@@ -33,10 +33,13 @@ function Staff() {
         setTotalPages(result.totalPages);
     };
     useEffect(() => {
-        fetchApi();
+        fetchApi(searchValue, 0);
     }, []);
     const handlePaging = (pIndex) => {
-        fetchApi(pIndex);
+        fetchApi(searchValue, pIndex);
+    };
+    const handleSearch = (value) => {
+        fetchApi(value, 0);
     };
     const renderPages = () => {
         if (totalPages < 2) {
@@ -113,7 +116,7 @@ function Staff() {
                         onPending={(value) => {
                             setSearchValue(value);
                         }}
-                        onSearch={(value) => handlePaging(value)}
+                        onSearch={(value) => handleSearch(value)}
                     />
                     {show && (
                         <StaffPopUp

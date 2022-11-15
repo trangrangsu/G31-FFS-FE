@@ -20,20 +20,23 @@ function Career() {
     const [searchValue, setSearchValue] = useState('');
     const [pageIndex, setPageIndex] = useState(0);
     const [totalPages, setTotalPages] = useState(5);
-    const fetchApi = async (pIndex) => {
+    const fetchApi = async (searchValue, pIndex) => {
         const result = await adminCareerServices.getCareers(searchValue, pIndex);
         setCareer(result.results);
         setPageIndex(result.pageIndex);
         setTotalPages(result.totalPages);
     };
     useEffect(() => {
-        fetchApi();
+        fetchApi(searchValue, 0);
     }, []);
     useEffect(() => {
-        fetchApi();
+        fetchApi(searchValue, 0);
     }, [updatePage]);
     const handlePaging = (pIndex) => {
-        fetchApi(pIndex);
+        fetchApi(searchValue, pIndex);
+    };
+    const handleSearch = (value) => {
+        fetchApi(value, 0);
     };
     const renderPages = () => {
         if (totalPages < 2) {
@@ -115,7 +118,7 @@ function Career() {
                         onPending={(value) => {
                             setSearchValue(value);
                         }}
-                        onSearch={(value) => handlePaging(value)}
+                        onSearch={(value) => handleSearch(value)}
                     />
                     {show && (
                         <CareerPopUp

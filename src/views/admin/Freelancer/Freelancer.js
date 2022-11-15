@@ -16,17 +16,20 @@ function Freelancer() {
     const [searchValue, setSearchValue] = useState('');
     const [pageIndex, setPageIndex] = useState(0);
     const [totalPages, setTotalPages] = useState(5);
-    const fetchApi = async (pIndex) => {
+    const fetchApi = async (searchValue, pIndex) => {
         const result = await adminFreelancerService.getFreelancers(searchValue, pIndex);
         setFreelancers(result.results);
         setPageIndex(result.pageIndex);
         setTotalPages(result.totalPages);
     };
     useEffect(() => {
-        fetchApi();
+        fetchApi(searchValue, 0);
     }, []);
     const handlePaging = (pIndex) => {
-        fetchApi(pIndex);
+        fetchApi(searchValue, pIndex);
+    };
+    const handleSearch = (value) => {
+        fetchApi(value, 0);
     };
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
@@ -108,7 +111,7 @@ function Freelancer() {
                     onPending={(value) => {
                         setSearchValue(value);
                     }}
-                    onSearch={(value) => handlePaging(value)}
+                    onSearch={(value) => handleSearch(value)}
                 />
                 <table className={cx('freelancers')}>
                     <thead className={cx('table-header')}>

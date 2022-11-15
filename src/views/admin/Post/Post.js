@@ -17,7 +17,7 @@ function Post() {
     const [searchValue, setSearchValue] = useState('');
     const [pageIndex, setPageIndex] = useState(0);
     const [totalPages, setTotalPages] = useState(5);
-    const fetchApi = async (pIndex) => {
+    const fetchApi = async (searchValue, pIndex) => {
         let s = -1;
         if (state === 'Đã phê duyệt') {
             s = 1;
@@ -33,10 +33,10 @@ function Post() {
         setTotalPages(result.totalPages);
     };
     useEffect(() => {
-        fetchApi(0);
+        fetchApi(searchValue, 0);
     }, []);
     useEffect(() => {
-        fetchApi(0);
+        fetchApi(searchValue, 0);
     }, [state]);
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
@@ -51,11 +51,10 @@ function Post() {
         navigate(to);
     };
     const handlePaging = (pIndex) => {
-        if (typeof pIndex === 'number') {
-            fetchApi(pIndex);
-        } else {
-            fetchApi(0);
-        }
+        fetchApi(searchValue, pIndex);
+    };
+    const handleSearch = (value) => {
+        fetchApi(value, 0);
     };
     const renderPages = () => {
         if (totalPages < 2) {
@@ -124,7 +123,7 @@ function Post() {
                             onPending={(value) => {
                                 setSearchValue(value);
                             }}
-                            onSearch={(value) => handlePaging(value)}
+                            onSearch={(value) => handleSearch(value)}
                         />
                     </div>
                 </div>

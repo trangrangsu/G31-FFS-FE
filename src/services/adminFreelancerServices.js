@@ -35,7 +35,7 @@ export const getTypeBan = async (id) => {
 export const setBan = async (userId, typeBan, bannedBy) => {
     try {
         const res = await httpRequest.post(
-            `api/admin/ban-user?userId=${userId}&typeBan=${typeBan}&bannedBy=${bannedBy}`,
+            `api/admin/ban-user?userId=${userId}&typeBan=${typeBan}&AdminId=${bannedBy}`,
         );
         return res;
     } catch (error) {

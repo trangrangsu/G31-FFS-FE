@@ -1,8 +1,10 @@
 .wrapper {
     padding: 0;
     .container {
-        width: var(--default-layout-width);
-        margin: var(--default-margin-top-title-admin) auto;
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
         .title {
             text-align: center;
             font-family: arial, sans-serif;
@@ -10,6 +12,7 @@
         .report-filter {
             display: flex;
             margin-bottom: 5px;
+            margin-left: 10%;
             .button-popup{
                 margin-right: 10px;
             }
@@ -26,7 +29,8 @@
             }
         }
         .report {
-            width: 100%;
+            width: 80%;
+            margin: 0 auto;
             text-align: center;
             font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
             border-collapse: collapse;
@@ -57,6 +61,7 @@
 
 .table-paging {
     margin-top: 10px;
+    margin-left: 10%;
     color: rgba(22, 24, 35, 0.5) !important;
     .active-page span{
         background-color: #4f5d73 !important;

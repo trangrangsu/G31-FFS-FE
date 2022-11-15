@@ -66,6 +66,7 @@ function SubCareer() {
     const handlePaging = (pIndex) => {
         getSubCareerApi(pIndex);
     };
+
     const renderPages = () => {
         if (totalPages < 2) {
             return;
