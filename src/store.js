@@ -9,6 +9,7 @@ const initialState = {
     account: { role: 'freelancer' },
     accountBalance: 0,
     accountAvatar: '',
+    isMemberShip: false,
     country: [
         'Canada',
         'Sint Maarten',
@@ -328,6 +329,7 @@ const fetchApi = async (userId) => {
         initialState.account = result;
         initialState.accountBalance = result.accountBalance;
         initialState.accountAvatar = result.avatar;
+        initialState.isMemberShip = result.isMemberShip;
     }
 };
 if (userId !== null) {

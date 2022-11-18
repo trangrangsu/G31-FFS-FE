@@ -34,6 +34,7 @@ const Login = () => {
             dispatch({ type: 'set', account: result });
             dispatch({ type: 'set', accountBalance: result.accountBalance });
             dispatch({ type: 'set', accountAvatar: result.avatar });
+            dispatch({ type: 'set', isMemberShip: result.isMemberShip });
             sessionStorage.setItem('userId', result.userId);
             sessionStorage.setItem('token', result.tokenType + ' ' + result.accessToken);
             let to = {};

@@ -115,15 +115,15 @@ function FreelancerList({ postId }) {
         <>
             <div className={cx('list-freelancer')}>
                 <div className={cx('list-head')}>
-                    <Button className={cx('head-item', active === 2 ? 'active' : '')} onClick={() => setActive(2)}>
-                        Ứng tuyển
-                    </Button>
-                    <Button className={cx('head-item', active === 1 ? 'active' : '')} onClick={() => setActive(1)}>
-                        Chấp thuận
-                    </Button>
-                    <Button className={cx('head-item', active === 0 ? 'active' : '')} onClick={() => setActive(0)}>
-                        Từ chối
-                    </Button>
+                    <div className={cx(active === 2 ? 'active' : '')} onClick={() => setActive(2)}>
+                        <p>Ứng tuyển</p>
+                    </div>
+                    <div className={cx(active === 1 ? 'active' : '')} onClick={() => setActive(1)}>
+                        <p>Chấp thuận</p>
+                    </div>
+                    <div className={cx(active === 0 ? 'active' : '')} onClick={() => setActive(0)}>
+                        <p>Từ chối</p>
+                    </div>
                 </div>
                 <div className={cx('search-area')}>
                     <div className={cx('row')}>

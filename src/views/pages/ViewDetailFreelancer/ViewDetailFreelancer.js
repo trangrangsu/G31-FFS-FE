@@ -30,6 +30,7 @@ function ViewDetailFreelancer() {
     const dispatch = useDispatch();
     const account = useSelector((state) => state.account);
     const accountBalance = useSelector((state) => state.accountBalance);
+    const isMemberShip = useSelector((state) => state.isMemberShip);
     const [searchParams, setSearchParams] = useSearchParams();
     const [freelancerId, setFreelancerId] = useState(searchParams.get('id'));
     const [fullName, setFullName] = useState('');
@@ -149,7 +150,7 @@ function ViewDetailFreelancer() {
                             </div>
                             <div className={cx('info-right')}>
                                 <div className={cx('info-space')}></div>
-                                {(isApplied || account.isMemberShip || buyService) && (
+                                {(isApplied || isMemberShip || buyService) && (
                                     <>
                                         <div className={cx('info-item')}>
                                             <FontAwesomeIcon icon={faPhone} />
@@ -161,7 +162,7 @@ function ViewDetailFreelancer() {
                                         </div>
                                     </>
                                 )}
-                                {!isApplied && !account.isMemberShip && !buyService && (
+                                {!isApplied && !isMemberShip && !buyService && (
                                     <>
                                         <div className={cx('info-item')}>
                                             <FontAwesomeIcon icon={faPhone} />
@@ -181,7 +182,7 @@ function ViewDetailFreelancer() {
                                     </p>
                                 </div>
                             </div>
-                            {!isApplied && !account.isMemberShip && !buyService && (
+                            {!isApplied && !isMemberShip && !buyService && (
                                 <div>
                                     <Popconfirm
                                         placement="top"

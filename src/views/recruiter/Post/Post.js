@@ -19,6 +19,7 @@ function Post() {
     const cities = useSelector((state) => state.city);
     const account = useSelector((state) => state.account);
     const accountBalance = useSelector((state) => state.accountBalance);
+    const isMemberShip = useSelector((state) => state.isMemberShip);
     const text = 'Phí đăng bài là ' + account.feePostJob + '$';
     const [careers, setCareers] = useState([{ id: 1, name: 'cntt', subCareers: { data: [{ id: 1, name: 'cntt' }] } }]);
     const [title, setTitle] = useState('');
@@ -43,13 +44,14 @@ function Post() {
     };
     const createPostApi = async (post) => {
         const result = await recruiterCreatePostServices.createPost(post);
-        if (result !== false) {
+        console.log(typeof result);
+        if (typeof result === 'number') {
             firebase.upLoadFile(account.userId, result, file);
             message.success('Đăng bài thành công');
         } else {
             message.error('Đăng bài thất bại');
         }
-        if (!account.isMemberShip) {
+        if (!isMemberShip) {
             dispatch({ type: 'set', accountBalance: accountBalance - account.feePostJob });
         }
     };
@@ -250,7 +252,7 @@ function Post() {
                         </div>
                     </div>
                     <div className={cx('submit-button')}>
-                        {account.isMemberShip ? (
+                        {isMemberShip ? (
                             <Button type="primary" size="large" onClick={handleSubmit}>
                                 Đăng
                             </Button>

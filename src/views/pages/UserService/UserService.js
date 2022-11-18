@@ -29,6 +29,7 @@ const UserService = () => {
         console.log(result);
         if (result) {
             dispatch({ type: 'set', accountBalance: accountBalance - parseFloat(currentService.price) });
+            dispatch({ type: 'set', isMemberShip: true });
             message.success('Bạn đã mua thành công gói ' + currentService.serviceName);
         } else {
             message.error('Mua thất bại gói ' + currentService.serviceName);

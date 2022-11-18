@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag, faRightFromBracket, faAddressCard, faUnlock } from '@fortawesome/free-solid-svg-icons';
 import HeadlessTippy from '@tippyjs/react/headless';
+import { Badge } from 'antd';
 
 import * as notificationServices from '../../services/notificationServices';
 import Image from '../Image';
@@ -53,8 +54,15 @@ function UserHeader() {
     const account = useSelector((state) => state.account);
     const accountBalance = useSelector((state) => state.accountBalance).toFixed(1);
     const accountAvatar = useSelector((state) => state.accountAvatar);
+    const isMemberShip = useSelector((state) => state.isMemberShip);
     const [image, setImage] = useState(images.defaultAvatar);
+    const [unReadNotification, setUnReadNotification] = useState(account.unReadNotification);
+    const listInnerRef = useRef();
+    const [currPage, setCurrPage] = useState(1);
+    const [prevPage, setPrevPage] = useState(0);
     const [notifications, setNotifications] = useState([]);
+    const [lastList, setLastList] = useState(false);
+
     if (account.role === 'freelancer') {
         console.log(account.role);
         MENU_ITEMS[0].to.search = `?id=${account.userId}`;
@@ -83,6 +91,7 @@ function UserHeader() {
     }, [accountAvatar]);
     const handleViewNotification = () => {
         getNoticationApi();
+        setUnReadNotification(0);
     };
     return (
         <header className={cx('wrapper')}>
@@ -129,24 +138,25 @@ function UserHeader() {
                     </Button>
                 </div>
                 <div className={cx('right-side')}>
-                    <HeadlessTippy
-                        interactive
-                        trigger="click"
-                        //offset={[30, 10]}
-                        placement="bottom-start"
-                        render={(attrs) => (
-                            <div className={cx('notification-list')} tabIndex="-1" {...attrs}>
-                                <h2>Thông báo</h2>
-                                {notifications.map((notification) => (
-                                    <NotificationItem key={notification.postId} item={notification} />
-                                ))}
+                    <Badge count={unReadNotification}>
+                        <HeadlessTippy
+                            interactive
+                            trigger="click"
+                            placement="bottom-start"
+                            render={(attrs) => (
+                                <div className={cx('notification-list')} tabIndex="-1" {...attrs}>
+                                    <h2>Thông báo</h2>
+                                    {notifications.map((notification) => (
+                                        <NotificationItem key={notification.postId} item={notification} />
+                                    ))}
+                                </div>
+                            )}
+                        >
+                            <div className={cx('notification')} onClick={handleViewNotification}>
+                                <Notification height="25px" width="25px" />
                             </div>
-                        )}
-                    >
-                        <div className={cx('notification')} onClick={handleViewNotification}>
-                            <Notification height="25px" width="25px" />
-                        </div>
-                    </HeadlessTippy>
+                        </HeadlessTippy>
+                    </Badge>
                     <HeadlessTippy
                         interactive
                         trigger="click"
@@ -173,9 +183,18 @@ function UserHeader() {
                             <Wallet height="25px" width="25px" />
                         </div>
                     </HeadlessTippy>
-                    <Menu items={MENU_ITEMS} hideOnClick onChange={handleMenuChange}>
-                        <Image className={cx('user-avatar')} src={image} alt="Nguyen Van A" />
-                    </Menu>
+
+                    {isMemberShip ? (
+                        <Badge dot color="gold">
+                            <Menu items={MENU_ITEMS} hideOnClick onChange={handleMenuChange}>
+                                <Image className={cx('user-avatar')} src={image} alt="Nguyen Van A" />
+                            </Menu>
+                        </Badge>
+                    ) : (
+                        <Menu items={MENU_ITEMS} hideOnClick onChange={handleMenuChange}>
+                            <Image className={cx('user-avatar')} src={image} alt="Nguyen Van A" />
+                        </Menu>
+                    )}
                 </div>
             </div>
         </header>

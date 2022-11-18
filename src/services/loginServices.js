@@ -5,7 +5,7 @@ export const login = async (user) => {
         const res = await httpRequest.postNoAuthen('login', user);
         return res;
     } catch (error) {
-        console.log(error);
+        return error;
     }
 };
 export const forgetPassword = async (email) => {

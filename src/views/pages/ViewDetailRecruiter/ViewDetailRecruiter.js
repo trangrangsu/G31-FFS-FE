@@ -18,6 +18,7 @@ function ViewDetailFreelancer() {
     const dispatch = useDispatch();
     const account = useSelector((state) => state.account);
     const accountBalance = useSelector((state) => state.accountBalance);
+    const isMemberShip = useSelector((state) => state.isMemberShip);
     const imgRef = useRef();
     const [searchParams, setSearchParams] = useSearchParams();
     const [recruiterId, setRecruiterId] = useState(searchParams.get('id'));
@@ -95,7 +96,7 @@ function ViewDetailFreelancer() {
                             <p>{fullName}</p>
                         </div>
                         <div className={cx('column')}>
-                            {(isApplied || account.isMemberShip || buyService) && (
+                            {(isApplied || isMemberShip || buyService) && (
                                 <>
                                     <div className={cx('email')}>
                                         <div className={cx('info-item')}>
@@ -111,7 +112,7 @@ function ViewDetailFreelancer() {
                                     </div>
                                 </>
                             )}
-                            {!isApplied && !account.isMemberShip && !buyService && (
+                            {!isApplied && !isMemberShip && !buyService && (
                                 <>
                                     <div className={cx('email')}>
                                         <div className={cx('info-item')}>
@@ -136,7 +137,7 @@ function ViewDetailFreelancer() {
                                 </div>
                             </div>
                         </div>
-                        {!isApplied && !account.isMemberShip && !buyService && (
+                        {!isApplied && !isMemberShip && !buyService && (
                             <div>
                                 <Popconfirm
                                     placement="top"

@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faBookmark as faBookmarkSolid } from '@fortawesome/free-solid-svg-icons';
 import { faBookmark } from '@fortawesome/free-regular-svg-icons';
-import { Tooltip } from 'antd';
+import { Tooltip, Badge } from 'antd';
 
 import * as searchPostFreelancerServices from '../../../services/searchPostFreelancerServices';
 import config from '../../../config';
@@ -38,13 +38,20 @@ function PostItem({ post, userId }) {
                     {post.jobTitle}
                 </Button>
                 <div>
-                    <Tooltip title="Lưu" placement="bottom">
-                        <FontAwesomeIcon
-                            className={cx('action-save')}
-                            icon={isSolidBookmark ? faBookmarkSolid : faBookmark}
-                            onClick={handleSave}
-                        />
-                    </Tooltip>
+                    <div>
+                        <Tooltip title="Lưu" placement="bottom">
+                            <FontAwesomeIcon
+                                className={cx('action-save')}
+                                icon={isSolidBookmark ? faBookmarkSolid : faBookmark}
+                                onClick={handleSave}
+                            />
+                        </Tooltip>
+                    </div>
+                    {post.isTop && (
+                        <div>
+                            <Badge.Ribbon text="Nổi bật" color="volcano"></Badge.Ribbon>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className={cx('row-2')}>

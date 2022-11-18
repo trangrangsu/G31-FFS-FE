@@ -9,7 +9,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import TextField from '@mui/material/TextField';
 import dayjs from 'dayjs';
-import { Checkbox, Cascader } from 'antd';
+import { Checkbox } from 'antd';
 
 import * as careerServices from '../../services/careerServices';
 import Combox from '../Popper/Combox';
@@ -103,7 +103,7 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
         } else {
             setEmailValidate(false);
         }
-        if (subCareerId === -1) {
+        if (subCareer === 'Chọn chuyên ngành') {
             count++;
             setSubCareerValidate(true);
         } else {
@@ -125,7 +125,6 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
         }
 
         if (count !== 0) return;
-        getGender();
         let birthday = value.$y + '-';
         if (value.$M + 1 < 10) {
             birthday += '0' + (value.$M + 1) + '-';
@@ -137,15 +136,29 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
         } else {
             birthday += value.$D;
         }
+        let birthdayFormat = '';
+        if (value.$D < 10) {
+            birthdayFormat += '0' + value.$D + '-';
+        } else {
+            birthdayFormat += value.$D + '-';
+        }
+        if (value.$M + 1 < 10) {
+            birthdayFormat += '0' + (value.$M + 1) + '-';
+        } else {
+            birthdayFormat += value.$M + 1 + '-';
+        }
+        birthdayFormat += value.$y;
+
         const f = {
             fullName: name,
-            gender: gender,
+            gender: getGender(),
             phone: phone,
             address: address,
             city: city,
             country: country,
             email: email,
             birthdate: birthday,
+            birthdayFormat: birthdayFormat,
             subCareer: subCareerId,
             subCareerName: subCareer,
             password: password,
@@ -161,33 +174,13 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
     const handleCityChange = (value) => {
         setCity(value);
     };
-    // const handleMenuChange = (careerItem) => {
-    //     setsubCareerID(careerItem.id);
-    //     setSubCareer(careerItem.name);
-    // };
+    const handleMenuChange = (careerItem) => {
+        setsubCareerID(careerItem.id);
+        setSubCareer(careerItem.name);
+    };
     const getGender = () => {
-        if (checked1) setGender(true);
-        else if (checked2) setGender(false);
-    };
-    const displayRender = (labels) => labels[labels.length - 1];
-    const onChangeCareer = (value) => {
-        if (value === undefined) {
-            setsubCareerID(-1);
-        } else setsubCareerID(value[1]);
-    };
-    const renderItemsMenu = (careers) => {
-        return careers.map((career) => {
-            const item = {};
-            item.value = career.name + career.id;
-            item.label = career.name;
-            item.children = career.subCareers.data.map((subCareer) => {
-                const subItem = {};
-                subItem.value = subCareer.id;
-                subItem.label = subCareer.name;
-                return subItem;
-            });
-            return item;
-        });
+        if (checked1) return true;
+        else if (checked2) return false;
     };
     return (
         <div className={cx('wrapper')}>
@@ -309,14 +302,13 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
             <div className={cx('margin-top')}>
                 <label className={cx('label', subCareerValidate ? 'validate' : '')}>Chuyên ngành của bạn *</label>
                 <div>
-                    <Cascader
-                        placeholder="chọn chuyên ngành"
-                        style={{ width: '200px' }}
-                        options={renderItemsMenu(careers)}
-                        expandTrigger="hover"
-                        displayRender={displayRender}
-                        onChange={onChangeCareer}
-                    />
+                    {careers.length !== 0 && (
+                        <CareerMenu careers={careers} onChange={handleMenuChange} hideOnClick>
+                            <div className={cx('more-btn')}>
+                                <p>{subCareer}</p>
+                            </div>
+                        </CareerMenu>
+                    )}
                 </div>
             </div>
             {register && (

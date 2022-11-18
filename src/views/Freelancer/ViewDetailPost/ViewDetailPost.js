@@ -28,6 +28,7 @@ const ViewDetailPost = () => {
     const navigate = useNavigate();
     const account = useSelector((state) => state.account);
     const accountBalance = useSelector((state) => state.accountBalance);
+    const isMemberShip = useSelector((state) => state.isMemberShip);
     const [searchParams, setSearchParams] = useSearchParams();
     const [status, setStatus] = useState(-1);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -251,7 +252,7 @@ const ViewDetailPost = () => {
                     <div id={cx('head-r')} className={cx('right-component')}>
                         {status === -1 && (
                             <div className={cx('action')}>
-                                {account.isMemberShip && (
+                                {isMemberShip && (
                                     <CustomButton
                                         className={cx('btn-apply')}
                                         leftIcon={
@@ -266,7 +267,7 @@ const ViewDetailPost = () => {
                                         {apply}
                                     </CustomButton>
                                 )}
-                                {!account.isMemberShip && !isSolidHeart && (
+                                {!isMemberShip && !isSolidHeart && (
                                     <Popconfirm
                                         placement="top"
                                         title={text}
@@ -287,7 +288,7 @@ const ViewDetailPost = () => {
                                         </CustomButton>
                                     </Popconfirm>
                                 )}
-                                {!account.isMemberShip && isSolidHeart && (
+                                {!isMemberShip && isSolidHeart && (
                                     <CustomButton
                                         className={cx('btn-apply')}
                                         leftIcon={

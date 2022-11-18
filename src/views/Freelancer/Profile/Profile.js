@@ -153,7 +153,7 @@ const Profile = () => {
     const handleCallBack = (freelance) => {
         setShowBasicInfo(false);
         setFullName(freelance.fullName);
-        setBirthdate(freelance.birthdate);
+        setBirthdate(freelance.birthdayFormat);
         setSubCareer(freelance.subCareerName);
         setPhone(freelance.phone);
         setEmail(freelance.email);

@@ -23,13 +23,11 @@
 
         .list-freelancer {
             padding: 10px;
-            .list-head {
-                border-bottom: solid 1px gray;
-            }
+
 
             .search-area {
                 padding: 20px;
-                border-bottom: 1px solid #a8a2a2;
+                background-color: #dde5f3;
                 .total-number-freelancer {
                     width: 100%;
                     font-size: 70%;
@@ -81,6 +79,19 @@
         background: #5a97f1;
     }
 }
+.list-head{
+    display: flex;
+    flex-direction: row;
+    div{
+        cursor: pointer;
+    }
+    p{
+        font-size: 20px;
+        padding: 10px;
+        text-align: center;
+        margin: 0;
+    }
+}
 .active-header{
     color: white;
     background: #5a97f1;
@@ -89,16 +100,19 @@
 
 .head-item{
     font-size: 20px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
 }
 .active{
-    background-color: #c2e3fc;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: #dde5f3;
+    border-bottom-width: 0;
+    margin-bottom: -1px;
 }
 .row{
     display: flex;
     flex-direction: row;
     margin-bottom: 1%;
+    
 }
 .area{
     width: 30%;
@@ -106,6 +120,8 @@
 .input{
     width: 50%;
     margin-top: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 .career{
     width: 30%;

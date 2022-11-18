@@ -14,6 +14,7 @@ const cx = classNames.bind(styles);
 function PostItem({ post }) {
     const navigate = useNavigate();
     const account = useSelector((state) => state.account);
+    const isMemberShip = useSelector((state) => state.isMemberShip);
     const [message, setMessage] = useState('');
 
     const pushOnTopApi = async () => {
@@ -21,6 +22,8 @@ function PostItem({ post }) {
         console.log(result);
         if (result) {
             notification.success('Đẩy top thành công');
+        } else if (result === false) {
+            notification.warn('Bạn vừa đẩy top. Sau 2 tiếng bạn mới có thể đẩy lại.');
         } else {
             notification.error('Đẩy top thất bại');
         }
@@ -54,7 +57,7 @@ function PostItem({ post }) {
                     {post.jobTitle}
                 </CustomButton>
                 <div className={cx('row')}>
-                    {post.status === 1 && (
+                    {post.status === 1 && isMemberShip && (
                         <div>
                             <Button type="primary" onClick={handlePushOnTop}>
                                 Đẩy top
@@ -73,7 +76,7 @@ function PostItem({ post }) {
             <div className={cx('row-4')}>
                 <p className={cx('post-subCareer')}>{post.subCareer}</p>
             </div>
-            {post.status === 1 && <p className={cx('')}>Số lượt tuyển: {post.totalApplied}</p>}
+            {post.status === 1 && <p className={cx('')}>Số lượt ứng tuyển: {post.totalApplied}</p>}
         </div>
     );
 }

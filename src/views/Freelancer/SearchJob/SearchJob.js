@@ -39,6 +39,7 @@ const SearchJob = () => {
             paymentType,
             pageIndex,
         );
+        console.log(result);
         setPosts(result.results);
         setTotalResults(result.totalResults);
     };
@@ -65,8 +66,10 @@ const SearchJob = () => {
         if (e.key == selectedKeys) {
             setSelectedKeys(['0']);
             getPostsApi(area, keyword, -1, paymentType, 0);
+            setSubCareerId(-1);
         } else {
             setSelectedKeys([e.key]);
+            setSubCareerId(e.key);
             getPostsApi(area, keyword, e.key, paymentType, 0);
         }
         console.log(e.key == selectedKeys);

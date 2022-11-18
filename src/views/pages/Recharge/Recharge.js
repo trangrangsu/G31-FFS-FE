@@ -5,6 +5,7 @@ import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import { CFormInput } from '@coreui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { Result } from 'antd';
 
 import * as transactionServices from '../../../services/transactionServices';
 import Button from '../../../components/Button';
@@ -62,10 +63,7 @@ const Recharge = () => {
                             }}
                         />
                     </div>
-                    <div className={cx('row')}>
-                        {paidFor && <p className={cx('mess-approve')}>Nạp thành công</p>}
-                        {error && <p className={cx('mess-error')}>Nạp thất bại</p>}
-                    </div>
+
                     {!showBtn && (
                         <Button primary className={cx('btn')} onClick={handlePaymentMethod}>
                             Chọn hình thức thanh toán
@@ -97,6 +95,12 @@ const Recharge = () => {
                             />
                         </PayPalScriptProvider>
                     )}
+                    <div className={cx('row')}>
+                        {paidFor && <Result status="success" title={'Nạp thành công ' + valueRecharge + '$'} />}
+                        {error && <Result status="error" title={'Nạp thất bại'} />}
+                        {/* {paidFor && <p className={cx('mess-approve')}>Nạp thành công</p>}
+                        {error && <p className={cx('mess-error')}>Nạp thất bại</p>} */}
+                    </div>
                 </div>
                 <div className={cx('right')}>
                     <Image src={images.paypal} alt="paypal" className={cx('img')} />
