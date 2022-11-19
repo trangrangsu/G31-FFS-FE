@@ -2,13 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import { CFormInput, CFormCheck } from '@coreui/react';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { StyledEngineProvider } from '@mui/material/styles';
-import Stack from '@mui/material/Stack';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import TextField from '@mui/material/TextField';
-import dayjs from 'dayjs';
+import DatePicker from 'react-datepicker';
 import { Checkbox } from 'antd';
 
 import * as careerServices from '../../services/careerServices';
@@ -30,11 +24,8 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
     const [country, setCountry] = useState('Việt Nam');
     const [subCareerId, setsubCareerID] = useState(-1);
     const [subCareer, setSubCareer] = useState('Chọn chuyên ngành');
-    const [value, setValue] = useState(dayjs('10-10-2022'));
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
-    const [checked1, setChecked1] = useState(false);
-    const [checked2, setChecked2] = useState(false);
     const [checked4, setChecked4] = useState(false);
     const [titleBtn, setTitleBtn] = useState('Đăng ký');
     const [register, setRegister] = useState(true);
@@ -46,9 +37,10 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
     const [subCareerValidate, setSubCareerValidate] = useState(false);
     const [passwordValidate, setPasswordValidate] = useState(false);
     const [ruleValidate, setRulsValidate] = useState(false);
-
     const countries = useSelector((state) => state.country);
     const cities = useSelector((state) => state.city);
+    const [startDate, setStartDate] = useState(new Date());
+
     const getCareeersApi = async () => {
         const result = await careerServices.getCareers();
         console.log(result);
@@ -65,12 +57,22 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
             setCity(freelancer.city);
             setCountry(freelancer.country);
             setSubCareer(freelancer.subCareer);
-            setValue(dayjs(freelancer.birthdate));
+            setsubCareerID(freelancer.subCareerId);
+            setStartDate(new Date(formatDate(freelancer.birthDate)));
             setTitleBtn('Lưu');
             setRegister(false);
             setEmailEdit(true);
+            console.log(freelancer);
         }
     }, []);
+
+    const formatDate = (date) => {
+        const y = date.slice(6, 10);
+        const m = date.slice(3, 5);
+        const d = date.slice(0, 2);
+        const dateFormat = y + '-' + m + '-' + d;
+        return dateFormat;
+    };
     const handleSave = () => {
         let count = 0;
         if (name === '') {
@@ -123,42 +125,23 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
                 setPasswordValidate(false);
             }
         }
-
         if (count !== 0) return;
-        let birthday = value.$y + '-';
-        if (value.$M + 1 < 10) {
-            birthday += '0' + (value.$M + 1) + '-';
-        } else {
-            birthday += value.$M + 1 + '-';
-        }
-        if (value.$D < 10) {
-            birthday += '0' + value.$D;
-        } else {
-            birthday += value.$D;
-        }
-        let birthdayFormat = '';
-        if (value.$D < 10) {
-            birthdayFormat += '0' + value.$D + '-';
-        } else {
-            birthdayFormat += value.$D + '-';
-        }
-        if (value.$M + 1 < 10) {
-            birthdayFormat += '0' + (value.$M + 1) + '-';
-        } else {
-            birthdayFormat += value.$M + 1 + '-';
-        }
-        birthdayFormat += value.$y;
-
+        let a = [{ day: 'numeric' }, { month: 'numeric' }, { year: 'numeric' }];
+        let s = join(startDate, a, '-');
+        console.log(s);
+        let aa = [{ year: 'numeric' }, { month: 'numeric' }, { day: 'numeric' }];
+        let ss = join(startDate, aa, '-');
+        console.log(ss);
         const f = {
             fullName: name,
-            gender: getGender(),
+            gender: gender,
             phone: phone,
             address: address,
             city: city,
             country: country,
             email: email,
-            birthdate: birthday,
-            birthdayFormat: birthdayFormat,
+            birthdate: ss,
+            birthdayFormat: s,
             subCareer: subCareerId,
             subCareerName: subCareer,
             password: password,
@@ -178,10 +161,13 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
         setsubCareerID(careerItem.id);
         setSubCareer(careerItem.name);
     };
-    const getGender = () => {
-        if (checked1) return true;
-        else if (checked2) return false;
-    };
+    function join(t, a, s) {
+        function format(m) {
+            let f = new Intl.DateTimeFormat('en', m);
+            return f.format(t);
+        }
+        return a.map(format).join(s);
+    }
     return (
         <div className={cx('wrapper')}>
             <div className={cx('name', nameValidate ? 'validate' : '')}>
@@ -191,42 +177,55 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
             <div className={cx('row')}>
                 <div className={cx('birthday')}>
                     <label className={cx('label')}>Ngày sinh *</label>
-                    <StyledEngineProvider>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <Stack spacing={1}>
-                                <DesktopDatePicker
-                                    className={cx('date-picker')}
-                                    value={value}
-                                    minDate={'1970-01-01'}
-                                    onChange={(newValue) => {
-                                        setValue(newValue);
-                                    }}
-                                    renderInput={(params) => <TextField {...params} />}
-                                />
-                            </Stack>
-                        </LocalizationProvider>
-                    </StyledEngineProvider>
+                    <DatePicker
+                        className={cx('date-picker')}
+                        selected={startDate}
+                        onChange={(date) => {
+                            setStartDate(date);
+                        }}
+                    />
                 </div>
                 <div className={cx('gender')}>
                     <label className={cx('label')}>Giới tính *</label>
-                    <div className={cx('container-gender')}>
-                        <CFormCheck
-                            type="radio"
-                            name="flexRadioDefault"
-                            id="male"
-                            label="Nam"
-                            defaultChecked={gender}
-                            onChange={() => setChecked1(!checked1)}
-                        />
-                        <CFormCheck
-                            type="radio"
-                            name="flexRadioDefault"
-                            id="female"
-                            label="Nữ"
-                            defaultChecked={gender === '0' ? true : false}
-                            onChange={() => setChecked2(!checked2)}
-                        />
-                    </div>
+                    {freelancer !== undefined ? (
+                        <div className={cx('container-gender')}>
+                            <CFormCheck
+                                type="radio"
+                                name="flexRadioDefault"
+                                id="male"
+                                label="Nam"
+                                defaultChecked={freelancer.gender}
+                                onClick={() => setGender(true)}
+                            />
+                            <CFormCheck
+                                type="radio"
+                                name="flexRadioDefault"
+                                id="female"
+                                label="Nữ"
+                                defaultChecked={!freelancer.gender}
+                                onClick={() => setGender(false)}
+                            />
+                        </div>
+                    ) : (
+                        <div className={cx('container-gender')}>
+                            <CFormCheck
+                                type="radio"
+                                name="flexRadioDefault"
+                                id="male"
+                                label="Nam"
+                                defaultChecked={true}
+                                onClick={() => setGender(true)}
+                            />
+                            <CFormCheck
+                                type="radio"
+                                name="flexRadioDefault"
+                                id="female"
+                                label="Nữ"
+                                defaultChecked={false}
+                                onClick={() => setGender(false)}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
             <div className={cx('row')}>

@@ -160,7 +160,16 @@ const Profile = () => {
         setAddress(freelance.address);
         setCity(freelance.city);
         setGenderBy(freelance.gender);
-        console.log(freelance);
+        freelancer.fullName = freelance.fullName;
+        freelancer.birthDate = freelance.birthdayFormat;
+        freelancer.gender = freelance.gender;
+        freelancer.phone = freelance.phone;
+        freelancer.address = freelance.address;
+        freelancer.city = freelance.city;
+        freelancer.country = freelance.country;
+        freelancer.subCareer = freelance.subCareerName;
+        freelancer.subCareerId = freelance.subCareer;
+
         editPopupApi(freelance);
     };
     const handleCallBackEducation = (education) => {

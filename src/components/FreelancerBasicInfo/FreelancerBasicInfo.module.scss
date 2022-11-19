@@ -16,17 +16,11 @@
     width: 49%;
 }
 .date-picker{
-    fieldset {
-        height: 46px;
-        margin-top: 5px;
-    }
-    div {
-        &:hover {
-            fieldset {
-                border-color: rgba(0, 0, 0, 0.23) !important;
-            }
-        }
-    }
+    width: 100%;
+    height: 46px;
+    border: 1px solid rgba(0, 0, 0, 0.23);
+    border-radius: 5px;
+    padding: 10px 10px;
 }
 .gender{
     width: 49%;

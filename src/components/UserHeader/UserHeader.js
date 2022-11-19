@@ -58,10 +58,11 @@ function UserHeader() {
     const [image, setImage] = useState(images.defaultAvatar);
     const [unReadNotification, setUnReadNotification] = useState(account.unReadNotification);
     const listInnerRef = useRef();
-    const [currPage, setCurrPage] = useState(1);
-    const [prevPage, setPrevPage] = useState(0);
+    const [currPage, setCurrPage] = useState(0);
+    const [prevPage, setPrevPage] = useState(-1);
     const [notifications, setNotifications] = useState([]);
     const [lastList, setLastList] = useState(false);
+    const [close, setClose] = useState(true);
 
     if (account.role === 'freelancer') {
         console.log(account.role);
@@ -81,17 +82,36 @@ function UserHeader() {
             default:
         }
     };
-    const getNoticationApi = async () => {
-        const result = await notificationServices.getNotifications(account.userId);
-        console.log(result);
-        setNotifications(result);
-    };
     useEffect(() => {
         firebase.downloadFile(account.userId, 'avatar', accountAvatar, setImage);
     }, [accountAvatar]);
+    const fetchData = async () => {
+        const result = await notificationServices.getNotifications(account.userId, currPage);
+        console.log(result);
+        if (result.pageIndex === result.totalPages) {
+            setLastList(true);
+        }
+        setPrevPage(currPage);
+        setNotifications([...notifications, ...result.results]);
+    };
+    useEffect(() => {
+        if (!lastList && prevPage !== currPage && close === false) {
+            fetchData();
+        }
+    }, [currPage, lastList, prevPage, notifications]);
     const handleViewNotification = () => {
-        getNoticationApi();
+        fetchData();
         setUnReadNotification(0);
+        setClose(false);
+    };
+    const onScroll = () => {
+        if (listInnerRef.current) {
+            const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
+            if (scrollTop + clientHeight === scrollHeight) {
+                console.log('scroll');
+                setCurrPage(currPage + 1);
+            }
+        }
     };
     return (
         <header className={cx('wrapper')}>
@@ -144,13 +164,27 @@ function UserHeader() {
                             trigger="click"
                             placement="bottom-start"
                             render={(attrs) => (
-                                <div className={cx('notification-list')} tabIndex="-1" {...attrs}>
+                                <div
+                                    className={cx('notification-list')}
+                                    tabIndex="-1"
+                                    {...attrs}
+                                    onScroll={onScroll}
+                                    ref={listInnerRef}
+                                    style={{ maxHeight: '715px', overflowY: 'auto' }}
+                                >
                                     <h2>Thông báo</h2>
                                     {notifications.map((notification) => (
                                         <NotificationItem key={notification.postId} item={notification} />
                                     ))}
                                 </div>
                             )}
+                            onClickOutside={() => {
+                                setClose(true);
+                                setNotifications([]);
+                                setCurrPage(0);
+                                setPrevPage(-1);
+                                setLastList(false);
+                            }}
                         >
                             <div className={cx('notification')} onClick={handleViewNotification}>
                                 <Notification height="25px" width="25px" />

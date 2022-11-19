@@ -14,7 +14,7 @@ function NotificationItem({ item }) {
     const [image, setImage] = useState(images.defaultAvatar);
     const [message, setMessage] = useState('');
     useEffect(() => {
-        if (item.avatar !== '') {
+        if (item.avatar !== null) {
             firebase.downloadFile(item.userId, 'avatar', item.avatar, setImage);
         }
     }, []);
