@@ -126,10 +126,10 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
             }
         }
         if (count !== 0) return;
-        let a = [{ day: 'numeric' }, { month: 'numeric' }, { year: 'numeric' }];
+        let a = [{ day: '2-digit' }, { month: '2-digit' }, { year: 'numeric' }];
         let s = join(startDate, a, '-');
         console.log(s);
-        let aa = [{ year: 'numeric' }, { month: 'numeric' }, { day: 'numeric' }];
+        let aa = [{ year: 'numeric' }, { month: '2-digit' }, { day: '2-digit' }];
         let ss = join(startDate, aa, '-');
         console.log(ss);
         const f = {

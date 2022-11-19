@@ -14,7 +14,7 @@ function CompanyInfoPopup({ companyInfo, callback, onclose }) {
     const [companyName, setCompanyName] = useState('');
     const [taxNumber, setTaxNumber] = useState('');
     const [website, setWebsite] = useState('');
-    const [career, setCareer] = useState(0);
+    const [career, setCareer] = useState({});
     const [careers, setCareers] = useState([]);
     const [description, setDescription] = useState('');
 

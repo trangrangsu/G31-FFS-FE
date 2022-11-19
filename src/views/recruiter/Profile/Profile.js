@@ -124,7 +124,7 @@ const Profile = () => {
         setWebsite(companyInfo.website);
         setCareer(companyInfo.careerInfo);
         setCompanyName(companyInfo.companyName);
-        setCompanyIntro(companyInfo.companyIntro);
+        setCompanyIntro(companyInfo.description);
         updateProfileRecruiterApi(companyInfo);
     };
     return (

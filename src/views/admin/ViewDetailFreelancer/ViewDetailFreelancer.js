@@ -39,6 +39,10 @@ function ViewDetailFreelancer() {
             setCv(result.cv);
         }
     };
+    const unBanApi = async (userId) => {
+        const result = await adminFreelancerService.unBan(userId);
+        console.log(result);
+    };
     useEffect(() => {
         fetchApi();
     }, []);
@@ -50,6 +54,10 @@ function ViewDetailFreelancer() {
     }, [cv]);
     const handleShowBanPopup = () => {
         setShow(true);
+    };
+    const handleUnban = () => {
+        unBanApi(searchParams.get('id'));
+        setBanFlag(false);
     };
     return (
         <div className={cx('wrapper')}>
@@ -95,13 +103,16 @@ function ViewDetailFreelancer() {
                         </div>
                     </div>
                     <div className={cx('action')}>
-                        <Button
-                            admin
-                            className={cx(!banFlag ? 'btn-warning' : 'btn-info')}
-                            onClick={handleShowBanPopup}
-                        >
-                            {!banFlag ? 'Khóa tài khoản' : 'Mở khóa'}
-                        </Button>
+                        {!banFlag && (
+                            <Button admin className={cx('btn-warning')} onClick={handleShowBanPopup}>
+                                {'Khóa tài khoản'}
+                            </Button>
+                        )}
+                        {banFlag && (
+                            <Button admin className={cx('btn-info')} onClick={handleUnban}>
+                                {'Mở khóa'}
+                            </Button>
+                        )}
                     </div>
                 </div>
                 <div className={cx('description')}>

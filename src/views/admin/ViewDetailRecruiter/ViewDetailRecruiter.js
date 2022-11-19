@@ -5,6 +5,7 @@ import { faUserPen, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSearchParams } from 'react-router-dom';
 import * as adminRecruiterServices from '../../../services/adminRecruiterServices';
+import * as adminFreelancerService from '../../../services/adminFreelancerServices';
 
 import { Star } from '../../../components/Icons';
 import Image from '../../../components/Image';
@@ -22,6 +23,10 @@ function ViewDetailRecruiter() {
     const [image, setImage] = useState(images.defaultAvatar);
     const [show, setShow] = useState(false);
     const [searchParams, setSearchParams] = useSearchParams();
+    const unBanApi = async (userId) => {
+        const result = await adminFreelancerService.unBan(userId);
+        console.log(result);
+    };
     useEffect(() => {
         const fetchApi = async () => {
             const result = await adminRecruiterServices.getRecruiter(searchParams.get('id'));
@@ -40,6 +45,10 @@ function ViewDetailRecruiter() {
 
     const handleShowBanPopup = () => {
         setShow(true);
+    };
+    const handleUnban = () => {
+        unBanApi(searchParams.get('id'));
+        setBanFlag(false);
     };
     return (
         <div className={cx('wrapper')}>
@@ -75,13 +84,16 @@ function ViewDetailRecruiter() {
                         </div>
                     </div>
                     <div className={cx('action')}>
-                        <Button
-                            admin
-                            className={cx(!banFlag ? 'btn-warning' : 'btn-info')}
-                            onClick={handleShowBanPopup}
-                        >
-                            {!banFlag ? 'Khóa tài khoản' : 'Mở khóa'}
-                        </Button>
+                        {!banFlag && (
+                            <Button admin className={cx('btn-warning')} onClick={handleShowBanPopup}>
+                                {'Khóa tài khoản'}
+                            </Button>
+                        )}
+                        {banFlag && (
+                            <Button admin className={cx('btn-info')} onClick={handleUnban}>
+                                {'Mở khóa'}
+                            </Button>
+                        )}
                     </div>
                 </div>
                 <div className={cx('address-content')}>

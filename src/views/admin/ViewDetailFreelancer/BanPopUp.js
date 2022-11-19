@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import Modal from 'react-bootstrap/Modal';
+import { useSelector } from 'react-redux';
 
 import * as adminFreelancerService from '../../../services/adminFreelancerServices';
 import CustomButton from '../../../components/Button';
 import styles from './ViewDetailFreelancer.module.scss';
 const cx = classNames.bind(styles);
 function BanPopUp({ id, callback }) {
+    const account = useSelector((state) => state.account);
     const [show, setShow] = useState(true);
     const [banType, setBanType] = useState({});
     const [banTypes, setBanTypes] = useState([]);
     const [titleButton, setTitleButton] = useState('Khóa tài khoản');
     const [titlePopup, setTitlePopup] = useState('Khóa tài khoản');
-    const fetchApi = async () => {
-        const result = await adminFreelancerService.getTypeBan('');
+    const fetchApi = async (id) => {
+        const result = await adminFreelancerService.getTypeBan(id);
         console.log(result);
         setBanTypes(result);
         setBanType(result[0]);
@@ -22,16 +24,13 @@ function BanPopUp({ id, callback }) {
         const result = await adminFreelancerService.setBan(userId, typeBan, bannedBy);
         console.log(result);
     };
-    const unBanApi = async (userId) => {
-        const result = await adminFreelancerService.unBan(userId);
-        console.log(result);
-    };
+
     const handleClose = () => {
         setShow(false);
         callback();
     };
     useEffect(() => {
-        fetchApi();
+        fetchApi(id);
     }, []);
     const setBanTypeCurrent = (id) => {
         const arr = banTypes.filter((banType) => banType.id == id);
@@ -39,11 +38,8 @@ function BanPopUp({ id, callback }) {
     };
 
     const handleBan = () => {
-        console.log(banType);
-        // banApi(id, banType.id, 'LS1g5vkE9S');
-        // callback(true);
-        unBanApi(id);
-        callback(false);
+        banApi(id, banType.id, account.userId);
+        callback(true);
         setShow(false);
     };
     return (
