@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Alert } from 'antd';
 
 import * as loginServices from '../../../services/loginServices';
 import images from '../../../assets/images';
@@ -21,6 +22,9 @@ const Login = () => {
     const [emailValidate, setEmailValidate] = useState(false);
     const [passValidate, setPassValidate] = useState(false);
     const [show, setShow] = useState(false);
+    const [message, setMessage] = useState('');
+    const [messageEmail, setMessageEmail] = useState('');
+    const [messagePassword, setMessagePassword] = useState('');
 
     useEffect(() => {
         dispatch({ type: 'set', account: {} });
@@ -30,7 +34,7 @@ const Login = () => {
     const fetchApi = async (user) => {
         const result = await loginServices.login(user);
         console.log(result);
-        if (typeof result === 'object') {
+        if (result.userId !== undefined) {
             dispatch({ type: 'set', account: result });
             dispatch({ type: 'set', accountBalance: result.accountBalance });
             dispatch({ type: 'set', accountAvatar: result.avatar });
@@ -62,23 +66,47 @@ const Login = () => {
                 default:
             }
             navigate(to);
+        } else {
+            console.log(result);
+            setMessage(result.response.data);
         }
     };
     const handleClick = () => {
         setShow(!show);
     };
+    const validateEmail = (email) => {
+        return email.match(
+            /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        );
+    };
     const handleLogin = () => {
-        if (email !== '' && password !== '') {
+        console.log(validateEmail(email));
+        let count = 0;
+        if (email === '') {
+            setEmailValidate(true);
+            setMessageEmail('Vui lòng nhập Email');
+        } else if (validateEmail(email) === null) {
+            setEmailValidate(true);
+            setMessageEmail('Vui lòng kiểm tra lại Email');
+        } else {
+            setEmailValidate(false);
+            setMessageEmail('');
+            count++;
+        }
+        if (password === '') {
+            setPassValidate(true);
+            setMessagePassword('Vui lòng nhập mật khẩu');
+        } else {
+            setPassValidate(false);
+            setMessagePassword('');
+            count++;
+        }
+        if (count === 2) {
             const user = {
                 email,
                 password,
             };
             fetchApi(user);
-        } else {
-            if (email === '') setEmailValidate(true);
-            else setEmailValidate(false);
-            if (password === '') setPassValidate(true);
-            else setPassValidate(false);
         }
     };
     function enterPress(e) {
@@ -89,6 +117,7 @@ const Login = () => {
     }
     return (
         <div className={cx('wrapper')}>
+            {message !== '' && <Alert className={cx('message')} message={message} type="error" />}
             <div className={cx('container')}>
                 <div className={cx('left')}>
                     <h1>
@@ -104,6 +133,9 @@ const Login = () => {
                                 spellCheck={false}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
+                            {messageEmail !== '' && (
+                                <Alert className={cx('messageError')} message={messageEmail} type="error" />
+                            )}
                         </div>
                         <div>
                             <div className={cx('container-password')}>
@@ -120,6 +152,9 @@ const Login = () => {
                                     onChange={(e) => setPassword(e.target.value)}
                                     onKeyDown={(e) => enterPress(e)}
                                 />
+                                {messagePassword !== '' && (
+                                    <Alert className={cx('messageError')} message={messagePassword} type="error" />
+                                )}
                                 {show ? (
                                     <FontAwesomeIcon icon={faEye} className={cx('input-icon')} onClick={handleClick} />
                                 ) : (

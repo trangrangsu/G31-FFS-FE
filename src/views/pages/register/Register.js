@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { CFormCheck } from '@coreui/react';
 import classNames from 'classnames/bind';
+import { Alert } from 'antd';
 
 import * as registerServices from '../../../services/registerServices';
 import FreelancerBasicInfo from '../../../components/FreelancerBasicInfo';
@@ -64,13 +65,15 @@ const Register = () => {
                         }}
                     />
                 </div>
+                {(isFreelancer || isRecruiter) && isRegister && (
+                    <Alert
+                        className={cx('message')}
+                        message="Yêu cầu của bạn đã được chấp nhận. Hãy kiểm tra email để xác nhận tài khoản"
+                        type="success"
+                    />
+                )}
                 {isFreelancer && <FreelancerBasicInfo onClick={handleCallBack} />}
                 {isRecruiter && <RecruiterBasicInfo onClick={handleCallBack} />}
-                {(isFreelancer || isRecruiter) && isRegister && (
-                    <div className={cx('message')}>
-                        <p>Yêu cầu của bạn đã được chấp nhận. Hãy kiểm tra email để xác nhận tài khoản</p>
-                    </div>
-                )}
             </div>
         </div>
     );

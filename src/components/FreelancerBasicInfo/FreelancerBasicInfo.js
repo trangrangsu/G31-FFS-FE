@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import { CFormInput, CFormCheck } from '@coreui/react';
 import DatePicker from 'react-datepicker';
-import { Checkbox } from 'antd';
+import { Checkbox, Alert } from 'antd';
 
 import * as careerServices from '../../services/careerServices';
 import Combox from '../Popper/Combox';
@@ -40,6 +40,12 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
     const countries = useSelector((state) => state.country);
     const cities = useSelector((state) => state.city);
     const [startDate, setStartDate] = useState(new Date());
+    const [messageName, setMessageName] = useState('');
+    const [messagePhone, setMessagePhone] = useState('');
+    const [messageEmail, setMessageEmail] = useState('');
+    const [messagePassword, setMessagePassword] = useState('');
+    const [messageAddress, setMessageAddress] = useState('');
+    const [messageCity, setMessageCity] = useState('');
 
     const getCareeersApi = async () => {
         const result = await careerServices.getCareers();
@@ -73,37 +79,71 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
         const dateFormat = y + '-' + m + '-' + d;
         return dateFormat;
     };
+    const validateName = (name) => {
+        return name.match(/^[a-zA-Z\s]*$/);
+    };
+    const validatePhone = (phone) => {
+        return phone.match(/^[0-9]*$/);
+    };
+    const validateEmail = (email) => {
+        return email.match(
+            /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        );
+    };
+
     const handleSave = () => {
         let count = 0;
         if (name === '') {
             count++;
             setNameValidate(true);
+            setMessageName('Họ và tên trống');
+        } else if (validateName(name) === null) {
+            count++;
+            setNameValidate(true);
+            setMessageName('Họ tên không hợp lệ');
         } else {
             setNameValidate(false);
+            setMessageName('');
         }
         if (phone === '') {
             count++;
             setPhoneValidate(true);
+            setMessagePhone('Số điện thoại trống');
+        } else if (validatePhone(phone) === null) {
+            count++;
+            setPhoneValidate(true);
+            setMessagePhone('Số điện thoại không hợp lệ');
         } else {
             setPhoneValidate(false);
+            setMessagePhone('');
         }
         if (address === '') {
             count++;
             setAddressValidate(true);
+            setMessageAddress('Địa chỉ trống');
         } else {
             setAddressValidate(false);
+            setMessageAddress('');
         }
         if (city === '') {
             count++;
             setCityValidate(true);
+            setMessageCity('Tỉnh thành trống');
         } else {
             setCityValidate(false);
+            setMessageCity('');
         }
         if (email === '') {
             count++;
             setEmailValidate(true);
+            setMessageEmail('Email trống');
+        } else if (validateEmail(email) === null) {
+            count++;
+            setEmailValidate(true);
+            setMessageEmail('Email không hợp lệ');
         } else {
             setEmailValidate(false);
+            setMessageEmail('');
         }
         if (subCareer === 'Chọn chuyên ngành') {
             count++;
@@ -118,20 +158,28 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
             } else {
                 setRulsValidate(false);
             }
-            if (password === '' || password !== passwordConfirm) {
+            if (password === '') {
                 setPasswordValidate(true);
                 count++;
+                setMessagePassword('Mật khẩu mới trống');
+            } else if (password.length < 8 || password[0].toUpperCase() !== password[0]) {
+                setPasswordValidate(true);
+                count++;
+                setMessagePassword('Mật khẩu chứa tối thiểu 8 kí tự và chữ cái đầu viết hoa');
+            } else if (password !== passwordConfirm) {
+                setPasswordValidate(true);
+                count++;
+                setMessagePassword('Mật khẩu không khớp vui lòng nhập lại');
             } else {
                 setPasswordValidate(false);
+                setMessagePassword('');
             }
         }
         if (count !== 0) return;
         let a = [{ day: '2-digit' }, { month: '2-digit' }, { year: 'numeric' }];
         let s = join(startDate, a, '-');
-        console.log(s);
         let aa = [{ year: 'numeric' }, { month: '2-digit' }, { day: '2-digit' }];
         let ss = join(startDate, aa, '-');
-        console.log(ss);
         const f = {
             fullName: name,
             gender: gender,
@@ -168,11 +216,66 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
         }
         return a.map(format).join(s);
     }
+    const handleChangeName = (e) => {
+        const value = e.target.value;
+        if (value.length > 30) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setName(value);
+        }
+    };
+    const handleChangePhone = (e) => {
+        const value = e.target.value;
+        if (value.length > 15) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setPhone(value);
+        }
+    };
+    const handleChangeEmail = (e) => {
+        const value = e.target.value;
+        if (value.length > 50) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setEmail(value);
+        }
+    };
+    const handleChangePassword = (e) => {
+        const value = e.target.value;
+        if (value.length > 16) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setPassword(value);
+        }
+    };
+    const handleChangeConfirmPassword = (e) => {
+        const value = e.target.value;
+        if (value.length > 16) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setPasswordConfirm(value);
+        }
+    };
+    const handleChangeAddress = (e) => {
+        const value = e.target.value;
+        if (value.length > 100) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setAddress(value);
+        }
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('name', nameValidate ? 'validate' : '')}>
                 <label className={cx('label')}>Họ và tên *</label>
-                <CFormInput type="text" value={name} spellCheck={false} onChange={(e) => setName(e.target.value)} />
+                <CFormInput type="text" value={name} spellCheck={false} onChange={handleChangeName} />
+                {messageName !== '' && <Alert className={cx('messageError')} message={messageName} type="error" />}
             </div>
             <div className={cx('row')}>
                 <div className={cx('birthday')}>
@@ -231,12 +334,10 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
             <div className={cx('row')}>
                 <div className={cx('left', phoneValidate ? 'validate' : '')}>
                     <label className={cx('label')}>Số điện thoại *</label>
-                    <CFormInput
-                        type="text"
-                        value={phone}
-                        spellCheck={false}
-                        onChange={(e) => setPhone(e.target.value)}
-                    />
+                    <CFormInput type="text" value={phone} spellCheck={false} onChange={handleChangePhone} />
+                    {messagePhone !== '' && (
+                        <Alert className={cx('messageError')} message={messagePhone} type="error" />
+                    )}
                 </div>
                 <div className={cx('right', emailValidate ? 'validate' : '')}>
                     <label className={cx('label')}>Email *</label>
@@ -245,40 +346,44 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
                         type="text"
                         value={email}
                         spellCheck={false}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={handleChangeEmail}
                     />
+                    {messageEmail !== '' && (
+                        <Alert className={cx('messageError')} message={messageEmail} type="error" />
+                    )}
                 </div>
             </div>
             {register && (
                 <div className={cx('row')}>
-                    <div className={cx('left', phoneValidate ? 'validate' : '')}>
+                    <div className={cx('left', passwordValidate ? 'validate' : '')}>
                         <label className={cx('label', passwordValidate ? 'validate' : '')}>Mật khẩu *</label>
                         <CFormInput
                             type="password"
                             value={password}
                             spellCheck={false}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={handleChangePassword}
                         />
+                        {messagePassword !== '' && (
+                            <Alert className={cx('messageError')} message={messagePassword} type="error" />
+                        )}
                     </div>
-                    <div className={cx('right', emailValidate ? 'validate' : '')}>
+                    <div className={cx('right', passwordValidate ? 'validate' : '')}>
                         <label className={cx('label', passwordValidate ? 'validate' : '')}>Xác nhận mật khẩu *</label>
                         <CFormInput
                             type="password"
                             value={passwordConfirm}
                             spellCheck={false}
-                            onChange={(e) => setPasswordConfirm(e.target.value)}
+                            onChange={handleChangeConfirmPassword}
                         />
                     </div>
                 </div>
             )}
             <div className={cx('margin-top', addressValidate ? 'validate' : '')}>
                 <label className={cx('label')}>Địa chỉ *</label>
-                <CFormInput
-                    type="text"
-                    value={address}
-                    spellCheck={false}
-                    onChange={(e) => setAddress(e.target.value)}
-                />
+                <CFormInput type="text" value={address} spellCheck={false} onChange={handleChangeAddress} />
+                {messageAddress !== '' && (
+                    <Alert className={cx('messageError')} message={messageAddress} type="error" />
+                )}
             </div>
             <div className={cx('row')}>
                 <div className={cx('left')}>
@@ -296,6 +401,7 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
                             <p>{city}</p>
                         </div>
                     </Combox>
+                    {messageCity !== '' && <Alert className={cx('messageError')} message={messageCity} type="error" />}
                 </div>
             </div>
             <div className={cx('margin-top')}>
