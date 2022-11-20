@@ -82,7 +82,7 @@ const PostManagement = () => {
                                 style={{ width: '500px' }}
                                 placeholder="nhập từ khóa"
                                 value={keyWord}
-                                onClick={(e) => setKeyWord(e.target.value)}
+                                onChange={(e) => setKeyWord(e.target.value)}
                                 onSearch={onSearch}
                                 enterButton
                             />

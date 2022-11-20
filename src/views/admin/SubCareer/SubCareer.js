@@ -208,6 +208,7 @@ function SubCareer() {
                         })}
                     </tbody>
                 </table>
+                {subCareers.length === 0 && <p className={cx('message')}>Không có kết quả</p>}
                 <CPagination aria-label="Page navigation example" className={cx('table-paging')}>
                     {renderPages()}
                 </CPagination>

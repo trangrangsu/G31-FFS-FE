@@ -18,6 +18,7 @@ const { Search } = Input;
 
 const SearchFreelancer = () => {
     const cities = useSelector((state) => state.city);
+    const isMemberShip = useSelector((state) => state.isMemberShip);
     const [showFilter, setShowFilter] = useState(false);
     const [valuePrice, setValuePrice] = useState(1);
     const [subCareer, setSubCareer] = useState(-1);
@@ -45,6 +46,7 @@ const SearchFreelancer = () => {
             city,
             subCareer,
             skill,
+            isMemberShip,
             pageIndex,
         );
         console.log(result);

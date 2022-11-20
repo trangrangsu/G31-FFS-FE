@@ -32,7 +32,9 @@ function CompanyInfoPopup({ companyInfo, callback, onclose }) {
             setTaxNumber(companyInfo.taxNumber);
             setWebsite(companyInfo.website);
             setCareer(companyInfo.career);
-            setDescription(companyInfo.companyIntro);
+            if (companyInfo.companyIntro !== null) {
+                setDescription(companyInfo.companyIntro);
+            }
         }
     }, []);
     const handleClose = () => {
@@ -88,7 +90,7 @@ function CompanyInfoPopup({ companyInfo, callback, onclose }) {
                 <div className={cx('column')}>
                     <label className={cx('label')}>Ngành nghề</label>
                     <CFormSelect
-                        value={career.id}
+                        value={career !== null ? career.id : ''}
                         onChange={(e) => {
                             setCareer(e.target.value);
                         }}

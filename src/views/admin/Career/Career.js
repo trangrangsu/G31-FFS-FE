@@ -22,6 +22,7 @@ function Career() {
     const [totalPages, setTotalPages] = useState(5);
     const fetchApi = async (searchValue, pIndex) => {
         const result = await adminCareerServices.getCareers(searchValue, pIndex);
+        console.log(result);
         setCareer(result.results);
         setPageIndex(result.pageIndex);
         setTotalPages(result.totalPages);
@@ -29,9 +30,7 @@ function Career() {
     useEffect(() => {
         fetchApi(searchValue, 0);
     }, []);
-    useEffect(() => {
-        fetchApi(searchValue, 0);
-    }, [updatePage]);
+
     const handlePaging = (pIndex) => {
         fetchApi(searchValue, pIndex);
     };
@@ -99,9 +98,9 @@ function Career() {
         const deleteCareerFetchApi = async (id) => {
             const result = await adminCareerServices.deleteCareer(id);
             console.log(result);
+            fetchApi(searchValue, 0);
         };
         deleteCareerFetchApi(careerInfo.id);
-        setUpdatePage(Math.random());
     };
     return (
         <div className={cx('wrapper')}>
@@ -111,7 +110,6 @@ function Career() {
                     <CustomButton admin className={'button-popup'} variant="primary" onClick={handleShow}>
                         Thêm mới
                     </CustomButton>
-                    {/* <CareerPopUp className={cx('career-popup')} /> */}
                     <GlobalSearch
                         className={cx('search')}
                         title="Tìm kiếm ngành nghề"
@@ -125,7 +123,9 @@ function Career() {
                             career={careerInfo}
                             callback={() => {
                                 setShow(false);
-                                setUpdatePage(Math.random());
+                                setTimeout(() => {
+                                    fetchApi(searchValue, 0);
+                                }, 200);
                             }}
                         />
                     )}
@@ -162,6 +162,7 @@ function Career() {
                         })}
                     </tbody>
                 </table>
+                {careers.length === 0 && <p className={cx('message')}>Không có kết quả</p>}
                 <CPagination aria-label="Page navigation example" className={cx('table-paging')}>
                     {renderPages()}
                 </CPagination>

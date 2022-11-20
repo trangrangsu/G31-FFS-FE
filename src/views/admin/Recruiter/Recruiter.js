@@ -220,6 +220,7 @@ function Recruiter() {
                             })}
                         </tbody>
                     </table>
+                    {recruitersPending.length === 0 && <p className={cx('message')}>Không có kết quả</p>}
                 </div>
                 <CPagination aria-label="Page navigation example" className={cx('table-paging')}>
                     {renderPendingPages()}
@@ -281,6 +282,7 @@ function Recruiter() {
                         })}
                     </tbody>
                 </table>
+                {recruiters.length === 0 && <p className={cx('message')}>Không có kết quả</p>}
                 <CPagination aria-label="Page navigation example" className={cx('table-paging')}>
                     {renderPages()}
                 </CPagination>

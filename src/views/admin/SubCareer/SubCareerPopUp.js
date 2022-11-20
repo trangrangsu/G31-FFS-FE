@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import Modal from 'react-bootstrap/Modal';
 import { CFormInput } from '@coreui/react';
+import { Alert } from 'antd';
 
 import * as adminCareerServices from '../../../services/adminCareerServices';
 import CustomButton from '../../../components/Button';
@@ -15,6 +16,7 @@ function SubCareerPopUp({ career, subCareer, callback, onAction }) {
     const [careerCurrent, setCareerCurrent] = useState(career);
     const [titleButton, setTitleButton] = useState('Thêm mới');
     const [titlePopup, setTitlePopup] = useState('Thêm mới');
+    const [messageSubCareer, setMessageSubCareer] = useState('');
     const getCareerApi = async () => {
         const result2 = await adminCareerServices.getAllCareers();
         console.log(result2);
@@ -29,16 +31,34 @@ function SubCareerPopUp({ career, subCareer, callback, onAction }) {
         if (subCareer.id) {
             setName(subCareer.name);
             setTitleButton('Cập nhật');
-            setTitlePopup('Chỉnh sửa ngành nghề chi tiết');
+            setTitlePopup('Chỉnh sửa chuyên ngành');
         }
         getCareerApi();
     }, []);
+    const validateSubCareer = (name) => {
+        return name.match(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/);
+    };
     const handleAdd = () => {
-        subCareer.name = name;
-        subCareer.careerId = careerCurrent;
-        console.log(subCareer);
-        onAction(subCareer);
-        handleClose();
+        if (name === '') {
+            setMessageSubCareer('Vui lòng tên chuyên ngành');
+        } else if (validateSubCareer(name) !== null) {
+            setMessageSubCareer('Tên chuyên ngành không chứa ký tự đặc biệt');
+        } else {
+            subCareer.name = name;
+            subCareer.careerId = careerCurrent;
+            console.log(subCareer);
+            onAction(subCareer);
+            handleClose();
+        }
+    };
+    const handleChangeCareer = (e) => {
+        const value = e.target.value;
+        if (value.length > 50) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setName(value);
+        }
     };
     return (
         <div className={cx('career-popup')}>
@@ -64,11 +84,14 @@ function SubCareerPopUp({ career, subCareer, callback, onAction }) {
                                 className={cx('input-field')}
                                 type="text"
                                 value={name}
-                                onChange={(e) => setName(e.target.value)}
+                                onChange={handleChangeCareer}
                                 autoFocus
                             />
-                            <label className={cx('input-label')}>Sub career</label>
+                            <label className={cx('input-label')}>Chuyên ngành</label>
                         </div>
+                        {messageSubCareer !== '' && (
+                            <Alert className={cx('messageError')} message={messageSubCareer} type="error" />
+                        )}
                     </div>
                     <CustomButton approve className={cx('btn-add')} onClick={handleAdd}>
                         {titleButton}

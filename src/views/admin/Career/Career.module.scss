@@ -98,3 +98,17 @@
 .btn-add{
     font-size: 18px;
 }
+.message{
+    margin: 0 auto;
+    padding: 10px;
+    font-size: 20px;
+}
+.messageError{
+    border-color: #fff !important;
+    padding: 0px;
+    margin-top: 5px;
+    width: 250px;
+    div{
+        color: red;
+    }
+}
