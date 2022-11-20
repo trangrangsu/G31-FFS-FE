@@ -80,7 +80,7 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
         return dateFormat;
     };
     const validateName = (name) => {
-        return name.match(/^[a-zA-Z\s]*$/);
+        return name.match(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~\d]/);
     };
     const validatePhone = (phone) => {
         return phone.match(/^[0-9]*$/);
@@ -97,7 +97,7 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
             count++;
             setNameValidate(true);
             setMessageName('Họ và tên trống');
-        } else if (validateName(name) === null) {
+        } else if (validateName(name) !== null) {
             count++;
             setNameValidate(true);
             setMessageName('Họ tên không hợp lệ');
