@@ -28,7 +28,6 @@ function Staff() {
         const result = await staffService.getStaffs(searchValue, pIndex);
         console.log(result);
         setStaffs(result.results);
-        console.log(result.pageIndex);
         setPageIndex(result.pageIndex);
         setTotalPages(result.totalPages);
     };
@@ -96,10 +95,19 @@ function Staff() {
     const handDelete = (staff) => {
         const banStaffFetchApi = async (id) => {
             const result = await staffService.banStaff(id);
+            console.log(id);
             console.log(result);
+            setStaffs((pre) => {
+                return pre.map((staff) => {
+                    if (staff.id == id) {
+                        staff.isActive = !staff.isActive;
+                        console.log(staff);
+                    }
+                    return staff;
+                });
+            });
         };
         banStaffFetchApi(staff.id);
-        fetchApi();
     };
     return (
         <div className={cx('wrapper')}>
@@ -123,6 +131,7 @@ function Staff() {
                             staff={staffInfo}
                             callback={() => {
                                 setShow(false);
+                                fetchApi(searchValue, 0);
                             }}
                         />
                     )}
@@ -138,7 +147,7 @@ function Staff() {
                                     <tr key={staff.id}>
                                         <td>{staff.id}</td>
                                         <td>{staff.email}</td>
-                                        <td>{staff.fullname}</td>
+                                        <td>{staff.fullName}</td>
                                         <td>{staff.phone}</td>
                                         <td>{staff.address}</td>
                                         <td>{staff.isActive ? 'Hoạt động' : 'Không hoạt động'}</td>
@@ -163,6 +172,8 @@ function Staff() {
                             })}
                     </tbody>
                 </table>
+                {staffs.length === 0 && <p className={cx('message')}>Không có kết quả</p>}
+
                 <CPagination aria-label="Page navigation example" className={cx('table-paging')}>
                     {renderPages()}
                 </CPagination>

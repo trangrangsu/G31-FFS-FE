@@ -122,7 +122,7 @@
     margin-bottom: 20px;
     padding: 5px;
     border-radius: 5px;
-    box-shadow: 0px 2px 5px 1px grey;
+    border: 1px solid #b1b7c1;
     input {
         margin-bottom: 20px;
         display: block;
@@ -142,4 +142,16 @@
 .center{
     display: flex;
     justify-content: center;
+}
+.message{
+    margin: 0 auto;
+    padding: 10px;
+    font-size: 20px;
+}
+.messageError{
+    border-color: #fff !important;
+    padding: 0px;
+    div{
+        color: red;
+    }
 }

@@ -229,3 +229,12 @@
 .input{
     margin: 0;
 }
+.messageError{
+    border-color: #fff !important;
+    margin-top: 5px;
+    padding: 0px;
+    margin-left: 110px;
+    div{
+        color: red;
+    }
+}

@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import { faCheck, faPenClip } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { InputNumber, Button, message } from 'antd';
+import { Alert } from 'antd';
 
 import * as adminServiceServices from '../../../services/adminServiceServices';
 import ServicePopUp from './ServicePopUp';
@@ -29,9 +30,9 @@ function Service() {
     const [viewValue, setViewValue] = useState(0.5);
     const [benefits, setBenefit] = useState([]);
     const [fees, setFees] = useState([]);
+    const [messageFee, setMessageFree] = useState('');
     const fetchApi = async () => {
         const result = await adminServiceServices.getServices(user);
-        console.log(result);
         setServices(result.services);
         setBenefit(result.benefits);
         setFees(result.fees);
@@ -58,13 +59,7 @@ function Service() {
             message.success('Sửa thành công');
         } else {
             message.error('Sửa thất bại');
-            if (flag === 'post') {
-                setPostValue(fees[0].price);
-            } else if (flag === 'apply') {
-                setApplyValue(fees[1].price);
-            } else {
-                setViewValue(fees[2].price);
-            }
+            fetchApi();
         }
     };
     useEffect(() => {
@@ -91,8 +86,14 @@ function Service() {
             });
         }
         if (postEdit) {
-            setPostEdit(false);
-            editFeeApi(fees[0].id, postValue, 'post');
+            if (postValue.toString().length > 10) {
+                setMessageFree('Giá phải nhỏ hơn hoặc bằng 10 chữ số');
+                return;
+            } else {
+                setMessageFree('');
+                setPostEdit(false);
+                editFeeApi(fees[0].id, postValue, 'post');
+            }
         }
     };
     const handEditPriceApply = () => {
@@ -102,8 +103,14 @@ function Service() {
                 cursor: 'end',
             });
         } else {
-            setApplyEdit(false);
-            editFeeApi(fees[1].id, applyValue, 'apply');
+            if (applyValue.toString().length > 10) {
+                setMessageFree('Giá phải nhỏ hơn hoặc bằng 10 chữ số');
+                return;
+            } else {
+                setMessageFree('');
+                setApplyEdit(false);
+                editFeeApi(fees[1].id, applyValue, 'apply');
+            }
         }
     };
     const handEditPriceView = () => {
@@ -113,8 +120,14 @@ function Service() {
                 cursor: 'end',
             });
         } else {
-            setViewEdit(false);
-            editFeeApi(fees[2].id, viewValue, 'view');
+            if (viewValue.toString().length > 10) {
+                setMessageFree('Giá phải nhỏ hơn hoặc bằng 10 chữ số');
+                return;
+            } else {
+                setMessageFree('');
+                setViewEdit(false);
+                editFeeApi(fees[2].id, viewValue, 'view');
+            }
         }
     };
     return (
@@ -200,7 +213,7 @@ function Service() {
                                     value={postValue}
                                     formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                     parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
-                                    onChange={(e) => setPostValue(e)}
+                                    onChange={(value) => setPostValue(value)}
                                 />
                             </div>
                             {!postEdit && (
@@ -262,6 +275,9 @@ function Service() {
                                 </Button>
                             )}
                         </div>
+                        {messageFee !== '' && (
+                            <Alert className={cx('messageError')} message={messageFee} type="error" />
+                        )}
                     </div>
                 )}
             </div>
