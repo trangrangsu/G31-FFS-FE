@@ -12,11 +12,10 @@ function Payment() {
     const headers = ['MÃ NẠP', 'ID KHÁCH HÀNG', 'SỐ TIỀN', 'THỜI GIAN'];
 
     const [requests, setRequests] = useState([]);
-    const [state, setState] = useState(status[0]);
     const [searchValue, setSearchValue] = useState('');
     const [pageIndex, setPageIndex] = useState(0);
     const [totalPages, setTotalPages] = useState(5);
-    const fetchApi = async (pIndex) => {
+    const fetchApi = async (searchValue, pIndex) => {
         const result = await adminPaymentServices.getPayments(searchValue, -1, pIndex);
         console.log(result);
         setRequests(result.results);
@@ -24,14 +23,14 @@ function Payment() {
         setTotalPages(result.totalPages);
     };
     useEffect(() => {
-        fetchApi(pageIndex);
+        fetchApi(searchValue, pageIndex);
     }, []);
-    useEffect(() => {
-        fetchApi();
-    }, [state]);
 
     const handlePaging = (pIndex) => {
-        fetchApi(pIndex);
+        fetchApi(searchValue, pIndex);
+    };
+    const handleSearch = (value) => {
+        fetchApi(value, 0);
     };
     const renderPages = () => {
         if (totalPages < 2) {
@@ -89,24 +88,13 @@ function Payment() {
                 <h1 className={cx('title')}>Danh sách Yêu Cầu Nạp Tiền</h1>
 
                 <div className={cx('request-filter')}>
-                    {/* <div className={cx('request-list')}>
-                        <select value={state} onChange={(e) => setState(e.target.value)}>
-                            {status.map((state, index) => {
-                                return (
-                                    <option key={index} value={state}>
-                                        {state}
-                                    </option>
-                                );
-                            })}
-                        </select>
-                    </div> */}
                     <div className={cx('subCareer-search')}>
                         <GlobalSearch
                             title="Tìm kiếm mã nạp"
                             onPending={(value) => {
                                 setSearchValue(value);
                             }}
-                            onSearch={(value) => handlePaging(value)}
+                            onSearch={(value) => handleSearch(value)}
                         />
                     </div>
                 </div>
@@ -126,6 +114,7 @@ function Payment() {
                         ))}
                     </tbody>
                 </table>
+                {requests.length === 0 && <p className={cx('message')}>Không có kết quả</p>}
                 <CPagination aria-label="Page navigation example" className={cx('table-paging')}>
                     {renderPages()}
                 </CPagination>

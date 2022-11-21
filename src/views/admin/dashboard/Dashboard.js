@@ -14,8 +14,8 @@ const Dashboard = () => {
     const [countExample, setCountExample] = useState([
         { title: 'Category', value: 2 },
         { title: 'Sub Category', value: 50 },
-        { title: 'Service', value: 5 },
-        { title: 'Request', value: 2000 },
+        { title: 'Membership', value: 5 },
+        { title: 'Report', value: 2000 },
     ]);
 
     // useEffect(() => {

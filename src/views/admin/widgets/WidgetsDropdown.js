@@ -24,7 +24,7 @@ const WidgetsDropdown = () => {
             data: [10, 12, 11, 12.7, 13, 15, 17, 19],
         },
         {
-            title: 'Recruitment',
+            title: 'Apply',
             labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'],
             data: [12, 14, 13, 14.9, 15.6, 17, 19, 21],
         },

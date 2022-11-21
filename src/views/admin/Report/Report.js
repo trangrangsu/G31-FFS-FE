@@ -8,7 +8,7 @@ import GlobalSearch from '../../../components/GlobalSearch';
 import styles from './Report.module.scss';
 const cx = classNames.bind(styles);
 function Report() {
-    const headers = ['ID', 'NGƯỜI ĐĂNG', 'TIÊU ĐỀ', 'NGÀY TẠO'];
+    const headers = ['NGƯỜI ĐĂNG', 'TIÊU ĐỀ', 'NGÀY TẠO'];
     const [reports, setReports] = useState([]);
     const [show, setShow] = useState(false);
     const [title, setTitle] = useState('');
@@ -21,7 +21,7 @@ function Report() {
         console.log(result);
         setReports(result.results);
         setPageIndex(result.pageIndex);
-        setTotalPages(result.totalPage);
+        setTotalPages(result.totalPages);
     };
     useEffect(() => {
         fetchApi(searchValue, 0);
@@ -120,7 +120,6 @@ function Report() {
                         {reports.map((report) => {
                             return (
                                 <tr key={report.id} onClick={() => handleViewDetail(report)}>
-                                    <td>{report.id}</td>
                                     <td>{report.createdBy}</td>
                                     <td>{report.title}</td>
                                     <td>{report.createdDate}</td>
@@ -129,6 +128,7 @@ function Report() {
                         })}
                     </tbody>
                 </table>
+                {reports.length === 0 && <p className={cx('message')}>Không có kết quả</p>}
                 <CPagination aria-label="Page navigation example" className={cx('table-paging')}>
                     {renderPages()}
                 </CPagination>

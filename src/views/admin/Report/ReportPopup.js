@@ -15,7 +15,7 @@ function ReportPopup({ title, detail, callback }) {
     };
     return (
         <div className={cx('report-popup')}>
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} size="lg" onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>{titlePopup}</Modal.Title>
                 </Modal.Header>
