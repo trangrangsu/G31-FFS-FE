@@ -15,7 +15,7 @@ const cx = classNames.bind(styles);
 function Recruiter() {
     const navigate = useNavigate();
     const pendingHeaders = ['ID', 'Email', 'Họ và tên', 'Số điện thoại', 'Duyệt'];
-    const headers = ['ID', 'Email', 'Họ và tên', 'Số dư tài khoản', 'Trạng thái tài khoản'];
+    const headers = ['ID', 'Email', 'Họ và tên', 'Số dư tài khoản', 'Trạng thái tài khoản', 'Membership'];
     const [recruiters, setRecruiters] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [pageIndex, setPageIndex] = useState(0);
@@ -211,7 +211,7 @@ function Recruiter() {
                                         <td>{recruiters.id}</td>
                                         <td>{recruiters.email}</td>
                                         <td>{recruiters.fullName}</td>
-                                        <td>{recruiters.accountBalance}</td>
+                                        <td>{recruiters.phone}</td>
                                         <td onClick={() => handleApprove(recruiters.id)}>
                                             <FontAwesomeIcon icon={faCircleCheck} className={cx('hover')} />
                                         </td>
@@ -277,6 +277,7 @@ function Recruiter() {
                                     <td>{recruiters.fullName}</td>
                                     <td>{recruiters.accountBalance}</td>
                                     <td>{recruiters.isBanned ? 'Cấm' : 'Hoạt động'}</td>
+                                    <td>{recruiters.currentService}</td>
                                 </tr>
                             );
                         })}

@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { CFormInput, CFormTextarea } from '@coreui/react';
+import { Alert } from 'antd';
 
 import Button from '../../../../components/Button';
 import styles from './WorkExpPopup.module.scss';
@@ -17,6 +18,10 @@ function WorkExpPopup({ workExp, callback, onclose }) {
     const [yearFrom, setYearFrom] = useState('');
     const [monthTo, setMonthTo] = useState('');
     const [yearTo, setYearTo] = useState('');
+    const [messageCompanyName, setMessageCompanyName] = useState('');
+    const [messagePosition, setMessagePosition] = useState('');
+    const [messageNumber, setMessageNumber] = useState('');
+
     const handleClose = () => {
         setShow(false);
         onclose();
@@ -33,17 +38,117 @@ function WorkExpPopup({ workExp, callback, onclose }) {
             setTitle('Chỉnh sửa');
         }
     }, []);
-    const handleAdd = () => {
-        setShow(false);
-        workExp.companyName = companyName;
-        workExp.position = position;
-        workExp.description = description;
-        workExp.monthFrom = monthFrom;
-        workExp.yearFrom = yearFrom;
-        workExp.monthTo = monthTo;
-        workExp.yearTo = yearTo;
-        callback(workExp);
+    const validateText = (text) => {
+        return text.match(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/);
     };
+    const validateNumber = (number) => {
+        return number.match(/^[0-9]*$/);
+    };
+    const handleAdd = () => {
+        let count = 0;
+        if (companyName === '') {
+            count++;
+            setMessageCompanyName('Tên công ty trống');
+        } else if (validateText(companyName) !== null) {
+            count++;
+            setMessageCompanyName('Vui lòng không nhập ký tự đặc biệt');
+        } else {
+            setMessageCompanyName('');
+        }
+        if (position === '') {
+            count++;
+            setMessagePosition('Vị trí đảm nhiệm trống');
+        } else if (validateText(position) !== null) {
+            count++;
+            setMessagePosition('Vui lòng không nhập ký tự đặc biệt');
+        } else {
+            setMessagePosition('');
+        }
+        if (monthFrom === '' || yearFrom === '' || monthTo === '' || yearTo === '') {
+            count++;
+            setMessageNumber('Năm tháng bắt đầu hoặc năm tháng kết thúc trống');
+        } else if (
+            validateNumber(monthFrom) === null ||
+            validateNumber(yearFrom) === null ||
+            validateNumber(monthTo) === null ||
+            validateNumber(yearTo) === null
+        ) {
+            count++;
+            setMessageNumber('Vui lòng nhập số');
+        } else if (yearFrom > yearTo) {
+            count++;
+            setMessageNumber('Năm bắt đầu phải nhỏ hơn năm kết thúc');
+        } else {
+            setMessageNumber('');
+        }
+        if (count === 0) {
+            setShow(false);
+            workExp.companyName = companyName;
+            workExp.position = position;
+            workExp.description = description;
+            workExp.monthFrom = monthFrom;
+            workExp.yearFrom = yearFrom;
+            workExp.monthTo = monthTo;
+            workExp.yearTo = yearTo;
+            callback(workExp);
+        }
+    };
+    const handleChangeCompanyName = (e) => {
+        const value = e.target.value;
+        if (value.length > 50) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setCompanyName(value);
+        }
+    };
+    const handleChangePosition = (e) => {
+        const value = e.target.value;
+        if (value.length > 50) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setPosition(value);
+        }
+    };
+
+    const handleChangeMonthFrom = (e) => {
+        const value = e.target.value;
+        if (value.length > 2) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setMonthFrom(value);
+        }
+    };
+    const handleChangeMonthTo = (e) => {
+        const value = e.target.value;
+        if (value.length > 2) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setMonthTo(value);
+        }
+    };
+    const handleChangeYearFrom = (e) => {
+        const value = e.target.value;
+        if (value.length > 4) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setYearFrom(value);
+        }
+    };
+    const handleChangeYearTo = (e) => {
+        const value = e.target.value;
+        if (value.length > 4) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setYearTo(value);
+        }
+    };
+
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -52,21 +157,17 @@ function WorkExpPopup({ workExp, callback, onclose }) {
             <Modal.Body>
                 <div className={cx('column')}>
                     <label className={cx('label')}>Tên công ty *</label>
-                    <CFormInput
-                        type="text"
-                        value={companyName}
-                        spellCheck={false}
-                        onChange={(e) => setCompanyName(e.target.value)}
-                    />
+                    <CFormInput type="text" value={companyName} spellCheck={false} onChange={handleChangeCompanyName} />
+                    {messageCompanyName !== '' && (
+                        <Alert className={cx('messageError')} message={messageCompanyName} type="error" />
+                    )}
                 </div>
                 <div className={cx('column')}>
                     <label className={cx('label')}>Vị trí *</label>
-                    <CFormInput
-                        type="text"
-                        value={position}
-                        spellCheck={false}
-                        onChange={(e) => setPosition(e.target.value)}
-                    />
+                    <CFormInput type="text" value={position} spellCheck={false} onChange={handleChangePosition} />
+                    {messagePosition !== '' && (
+                        <Alert className={cx('messageError')} message={messagePosition} type="error" />
+                    )}
                 </div>
                 <div className={cx('row')}>
                     <div className={cx('left')}>
@@ -75,14 +176,16 @@ function WorkExpPopup({ workExp, callback, onclose }) {
                             type="text"
                             value={monthFrom}
                             spellCheck={false}
-                            onChange={(e) => setMonthFrom(e.target.value)}
+                            placeholder="01"
+                            onChange={handleChangeMonthFrom}
                         />
                         <label className={cx('label')}>năm *</label>
                         <CFormInput
                             type="text"
                             value={yearFrom}
                             spellCheck={false}
-                            onChange={(e) => setYearFrom(e.target.value)}
+                            placeholder="2022"
+                            onChange={handleChangeYearFrom}
                         />
                     </div>
                     <div>
@@ -91,17 +194,20 @@ function WorkExpPopup({ workExp, callback, onclose }) {
                             type="text"
                             value={monthTo}
                             spellCheck={false}
-                            onChange={(e) => setMonthTo(e.target.value)}
+                            placeholder="01"
+                            onChange={handleChangeMonthTo}
                         />
                         <label className={cx('label')}>năm *</label>
                         <CFormInput
                             type="text"
                             value={yearTo}
                             spellCheck={false}
-                            onChange={(e) => setYearTo(e.target.value)}
+                            placeholder="2022"
+                            onChange={handleChangeYearTo}
                         />
                     </div>
                 </div>
+                {messageNumber !== '' && <Alert className={cx('messageError')} message={messageNumber} type="error" />}
                 <div className={cx('column')}>
                     <label className={cx('label')}>Mô tả *</label>
                     <CFormTextarea

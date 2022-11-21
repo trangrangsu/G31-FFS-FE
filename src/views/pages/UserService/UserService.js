@@ -13,10 +13,13 @@ const cx = classNames.bind(styles);
 const UserService = () => {
     const account = useSelector((state) => state.account);
     const accountBalance = useSelector((state) => state.accountBalance);
+    const currentServiceName = useSelector((state) => state.currentServiceName);
     const dispatch = useDispatch();
     const [services, setServices] = useState([{ serviceName: '' }, { serviceName: '' }, { serviceName: '' }]);
     const [currentService, setCurrentService] = useState({ benefits: [] });
     const [benefits, setBenefits] = useState([]);
+    const [active, setActive] = useState(1);
+
     const getServicesApi = async () => {
         const result = await userServiceServices.getServices('freelancer');
         console.log(result);
@@ -30,6 +33,7 @@ const UserService = () => {
         if (result) {
             dispatch({ type: 'set', accountBalance: accountBalance - parseFloat(currentService.price) });
             dispatch({ type: 'set', isMemberShip: true });
+            dispatch({ type: 'set', currentServiceName: currentService.serviceName });
             message.success('Bạn đã mua thành công gói ' + currentService.serviceName);
         } else {
             message.error('Mua thất bại gói ' + currentService.serviceName);
@@ -50,7 +54,11 @@ const UserService = () => {
                 <div className={cx('container-main')}>
                     <div className={cx('container')}>
                         <div className={cx('container-header')}>
-                            {/* <h6>Tài khoản Freelancer của bạn chưa sử dụng gói nào</h6>; */}
+                            {currentServiceName ? (
+                                <h6>Bạn đang là hội viên {account.currentServiceName}</h6>
+                            ) : (
+                                <h6>Bạn chưa là hội viên của Lanceddy</h6>
+                            )}
                         </div>
                         <h2>Nâng cấp tài khoản dành cho khách hàng</h2>
                         <div className={cx('container-title')}>
@@ -60,11 +68,17 @@ const UserService = () => {
                             <CButton
                                 color="light"
                                 shape="rounded-0"
-                                className={cx('container-month-service-button')}
-                                onClick={() => setCurrentService(services[0])}
+                                className={cx('service-name', active === 1 ? 'active' : '')}
+                                onClick={() => {
+                                    setCurrentService(services[0]);
+                                    setActive(1);
+                                }}
                             >
                                 <div className={cx('button-no1')}>
-                                    <FontAwesomeIcon icon={faCircle} className={cx('service-button-icon')} />
+                                    <FontAwesomeIcon
+                                        icon={active === 1 ? faCircle : faCircleDot}
+                                        className={cx('service-button-icon')}
+                                    />
                                 </div>
                                 <div className={cx('button-no2')}>
                                     <h6>{services[0].serviceName}</h6>
@@ -76,11 +90,17 @@ const UserService = () => {
                             <CButton
                                 color="light"
                                 shape="rounded-0"
-                                className={cx('container-month-service-button2')}
-                                onClick={() => setCurrentService(services[1])}
+                                className={cx('service-name', active === 2 ? 'active' : '')}
+                                onClick={() => {
+                                    setCurrentService(services[1]);
+                                    setActive(2);
+                                }}
                             >
                                 <div className={cx('button-no1')}>
-                                    <FontAwesomeIcon icon={faCircleDot} className={cx('service-button-icon')} />
+                                    <FontAwesomeIcon
+                                        icon={active === 2 ? faCircle : faCircleDot}
+                                        className={cx('service-button-icon')}
+                                    />
                                 </div>
                                 <div className={cx('button-no2')}>
                                     <h6>{services[1].serviceName}</h6>
@@ -92,11 +112,17 @@ const UserService = () => {
                             <CButton
                                 color="light"
                                 shape="rounded-0"
-                                className={cx('container-month-service-button3')}
-                                onClick={() => setCurrentService(services[2])}
+                                className={cx('service-name', active === 3 ? 'active' : '')}
+                                onClick={() => {
+                                    setCurrentService(services[2]);
+                                    setActive(3);
+                                }}
                             >
                                 <div className={cx('button-no1')}>
-                                    <FontAwesomeIcon icon={faCircleDot} className={cx('service-button-icon')} />
+                                    <FontAwesomeIcon
+                                        icon={active === 3 ? faCircle : faCircleDot}
+                                        className={cx('service-button-icon')}
+                                    />
                                 </div>
                                 <div className={cx('button-no2')}>
                                     <h6>{services[2].serviceName}</h6>
@@ -113,27 +139,26 @@ const UserService = () => {
                                 <h2>{currentService.price} USD</h2>
                             </div>
                             <div className={cx('detail-item-p')}>
-                                Với gói <b>{currentService.serviceName}</b>
+                                Với gói <b>{currentService.serviceName} </b>
                                 thì bạn có thể sử dụng được các tính năng ở dưới đây hoàn toàn miễn phí trong{' '}
                                 <b>{currentService.duration}</b>
                             </div>
-                            <div className={cx('service-detail-item2')}>
+                            <ul className={cx('service-detail-item2')}>
                                 {benefits.map((benefit) => {
                                     return (
-                                        <div className={cx('row-detail')} key={benefit.id}>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <FontAwesomeIcon icon={faCheck} />
-                                                    </td>
-                                                    <h6>{benefit.name}</h6>
-                                                </tr>
-                                            </tbody>
-                                        </div>
+                                        <li className={cx('row-detail')} key={benefit.id}>
+                                            <FontAwesomeIcon icon={faCheck} />
+                                            <span>{benefit.name}</span>
+                                        </li>
                                     );
                                 })}
-                            </div>
-                            <CButton color="light" className={cx('detail-icon')} onClick={handleBuyService}>
+                            </ul>
+                            <CButton
+                                color="light"
+                                disabled={currentService.serviceName === currentServiceName ? true : false}
+                                className={cx('detail-icon')}
+                                onClick={handleBuyService}
+                            >
                                 <h5>Nâng Cấp Tài Khoản</h5>
                             </CButton>
                         </div>

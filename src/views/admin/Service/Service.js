@@ -33,6 +33,7 @@ function Service() {
     const [messageFee, setMessageFree] = useState('');
     const fetchApi = async () => {
         const result = await adminServiceServices.getServices(user);
+        console.log(result);
         setServices(result.services);
         setBenefit(result.benefits);
         setFees(result.fees);

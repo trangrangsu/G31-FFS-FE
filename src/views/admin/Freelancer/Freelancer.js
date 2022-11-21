@@ -11,13 +11,14 @@ const cx = classNames.bind(styles);
 
 function Freelancer() {
     const navigate = useNavigate();
-    const headers = ['ID', 'Email', 'Họ và tên', 'Số dư tài khoản', 'Trạng thái tài khoản'];
+    const headers = ['ID', 'Email', 'Họ và tên', 'Số dư tài khoản', 'Trạng thái tài khoản', 'Membership'];
     const [freelancers, setFreelancers] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [pageIndex, setPageIndex] = useState(0);
     const [totalPages, setTotalPages] = useState(5);
     const fetchApi = async (searchValue, pIndex) => {
         const result = await adminFreelancerService.getFreelancers(searchValue, pIndex);
+        console.log(result);
         setFreelancers(result.results);
         setPageIndex(result.pageIndex);
         setTotalPages(result.totalPages);
@@ -45,6 +46,7 @@ function Freelancer() {
                     <td>{freelancer.fullName}</td>
                     <td>{freelancer.accountBalance}</td>
                     <td>{freelancer.isBanned ? 'Cấm' : 'Hoạt động'}</td>
+                    <td>{freelancer.currentService}</td>
                 </tr>
             );
         });

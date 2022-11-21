@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFlag, faRightFromBracket, faAddressCard, faUnlock } from '@fortawesome/free-solid-svg-icons';
+import { faFlag, faRightFromBracket, faAddressCard, faUnlock, faStar } from '@fortawesome/free-solid-svg-icons';
 import HeadlessTippy from '@tippyjs/react/headless';
 import { Badge } from 'antd';
 
@@ -219,11 +219,12 @@ function UserHeader() {
                     </HeadlessTippy>
 
                     {isMemberShip ? (
-                        <Badge dot color="gold">
+                        <div className={cx('container-avatar')}>
                             <Menu items={MENU_ITEMS} hideOnClick onChange={handleMenuChange}>
                                 <Image className={cx('user-avatar')} src={image} alt="Nguyen Van A" />
                             </Menu>
-                        </Badge>
+                            <FontAwesomeIcon className={cx('member-icon')} icon={faStar} />
+                        </div>
                     ) : (
                         <Menu items={MENU_ITEMS} hideOnClick onChange={handleMenuChange}>
                             <Image className={cx('user-avatar')} src={image} alt="Nguyen Van A" />

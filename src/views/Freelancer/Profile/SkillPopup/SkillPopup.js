@@ -55,7 +55,12 @@ function SkillPopup({ userID, callback, onclose }) {
                     <SearchSkill title="Nhập kỹ năng tại đây" userID={userID} onClick={handleAddSkill} />
                 </div>
                 <div className={cx('row')}>
-                    <Button primary onClick={handleAdd} className={cx('save-btn')}>
+                    <Button
+                        primary
+                        disabled={skills.length === 0 ? true : false}
+                        onClick={handleAdd}
+                        className={cx('save-btn')}
+                    >
                         Thêm mới
                     </Button>
                     <Button primary onClick={handleClose} className={cx('save-btn')}>

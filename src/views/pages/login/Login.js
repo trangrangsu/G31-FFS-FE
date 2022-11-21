@@ -39,6 +39,7 @@ const Login = () => {
             dispatch({ type: 'set', accountBalance: result.accountBalance });
             dispatch({ type: 'set', accountAvatar: result.avatar });
             dispatch({ type: 'set', isMemberShip: result.isMemberShip });
+            dispatch({ type: 'set', currentServiceName: result.currentServiceName });
             sessionStorage.setItem('userId', result.userId);
             sessionStorage.setItem('token', result.tokenType + ' ' + result.accessToken);
             let to = {};
@@ -80,7 +81,6 @@ const Login = () => {
         );
     };
     const handleLogin = () => {
-        console.log(validateEmail(email));
         let count = 0;
         if (email === '') {
             setEmailValidate(true);

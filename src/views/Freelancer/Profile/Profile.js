@@ -14,6 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faSquarePlus, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { useSearchParams } from 'react-router-dom';
+import { notification } from 'antd';
 
 import * as freelancerProfileServices from '../../../services/freelancerProfileServices';
 import images from '../../../assets/images';
@@ -30,6 +31,13 @@ import EducationItem from './EducationItem';
 import Image from '../../../components/Image';
 import styles from './Profile.module.scss';
 const cx = classNames.bind(styles);
+const openNotificationWithIcon = (type) => {
+    notification[type]({
+        placement: 'top',
+        message: `Không hỗ trợ định dạng file`,
+        description: 'Vui lòng chọn file png hoặc jpg',
+    });
+};
 const Profile = () => {
     const imgRef = useRef();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -292,10 +300,16 @@ const Profile = () => {
                                         id="myfile1"
                                         name="myfile"
                                         onChange={(e) => {
-                                            console.log(e.target.files[0].name);
-                                            editByFieldApi('avatar', e.target.files[0].name);
-                                            firebase.upLoadFile(freelancerId, 'avatar', e.target.files[0]);
-                                            previewFile();
+                                            if (
+                                                e.target.files[0].name.endsWith('.png') ||
+                                                e.target.files[0].name.endsWith('.jpg')
+                                            ) {
+                                                editByFieldApi('avatar', e.target.files[0].name);
+                                                firebase.upLoadFile(freelancerId, 'avatar', e.target.files[0]);
+                                                previewFile();
+                                            } else {
+                                                openNotificationWithIcon('warning');
+                                            }
                                         }}
                                     ></input>
                                 </div>

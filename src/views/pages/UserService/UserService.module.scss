@@ -85,32 +85,26 @@
     width: 45px;
     font-size: 12px;
 }
-.container-month-service-button{
-    width: 140px;
-    height: 60px;
-    display: flex;
-    background-color: #0A46D0;
-    border: 1px solid #A8A2A2;
-    border-right-color: white;
-}
-.container-month-service-button2{
+.service-name{
     width: 150px;
     height: 60px;
     display: flex;
     background-color: white;
     border: 1px solid #A8A2A2;
-    border-left-color: white;
-    border-right-color: white;
+    &:hover{
+        background-color: #0A46D0; 
+        color: white;
+    }
 }
-.container-month-service-button3{
-    width: 150px;
-    height: 60px;
-    display: flex;
-    background-color: white;
-    border: 1px solid #A8A2A2;
+.active{
+    background-color: #0A46D0 !important;
+    border: 1px solid #A8A2A2 !important;
+    color: white !important;
 }
+
 .button-no1{
     padding-top: 5px;
+    color: #55ABFB;
 }
 .button-no2{
     padding-left: 25px;
@@ -120,40 +114,7 @@
     padding-bottom: 50px;
     font-size: 12px;
 }
-.container-month-service-button:hover{
-    background-color: #0A46D0; 
-    color: #55ABFB;
-}
-.container-month-service-button h6{ 
-    font-weight: bold;
-    color: white;
-}
-.container-month-service-button div{ 
-    color: #55ABFB;
-}
-.container-month-service-button:hover h6{ 
-    color: white;
-}
-.container-month-service-button2:hover{
-    background-color: #0A46D0; 
-    color: #55ABFB;
-}
-.container-month-service-button2 h6{ 
-    font-weight: bold;
-}
-.container-month-service-button2:hover h6{ 
-    color: white;
-}
-.container-month-service-button3:hover{
-    background-color: #0A46D0; 
-    color: #55ABFB;
-}
-.container-month-service-button3 h6{ 
-    font-weight: bold;
-}
-.container-month-service-button3:hover h6{ 
-    color: white;
-}
+
 
 //container-service
 .container-service{
@@ -201,7 +162,7 @@
     color: white;
 }
 
-//service-detail-item2
+
 .service-detail-item2{
     width: 500px;
     height: 370px;
@@ -210,7 +171,7 @@
     border-radius: 10px;
     margin-top: 10px;
     margin-left: 10px;
-    padding-right: 10px;
+    padding: 30px;
     box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.25);
 }
 .detail-item-p{
@@ -242,18 +203,14 @@
     color: #1C62A3;
 }
 .row-detail{
-    padding-left: 20px;
-    line-height: 4.5;
-    display: flex;
+    list-style-type: none;
+    height: 60px;
+    svg{
+        color: green;
+        margin-right: 5px;
+    }
 }
-.row-detail tbody td{
-    padding:0 10px;
-    color: #1C62A3;
-    font-size: 17px;
-}
-.row-detail tbody h6{
-    padding-top: 30px;
-}
+
 .detail-icon-first{
     width: 210px;
     height: 60px;
