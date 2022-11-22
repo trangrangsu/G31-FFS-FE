@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, Popconfirm } from 'antd';
+import { Button, Popconfirm, notification } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faCakeCandles,
@@ -24,7 +24,12 @@ import Image from '../../../components/Image';
 import styles from './ViewDetailFreelancer.module.scss';
 
 const cx = classNames.bind(styles);
-
+const openNotificationWithIcon = (type) => {
+    notification[type]({
+        message: 'Thông báo',
+        description: 'Tài khoản không còn đủ số dư. Vui lòng nạp thêm tiền',
+    });
+};
 function ViewDetailFreelancer() {
     const imgRef = useRef();
     const dispatch = useDispatch();
@@ -112,7 +117,11 @@ function ViewDetailFreelancer() {
         }
     };
     const handleSubmit = () => {
-        updateAccountBalanceApi();
+        if (accountBalance - account.feeViewProfile > 0) {
+            updateAccountBalanceApi();
+        } else {
+            openNotificationWithIcon('warning');
+        }
     };
     const handleOnDeleteEducation = (id) => {};
     const handleOnEditEducation = (education) => {};

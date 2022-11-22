@@ -23,7 +23,6 @@ const PostManagement = () => {
             pageIndex,
             status,
         );
-        console.log(result);
         if (typeof result === 'object') {
             setPosts(result.results);
             setTotalResults(result.totalResults);
@@ -43,6 +42,12 @@ const PostManagement = () => {
     };
     const onChangePage = (page, pageSize) => {
         getAllJobPostedApi(status, page - 1);
+    };
+    const handleChangeKeyWord = (e) => {
+        const value = e.target.value;
+        if (!value.startsWith(' ')) {
+            setKeyWord(value);
+        }
     };
     return (
         <div className={cx('wrapper')}>
@@ -82,7 +87,7 @@ const PostManagement = () => {
                                 style={{ width: '500px' }}
                                 placeholder="nhập từ khóa"
                                 value={keyWord}
-                                onChange={(e) => setKeyWord(e.target.value)}
+                                onChange={handleChangeKeyWord}
                                 onSearch={onSearch}
                                 enterButton
                             />

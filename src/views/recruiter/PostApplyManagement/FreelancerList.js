@@ -7,7 +7,6 @@ import * as careerServices from '../../../services/careerServices';
 import * as recruiterCreatePostServices from '../../../services/recruiterCreatePostServices';
 import * as recruiterPostManagementServices from '../../../services/recruiterPostManagementServices';
 import FreelancerItem from '../FreelancerItem';
-import Button from '../../../components/Button';
 import styles from './PostApplyManagement.module.scss';
 
 const { Search } = Input;
@@ -34,7 +33,6 @@ function FreelancerList({ postId }) {
     };
     const getSkillApi = async () => {
         const result = await recruiterCreatePostServices.getSkills();
-        console.log(result);
         setSkills(result);
     };
     const getFreelancerApplied = async (keyWord, pageIndex, status, city, subCareerId, skill) => {
@@ -48,7 +46,6 @@ function FreelancerList({ postId }) {
             account.userId,
             status,
         );
-        console.log(result);
         if (typeof result === 'object') {
             setListFreelancer(result.results);
             setTotalResults(result.totalResults);
@@ -75,6 +72,12 @@ function FreelancerList({ postId }) {
     };
     const onSearchFreelancer = (value) => {
         getFreelancerApplied(value, 0, active, city, subCareerId, skill);
+    };
+    const handleChangeKeyWord = (e) => {
+        const value = e.target.value;
+        if (!value.startsWith(' ')) {
+            setKeyWord(value);
+        }
     };
     const renderItemsMenu = (careers) => {
         return careers.map((career) => {
@@ -147,7 +150,7 @@ function FreelancerList({ postId }) {
                             <Search
                                 placeholder="nhập từ khóa"
                                 value={keyWord}
-                                onChange={(e) => setKeyWord(e.target.value)}
+                                onChange={handleChangeKeyWord}
                                 className={cx('input-keyword')}
                                 onSearch={onSearchFreelancer}
                                 enterButton

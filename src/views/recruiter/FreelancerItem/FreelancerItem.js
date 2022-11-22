@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import { message, Modal, Button, Input } from 'antd';
+import { message, Modal, Button, Input, Alert } from 'antd';
 
 import * as recruiterPostManagementServices from '../../../services/recruiterPostManagementServices';
 import * as firebase from '../../../firebase/firebase';
@@ -28,8 +28,8 @@ const FreelancerItem = ({ postId, freelancer, type, onDelete }) => {
     const [icon3, setIcon3] = useState(faStarRegular);
     const [icon4, setIcon4] = useState(faStarRegular);
     const [icon5, setIcon5] = useState(faStarRegular);
-    const [star, setStar] = useState(1);
-
+    const [star, setStar] = useState(0);
+    const [messageComment, setMessageComment] = useState('');
     const responseJobApplyApi = async (mess, status) => {
         const result = await recruiterPostManagementServices.responseJobApply(freelancer.id, postId, status);
         if (result) {
@@ -69,22 +69,29 @@ const FreelancerItem = ({ postId, freelancer, type, onDelete }) => {
         setIsModalOpen(true);
     };
     const handleOk = () => {
-        setIsModalOpen(false);
-        const data = {};
-        data.fromUserId = account.userId;
-        data.toUserId = freelancer.id;
-        data.jobId = postId;
-        data.star = star;
-        data.content = commentValue;
-        addFeedbackApi(data);
-        setStar(1);
-        setCommentValue('');
+        if (commentValue === '' || star === 0) {
+            setMessageComment('Vui lòng nhập nội dung đánh giá và vote sao');
+        } else {
+            setIsModalOpen(false);
+            const data = {};
+            data.fromUserId = account.userId;
+            data.toUserId = freelancer.id;
+            data.jobId = postId;
+            data.star = star;
+            data.content = commentValue;
+            addFeedbackApi(data);
+            setStar(0);
+            setCommentValue('');
+        }
     };
     const handleCancel = () => {
         setIsModalOpen(false);
     };
     const handleChange = (e) => {
         const commentValue = e.target.value;
+        if (commentValue.length > 200) {
+            return;
+        }
         if (!commentValue.startsWith(' ')) {
             setCommentValue(commentValue);
         }
@@ -212,6 +219,9 @@ const FreelancerItem = ({ postId, freelancer, type, onDelete }) => {
                     <FontAwesomeIcon icon={icon4} onClick={() => handleOnclick(4)} />
                     <FontAwesomeIcon icon={icon5} onClick={() => handleOnclick(5)} />
                 </div>
+                {messageComment !== '' && (
+                    <Alert className={cx('messageError')} message={messageComment} type="error" />
+                )}
             </Modal>
         </div>
     );

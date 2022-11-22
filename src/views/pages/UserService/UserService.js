@@ -3,13 +3,19 @@ import classNames from 'classnames/bind';
 import { CButton } from '@coreui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSelector, useDispatch } from 'react-redux';
-import { message } from 'antd';
+import { message, notification } from 'antd';
 
 import * as userServiceServices from '../../../services/userServiceServices';
 import images from '../../../assets/images';
 import styles from './UserService.module.scss';
 import { faCheck, faCircle, faCircleDot } from '@fortawesome/free-solid-svg-icons';
 const cx = classNames.bind(styles);
+const openNotificationWithIcon = (type) => {
+    notification[type]({
+        message: 'Thông báo',
+        description: 'Tài khoản không còn đủ số dư. Vui lòng nạp thêm tiền',
+    });
+};
 const UserService = () => {
     const account = useSelector((state) => state.account);
     const accountBalance = useSelector((state) => state.accountBalance);
@@ -45,7 +51,11 @@ const UserService = () => {
         getServicesApi();
     }, []);
     const handleBuyService = () => {
-        buyServiceApi();
+        if (accountBalance - parseFloat(currentService.price) > 0) {
+            buyServiceApi();
+        } else {
+            openNotificationWithIcon('warning');
+        }
     };
     return (
         <div className={cx('wrapper')}>

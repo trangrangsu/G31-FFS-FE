@@ -49,7 +49,6 @@ const SearchFreelancer = () => {
             isMemberShip,
             pageIndex,
         );
-        console.log(result);
         if (typeof result === 'object') {
             setFreelancers(result.results);
             setTotalResults(result.totalResults);
@@ -102,6 +101,12 @@ const SearchFreelancer = () => {
     const onChangePage = (page, pageSize) => {
         searchFreelancerApi(keyWord, page - 1);
     };
+    const handleChangeKeyWord = (e) => {
+        const value = e.target.value;
+        if (!value.startsWith(' ')) {
+            setKeyWord(value);
+        }
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
@@ -114,7 +119,7 @@ const SearchFreelancer = () => {
                         <div className={cx('filter-search')}>
                             <Search
                                 value={keyWord}
-                                onChange={(e) => setKeyWord(e.target.value)}
+                                onChange={handleChangeKeyWord}
                                 placeholder="nhập từ khóa"
                                 className={cx('input-keyword')}
                                 onSearch={onSearchFreelancer}

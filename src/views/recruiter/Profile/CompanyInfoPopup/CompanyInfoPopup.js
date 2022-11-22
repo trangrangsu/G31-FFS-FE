@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { CFormInput, CFormTextarea, CFormSelect } from '@coreui/react';
+import { Alert } from 'antd';
 
 import * as adminCareerServices from '../../../../services/adminCareerServices';
 import Button from '../../../../components/Button';
@@ -17,6 +18,9 @@ function CompanyInfoPopup({ companyInfo, callback, onclose }) {
     const [career, setCareer] = useState(-1);
     const [careers, setCareers] = useState([]);
     const [description, setDescription] = useState('');
+    const [messageName, setMessageName] = useState('');
+    const [messageTax, setMessageTax] = useState('');
+    const [messageCareer, setMessageCareer] = useState('');
 
     const fetchApi = async () => {
         const result = await adminCareerServices.getAllCareers();
@@ -41,7 +45,69 @@ function CompanyInfoPopup({ companyInfo, callback, onclose }) {
         setShow(false);
         onclose();
     };
+    const handleChangeName = (e) => {
+        const value = e.target.value;
+        if (value.length > 100) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setCompanyName(value);
+        }
+    };
+    const handleChangeTax = (e) => {
+        const value = e.target.value;
+        if (value.length > 14) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setTaxNumber(value);
+        }
+    };
+    const handleChangeWebsite = (e) => {
+        const value = e.target.value;
+        if (value.length > 200) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setWebsite(value);
+        }
+    };
+    const handleChangeDescription = (e) => {
+        const value = e.target.value;
+        if (value.length > 1000) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setDescription(value);
+        }
+    };
+    const validateName = (name) => {
+        return name.match(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/);
+    };
     const handleAdd = () => {
+        let count = 0;
+        if (companyName === '') {
+            count++;
+            setMessageName('Tên công ty trống');
+        } else if (validateName(companyName) !== null) {
+            count++;
+            setMessageName('Vui lòng không nhập ký tự đặc biệt');
+        } else {
+            setMessageName('');
+        }
+        if (taxNumber === '') {
+            count++;
+            setMessageTax('Mã số thuê trống');
+        } else {
+            setMessageTax('');
+        }
+        if (career === -1) {
+            count++;
+            setMessageCareer('Ngành nghề chưa được lựa chọn');
+        } else {
+            setMessageCareer('');
+        }
+        if (count !== 0) return;
         setShow(false);
         companyInfo.companyName = companyName;
         companyInfo.taxNumber = taxNumber;
@@ -62,30 +128,17 @@ function CompanyInfoPopup({ companyInfo, callback, onclose }) {
             <Modal.Body>
                 <div className={cx('column')}>
                     <label className={cx('label')}>Tên công ty</label>
-                    <CFormInput
-                        type="text"
-                        value={companyName}
-                        spellCheck={false}
-                        onChange={(e) => setCompanyName(e.target.value)}
-                    />
+                    <CFormInput type="text" value={companyName} spellCheck={false} onChange={handleChangeName} />
+                    {messageName !== '' && <Alert className={cx('messageError')} message={messageName} type="error" />}
                 </div>
                 <div className={cx('column')}>
                     <label className={cx('label')}>Mã số thuế</label>
-                    <CFormInput
-                        type="text"
-                        value={taxNumber}
-                        spellCheck={false}
-                        onChange={(e) => setTaxNumber(e.target.value)}
-                    />
+                    <CFormInput type="text" value={taxNumber} spellCheck={false} onChange={handleChangeTax} />
+                    {messageTax !== '' && <Alert className={cx('messageError')} message={messageTax} type="error" />}
                 </div>
                 <div className={cx('column')}>
                     <label className={cx('label')}>Link website</label>
-                    <CFormInput
-                        type="text"
-                        value={website}
-                        spellCheck={false}
-                        onChange={(e) => setWebsite(e.target.value)}
-                    />
+                    <CFormInput type="text" value={website} spellCheck={false} onChange={handleChangeWebsite} />
                 </div>
                 <div className={cx('column')}>
                     <label className={cx('label')}>Ngành nghề</label>
@@ -98,6 +151,9 @@ function CompanyInfoPopup({ companyInfo, callback, onclose }) {
                             return { label: career.name, value: career.id };
                         })}
                     />
+                    {messageCareer !== '' && (
+                        <Alert className={cx('messageError')} message={messageCareer} type="error" />
+                    )}
                 </div>
                 <div className={cx('column')}>
                     <label className={cx('label')}>Mô tả</label>
@@ -106,7 +162,7 @@ function CompanyInfoPopup({ companyInfo, callback, onclose }) {
                         rows="6"
                         value={description}
                         spellCheck={false}
-                        onChange={(e) => setDescription(e.target.value)}
+                        onChange={handleChangeDescription}
                     ></CFormTextarea>
                 </div>
 

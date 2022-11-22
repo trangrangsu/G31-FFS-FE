@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSelector, useDispatch } from 'react-redux';
-import { Cascader, Select, Input, Button, message, InputNumber, Popconfirm } from 'antd';
+import { Cascader, Select, Input, Button, message, InputNumber, Popconfirm, Alert, notification } from 'antd';
 import { faPenToSquare, faFileLines, faUserCheck, faMoneyCheckDollar } from '@fortawesome/free-solid-svg-icons';
 
 import * as firebase from '../../../firebase/firebase';
@@ -13,7 +13,12 @@ import styles from './Post.module.scss';
 const cx = classNames.bind(styles);
 const { Option } = Select;
 const { TextArea } = Input;
-
+const openNotificationWithIcon = (type) => {
+    notification[type]({
+        message: 'Thông báo',
+        description: 'Tài khoản không còn đủ số dư. Vui lòng nạp thêm tiền',
+    });
+};
 function Post() {
     const dispatch = useDispatch();
     const cities = useSelector((state) => state.city);
@@ -27,11 +32,17 @@ function Post() {
     const [city, setCity] = useState('');
     const [typePayment, setTypePayment] = useState('1');
     const [amount, setAmount] = useState(20000);
-    const [subCareer, setSubCareer] = useState(1);
+    const [subCareer, setSubCareer] = useState(-1);
     const [attach, setAttach] = useState('');
     const [skills, setSkills] = useState([]);
-    const [skillPost, setSkillPost] = useState('');
+    const [skillPost, setSkillPost] = useState([]);
     const [file, setFile] = useState({});
+    const [messageTitle, setMessageTitle] = useState('');
+    const [messageSubCareer, setMessageSubCareer] = useState('');
+    const [messageDescription, setMessageDescription] = useState('');
+    const [messageSkill, setMessageSkill] = useState('');
+    const [messageArea, setMessageArea] = useState('');
+    const [messageBudget, setMessageBudget] = useState('');
 
     const getCareeersApi = async () => {
         const result = await careerServices.getCareers();
@@ -39,12 +50,11 @@ function Post() {
     };
     const getSkillApi = async () => {
         const result = await recruiterCreatePostServices.getSkills();
-        console.log(result);
+        //console.log(result);
         setSkills(result);
     };
     const createPostApi = async (post) => {
         const result = await recruiterCreatePostServices.createPost(post);
-        console.log(typeof result);
         if (typeof result === 'number') {
             firebase.upLoadFile(account.userId, result, file);
             message.success('Đăng bài thành công');
@@ -77,7 +87,11 @@ function Post() {
     };
     const displayRender = (labels) => labels[labels.length - 1];
     const onChangeCareer = (value) => {
-        setSubCareer(value[1]);
+        if (value === undefined) {
+            setSubCareer(-1);
+        } else {
+            setSubCareer(value[1]);
+        }
     };
     const onChangeArea = (value) => {
         setCity(value);
@@ -88,7 +102,55 @@ function Post() {
             setAmount(20000);
         }
     };
+    const checkWallet = () => {
+        if (accountBalance - account.feePostJob > 0) {
+            handleSubmit();
+        } else {
+            openNotificationWithIcon('warning');
+        }
+    };
     const handleSubmit = () => {
+        let count = 0;
+        if (subCareer === -1) {
+            count++;
+            setMessageSubCareer('Chuyên ngành chưa được chọn');
+        } else {
+            setMessageSubCareer('');
+        }
+        if (title.length < 20) {
+            count++;
+            setMessageTitle('Tiêu đề dài hơn 20 kí tự');
+        } else {
+            setMessageTitle('');
+        }
+        if (description.length < 50) {
+            count++;
+            setMessageDescription('Mô tả dài hơn 50 kí tự');
+        } else {
+            setMessageDescription('');
+        }
+        if (skillPost.length === 0) {
+            count++;
+            setMessageSkill('Kĩ năng chưa được chọn');
+        } else if (skillPost.length > 10) {
+            count++;
+            setMessageSkill('Chọn tối đa 10 kỹ năng');
+        } else {
+            setMessageSkill('');
+        }
+        if (city === '') {
+            count++;
+            setMessageArea('Khu vực chưa được chọn');
+        } else {
+            setMessageArea('');
+        }
+        if (amount < 20000) {
+            count++;
+            setMessageBudget('Số tiền tối thiểu là 20.000 vnđ');
+        } else {
+            setMessageBudget('');
+        }
+        if (count !== 0) return;
         const post = {};
         post.recruiterId = account.userId;
         post.jobTitle = title;
@@ -101,6 +163,24 @@ function Post() {
         post.skillIds = skillPost;
         createPostApi(post);
         console.log(post);
+    };
+    const handleChangeTitle = (e) => {
+        const value = e.target.value;
+        if (value.length > 200) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setTitle(value);
+        }
+    };
+    const handleChangeDescription = (e) => {
+        const value = e.target.value;
+        if (value.length > 1000) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setDescription(value);
+        }
     };
     const handleChangeSkill = (value) => {
         setSkillPost(value);
@@ -128,14 +208,20 @@ function Post() {
                                     displayRender={displayRender}
                                     onChange={onChangeCareer}
                                 />
+                                {messageSubCareer !== '' && (
+                                    <Alert className={cx('messageError')} message={messageSubCareer} type="error" />
+                                )}
                             </div>
                             <label className={cx('label-subTitle')}>Đặt tên cụ thể cho công việc tuyển dụng</label>
                             <Input
                                 size="large"
                                 value={title}
                                 placeholder="Ví dụ: Thiết kế website quản lí công ty"
-                                onChange={(e) => setTitle(e.target.value)}
+                                onChange={handleChangeTitle}
                             />
+                            {messageTitle !== '' && (
+                                <Alert className={cx('messageError')} message={messageTitle} type="error" />
+                            )}
                         </div>
                     </div>
                     <div className={cx('post-detail')}>
@@ -143,15 +229,18 @@ function Post() {
                         <div className={cx('right-post')}>
                             <label className={cx('label-title')}>Thông tin đầy đủ về yêu cầu tuyển dụng</label>
                             <TextArea
-                                placeholder="Diễn tả công việc"
+                                placeholder="Mô tả công việc"
                                 value={description}
                                 autoSize={{
                                     minRows: 6,
                                     maxRows: 10,
                                 }}
                                 allowClear
-                                onChange={(e) => setDescription(e.target.value)}
+                                onChange={handleChangeDescription}
                             />
+                            {messageDescription !== '' && (
+                                <Alert className={cx('messageError')} message={messageDescription} type="error" />
+                            )}
                             <div className={cx('upload')}>
                                 <label htmlFor="myfile">Tải tài liệu</label>
                                 <input
@@ -187,6 +276,9 @@ function Post() {
                                     })}
                                 </Select>
                             </div>
+                            {messageSkill !== '' && (
+                                <Alert className={cx('messageError')} message={messageSkill} type="error" />
+                            )}
                         </div>
                     </div>
                     <div className={cx('more-req')}>
@@ -209,6 +301,9 @@ function Post() {
                                     })}
                                 />
                             </div>
+                            {messageArea !== '' && (
+                                <Alert className={cx('messageError')} message={messageArea} type="error" />
+                            )}
                         </div>
                     </div>
                     <div className={cx('budget-post')}>
@@ -249,6 +344,9 @@ function Post() {
                                     onChange={(e) => setAmount(e)}
                                 />
                             </div>
+                            {messageBudget !== '' && (
+                                <Alert className={cx('messageError')} message={messageBudget} type="error" />
+                            )}
                         </div>
                     </div>
                     <div className={cx('submit-button')}>
@@ -260,7 +358,7 @@ function Post() {
                             <Popconfirm
                                 placement="top"
                                 title={text}
-                                onConfirm={handleSubmit}
+                                onConfirm={checkWallet}
                                 okText="Đăng"
                                 cancelText="Hủy"
                             >

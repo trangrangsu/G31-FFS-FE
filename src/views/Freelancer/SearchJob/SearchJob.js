@@ -88,6 +88,12 @@ const SearchJob = () => {
     const onChange = (page, pageSize) => {
         getPostsApi(area, keyword, subCareerId, paymentType, page - 1);
     };
+    const handleChangeKeyWord = (e) => {
+        const value = e.target.value;
+        if (!value.startsWith(' ')) {
+            setKeyword(value);
+        }
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
@@ -133,8 +139,9 @@ const SearchJob = () => {
                                 </Select>
                                 <div className={cx('search-input')}>
                                     <Search
+                                        value={keyword}
                                         placeholder="nhập từ khóa"
-                                        onChange={(e) => setKeyword(e.target.value)}
+                                        onChange={handleChangeKeyWord}
                                         onSearch={onSearch}
                                         enterButton
                                     />

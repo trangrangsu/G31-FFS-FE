@@ -11,7 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faHeart, faBookmark, faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { message, Modal, Button, Input, Popconfirm, Alert } from 'antd';
+import { message, Modal, Button, Input, Popconfirm, Alert, notification } from 'antd';
 
 import images from '../../../assets/images';
 import Image from '../../../components/Image';
@@ -22,7 +22,12 @@ import * as recruiterPostManagementServices from '../../../services/recruiterPos
 import * as searchPostFreelancerServices from '../../../services/searchPostFreelancerServices';
 import styles from './ViewDetailPost.module.scss';
 const cx = classNames.bind(styles);
-
+const openNotificationWithIcon = (type) => {
+    notification[type]({
+        message: 'Thông báo',
+        description: 'Tài khoản không còn đủ số dư. Vui lòng nạp thêm tiền',
+    });
+};
 const ViewDetailPost = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -121,7 +126,11 @@ const ViewDetailPost = () => {
     };
     const handleApply = () => {
         if (!isSolidHeart) {
-            applyPostApi(postDetail.postID);
+            if (accountBalance - account.feeApplyJob > 0) {
+                applyPostApi(postDetail.postID);
+            } else {
+                openNotificationWithIcon('warning');
+            }
         } else {
             deleteJobRequestApi(postDetail.postID);
         }

@@ -23,14 +23,14 @@ export const storage = getStorage(app);
 export const upLoadFile = async (userId, type, file) => {
     const userRef = ref(storage, `${userId}/${type}/${file.name}`);
     await uploadBytes(userRef, file).then(() => {
-        console.log('Uploaded done ' + userRef);
+        //console.log('Uploaded done ' + userRef);
     });
 };
 
 export const downloadFile = async (userId, type, img, setImage) => {
     const userRef = ref(storage, `${userId}/${type}/${img}`);
     await getDownloadURL(userRef).then((url) => {
-        console.log(url);
+        //console.log(url);
         setImage(url);
     });
 };

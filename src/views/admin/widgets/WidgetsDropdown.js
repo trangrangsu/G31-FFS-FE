@@ -59,7 +59,6 @@ const WidgetsDropdown = () => {
     useEffect(() => {
         fetchApi();
     }, []);
-    console.log(datas);
     const freelancerPercent =
         ((datas[0].data[datas[0].data.length - 1] / datas[0].data[datas[0].data.length - 2]) * 100).toFixed(2) - 100;
 

@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLocationDot, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { useSearchParams } from 'react-router-dom';
-import { Button, Popconfirm } from 'antd';
+import { Button, Popconfirm, notification } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 
 import * as searchPostFreelancerServices from '../../../services/searchPostFreelancerServices';
@@ -13,7 +13,12 @@ import Image from '../../../components/Image';
 import images from '../../../assets/images';
 import styles from './ViewDetailRecruiter.module.scss';
 const cx = classNames.bind(styles);
-
+const openNotificationWithIcon = (type) => {
+    notification[type]({
+        message: 'Thông báo',
+        description: 'Tài khoản không còn đủ số dư. Vui lòng nạp thêm tiền',
+    });
+};
 function ViewDetailFreelancer() {
     const dispatch = useDispatch();
     const account = useSelector((state) => state.account);
@@ -75,7 +80,11 @@ function ViewDetailFreelancer() {
         if (avatar !== '') firebase.downloadFile(recruiterId, 'avatar', avatar, setImage);
     }, [avatar]);
     const handleSubmit = () => {
-        updateAccountBalanceApi();
+        if (accountBalance - account.feeViewProfile > 0) {
+            updateAccountBalanceApi();
+        } else {
+            openNotificationWithIcon('warning');
+        }
     };
     return (
         <div className={cx('wrapper')}>
