@@ -14,9 +14,10 @@ const UserService = () => {
     const account = useSelector((state) => state.account);
     const accountBalance = useSelector((state) => state.accountBalance);
     const currentServiceName = useSelector((state) => state.currentServiceName);
+    const currentServiceId = useSelector((state) => state.currentServiceId);
     const dispatch = useDispatch();
     const [services, setServices] = useState([{ serviceName: '' }, { serviceName: '' }, { serviceName: '' }]);
-    const [currentService, setCurrentService] = useState({ benefits: [] });
+    const [currentService, setCurrentService] = useState({});
     const [benefits, setBenefits] = useState([]);
     const [active, setActive] = useState(1);
 
@@ -34,6 +35,7 @@ const UserService = () => {
             dispatch({ type: 'set', accountBalance: accountBalance - parseFloat(currentService.price) });
             dispatch({ type: 'set', isMemberShip: true });
             dispatch({ type: 'set', currentServiceName: currentService.serviceName });
+            dispatch({ type: 'set', currentServiceId: currentService.id });
             message.success('Bạn đã mua thành công gói ' + currentService.serviceName);
         } else {
             message.error('Mua thất bại gói ' + currentService.serviceName);
@@ -155,7 +157,7 @@ const UserService = () => {
                             </ul>
                             <CButton
                                 color="light"
-                                disabled={currentService.serviceName === currentServiceName ? true : false}
+                                disabled={currentService.id <= currentServiceId ? true : false}
                                 className={cx('detail-icon')}
                                 onClick={handleBuyService}
                             >

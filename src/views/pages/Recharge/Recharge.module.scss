@@ -58,3 +58,11 @@
     width: 460px;
     height: 200px;
 }
+.messageError{
+    border-color: #fff !important;
+    margin-top: 5px;
+    padding: 0px;
+    div{
+        color: red;
+    }
+}

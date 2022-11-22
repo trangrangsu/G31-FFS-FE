@@ -148,7 +148,15 @@ function WorkExpPopup({ workExp, callback, onclose }) {
             setYearTo(value);
         }
     };
-
+    const handleChangeDescription = (e) => {
+        const value = e.target.value;
+        if (value.length > 1000) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setDescription(value);
+        }
+    };
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -215,7 +223,7 @@ function WorkExpPopup({ workExp, callback, onclose }) {
                         rows="6"
                         value={description}
                         spellCheck={false}
-                        onChange={(e) => setDescription(e.target.value)}
+                        onChange={handleChangeDescription}
                     />
                 </div>
                 <div className={cx('row')}>

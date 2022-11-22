@@ -40,6 +40,7 @@ const Login = () => {
             dispatch({ type: 'set', accountAvatar: result.avatar });
             dispatch({ type: 'set', isMemberShip: result.isMemberShip });
             dispatch({ type: 'set', currentServiceName: result.currentServiceName });
+            dispatch({ type: 'set', currentServiceId: result.currentServiceId });
             sessionStorage.setItem('userId', result.userId);
             sessionStorage.setItem('token', result.tokenType + ' ' + result.accessToken);
             let to = {};

@@ -11,7 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faHeart, faBookmark, faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { message, Modal, Button, Input, Popconfirm } from 'antd';
+import { message, Modal, Button, Input, Popconfirm, Alert } from 'antd';
 
 import images from '../../../assets/images';
 import Image from '../../../components/Image';
@@ -38,12 +38,13 @@ const ViewDetailPost = () => {
     const [isSolidBookmark, setIsSolidBookmark] = useState(false);
     const [postDetail, setPostDetail] = useState({ createBy: {}, listSkills: [] });
     const [commentValue, setCommentValue] = useState('');
+    const [messageComment, setMessageComment] = useState('');
     const [icon1, setIcon1] = useState(faStarRegular);
     const [icon2, setIcon2] = useState(faStarRegular);
     const [icon3, setIcon3] = useState(faStarRegular);
     const [icon4, setIcon4] = useState(faStarRegular);
     const [icon5, setIcon5] = useState(faStarRegular);
-    const [star, setStar] = useState(1);
+    const [star, setStar] = useState(0);
     const text = 'Phí ứng tuyển là ' + account.feeApplyJob + '$';
 
     const getPostDetailApi = async (postId) => {
@@ -132,26 +133,34 @@ const ViewDetailPost = () => {
         setIsModalOpen(true);
     };
     const handleOk = () => {
-        setIsModalOpen(false);
-        const data = {};
-        data.fromUserId = account.userId;
-        data.toUserId = postDetail.createBy.id;
-        data.jobId = postDetail.postID;
-        data.star = star;
-        data.content = commentValue;
-        addFeedbackApi(data);
-        setStar(1);
-        setCommentValue('');
+        if (commentValue === '' || star === 0) {
+            setMessageComment('Vui lòng nhập nội dung đánh giá và vote sao');
+        } else {
+            setIsModalOpen(false);
+            const data = {};
+            data.fromUserId = account.userId;
+            data.toUserId = postDetail.createBy.id;
+            data.jobId = postDetail.postID;
+            data.star = star;
+            data.content = commentValue;
+            addFeedbackApi(data);
+            setStar(0);
+            setCommentValue('');
+        }
     };
     const handleCancel = () => {
         setIsModalOpen(false);
     };
     const handleChange = (e) => {
         const commentValue = e.target.value;
+        if (commentValue.length > 200) {
+            return;
+        }
         if (!commentValue.startsWith(' ')) {
             setCommentValue(commentValue);
         }
     };
+
     const handleOnclick = (value) => {
         setStar(value);
         switch (value) {
@@ -437,6 +446,9 @@ const ViewDetailPost = () => {
                     <FontAwesomeIcon icon={icon4} onClick={() => handleOnclick(4)} />
                     <FontAwesomeIcon icon={icon5} onClick={() => handleOnclick(5)} />
                 </div>
+                {messageComment !== '' && (
+                    <Alert className={cx('messageError')} message={messageComment} type="error" />
+                )}
             </Modal>
         </div>
     );

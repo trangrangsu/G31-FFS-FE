@@ -10,6 +10,7 @@ const initialState = {
     accountBalance: 0,
     accountAvatar: '',
     currentServiceName: null,
+    currentServiceId: null,
     isMemberShip: false,
     country: [
         'Canada',
@@ -331,6 +332,7 @@ const fetchApi = async (userId) => {
         initialState.accountBalance = result.accountBalance;
         initialState.accountAvatar = result.avatar;
         initialState.currentServiceName = result.currentServiceName;
+        initialState.currentServiceId = result.currentServiceId;
         initialState.isMemberShip = result.isMemberShip;
     }
 };

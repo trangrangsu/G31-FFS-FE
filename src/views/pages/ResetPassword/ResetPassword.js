@@ -6,7 +6,6 @@ import { useSearchParams } from 'react-router-dom';
 import * as loginServices from '../../../services/loginServices';
 import images from '../../../assets/images';
 import Button from '../../../components/Button';
-import config from '../../../config';
 import styles from './ResetPassword.module.scss';
 const cx = classNames.bind(styles);
 
@@ -15,7 +14,7 @@ const ResetPassword = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
-    const [message, setMessage] = useState(false);
+    const [message, setMessage] = useState('');
     const [messageSuccess, setMessageSuccess] = useState(false);
     const [messageSuccesss, setMessageSuccesss] = useState('');
 
@@ -33,8 +32,12 @@ const ResetPassword = () => {
         fetchApi();
     });
     const handleResetpassword = () => {
-        if (password !== passwordConfirm || password === '') {
-            setMessage(true);
+        if (password === '' || passwordConfirm === '') {
+            setMessage('Vui lòng không để trống');
+        } else if (password.length < 8 || password[0].toUpperCase() !== password[0]) {
+            setMessage('Mật khẩu chứa tối thiểu 8 kí tự và chữ cái đầu viết hoa');
+        } else if (password !== passwordConfirm) {
+            setMessage('Mật khẩu mới không khớp vui lòng nhập lại');
         } else {
             const user = {
                 email,
@@ -44,7 +47,24 @@ const ResetPassword = () => {
             console.log(user);
         }
     };
-
+    const handleChangeNewPassword = (e) => {
+        const value = e.target.value;
+        if (value.length > 16) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setPassword(value);
+        }
+    };
+    const handleChangeConfirmNewPassword = (e) => {
+        const value = e.target.value;
+        if (value.length > 16) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setPasswordConfirm(value);
+        }
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
@@ -61,7 +81,7 @@ const ResetPassword = () => {
                                 type="password"
                                 value={password}
                                 spellCheck={false}
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={handleChangeNewPassword}
                             />
                         </div>
                         <div className={cx('email')}>
@@ -70,13 +90,13 @@ const ResetPassword = () => {
                                 type="password"
                                 value={passwordConfirm}
                                 spellCheck={false}
-                                onChange={(e) => setPasswordConfirm(e.target.value)}
+                                onChange={handleChangeConfirmNewPassword}
                             />
                         </div>
                     </div>
-                    {message && (
+                    {message !== '' && (
                         <div className={cx('error-message')}>
-                            <p>Mật khẩu không trùng nhau</p>
+                            <p>{message}</p>
                         </div>
                     )}
                     {messageSuccess && (

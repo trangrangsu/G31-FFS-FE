@@ -2,7 +2,7 @@ import { useState } from 'react';
 import classNames from 'classnames/bind';
 import { Input } from 'antd';
 import { useSelector } from 'react-redux';
-import { message } from 'antd';
+import { message, Alert } from 'antd';
 
 import * as adminReportServices from '../../../services/adminReportServices';
 import images from '../../../assets/images';
@@ -14,6 +14,7 @@ const UserReport = () => {
     const [title, setTitle] = useState('');
     const [value, setValue] = useState('');
     const account = useSelector((state) => state.account);
+    const [messageTitle, setMessageTitle] = useState('');
 
     const addReportApi = async (data) => {
         const result = await adminReportServices.addReport(data);
@@ -23,13 +24,35 @@ const UserReport = () => {
         }
     };
     const handleClick = () => {
-        const data = {
-            content: value,
-            title: title,
-            createdBy: account.userId,
-        };
-        console.log(data);
-        addReportApi(data);
+        if (title === '' || value === '') {
+            setMessageTitle('Vui lòng không để trống tiêu đề và nội dung');
+        } else {
+            const data = {
+                content: value,
+                title: title,
+                createdBy: account.userId,
+            };
+            console.log(data);
+            addReportApi(data);
+        }
+    };
+    const handleChangeTitle = (e) => {
+        const value = e.target.value;
+        if (value.length > 30) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setTitle(value);
+        }
+    };
+    const handleChangeContent = (e) => {
+        const value = e.target.value;
+        if (value.length > 300) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setValue(value);
+        }
     };
     return (
         <div className={cx('wrapper')}>
@@ -39,13 +62,13 @@ const UserReport = () => {
                     <div className={cx('form')}>
                         <div>
                             <label className={cx('label')}>Tiêu đề</label>
-                            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+                            <Input value={title} onChange={handleChangeTitle} />
                         </div>
                         <div className={cx('margin-top')}>
                             <label className={cx('label')}>Nội dung</label>
                             <TextArea
                                 value={value}
-                                onChange={(e) => setValue(e.target.value)}
+                                onChange={handleChangeContent}
                                 autoSize={{
                                     minRows: 3,
                                     maxRows: 5,
@@ -53,6 +76,9 @@ const UserReport = () => {
                             />
                         </div>
                     </div>
+                    {messageTitle !== '' && (
+                        <Alert className={cx('messageError')} message={messageTitle} type="error" />
+                    )}
                     <div className={cx('bottom')}>
                         <Button className={cx('btn-report')} onClick={handleClick}>
                             Báo cáo

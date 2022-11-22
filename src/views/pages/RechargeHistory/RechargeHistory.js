@@ -19,6 +19,7 @@ const RechargeHistory = () => {
     const [to, setTo] = useState('');
     const [recharges, setRecharges] = useState([]);
     const [totalResults, setTotalResults] = useState(0);
+    const [disable, setDisable] = useState(false);
 
     const headers = ['Mã giao dịch', 'Giá trị', 'Thời gian'];
     const getServicesApi = async (from, to, pageIndex) => {
@@ -32,6 +33,13 @@ const RechargeHistory = () => {
     useEffect(() => {
         getServicesApi(from, to, 0);
     }, []);
+    useEffect(() => {
+        if (from === '' && to === '') {
+            setDisable(true);
+        } else {
+            setDisable(false);
+        }
+    }, [from, to]);
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
             return <th key={index}>{properties}</th>;
@@ -88,9 +96,15 @@ const RechargeHistory = () => {
                             </Space>
                         </div>
                         <div className={cx('icon')}>
-                            <Button primary className={cx('button-search')} onClick={handleSearch}>
-                                Tìm kiếm
-                            </Button>
+                            {disable ? (
+                                <Button primary disabled className={cx('button-search')} onClick={handleSearch}>
+                                    Tìm kiếm
+                                </Button>
+                            ) : (
+                                <Button primary className={cx('button-search')} onClick={handleSearch}>
+                                    Tìm kiếm
+                                </Button>
+                            )}
                         </div>
                     </div>
                     <div className={cx('recharge')}>

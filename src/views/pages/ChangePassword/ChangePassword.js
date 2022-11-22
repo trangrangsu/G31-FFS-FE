@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import classNames from 'classnames/bind';
 import { CFormInput } from '@coreui/react';
 import { message } from 'antd';
 import { useSelector } from 'react-redux';
+import { Alert } from 'antd';
 
 import * as loginServices from '../../../services/loginServices';
 import images from '../../../assets/images';
@@ -14,6 +15,7 @@ const ChangePassword = () => {
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
+    const [messagePassword, setMessagePassword] = useState('');
     const changePasswordApi = async (data) => {
         const result = await loginServices.changePassword(data);
         if (result) {
@@ -23,15 +25,46 @@ const ChangePassword = () => {
         }
     };
     const handleChangePassword = () => {
-        if (newPassword !== newPasswordConfirm) {
-            message.error('Mật khẩu mới không trùng nhau');
+        if (oldPassword === '' || newPassword === '' || newPasswordConfirm === '') {
+            setMessagePassword('Vui lòng không để trống');
+        } else if (newPassword.length < 8 || newPassword[0].toUpperCase() !== newPassword[0]) {
+            setMessagePassword('Mật khẩu chứa tối thiểu 8 kí tự và chữ cái đầu viết hoa');
+        } else if (newPassword !== newPasswordConfirm) {
+            setMessagePassword('Mật khẩu mới không khớp vui lòng nhập lại');
+        } else {
+            const data = {};
+            data.email = account.email;
+            data.oldPassword = oldPassword;
+            data.password = newPassword;
+            changePasswordApi(data);
+        }
+    };
+    const handleChangeOldPassword = (e) => {
+        const value = e.target.value;
+        if (value.length > 16) {
             return;
         }
-        const data = {};
-        data.email = account.email;
-        data.oldPassword = oldPassword;
-        data.password = newPassword;
-        changePasswordApi(data);
+        if (!value.startsWith(' ')) {
+            setOldPassword(value);
+        }
+    };
+    const handleChangeNewPassword = (e) => {
+        const value = e.target.value;
+        if (value.length > 16) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setNewPassword(value);
+        }
+    };
+    const handleChangeConfirmNewPassword = (e) => {
+        const value = e.target.value;
+        if (value.length > 16) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setNewPasswordConfirm(value);
+        }
     };
     return (
         <div className={cx('wrapper')}>
@@ -53,7 +86,7 @@ const ChangePassword = () => {
                                 type="password"
                                 value={oldPassword}
                                 spellCheck={false}
-                                onChange={(e) => setOldPassword(e.target.value)}
+                                onChange={handleChangeOldPassword}
                             />
                         </div>
                         <div className={cx('password')}>
@@ -62,7 +95,7 @@ const ChangePassword = () => {
                                 type="password"
                                 value={newPassword}
                                 spellCheck={false}
-                                onChange={(e) => setNewPassword(e.target.value)}
+                                onChange={handleChangeNewPassword}
                             />
                         </div>
                         <div className={cx('password')}>
@@ -71,10 +104,13 @@ const ChangePassword = () => {
                                 type="password"
                                 value={newPasswordConfirm}
                                 spellCheck={false}
-                                onChange={(e) => setNewPasswordConfirm(e.target.value)}
+                                onChange={handleChangeConfirmNewPassword}
                             />
                         </div>
                     </div>
+                    {messagePassword !== '' && (
+                        <Alert className={cx('messageError')} message={messagePassword} type="error" />
+                    )}
                     <div className={cx('bottom')}>
                         <Button className={cx('btn-forgot')} onClick={handleChangePassword}>
                             Đổi mật khẩu

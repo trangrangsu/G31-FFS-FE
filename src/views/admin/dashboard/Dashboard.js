@@ -1,10 +1,12 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { CButton, CButtonGroup, CCard, CCardBody, CCardFooter, CCol, CRow } from '@coreui/react';
+import { CButtonGroup, CCard, CCardBody, CCardFooter, CCol, CRow } from '@coreui/react';
 import { CChartLine } from '@coreui/react-chartjs';
 import { getStyle, hexToRgba } from '@coreui/utils';
 import WidgetsDropdown from '../widgets/WidgetsDropdown';
 import { CWidgetStatsF } from '@coreui/react';
+
+import * as adminDashboardServices from '../../../services/adminDashboardServices';
 
 const Dashboard = () => {
     const [revenue, setRevenue] = useState({
@@ -12,22 +14,28 @@ const Dashboard = () => {
         data: [4, 5, 9, 11, 15, 13, 18],
     });
     const [countExample, setCountExample] = useState([
-        { title: 'Category', value: 2 },
-        { title: 'Sub Category', value: 50 },
-        { title: 'Membership', value: 5 },
-        { title: 'Report', value: 2000 },
+        { title: 'Ngành nghề', value: 2 },
+        { title: 'Chuyên ngành', value: 50 },
+        { title: 'Loại Membership', value: 5 },
+        { title: 'Membership', value: 2000 },
     ]);
 
-    // useEffect(() => {
-    //     fetch('http://localhost:8080/dashboard/revenue')
-    //         .then((response) => response.json())
-    //         .then((data) => {
-    //             setRevenue(data);
-    //         });
-    //     fetch('http://localhost:8080/dashboard/count')
-    //         .then((response) => response.json())
-    //         .then((data) => setCountExample(data));
-    // }, []);
+    const fetchApi = async () => {
+        const result = await adminDashboardServices.getDashboard();
+        setRevenue({
+            label: result.label,
+            data: result.revenues,
+        });
+        setCountExample([
+            { title: 'Ngành nghề', value: result.totalCareer },
+            { title: 'Chuyên ngành', value: result.totalSubCareer },
+            { title: 'Loại Membership', value: 6 },
+            { title: 'Membership', value: result.totalMemberShip },
+        ]);
+    };
+    useEffect(() => {
+        fetchApi();
+    }, []);
 
     return (
         <>
@@ -37,7 +45,7 @@ const Dashboard = () => {
                     <CRow>
                         <CCol sm={5}>
                             <h4 id="traffic" className="card-title mb-0">
-                                Revenue
+                                Doanh thu
                             </h4>
                             <div className="small text-medium-emphasis">
                                 {revenue.label[0]} - {revenue.label[revenue.label.length - 1]}
@@ -45,7 +53,7 @@ const Dashboard = () => {
                         </CCol>
                         <CCol sm={7} className="d-none d-md-block">
                             <CButtonGroup className="float-end me-3">
-                                {['Day', 'Month', 'Year'].map((value) => (
+                                {/* {['Day', 'Month', 'Year'].map((value) => (
                                     <CButton
                                         color="outline-secondary"
                                         key={value}
@@ -54,7 +62,7 @@ const Dashboard = () => {
                                     >
                                         {value}
                                     </CButton>
-                                ))}
+                                ))} */}
                             </CButtonGroup>
                         </CCol>
                     </CRow>

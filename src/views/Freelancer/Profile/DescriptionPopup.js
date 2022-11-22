@@ -19,6 +19,15 @@ function DescriptionPopup({ description, callback, onclose }) {
         setShow(false);
         callback(value);
     };
+    const handleChangeDescription = (e) => {
+        const value = e.target.value;
+        if (value.length > 4000) {
+            return;
+        }
+        if (!value.startsWith(' ')) {
+            setValue(value);
+        }
+    };
     return (
         <Modal show={show} size="lg" onHide={handleClose}>
             <Modal.Header closeButton>
@@ -30,7 +39,7 @@ function DescriptionPopup({ description, callback, onclose }) {
                         id="exampleFormControlTextarea1"
                         rows="10"
                         value={value}
-                        onChange={(e) => setValue(e.target.value)}
+                        onChange={handleChangeDescription}
                     ></CFormTextarea>
                     <div className={cx('row')}>
                         <Button primary onClick={handleAdd} className={cx('save-btn')}>

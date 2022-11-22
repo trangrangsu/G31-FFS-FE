@@ -5,7 +5,7 @@ import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import { CFormInput } from '@coreui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { Result } from 'antd';
+import { Result, Alert } from 'antd';
 
 import * as transactionServices from '../../../services/transactionServices';
 import Button from '../../../components/Button';
@@ -21,6 +21,7 @@ const Recharge = () => {
     const [paidFor, setPaidFor] = useState(false);
     const [error, setError] = useState(false);
     const [showBtn, setShowbtn] = useState(false);
+    const [messageNumber, setMessageNumber] = useState('');
 
     const fetchApi = async (data) => {
         const result = await transactionServices.rechargeMoney(data);
@@ -28,8 +29,24 @@ const Recharge = () => {
         setPaidFor(true);
         dispatch({ type: 'set', accountBalance: accountBalance + parseFloat(valueRecharge) });
     };
+    const validateNumber = (number) => {
+        return number.match(/^[0-9]*$/);
+    };
+    const handleChangeNumber = (e) => {
+        const value = e.target.value;
+        if (!value.startsWith(' ')) {
+            setValue(value);
+        }
+    };
     const handlePaymentMethod = () => {
-        setShowbtn(true);
+        if (valueRecharge === '') {
+            setMessageNumber('Vui lòng nhập số tiền cần nạp');
+        } else if (validateNumber(valueRecharge) === null) {
+            setMessageNumber('Vui lòng nhập số');
+        } else {
+            setShowbtn(true);
+            setMessageNumber('');
+        }
     };
     const handleApprove = (orderId) => {
         const data = {
@@ -58,12 +75,14 @@ const Recharge = () => {
                             spellCheck={false}
                             className={cx('input')}
                             onChange={(e) => {
-                                setValue(e.target.value);
+                                handleChangeNumber(e);
                                 setShowbtn(false);
                             }}
                         />
                     </div>
-
+                    {messageNumber !== '' && (
+                        <Alert className={cx('messageError')} message={messageNumber} type="error" />
+                    )}
                     {!showBtn && (
                         <Button primary className={cx('btn')} onClick={handlePaymentMethod}>
                             Chọn hình thức thanh toán

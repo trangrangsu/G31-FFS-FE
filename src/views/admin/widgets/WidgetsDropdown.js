@@ -6,11 +6,13 @@ import { CChartBar, CChartLine } from '@coreui/react-chartjs';
 import CIcon from '@coreui/icons-react';
 import { cilArrowBottom, cilArrowTop } from '@coreui/icons';
 
+import * as adminDashboardServices from '../../../services/adminDashboardServices';
 const WidgetsDropdown = () => {
     const [datas, setDatas] = useState([
         {
             title: 'Freelancer',
             labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'],
+            // data: [0, 0, 0, 0, 0, 1, 19],
             data: [2, 4, 3.5, 6, 5, 7, 9, 11],
         },
         {
@@ -29,13 +31,35 @@ const WidgetsDropdown = () => {
             data: [12, 14, 13, 14.9, 15.6, 17, 19, 21],
         },
     ]);
-    // useEffect(() => {
-    //     fetch('http://localhost:8080/dashboard/data')
-    //         .then((response) => response.json())
-    //         .then((data) => {
-    //             setDatas(data);
-    //         });
-    // }, []);
+    const fetchApi = async () => {
+        const result = await adminDashboardServices.getDashboard();
+        setDatas([
+            {
+                title: 'Freelancer',
+                labels: result.label,
+                data: result.freelancers,
+            },
+            {
+                title: 'Nhà Tuyển dụng',
+                labels: result.label,
+                data: result.recruiters,
+            },
+            {
+                title: 'Bài đăng',
+                labels: result.label,
+                data: result.posts,
+            },
+            {
+                title: 'Lượt ứng tuyển',
+                labels: result.label,
+                data: result.applies,
+            },
+        ]);
+    };
+    useEffect(() => {
+        fetchApi();
+    }, []);
+    console.log(datas);
     const freelancerPercent =
         ((datas[0].data[datas[0].data.length - 1] / datas[0].data[datas[0].data.length - 2]) * 100).toFixed(2) - 100;
 
@@ -55,12 +79,19 @@ const WidgetsDropdown = () => {
                     color="primary"
                     value={
                         <>
-                            {datas[0].data[datas[0].data.length - 1]} K{' '}
-                            <span className="fs-6 fw-normal">
-                                ({freelancerPercent}{' '}
-                                {freelancerPercent > 0 ? <CIcon icon={cilArrowTop} /> : <CIcon icon={cilArrowBottom} />}{' '}
-                                )
-                            </span>
+                            {datas[0].data[datas[0].data.length - 1]}{' '}
+                            {datas[0].data[datas[0].data.length - 2] !== 0 && (
+                                <span className="fs-6 fw-normal">
+                                    ({freelancerPercent}
+                                    {'% '}
+                                    {freelancerPercent > 0 ? (
+                                        <CIcon icon={cilArrowTop} />
+                                    ) : (
+                                        <CIcon icon={cilArrowBottom} />
+                                    )}{' '}
+                                    )
+                                </span>
+                            )}
                         </>
                     }
                     title={datas[0].title}
@@ -98,8 +129,10 @@ const WidgetsDropdown = () => {
                                         },
                                     },
                                     y: {
-                                        min: Math.min.apply(Math, datas[0].data) - Math.min.apply(Math, datas[0].data),
-                                        max: Math.max.apply(Math, datas[0].data) + Math.min.apply(Math, datas[0].data),
+                                        min: Math.min.apply(Math, datas[0].data) - 2,
+                                        max: Math.max.apply(Math, datas[0].data) + 2,
+                                        // min: Math.min.apply(Math, datas[0].data) - Math.min.apply(Math, datas[0].data),
+                                        // max: Math.max.apply(Math, datas[0].data) + Math.min.apply(Math, datas[0].data),
                                         display: false,
                                         grid: {
                                             display: false,
@@ -131,12 +164,19 @@ const WidgetsDropdown = () => {
                     color="info"
                     value={
                         <>
-                            {datas[1].data[datas[1].data.length - 1]} K{' '}
-                            <span className="fs-6 fw-normal">
-                                ({recruiterPercent}{' '}
-                                {recruiterPercent > 0 ? <CIcon icon={cilArrowTop} /> : <CIcon icon={cilArrowBottom} />}{' '}
-                                )
-                            </span>
+                            {datas[1].data[datas[1].data.length - 1]}{' '}
+                            {datas[1].data[datas[1].data.length - 2] !== 0 && (
+                                <span className="fs-6 fw-normal">
+                                    ({recruiterPercent}
+                                    {'% '}
+                                    {recruiterPercent > 0 ? (
+                                        <CIcon icon={cilArrowTop} />
+                                    ) : (
+                                        <CIcon icon={cilArrowBottom} />
+                                    )}{' '}
+                                    )
+                                </span>
+                            )}
                         </>
                     }
                     title={datas[1].title}
@@ -174,8 +214,8 @@ const WidgetsDropdown = () => {
                                         },
                                     },
                                     y: {
-                                        min: Math.min.apply(Math, datas[1].data) - Math.min.apply(Math, datas[1].data),
-                                        max: Math.max.apply(Math, datas[1].data) + Math.min.apply(Math, datas[1].data),
+                                        min: Math.min.apply(Math, datas[1].data) - 2,
+                                        max: Math.max.apply(Math, datas[1].data) + 2,
                                         display: false,
                                         grid: {
                                             display: false,
@@ -206,11 +246,19 @@ const WidgetsDropdown = () => {
                     color="warning"
                     value={
                         <>
-                            {datas[2].data[datas[2].data.length - 1]} K{' '}
-                            <span className="fs-6 fw-normal">
-                                ({postsPercent.toFixed(2)}{' '}
-                                {postsPercent > 0 ? <CIcon icon={cilArrowTop} /> : <CIcon icon={cilArrowBottom} />} )
-                            </span>
+                            {datas[2].data[datas[2].data.length - 1]}{' '}
+                            {datas[2].data[datas[2].data.length - 2] !== 0 && (
+                                <span className="fs-6 fw-normal">
+                                    ({postsPercent.toFixed(2)}
+                                    {'% '}
+                                    {postsPercent > 0 ? (
+                                        <CIcon icon={cilArrowTop} />
+                                    ) : (
+                                        <CIcon icon={cilArrowBottom} />
+                                    )}{' '}
+                                    )
+                                </span>
+                            )}
                         </>
                     }
                     title={datas[2].title}
@@ -267,16 +315,19 @@ const WidgetsDropdown = () => {
                     color="danger"
                     value={
                         <>
-                            {datas[3].data[datas[3].data.length - 1]} K{' '}
-                            <span className="fs-6 fw-normal">
-                                ({recruitmentPercent.toFixed(2)}{' '}
-                                {recruitmentPercent > 0 ? (
-                                    <CIcon icon={cilArrowTop} />
-                                ) : (
-                                    <CIcon icon={cilArrowBottom} />
-                                )}{' '}
-                                )
-                            </span>
+                            {datas[3].data[datas[3].data.length - 1]}{' '}
+                            {datas[3].data[datas[3].data.length - 2] !== 0 && (
+                                <span className="fs-6 fw-normal">
+                                    ({recruitmentPercent.toFixed(2)}
+                                    {'% '}
+                                    {recruitmentPercent > 0 ? (
+                                        <CIcon icon={cilArrowTop} />
+                                    ) : (
+                                        <CIcon icon={cilArrowBottom} />
+                                    )}{' '}
+                                    )
+                                </span>
+                            )}
                         </>
                     }
                     title={datas[3].title}

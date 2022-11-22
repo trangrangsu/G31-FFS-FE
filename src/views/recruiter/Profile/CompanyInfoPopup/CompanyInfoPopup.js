@@ -14,7 +14,7 @@ function CompanyInfoPopup({ companyInfo, callback, onclose }) {
     const [companyName, setCompanyName] = useState('');
     const [taxNumber, setTaxNumber] = useState('');
     const [website, setWebsite] = useState('');
-    const [career, setCareer] = useState({});
+    const [career, setCareer] = useState(-1);
     const [careers, setCareers] = useState([]);
     const [description, setDescription] = useState('');
 
@@ -31,7 +31,7 @@ function CompanyInfoPopup({ companyInfo, callback, onclose }) {
             setCompanyName(companyInfo.companyName);
             setTaxNumber(companyInfo.taxNumber);
             setWebsite(companyInfo.website);
-            setCareer(companyInfo.career);
+            setCareer(companyInfo.career.id);
             if (companyInfo.companyIntro !== null) {
                 setDescription(companyInfo.companyIntro);
             }
@@ -90,7 +90,7 @@ function CompanyInfoPopup({ companyInfo, callback, onclose }) {
                 <div className={cx('column')}>
                     <label className={cx('label')}>Ngành nghề</label>
                     <CFormSelect
-                        value={career !== null ? career.id : ''}
+                        value={career}
                         onChange={(e) => {
                             setCareer(e.target.value);
                         }}
