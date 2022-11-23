@@ -2,8 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
 import { faCheck, faPenClip } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { InputNumber, Button, message } from 'antd';
-import { Alert } from 'antd';
+import { InputNumber, Button, message, Alert } from 'antd';
 
 import * as adminServiceServices from '../../../services/adminServiceServices';
 import ServicePopUp from './ServicePopUp';

@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLocationDot, faPenToSquare, faPhone } from '@fortawesome/free-solid-svg-icons';
-import { useSearchParams } from 'react-router-dom';
 import { message } from 'antd';
+import { useSelector } from 'react-redux';
 
 import * as recruiterProfileServices from '../../../services/recruiterProfileServices';
 import CompanyInfoPopup from './CompanyInfoPopup';
@@ -17,8 +17,7 @@ const cx = classNames.bind(styles);
 
 const Profile = () => {
     const imgRef = useRef();
-    const [searchParams, setSearchParams] = useSearchParams();
-    const [recruiterId, setRecruiterId] = useState(searchParams.get('id'));
+    const account = useSelector((state) => state.account);
     const [image, setImage] = useState(images.defaultAvatar);
     const [recruiter, setRecruiter] = useState({});
     const [showBasicInfo, setShowBasicInfo] = useState(false);
@@ -37,7 +36,7 @@ const Profile = () => {
     const [companyIntro, setCompanyIntro] = useState('');
 
     const fetchApi = async () => {
-        const result = await recruiterProfileServices.getProfile(recruiterId);
+        const result = await recruiterProfileServices.getProfile(account.userId);
         console.log(result);
         setRecruiter(result);
         setFullName(result.fullName);
@@ -67,7 +66,7 @@ const Profile = () => {
         }
     };
     const updateAvatarApi = async (avatar) => {
-        const result = await recruiterProfileServices.updateAvatar(recruiterId, avatar);
+        const result = await recruiterProfileServices.updateAvatar(account.userId, avatar);
         console.log(result);
         if (result) {
             message.success('cập nhật thành công');
@@ -88,7 +87,7 @@ const Profile = () => {
         fetchApi();
     }, []);
     useEffect(() => {
-        if (avatar !== '') firebase.downloadFile(recruiterId, 'avatar', avatar, setImage);
+        if (avatar !== '') firebase.downloadFile(account.userId, 'avatar', avatar, setImage);
     }, [avatar]);
     function previewFile() {
         var file = document.querySelector('input[type=file]').files[0];
@@ -109,7 +108,7 @@ const Profile = () => {
     };
     const handleCallBack = (recruiter) => {
         setShowBasicInfo(false);
-        recruiter.id = recruiterId;
+        recruiter.id = account.userId;
         setFullName(recruiter.fullName);
         setEmail(recruiter.email);
         setPhone(recruiter.phone);
@@ -152,7 +151,7 @@ const Profile = () => {
                                         onChange={(e) => {
                                             console.log(e.target.files[0].name);
                                             updateAvatarApi(e.target.files[0].name);
-                                            firebase.upLoadFile(recruiterId, 'avatar', e.target.files[0]);
+                                            firebase.upLoadFile(account.userId, 'avatar', e.target.files[0]);
                                             previewFile();
                                         }}
                                     ></input>
@@ -219,7 +218,7 @@ const Profile = () => {
                     </div>
                 </div>
                 <div className={cx('feedback')}>
-                    <Feedback userId={recruiterId} />
+                    <Feedback userId={account.userId} />
                 </div>
             </div>
             {showBasicInfo && (

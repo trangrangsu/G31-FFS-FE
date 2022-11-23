@@ -13,8 +13,8 @@ import {
     faVenusMars,
 } from '@fortawesome/free-solid-svg-icons';
 import { faSquarePlus, faTrashCan } from '@fortawesome/free-regular-svg-icons';
-import { useSearchParams } from 'react-router-dom';
 import { notification } from 'antd';
+import { useSelector } from 'react-redux';
 
 import * as freelancerProfileServices from '../../../services/freelancerProfileServices';
 import images from '../../../assets/images';
@@ -40,8 +40,7 @@ const openNotificationWithIcon = (type) => {
 };
 const Profile = () => {
     const imgRef = useRef();
-    const [searchParams, setSearchParams] = useSearchParams();
-    const [freelancerId, setFreelancerId] = useState(searchParams.get('id'));
+    const account = useSelector((state) => state.account);
     const [freelancer, setFreelancer] = useState({});
     const [fullName, setFullName] = useState('');
     const [birthdate, setBirthdate] = useState('');
@@ -72,7 +71,7 @@ const Profile = () => {
         setShowBasicInfo(true);
     };
     const fetchApi = async () => {
-        const result = await freelancerProfileServices.getProfileFreelancer(freelancerId);
+        const result = await freelancerProfileServices.getProfileFreelancer(account.userId);
         console.log(result);
         setFreelancer(result);
         setFullName(result.fullName);
@@ -106,15 +105,15 @@ const Profile = () => {
         console.log(result);
     };
     const addSkillApi = async (skill) => {
-        const result = await freelancerProfileServices.addSkill(freelancerId, skill);
+        const result = await freelancerProfileServices.addSkill(account.userId, skill);
         console.log(result);
     };
     const deleteSkillApi = async (skill) => {
-        const result = await freelancerProfileServices.deleteSkill(freelancerId, skill);
+        const result = await freelancerProfileServices.deleteSkill(account.userId, skill);
         console.log(result);
     };
     const addEducationApi = async (education) => {
-        const result = await freelancerProfileServices.addEducation(freelancerId, education);
+        const result = await freelancerProfileServices.addEducation(account.userId, education);
         console.log(result);
     };
     const updateEducationApi = async (education) => {
@@ -126,7 +125,7 @@ const Profile = () => {
         console.log(result);
     };
     const addWorkExpApi = async (workExp) => {
-        const result = await freelancerProfileServices.addWorkExp(freelancerId, workExp);
+        const result = await freelancerProfileServices.addWorkExp(account.userId, workExp);
         console.log(result);
     };
     const updateWorkExpApi = async (workExp) => {
@@ -138,7 +137,7 @@ const Profile = () => {
         console.log(result);
     };
     const editByFieldApi = async (fieldName, value) => {
-        const result = await freelancerProfileServices.editByField(freelancerId, fieldName, value);
+        const result = await freelancerProfileServices.editByField(account.userId, fieldName, value);
         console.log(result);
     };
     useEffect(() => {
@@ -146,10 +145,10 @@ const Profile = () => {
     }, []);
     useEffect(() => {
         console.log(avatar);
-        if (avatar !== '') firebase.downloadFile(freelancerId, 'avatar', avatar, setImage);
+        if (avatar !== '') firebase.downloadFile(account.userId, 'avatar', avatar, setImage);
     }, [avatar]);
     useEffect(() => {
-        if (cv !== '') firebase.downloadFile(freelancerId, 'cv', cv, setCvUrl);
+        if (cv !== '') firebase.downloadFile(account.userId, 'cv', cv, setCvUrl);
     }, [cv]);
     const setGenderBy = (gender) => {
         if (gender === true) {
@@ -305,7 +304,7 @@ const Profile = () => {
                                                 e.target.files[0].name.endsWith('.jpg')
                                             ) {
                                                 editByFieldApi('avatar', e.target.files[0].name);
-                                                firebase.upLoadFile(freelancerId, 'avatar', e.target.files[0]);
+                                                firebase.upLoadFile(account.userId, 'avatar', e.target.files[0]);
                                                 previewFile();
                                             } else {
                                                 openNotificationWithIcon('warning');
@@ -410,7 +409,7 @@ const Profile = () => {
                                             console.log(e.target.files[0]);
                                             setCv(e.target.files[0].name);
                                             editByFieldApi('cv', e.target.files[0].name);
-                                            firebase.upLoadFile(freelancerId, 'cv', e.target.files[0]);
+                                            firebase.upLoadFile(account.userId, 'cv', e.target.files[0]);
                                         }}
                                     ></input>
                                 </div>
@@ -476,7 +475,7 @@ const Profile = () => {
                         </div>
                     </div>
                     <div className={cx('feedback')}>
-                        <Feedback userId={freelancerId} />
+                        <Feedback userId={account.userId} />
                     </div>
                 </div>
             </div>
@@ -491,7 +490,11 @@ const Profile = () => {
                 />
             )}
             {showSkill && (
-                <SkillPopup userID={freelancerId} callback={handleCallBackSkill} onclose={() => setShowSkill(false)} />
+                <SkillPopup
+                    userID={account.userId}
+                    callback={handleCallBackSkill}
+                    onclose={() => setShowSkill(false)}
+                />
             )}
             {showDescription && (
                 <DescriptionPopup

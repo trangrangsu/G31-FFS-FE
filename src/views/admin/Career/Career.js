@@ -14,7 +14,6 @@ const cx = classNames.bind(styles);
 function Career() {
     const headers = ['ID', 'Tên Ngành Nghề', 'Chỉnh Sửa', 'Xóa'];
     const [careers, setCareer] = useState([]);
-    const [updatePage, setUpdatePage] = useState(0);
     const [show, setShow] = useState(false);
     const [careerInfo, setCareerInfo] = useState({});
     const [searchValue, setSearchValue] = useState('');

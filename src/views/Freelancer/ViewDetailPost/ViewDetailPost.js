@@ -426,7 +426,9 @@ const ViewDetailPost = () => {
                         <div className={cx('job-posted')}>
                             <div className={cx('job-posted-quantity')}>{postDetail.createBy.totalPosted} bài đăng</div>
                             <div className={cx('job-posted-hire-rate')}>
-                                <p>Tổng số người đã ứng tuyển</p>
+                                <p>
+                                    Tổng số người đã ứng tuyển: <b>{postDetail.totalApplied}</b>
+                                </p>
                             </div>
                         </div>
                         <div className={cx('company-info-name')}>

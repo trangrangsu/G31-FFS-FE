@@ -25,7 +25,6 @@ const MENU_ITEMS = [
         title: 'Hồ sơ',
         to: {
             pathname: config.routes.freelancerProfile,
-            search: '',
         },
         custom: true,
     },
@@ -64,14 +63,13 @@ function UserHeader() {
     const [lastList, setLastList] = useState(false);
     const [close, setClose] = useState(true);
 
-    if (account.role === 'freelancer') {
-        console.log(account.role);
-        MENU_ITEMS[0].to.search = `?id=${account.userId}`;
-    }
+    // if (account.role === 'freelancer') {
+    //     console.log(account.role);
+    //     MENU_ITEMS[0].to.search = `?id=${account.userId}`;
+    // }
     if (account.role === 'recruiter') {
         console.log(account.role);
         MENU_ITEMS[0].to.pathname = config.routes.recruiterProfile;
-        MENU_ITEMS[0].to.search = `?id=${account.userId}`;
     }
 
     const handleMenuChange = (menuItem) => {

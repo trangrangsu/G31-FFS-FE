@@ -6,7 +6,7 @@ console.log(userId);
 
 const initialState = {
     sidebarShow: true,
-    account: { role: 'freelancer' },
+    account: { role: '' },
     accountBalance: 0,
     accountAvatar: '',
     currentServiceName: null,

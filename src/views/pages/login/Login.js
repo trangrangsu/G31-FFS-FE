@@ -28,12 +28,18 @@ const Login = () => {
 
     useEffect(() => {
         dispatch({ type: 'set', account: {} });
+        dispatch({ type: 'set', accountBalance: 0 });
+        dispatch({ type: 'set', accountAvatar: '' });
+        dispatch({ type: 'set', currentServiceName: null });
+        dispatch({ type: 'set', currentServiceId: null });
+        dispatch({ type: 'set', isMemberShip: false });
         sessionStorage.setItem('token', '');
+        sessionStorage.setItem('userId', '');
+        sessionStorage.setItem('userRole', '');
     }, []);
 
     const fetchApi = async (user) => {
         const result = await loginServices.login(user);
-        console.log(result);
         if (result.userId !== undefined) {
             dispatch({ type: 'set', account: result });
             dispatch({ type: 'set', accountBalance: result.accountBalance });
@@ -42,6 +48,7 @@ const Login = () => {
             dispatch({ type: 'set', currentServiceName: result.currentServiceName });
             dispatch({ type: 'set', currentServiceId: result.currentServiceId });
             sessionStorage.setItem('userId', result.userId);
+            sessionStorage.setItem('userRole', result.role);
             sessionStorage.setItem('token', result.tokenType + ' ' + result.accessToken);
             let to = {};
             switch (result.role) {

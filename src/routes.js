@@ -23,7 +23,6 @@ const Login = React.lazy(() => import('./views/pages/login'));
 const Register = React.lazy(() => import('./views/pages/register'));
 const ResetPassword = React.lazy(() => import('./views/pages/ResetPassword'));
 const ForgetPassword = React.lazy(() => import('./views/pages/ForgetPassword'));
-const UpdateRecruiterProfile = React.lazy(() => import('./views/recruiter/Update'));
 const ViewDetailFreelancer = React.lazy(() => import('./views/pages/ViewDetailFreelancer'));
 const ViewDetailRecruiter = React.lazy(() => import('./views/pages/ViewDetailRecruiter'));
 const ChangePassword = React.lazy(() => import('./views/pages/ChangePassword'));
@@ -43,6 +42,7 @@ const SearchFreelancer = React.lazy(() => import('./views/recruiter/SearchFreela
 const PostManagement = React.lazy(() => import('./views/recruiter/PostManagement'));
 const PostApplyManagement = React.lazy(() => import('./views/recruiter/PostApplyManagement'));
 const VerifyOTP = React.lazy(() => import('./views/pages/VerifyOTP'));
+const ErrorPage = React.lazy(() => import('./views/pages/ErrorPage'));
 
 // Public routes
 export const routes = [
@@ -59,9 +59,7 @@ export const routes = [
     { path: config.routes.viewDetailFreelancerAdmin, element: ViewDetailFreelancerAdmin },
     { path: config.routes.viewDetailRecruiterAdmin, element: ViewDetailRecruiterAdmin },
     { path: config.routes.viewDetailPostAdmin, element: ViewDetailPostAdmin },
-    { path: config.routes.updateRecruiter, element: UpdateRecruiterProfile, layout: HomeLayout },
     { path: config.routes.changePasswordForAdmin, element: ChangePassword },
-
     { path: config.routes.home, element: ContentHome, layout: HomeLayout },
     { path: config.routes.login, element: Login, layout: HomeLayout },
     { path: config.routes.register, element: Register, layout: HomeLayout },
@@ -72,14 +70,13 @@ export const routes = [
     { path: config.routes.userReport, element: UserReport, layout: UserLayout },
     { path: config.routes.recharge, element: Recharge, layout: UserLayout },
     { path: config.routes.rechargeHistory, element: RechargeHistory, layout: UserLayout },
-
     { path: config.routes.statisticFreelancer, element: StatisticFreelancer, layout: UserLayout },
     { path: config.routes.userService, element: UserService, layout: UserLayout },
     { path: config.routes.freelancerProfile, element: FreelancerProfile, layout: UserLayout },
     { path: config.routes.searchJob, element: SearchJob, layout: UserLayout },
     { path: config.routes.jobApply, element: JobApply, layout: UserLayout },
     { path: config.routes.viewDetailPost, element: ViewDetailPost, layout: UserLayout },
-
+    { path: config.routes.viewDetailRecruiter, element: ViewDetailRecruiter, layout: UserLayout },
     { path: config.routes.postJob, element: PostJob, layout: UserLayout },
     { path: config.routes.recruiterProfile, element: RecruiterProfile, layout: UserLayout },
     { path: config.routes.searchFreelancer, element: SearchFreelancer, layout: UserLayout },
@@ -87,7 +84,17 @@ export const routes = [
     { path: config.routes.postApplyManagement, element: PostApplyManagement, layout: UserLayout },
     { path: config.routes.statisticRecruiter, element: StatisticRecruiter, layout: UserLayout },
     { path: config.routes.viewDetailFreelancer, element: ViewDetailFreelancer, layout: UserLayout },
-    { path: config.routes.viewDetailRecruiter, element: ViewDetailRecruiter, layout: UserLayout },
+];
+
+//Guest routers
+export const guestRoutes = [
+    { path: config.routes.home, element: ContentHome, layout: HomeLayout },
+    { path: config.routes.login, element: Login, layout: HomeLayout },
+    { path: config.routes.register, element: Register, layout: HomeLayout },
+    { path: config.routes.verifyOTP, element: VerifyOTP, layout: HomeLayout },
+    { path: config.routes.forgetPassword, element: ForgetPassword, layout: HomeLayout },
+    { path: config.routes.resetPassword, element: ResetPassword, layout: HomeLayout },
+    { path: config.routes.errorPage, element: ErrorPage, layout: HomeLayout },
 ];
 
 // Admin routes
@@ -97,21 +104,24 @@ export const adminRoutes = [
     { path: config.routes.recruiter, element: Recruiter },
     { path: config.routes.staff, element: Staff },
     { path: config.routes.service, element: Service },
+    { path: config.routes.career, element: Career },
+    { path: config.routes.subCareer, element: SubCareer },
     { path: config.routes.viewDetailFreelancerAdmin, element: ViewDetailFreelancerAdmin },
     { path: config.routes.viewDetailRecruiterAdmin, element: ViewDetailRecruiterAdmin },
+    { path: config.routes.changePasswordForAdmin, element: ChangePassword },
 ];
 
 // Staff routes
 export const staffRoutes = [
     { path: config.routes.freelancer, element: Freelancer },
     { path: config.routes.recruiter, element: Recruiter },
-    { path: config.routes.career, element: Career },
-    { path: config.routes.subCareer, element: SubCareer },
     { path: config.routes.payment, element: Payment },
     { path: config.routes.post, element: Post },
     { path: config.routes.report, element: Report },
     { path: config.routes.viewDetailFreelancerAdmin, element: ViewDetailFreelancerAdmin },
     { path: config.routes.viewDetailRecruiterAdmin, element: ViewDetailRecruiterAdmin },
+    { path: config.routes.viewDetailPostAdmin, element: ViewDetailPostAdmin },
+    { path: config.routes.changePasswordForAdmin, element: ChangePassword },
 ];
 
 // Freelancer
@@ -125,6 +135,7 @@ export const freelancerRoutes = [
     { path: config.routes.freelancerProfile, element: FreelancerProfile, layout: UserLayout },
     { path: config.routes.searchJob, element: SearchJob, layout: UserLayout },
     { path: config.routes.jobApply, element: JobApply, layout: UserLayout },
+    { path: config.routes.viewDetailPost, element: ViewDetailPost, layout: UserLayout },
     { path: config.routes.viewDetailRecruiter, element: ViewDetailRecruiter, layout: UserLayout },
 ];
 
