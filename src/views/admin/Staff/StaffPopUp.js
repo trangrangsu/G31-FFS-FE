@@ -65,9 +65,9 @@ function StaffPopUp({ staff, callback }) {
         if (phone === '') {
             count++;
             setMessagePhone('Số điện thoại trống');
-        } else if (validatePhone(phone) === null || phone.length < 10) {
+        } else if (validatePhone(phone) === null || phone.length < 10 || phone[0] !== '0') {
             count++;
-            setMessagePhone('Vui lòng nhập đủ 10 chữ số');
+            setMessagePhone('Vui lòng nhập đủ 10 chữ số và bắt đầu là số 0');
         } else {
             setMessagePhone('');
         }

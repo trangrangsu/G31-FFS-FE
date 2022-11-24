@@ -48,6 +48,9 @@ function EducationPopup({ education, callback, onclose }) {
         } else if (validateText(university) !== null) {
             count++;
             setMessageName('Vui lòng không nhập ký tự đặc biệt');
+        } else if (university[0].match(/^[0-9]*$/) !== null) {
+            count++;
+            setMessageName('Vui lòng không số đầu tiên');
         } else {
             setMessageName('');
         }
@@ -57,6 +60,9 @@ function EducationPopup({ education, callback, onclose }) {
         } else if (validateText(level) !== null) {
             count++;
             setMessageLevel('Vui lòng không nhập ký tự đặc biệt');
+        } else if (level[0].match(/^[0-9]*$/) !== null) {
+            count++;
+            setMessageLevel('Vui lòng không số đầu tiên');
         } else {
             setMessageLevel('');
         }
@@ -66,6 +72,9 @@ function EducationPopup({ education, callback, onclose }) {
         } else if (validateText(major) !== null) {
             count++;
             setMessageCareer('Vui lòng không nhập ký tự đặc biệt');
+        } else if (major[0].match(/^[0-9]*$/) !== null) {
+            count++;
+            setMessageCareer('Vui lòng không số đầu tiên');
         } else {
             setMessageCareer('');
         }

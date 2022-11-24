@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import Modal from 'react-bootstrap/Modal';
 import { CFormInput } from '@coreui/react';
-import { Alert } from 'antd';
+import { Alert, message } from 'antd';
 
 import * as adminCareerServices from '../../../services/adminCareerServices';
 import CustomButton from '../../../components/Button';
@@ -34,7 +34,22 @@ function CareerPopUp({ career, callback }) {
             if (career.id) {
                 result = await adminCareerServices.updateCareer(career.id, name);
             } else result = await adminCareerServices.addCareer(name);
-            console.log(result);
+            //console.log(result);
+            if (result.response) {
+                message.error({
+                    content: result.response.data,
+                    style: {
+                        marginTop: '50px',
+                    },
+                });
+            } else {
+                message.success({
+                    content: result,
+                    style: {
+                        marginTop: '50px',
+                    },
+                });
+            }
         };
         if (name === '') {
             setMessageCareer('Vui lòng tên ngành nghề');

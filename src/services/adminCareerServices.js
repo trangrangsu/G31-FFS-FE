@@ -21,7 +21,7 @@ export const addCareer = async (name) => {
         const res = await httpRequest.post(`api/staff/career/add?name=${name}`);
         return res;
     } catch (error) {
-        console.log(error);
+        return error;
     }
 };
 export const updateCareer = async (id, name) => {

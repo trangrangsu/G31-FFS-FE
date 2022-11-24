@@ -46,12 +46,16 @@ function WorkExpPopup({ workExp, callback, onclose }) {
     };
     const handleAdd = () => {
         let count = 0;
+        console.log();
         if (companyName === '') {
             count++;
             setMessageCompanyName('Tên công ty trống');
         } else if (validateText(companyName) !== null) {
             count++;
             setMessageCompanyName('Vui lòng không nhập ký tự đặc biệt');
+        } else if (companyName[0].match(/^[0-9]*$/) !== null) {
+            count++;
+            setMessageCompanyName('Vui lòng không số đầu tiên');
         } else {
             setMessageCompanyName('');
         }
@@ -61,6 +65,9 @@ function WorkExpPopup({ workExp, callback, onclose }) {
         } else if (validateText(position) !== null) {
             count++;
             setMessagePosition('Vui lòng không nhập ký tự đặc biệt');
+        } else if (position[0].match(/^[0-9]*$/) !== null) {
+            count++;
+            setMessagePosition('Vui lòng không số đầu tiên');
         } else {
             setMessagePosition('');
         }

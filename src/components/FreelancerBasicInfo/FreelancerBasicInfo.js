@@ -90,7 +90,9 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
             /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
         );
     };
-
+    function hasWhiteSpace(s) {
+        return s.indexOf(' ') >= 0;
+    }
     const handleSave = () => {
         let count = 0;
         if (name === '') {
@@ -109,10 +111,10 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
             count++;
             setPhoneValidate(true);
             setMessagePhone('Số điện thoại trống');
-        } else if (validatePhone(phone) === null || phone.length < 10) {
+        } else if (validatePhone(phone) === null || phone.length < 10 || phone[0] !== '0') {
             count++;
             setPhoneValidate(true);
-            setMessagePhone('Vui lòng nhập đủ 10 chữ số');
+            setMessagePhone('Vui lòng nhập đủ 10 chữ số và bắt đầu là số 0');
         } else {
             setPhoneValidate(false);
             setMessagePhone('');
@@ -166,6 +168,10 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
                 setPasswordValidate(true);
                 count++;
                 setMessagePassword('Mật khẩu chứa tối thiểu 8 kí tự và chữ cái đầu viết hoa');
+            } else if (hasWhiteSpace(password)) {
+                setPasswordValidate(true);
+                count++;
+                setMessagePassword('Mật khẩu không chứa dấu cách');
             } else if (password !== passwordConfirm) {
                 setPasswordValidate(true);
                 count++;

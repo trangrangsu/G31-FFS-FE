@@ -30,7 +30,7 @@ export const upLoadFile = async (userId, type, file) => {
 export const downloadFile = async (userId, type, img, setImage) => {
     const userRef = ref(storage, `${userId}/${type}/${img}`);
     await getDownloadURL(userRef).then((url) => {
-        console.log(url);
+        //console.log(url);
         setImage(url);
     });
 };
