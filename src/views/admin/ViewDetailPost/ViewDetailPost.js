@@ -18,13 +18,14 @@ function ViewDetailPost() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [post, setPost] = useState({ createBy: '', listSkills: [] });
     const account = useSelector((state) => state.account);
+    const [document, setDocument] = useState('');
     const [documentURL, setDocumentURL] = useState('#');
     //const [isApproved, setIsApproved] = useState();
     const fetchApi = async () => {
         const result = await adminPostServices.getDetailPost(searchParams.get('id'));
         console.log(result);
         setPost(result);
-        setDocumentURL(result.attach);
+        setDocument(result.attach);
     };
     useEffect(() => {
         fetchApi();

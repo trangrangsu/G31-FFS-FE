@@ -202,36 +202,34 @@ function StaffPopUp({ staff, callback }) {
                                 <Alert className={cx('messageError')} message={messageEmail} type="error" />
                             )}
                             {staff.isActive === undefined ? (
-                                <div className={cx('staff-password')}>
-                                    <div>
-                                        <label className={cx('label')}>Password:</label>
-                                        <CFormInput
-                                            type="password"
-                                            placeholder="Nhập mật khẩu"
-                                            value={password}
-                                            onChange={handleChangePassword}
-                                            className={cx('input-info')}
-                                        />
-                                        {messagePassword !== '' && (
-                                            <Alert
-                                                className={cx('messageError')}
-                                                message={messagePassword}
-                                                type="error"
+                                <>
+                                    <div className={cx('staff-password')}>
+                                        <div>
+                                            <label className={cx('label')}>Mật khẩu:</label>
+                                            <CFormInput
+                                                type="password"
+                                                placeholder="Nhập mật khẩu"
+                                                value={password}
+                                                onChange={handleChangePassword}
+                                                className={cx('input-info')}
                                             />
-                                        )}
+                                        </div>
+                                        <div>
+                                            {' '}
+                                            <label className={cx('label')}>Xác nhận mật khẩu:</label>
+                                            <CFormInput
+                                                type="password"
+                                                placeholder="Xác nhận mật khẩu"
+                                                value={passwordConfirm}
+                                                onChange={handleChangeConfirmPassword}
+                                                className={cx('input-info')}
+                                            />
+                                        </div>
                                     </div>
-                                    <div>
-                                        {' '}
-                                        <label className={cx('label')}>Xác nhận mật khẩu:</label>
-                                        <CFormInput
-                                            type="password"
-                                            placeholder="Xác nhận mật khẩu"
-                                            value={passwordConfirm}
-                                            onChange={handleChangeConfirmPassword}
-                                            className={cx('input-info')}
-                                        />
-                                    </div>
-                                </div>
+                                    {messagePassword !== '' && (
+                                        <Alert className={cx('messageError')} message={messagePassword} type="error" />
+                                    )}
+                                </>
                             ) : (
                                 <div className={cx('staff-checkbox')}>
                                     <CFormCheck

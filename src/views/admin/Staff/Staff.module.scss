@@ -91,7 +91,7 @@
         padding-bottom: 20px;
         justify-content: space-between;
         .input-info {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             display: block;
             width: 100%;
 
@@ -104,13 +104,13 @@
             justify-content: space-between;
             width: 100%;
             div {
-                width: 40%;
+                width: 45%;
             }
         }
     }
 }
 .label{
-    width: 135px;
+    width: 151px;
     font-weight: bold;
     padding: 3px;
     margin-right: 10px;
@@ -151,6 +151,7 @@
 .messageError{
     border-color: #fff !important;
     padding: 0px;
+    margin-bottom: 20px;
     div{
         color: red;
     }

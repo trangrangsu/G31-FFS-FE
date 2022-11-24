@@ -89,7 +89,7 @@ Button.propTypes = {
     small: PropTypes.bool,
     large: PropTypes.bool,
     admin: PropTypes.bool,
-    children: PropTypes.node.isRequired,
+    //children: PropTypes.node.isRequired,
     className: PropTypes.string,
     leftIcon: PropTypes.node,
     rightIcon: PropTypes.node,

@@ -29,16 +29,19 @@ const ViewDetailPost = ({ postId }) => {
     const [documentURL, setDocumentURL] = useState('#');
     const [isActive, setIsActive] = useState(true);
     const [btnContent, setBtnContent] = useState('Ẩn bài đăng');
+    const [isValidPost, setIsValidPost] = useState(true);
 
     const viewDetailPostApi = async () => {
         const result = await recruiterPostManagementServices.viewDetailPost(account.userId, postId);
         console.log(result);
-        if (typeof result === 'object') {
+        if (result !== undefined) {
             setPostDetail(result);
             setDocument(result.attach);
             if (!result.isActive) {
                 setIsActive(false);
             }
+        } else {
+            setIsValidPost(false);
         }
     };
     const hideJobApi = async () => {
@@ -89,76 +92,84 @@ const ViewDetailPost = ({ postId }) => {
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('container')}>
-                <div className={cx('left')}>
-                    <div className={cx('left-component')}>
-                        <div className={cx('post-title')}>{postDetail.jobTitle}</div>
-                        <div className={cx('container-row')}>
-                            <div>
-                                <p className={cx('post-posted-time')}>{postDetail.timeCount}</p>
-                                <div className={cx('post-location')}>
-                                    {' '}
-                                    <div className={cx('post-location-ic')}>
-                                        <FontAwesomeIcon icon={faLocationDot} />
-                                    </div>
-                                    <div className={cx('post-location-name')}>{postDetail.area}</div>
-                                </div>
-                                {postDetail.isApproved === 1 && (
-                                    <p className={cx('totalApplied')}>Số lượt ứng tuyển: {postDetail.totalApplied}</p>
-                                )}
-                            </div>
-                            <div className={cx('action')}>
-                                {postDetail.isApproved === 1 && (
-                                    <Button type="primary" onClick={handleOnclick}>
-                                        {btnContent}
-                                    </Button>
-                                )}
-                                {postDetail.isApproved !== 1 && (
-                                    <Button type="primary" onClick={handleDelete}>
-                                        Xóa bài đăng
-                                    </Button>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                    <div className={cx('left-component')}>
-                        <div className={cx('post-description')}>{postDetail.description}</div>
-                        {document !== '' && (
-                            <CustomButton text href={documentURL} className={cx('document')}>
-                                Tài liệu
-                            </CustomButton>
-                        )}
-                    </div>
-                    <div className={cx('left-component')}>
-                        <div className={cx('post-budget-ic')}>
-                            <FontAwesomeIcon icon={faSackDollar} />
-                        </div>
-                        <div className={cx('post-budget-payment')}>
-                            <div className={cx('post-budget')}>{postDetail.budget}</div>
-                            <div className={cx('post-payment')}>{postDetail.paymentType}</div>
-                        </div>
-                    </div>
-                    <div className={cx('left-component')}>
-                        <div className={cx('post-subcareers-title')}>Chuyên ngành & Kĩ năng</div>
-                        <div className={cx('container-subCareer-skill')}>
-                            <div className={cx('post-subcareers')}>
-                                <div className={cx('subcareer-title')}>Chuyên ngành</div>
-                                <div className={cx('subcareers')}>{postDetail.subCareer}</div>
-                            </div>
-                            <div className={cx('post-skills')}>
-                                <div className={cx('skill-title')}>Kĩ năng</div>
-                                {postDetail.listSkills.map((skill) => {
-                                    return (
-                                        <div className={cx('skill')} key={skill.id}>
-                                            {skill.name}
+            {isValidPost ? (
+                <div className={cx('container')}>
+                    <div className={cx('left')}>
+                        <div className={cx('left-component')}>
+                            <div className={cx('post-title')}>{postDetail.jobTitle}</div>
+                            <div className={cx('container-row')}>
+                                <div>
+                                    <p className={cx('post-posted-time')}>{postDetail.timeCount}</p>
+                                    <div className={cx('post-location')}>
+                                        {' '}
+                                        <div className={cx('post-location-ic')}>
+                                            <FontAwesomeIcon icon={faLocationDot} />
                                         </div>
-                                    );
-                                })}
+                                        <div className={cx('post-location-name')}>{postDetail.area}</div>
+                                    </div>
+                                    {postDetail.isApproved === 1 && (
+                                        <p className={cx('totalApplied')}>
+                                            Số lượt ứng tuyển: {postDetail.totalApplied}
+                                        </p>
+                                    )}
+                                </div>
+                                <div className={cx('action')}>
+                                    {postDetail.isApproved === 1 && (
+                                        <Button type="primary" onClick={handleOnclick}>
+                                            {btnContent}
+                                        </Button>
+                                    )}
+                                    {postDetail.isApproved !== 1 && (
+                                        <Button type="primary" onClick={handleDelete}>
+                                            Xóa bài đăng
+                                        </Button>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                        <div className={cx('left-component')}>
+                            <div className={cx('post-description')}>{postDetail.description}</div>
+                            {document !== '' && (
+                                <CustomButton text href={documentURL} className={cx('document')}>
+                                    Tài liệu
+                                </CustomButton>
+                            )}
+                        </div>
+                        <div className={cx('left-component')}>
+                            <div className={cx('post-budget-ic')}>
+                                <FontAwesomeIcon icon={faSackDollar} />
+                            </div>
+                            <div className={cx('post-budget-payment')}>
+                                <div className={cx('post-budget')}>{postDetail.budget}</div>
+                                <div className={cx('post-payment')}>{postDetail.paymentType}</div>
+                            </div>
+                        </div>
+                        <div className={cx('left-component')}>
+                            <div className={cx('post-subcareers-title')}>Chuyên ngành & Kĩ năng</div>
+                            <div className={cx('container-subCareer-skill')}>
+                                <div className={cx('post-subcareers')}>
+                                    <div className={cx('subcareer-title')}>Chuyên ngành</div>
+                                    <div className={cx('subcareers')}>{postDetail.subCareer}</div>
+                                </div>
+                                <div className={cx('post-skills')}>
+                                    <div className={cx('skill-title')}>Kĩ năng</div>
+                                    {postDetail.listSkills.map((skill) => {
+                                        return (
+                                            <div className={cx('skill')} key={skill.id}>
+                                                {skill.name}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            ) : (
+                <div className={cx('container')}>
+                    <p className={cx('message-Invalid')}>Bài đăng không tồn tại</p>
+                </div>
+            )}
             <div className={cx('footer')}>
                 <Image src={images.bannerAloNgayFreelancer} alt="footer" />
             </div>

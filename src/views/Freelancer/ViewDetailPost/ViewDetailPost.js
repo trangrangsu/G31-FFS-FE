@@ -13,6 +13,7 @@ import { faHeart, faBookmark, faStar as faStarRegular } from '@fortawesome/free-
 import { useSelector, useDispatch } from 'react-redux';
 import { message, Modal, Button, Input, Popconfirm, Alert, notification } from 'antd';
 
+import * as firebase from '../../../firebase/firebase';
 import images from '../../../assets/images';
 import Image from '../../../components/Image';
 import config from '../../../config';
@@ -51,13 +52,17 @@ const ViewDetailPost = () => {
     const [icon5, setIcon5] = useState(faStarRegular);
     const [star, setStar] = useState(0);
     const text = 'Phí ứng tuyển là ' + account.feeApplyJob + '$';
+    const [document, setDocument] = useState('');
+    const [documentURL, setDocumentURL] = useState('#');
+    const [isValidPost, setIsValidPost] = useState(true);
 
     const getPostDetailApi = async (postId) => {
         const result = await getPostDetailFreelancerServices.getPostDetail(postId, account.userId);
         console.log(result);
-        if (typeof result === 'object') {
+        if (result !== undefined) {
             setPostDetail(result);
             setStatus(result.isApply);
+            setDocument(result.attach);
             if (result.isSave) {
                 setSave('Bỏ lưu');
                 setIsSolidBookmark(true);
@@ -66,6 +71,8 @@ const ViewDetailPost = () => {
                 setApply('Bỏ ứng tuyển');
                 setIsSolidHeart(true);
             }
+        } else {
+            setIsValidPost(false);
         }
     };
     const addJobSavedApi = async (postID) => {
@@ -117,6 +124,10 @@ const ViewDetailPost = () => {
     useEffect(() => {
         getPostDetailApi(searchParams.get('id'));
     }, [searchParams]);
+    useEffect(() => {
+        if (document !== '')
+            firebase.downloadFile(postDetail.createBy.id, searchParams.get('id'), document, setDocumentURL);
+    }, [document]);
     const handleViewDetailRecruiter = () => {
         const to = {
             pathname: config.routes.viewDetailRecruiter,
@@ -215,98 +226,169 @@ const ViewDetailPost = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('page-title')}>Chi tiết bài đăng</div>
-
-            <div className={cx('container')}>
-                <div className={cx('left')}>
-                    <div id={cx('head-r')} className={cx('left-component')}>
-                        <div className={cx('post-title')}>{postDetail.jobTitle}</div>
-                        <p className={cx('post-posted-time')}>{postDetail.timeCount}</p>
-                        <div className={cx('post-location')}>
-                            {' '}
-                            <div className={cx('post-location-ic')}>
-                                <FontAwesomeIcon icon={faLocationDot} />
-                            </div>
-                            <div className={cx('post-location-name')}>{postDetail.area}</div>
-                        </div>
-                    </div>
-                    <div className={cx('left-component')}>
-                        <div className={cx('post-description')}>{postDetail.description}</div>
-                        {postDetail.attach && (
-                            <CustomButton text href={postDetail.attach} className={cx('document')}>
-                                Tài liệu
-                            </CustomButton>
-                        )}
-                    </div>
-                    <div className={cx('left-component')}>
-                        <div className={cx('post-budget-ic')}>
-                            <FontAwesomeIcon icon={faSackDollar} />
-                        </div>
-                        <div className={cx('post-budget-payment')}>
-                            <div className={cx('post-budget')}>{postDetail.budget}</div>
-                            <div className={cx('post-payment')}>{postDetail.paymentType}</div>
-                        </div>
-                    </div>
-                    <div className={cx('left-component')}>
-                        <div className={cx('post-subcareers-title')}>Chuyên ngành & Kĩ năng</div>
-                        <div className={cx('container-subCareer-skill')}>
-                            <div className={cx('post-subcareers')}>
-                                <div className={cx('subcareer-title')}>Chuyên ngành</div>
-                                <div className={cx('subcareers')}>{postDetail.subCareer}</div>
-                            </div>
-                            <div className={cx('post-skills')}>
-                                <div className={cx('skill-title')}>Kĩ năng</div>
-                                {postDetail.listSkills.map((skill) => {
-                                    return (
-                                        <div className={cx('skill')} key={skill.id}>
-                                            {skill.name}
-                                        </div>
-                                    );
-                                })}
+            {isValidPost ? (
+                <div className={cx('container')}>
+                    <div className={cx('left')}>
+                        <div id={cx('head-r')} className={cx('left-component')}>
+                            <div className={cx('post-title')}>{postDetail.jobTitle}</div>
+                            <p className={cx('post-posted-time')}>{postDetail.timeCount}</p>
+                            <div className={cx('post-location')}>
+                                {' '}
+                                <div className={cx('post-location-ic')}>
+                                    <FontAwesomeIcon icon={faLocationDot} />
+                                </div>
+                                <div className={cx('post-location-name')}>{postDetail.area}</div>
                             </div>
                         </div>
+                        <div className={cx('left-component')}>
+                            <div className={cx('post-description')}>{postDetail.description}</div>
+                            {document !== '' && (
+                                <CustomButton text href={documentURL} className={cx('document')}>
+                                    Tài liệu
+                                </CustomButton>
+                            )}
+                        </div>
+                        <div className={cx('left-component')}>
+                            <div className={cx('post-budget-ic')}>
+                                <FontAwesomeIcon icon={faSackDollar} />
+                            </div>
+                            <div className={cx('post-budget-payment')}>
+                                <div className={cx('post-budget')}>{postDetail.budget}</div>
+                                <div className={cx('post-payment')}>{postDetail.paymentType}</div>
+                            </div>
+                        </div>
+                        <div className={cx('left-component')}>
+                            <div className={cx('post-subcareers-title')}>Chuyên ngành & Kĩ năng</div>
+                            <div className={cx('container-subCareer-skill')}>
+                                <div className={cx('post-subcareers')}>
+                                    <div className={cx('subcareer-title')}>Chuyên ngành</div>
+                                    <div className={cx('subcareers')}>{postDetail.subCareer}</div>
+                                </div>
+                                <div className={cx('post-skills')}>
+                                    <div className={cx('skill-title')}>Kĩ năng</div>
+                                    {postDetail.listSkills.map((skill) => {
+                                        return (
+                                            <div className={cx('skill')} key={skill.id}>
+                                                {skill.name}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div className={cx('right')}>
-                    <div id={cx('head-r')} className={cx('right-component')}>
-                        {status === -1 && (
-                            <div className={cx('action')}>
-                                {isMemberShip && (
-                                    <CustomButton
-                                        className={cx('btn-apply')}
-                                        leftIcon={
-                                            <FontAwesomeIcon
-                                                className={cx('action-apply')}
-                                                icon={isSolidHeart ? faHeartSolid : faHeart}
-                                                onClick={handleApply}
-                                            />
-                                        }
-                                        onClick={handleApply}
-                                    >
-                                        {apply}
-                                    </CustomButton>
-                                )}
-                                {!isMemberShip && !isSolidHeart && (
-                                    <Popconfirm
-                                        placement="top"
-                                        title={text}
-                                        onConfirm={handleApply}
-                                        okText="Ứng tuyển"
-                                        cancelText="Hủy"
-                                    >
+                    <div className={cx('right')}>
+                        <div id={cx('head-r')} className={cx('right-component')}>
+                            {status === -1 && (
+                                <div className={cx('action')}>
+                                    {isMemberShip && (
                                         <CustomButton
                                             className={cx('btn-apply')}
                                             leftIcon={
                                                 <FontAwesomeIcon
                                                     className={cx('action-apply')}
                                                     icon={isSolidHeart ? faHeartSolid : faHeart}
+                                                    onClick={handleApply}
                                                 />
                                             }
+                                            onClick={handleApply}
                                         >
                                             {apply}
                                         </CustomButton>
-                                    </Popconfirm>
-                                )}
-                                {!isMemberShip && isSolidHeart && (
+                                    )}
+                                    {!isMemberShip && !isSolidHeart && (
+                                        <Popconfirm
+                                            placement="top"
+                                            title={text}
+                                            onConfirm={handleApply}
+                                            okText="Ứng tuyển"
+                                            cancelText="Hủy"
+                                        >
+                                            <CustomButton
+                                                className={cx('btn-apply')}
+                                                leftIcon={
+                                                    <FontAwesomeIcon
+                                                        className={cx('action-apply')}
+                                                        icon={isSolidHeart ? faHeartSolid : faHeart}
+                                                    />
+                                                }
+                                            >
+                                                {apply}
+                                            </CustomButton>
+                                        </Popconfirm>
+                                    )}
+                                    {!isMemberShip && isSolidHeart && (
+                                        <CustomButton
+                                            className={cx('btn-apply')}
+                                            leftIcon={
+                                                <FontAwesomeIcon
+                                                    className={cx('action-apply')}
+                                                    icon={isSolidHeart ? faHeartSolid : faHeart}
+                                                    onClick={handleApply}
+                                                />
+                                            }
+                                            onClick={handleApply}
+                                        >
+                                            {apply}
+                                        </CustomButton>
+                                    )}
+                                    <CustomButton
+                                        className={cx('btn-save')}
+                                        leftIcon={
+                                            <FontAwesomeIcon
+                                                className={cx('action-save')}
+                                                icon={isSolidBookmark ? faBookmarkSolid : faBookmark}
+                                            />
+                                        }
+                                        onClick={handleSave}
+                                    >
+                                        {save}
+                                    </CustomButton>
+                                </div>
+                            )}
+                            {status === 1 && (
+                                <>
+                                    <div className={cx('action-message')}>
+                                        <div>
+                                            <p>
+                                                Bạn đã được giao công việc này. Hãy liên lạc với nhà tuyển dụng để bắt
+                                                đầu công việc
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p>
+                                                <b>Số điện thoại: </b>
+                                                {postDetail.createBy.phone}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p>
+                                                <b>Email: </b>
+                                                {postDetail.createBy.email}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className={cx('comment')}>
+                                        <Button type="primary" onClick={showModal}>
+                                            Đánh giá nhà tuyển dụng
+                                        </Button>
+                                    </div>
+                                </>
+                            )}
+                            {status === 0 && (
+                                <div className={cx('action-message')}>
+                                    <div>
+                                        <span>
+                                            Bạn đã bị từ chối công việc này. Bạn có thể tìm các việc làm hấp dẫn khác
+                                        </span>
+                                        <CustomButton to={config.routes.searchJob} className={cx('btn-link')}>
+                                            tại đây
+                                        </CustomButton>
+                                    </div>
+                                </div>
+                            )}
+                            {status === 2 && (
+                                <div className={cx('action')}>
                                     <CustomButton
                                         className={cx('btn-apply')}
                                         leftIcon={
@@ -320,131 +402,67 @@ const ViewDetailPost = () => {
                                     >
                                         {apply}
                                     </CustomButton>
-                                )}
-                                <CustomButton
-                                    className={cx('btn-save')}
-                                    leftIcon={
-                                        <FontAwesomeIcon
-                                            className={cx('action-save')}
-                                            icon={isSolidBookmark ? faBookmarkSolid : faBookmark}
-                                        />
-                                    }
-                                    onClick={handleSave}
-                                >
-                                    {save}
-                                </CustomButton>
-                            </div>
-                        )}
-                        {status === 1 && (
-                            <>
-                                <div className={cx('action-message')}>
-                                    <div>
-                                        <p>
-                                            Bạn đã được giao công việc này. Hãy liên lạc với nhà tuyển dụng để bắt đầu
-                                            công việc
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <p>
-                                            <b>Số điện thoại: </b>
-                                            {postDetail.createBy.phone}
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <p>
-                                            <b>Email: </b>
-                                            {postDetail.createBy.email}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className={cx('comment')}>
-                                    <Button type="primary" onClick={showModal}>
-                                        Đánh giá nhà tuyển dụng
-                                    </Button>
-                                </div>
-                            </>
-                        )}
-                        {status === 0 && (
-                            <div className={cx('action-message')}>
-                                <div>
-                                    <span>
-                                        Bạn đã bị từ chối công việc này. Bạn có thể tìm các việc làm hấp dẫn khác
-                                    </span>
-                                    <CustomButton to={config.routes.searchJob} className={cx('btn-link')}>
-                                        tại đây
+                                    <CustomButton
+                                        className={cx('btn-save')}
+                                        leftIcon={
+                                            <FontAwesomeIcon
+                                                className={cx('action-save')}
+                                                icon={isSolidBookmark ? faBookmarkSolid : faBookmark}
+                                            />
+                                        }
+                                        onClick={handleSave}
+                                    >
+                                        {save}
                                     </CustomButton>
                                 </div>
+                            )}
+                        </div>
+                        <div className={cx('right-component')}>
+                            <div className={cx('about-client')}>Thông tin nhà tuyển dụng</div>
+                            <div className={cx('star-point')}>
+                                <div className={cx('star-point-title')}>Đánh giá</div>
+                                <div className={cx('star-point-list-icon')}>
+                                    <FontAwesomeIcon className={cx('ic-star')} icon={faStar} />
+                                </div>
+                                <div className={cx('star-point-statistic')}>
+                                    {postDetail.createBy.star !== 'NaN' && (
+                                        <p>
+                                            {postDetail.createBy.star} trong tổng số{' '}
+                                            {postDetail.createBy.numberOfFeedback} đánh giá
+                                        </p>
+                                    )}
+                                    {postDetail.createBy.star === 'NaN' && <p>Chưa có đánh đánh giá</p>}
+                                </div>
                             </div>
-                        )}
-                        {status === 2 && (
-                            <div className={cx('action')}>
-                                <CustomButton
-                                    className={cx('btn-apply')}
-                                    leftIcon={
-                                        <FontAwesomeIcon
-                                            className={cx('action-apply')}
-                                            icon={isSolidHeart ? faHeartSolid : faHeart}
-                                            onClick={handleApply}
-                                        />
-                                    }
-                                    onClick={handleApply}
-                                >
-                                    {apply}
-                                </CustomButton>
-                                <CustomButton
-                                    className={cx('btn-save')}
-                                    leftIcon={
-                                        <FontAwesomeIcon
-                                            className={cx('action-save')}
-                                            icon={isSolidBookmark ? faBookmarkSolid : faBookmark}
-                                        />
-                                    }
-                                    onClick={handleSave}
-                                >
-                                    {save}
-                                </CustomButton>
-                            </div>
-                        )}
-                    </div>
-                    <div className={cx('right-component')}>
-                        <div className={cx('about-client')}>Thông tin nhà tuyển dụng</div>
-                        <div className={cx('star-point')}>
-                            <div className={cx('star-point-title')}>Đánh giá</div>
-                            <div className={cx('star-point-list-icon')}>
-                                <FontAwesomeIcon className={cx('ic-star')} icon={faStar} />
-                            </div>
-                            <div className={cx('star-point-statistic')}>
-                                {postDetail.createBy.star !== 'NaN' && (
+                            <div className={cx('job-posted')}>
+                                <div className={cx('job-posted-quantity')}>
+                                    {postDetail.createBy.totalPosted} bài đăng
+                                </div>
+                                <div className={cx('job-posted-hire-rate')}>
                                     <p>
-                                        {postDetail.createBy.star} trong tổng số {postDetail.createBy.numberOfFeedback}{' '}
-                                        đánh giá
+                                        Tổng số người đã ứng tuyển: <b>{postDetail.totalApplied}</b>
                                     </p>
-                                )}
-                                {postDetail.createBy.star === 'NaN' && <p>Chưa có đánh đánh giá</p>}
+                                </div>
+                            </div>
+                            <div className={cx('company-info-name')}>
+                                <CustomButton className={cx('btn-company')} onClick={handleViewDetailRecruiter}>
+                                    {postDetail.createBy.companyName}
+                                </CustomButton>
                             </div>
                         </div>
-                        <div className={cx('job-posted')}>
-                            <div className={cx('job-posted-quantity')}>{postDetail.createBy.totalPosted} bài đăng</div>
-                            <div className={cx('job-posted-hire-rate')}>
-                                <p>
-                                    Tổng số người đã ứng tuyển: <b>{postDetail.totalApplied}</b>
-                                </p>
-                            </div>
-                        </div>
-                        <div className={cx('company-info-name')}>
-                            <CustomButton className={cx('btn-company')} onClick={handleViewDetailRecruiter}>
-                                {postDetail.createBy.companyName}
+                        <div className={cx('right-component')}>
+                            <div className={cx('company-title')}>Trang web công ty</div>
+                            <CustomButton href={postDetail.createBy.website} className={cx('company-link')}>
+                                {postDetail.createBy.website}
                             </CustomButton>
                         </div>
                     </div>
-                    <div className={cx('right-component')}>
-                        <div className={cx('company-title')}>Trang web công ty</div>
-                        <CustomButton href={postDetail.createBy.website} className={cx('company-link')}>
-                            {postDetail.createBy.website}
-                        </CustomButton>
-                    </div>
                 </div>
-            </div>
+            ) : (
+                <div className={cx('container')}>
+                    <p className={cx('message-Invalid')}>Bài đăng không tồn tại</p>
+                </div>
+            )}
             <div className={cx('footer')}>
                 <Image src={images.bannerAloNgayFreelancer} alt="footer" />
             </div>
