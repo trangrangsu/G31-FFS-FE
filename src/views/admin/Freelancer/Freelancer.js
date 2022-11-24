@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import Search from '../../../components/Search';
 import { CPagination, CPaginationItem } from '@coreui/react';
 import { useNavigate } from 'react-router-dom';
+import { Select } from 'antd';
 
 import * as adminFreelancerService from '../../../services/adminFreelancerServices';
 import Config from '../../../config';
@@ -16,21 +17,22 @@ function Freelancer() {
     const [searchValue, setSearchValue] = useState('');
     const [pageIndex, setPageIndex] = useState(0);
     const [totalPages, setTotalPages] = useState(5);
-    const fetchApi = async (searchValue, pIndex) => {
-        const result = await adminFreelancerService.getFreelancers(searchValue, pIndex);
+    const [status, setStatus] = useState('-1');
+    const fetchApi = async (searchValue, pIndex, status) => {
+        const result = await adminFreelancerService.getFreelancers(searchValue, pIndex, status);
         console.log(result);
         setFreelancers(result.results);
         setPageIndex(result.pageIndex);
         setTotalPages(result.totalPages);
     };
     useEffect(() => {
-        fetchApi(searchValue, 0);
+        fetchApi(searchValue, 0, status);
     }, []);
     const handlePaging = (pIndex) => {
-        fetchApi(searchValue, pIndex);
+        fetchApi(searchValue, pIndex, status);
     };
     const handleSearch = (value) => {
-        fetchApi(value, 0);
+        fetchApi(value, 0, status);
     };
     const renderTableHeader = () => {
         return headers.map((properties, index) => {
@@ -102,19 +104,49 @@ function Freelancer() {
         };
         navigate(to);
     };
+    const handleChangeStatus = (value) => {
+        fetchApi(searchValue, 0, value);
+        setStatus(value);
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <h1 className={cx('title')}>Danh sách Freelancer</h1>
-                <Search
-                    type="f"
-                    className={cx('search')}
-                    title="Tìm kiếm Freelancer"
-                    onPending={(value) => {
-                        setSearchValue(value);
-                    }}
-                    onSearch={(value) => handleSearch(value)}
-                />
+                <div className={cx('filter')}>
+                    <Select
+                        defaultValue="Tất cả"
+                        size="large"
+                        style={{
+                            width: '200px',
+                            height: '43px',
+                            marginRight: '10px',
+                        }}
+                        onChange={handleChangeStatus}
+                        options={[
+                            {
+                                value: '-1',
+                                label: 'Tất cả',
+                            },
+                            {
+                                value: '0',
+                                label: 'Hoạt động',
+                            },
+                            {
+                                value: '1',
+                                label: 'Bị cấm',
+                            },
+                        ]}
+                    />
+                    <Search
+                        type="f"
+                        className={cx('search')}
+                        title="Tìm kiếm Freelancer"
+                        onPending={(value) => {
+                            setSearchValue(value);
+                        }}
+                        onSearch={(value) => handleSearch(value)}
+                    />
+                </div>
                 <table className={cx('freelancers')}>
                     <thead className={cx('table-header')}>
                         <tr>{renderTableHeader()}</tr>

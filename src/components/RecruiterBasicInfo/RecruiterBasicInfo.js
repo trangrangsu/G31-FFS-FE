@@ -80,10 +80,10 @@ const RecruiterBasicInfo = ({ recruiter, onClick }) => {
             count++;
             setPhoneValidate(true);
             setMessagePhone('Số điện thoại trống');
-        } else if (validatePhone(phone) === null) {
+        } else if (validatePhone(phone) === null || phone.length < 10) {
             count++;
             setPhoneValidate(true);
-            setMessagePhone('Số điện thoại không hợp lệ');
+            setMessagePhone('Vui lòng nhập đủ 10 chữ số');
         } else {
             setPhoneValidate(false);
             setMessagePhone('');

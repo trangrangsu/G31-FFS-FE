@@ -43,14 +43,24 @@ function Recruiter() {
         const result = await adminRecruiterServices.approveRecruiter(userId);
         console.log(result);
         if (result) {
-            message.success('Duyệt thành công');
+            message.success({
+                content: 'Duyệt thành công',
+                style: {
+                    marginTop: '50px',
+                },
+            });
             const index = recruitersPending.findIndex((recruiter) => recruiter.id === userId);
             setRecruitersPending((pre) => {
                 pre.splice(index, 1);
                 return [...pre];
             });
         } else {
-            message.error('Duyệt thất bại');
+            message.error({
+                content: 'Duyệt thất bại',
+                style: {
+                    marginTop: '50px',
+                },
+            });
         }
     };
     useEffect(() => {
@@ -182,7 +192,7 @@ function Recruiter() {
         approveRecruiterApi(userId);
     };
     const handleChangeStatus = (value) => {
-        fetchApi(0, value);
+        fetchApi(searchValue, 0, value);
         setStatus(value);
     };
     return (

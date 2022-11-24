@@ -38,6 +38,12 @@
         
     }
 }
+.filter{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 5px;
+    margin-left: 10%;
+}
 .table-paging {
     margin-top: 10px;
     margin-left: 10%;
@@ -54,7 +60,7 @@
 
 .search{
     margin-bottom: 5px;
-    margin-left: 10%;
+    margin-left: 1%;
 }
 .message{
     margin: 0 auto;

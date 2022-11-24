@@ -65,9 +65,9 @@ function StaffPopUp({ staff, callback }) {
         if (phone === '') {
             count++;
             setMessagePhone('Số điện thoại trống');
-        } else if (validatePhone(phone) === null) {
+        } else if (validatePhone(phone) === null || phone.length < 10) {
             count++;
-            setMessagePhone('Số điện thoại không hợp lệ');
+            setMessagePhone('Vui lòng nhập đủ 10 chữ số');
         } else {
             setMessagePhone('');
         }
@@ -110,9 +110,31 @@ function StaffPopUp({ staff, callback }) {
             };
             const fetchApi = async () => {
                 const result = await staffService.addStaff(staff);
-                message.success(result);
+                message.success({
+                    content: result,
+                    style: {
+                        marginTop: '50px',
+                    },
+                });
             };
             fetchApi();
+            handleClose();
+        }
+        if (count === 1 && staff.id) {
+            staff.email = email;
+            staff.fullName = fullName;
+            staff.address = address;
+            staff.phone = phone;
+            const updateApi = async () => {
+                const result = await staffService.updateStaff(staff);
+                message.success({
+                    content: result,
+                    style: {
+                        marginTop: '50px',
+                    },
+                });
+            };
+            updateApi();
             handleClose();
         }
     };

@@ -1,8 +1,8 @@
 import * as httpRequest from '../utils/httpRequest';
 
-export const getFreelancers = async (name, pageIndex) => {
+export const getFreelancers = async (name, pageIndex, status) => {
     try {
-        const res = await httpRequest.get(`api/admin/freelancer?name=${name}&pageIndex=${pageIndex}`);
+        const res = await httpRequest.get(`api/admin/freelancer?name=${name}&pageIndex=${pageIndex}&status=${status}`);
         return res;
     } catch (error) {
         console.log(error);

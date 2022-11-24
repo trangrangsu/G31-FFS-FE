@@ -56,9 +56,19 @@ function Service() {
         const result = await adminServiceServices.editFee(feeId, price);
         console.log(result);
         if (result) {
-            message.success('Sửa thành công');
+            message.success({
+                content: 'Sửa thành công',
+                style: {
+                    marginTop: '50px',
+                },
+            });
         } else {
-            message.error('Sửa thất bại');
+            message.error({
+                content: 'Sửa thất bại',
+                style: {
+                    marginTop: '50px',
+                },
+            });
             fetchApi();
         }
     };

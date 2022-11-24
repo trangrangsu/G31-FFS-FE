@@ -18,11 +18,7 @@ export const addStaff = async (staff) => {
 };
 export const updateStaff = async (staff) => {
     try {
-        const res = await httpRequest.put('add/staff', {
-            params: {
-                staff,
-            },
-        });
+        const res = await httpRequest.put('api/admin/update-staff', staff);
         return res;
     } catch (error) {
         console.log(error);
