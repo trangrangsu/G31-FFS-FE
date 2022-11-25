@@ -184,7 +184,7 @@ function Service() {
                                 <tr key={service.id}>
                                     <td>{service.id}</td>
                                     <td>{service.serviceName}</td>
-                                    <td>{service.duration}</td>
+                                    <td>{service.duration} Ngày</td>
                                     <td>{service.price} $</td>
                                     <td>
                                         {' '}

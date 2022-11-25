@@ -21,6 +21,11 @@ const UserReport = () => {
         console.log(result);
         if (result) {
             message.success('Báo cáo thành công');
+            setMessageTitle('');
+            setTitle('');
+            setValue('');
+        } else {
+            message.error('Báo cáo thất bại');
         }
     };
     const handleClick = () => {

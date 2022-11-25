@@ -130,7 +130,7 @@ function UserHeader() {
                                 Quản lý công việc
                             </Button>
                             <Button rounded to={config.routes.statisticFreelancer} className={cx('btn', 'middle-btn')}>
-                                Thông kê
+                                Thống kê
                             </Button>
                         </>
                     ) : (
@@ -145,7 +145,7 @@ function UserHeader() {
                                 Đăng tuyển dụng
                             </Button>
                             <Button rounded to={config.routes.statisticRecruiter} className={cx('btn', 'middle-btn')}>
-                                Thông kê
+                                Thống kê
                             </Button>
                         </>
                     )}

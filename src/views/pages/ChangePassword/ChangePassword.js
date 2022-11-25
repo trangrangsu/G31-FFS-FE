@@ -24,11 +24,16 @@ const ChangePassword = () => {
             message.error('Mật khẩu không chính xác');
         }
     };
+    function hasWhiteSpace(s) {
+        return s.indexOf(' ') >= 0;
+    }
     const handleChangePassword = () => {
         if (oldPassword === '' || newPassword === '' || newPasswordConfirm === '') {
             setMessagePassword('Vui lòng không để trống');
         } else if (newPassword.length < 8 || newPassword[0].toUpperCase() !== newPassword[0]) {
             setMessagePassword('Mật khẩu chứa tối thiểu 8 kí tự và chữ cái đầu viết hoa');
+        } else if (hasWhiteSpace(newPassword)) {
+            setMessagePassword('Mật khẩu không chứa dấu cách');
         } else if (newPassword !== newPasswordConfirm) {
             setMessagePassword('Mật khẩu mới không khớp vui lòng nhập lại');
         } else {

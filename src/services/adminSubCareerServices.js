@@ -15,7 +15,7 @@ export const addSubCareer = async (careerId, name) => {
         const res = await httpRequest.post(`api/staff/subCareer/add?career_id=${careerId}&name=${name}`);
         return res;
     } catch (error) {
-        console.log(error);
+        return error;
     }
 };
 export const updateSubCareer = async (careerId, id, name) => {
@@ -23,7 +23,7 @@ export const updateSubCareer = async (careerId, id, name) => {
         const res = await httpRequest.put(`api/staff/subCareer/update?career_id=${careerId}&id=${id}&name=${name}`);
         return res;
     } catch (error) {
-        console.log(error);
+        return error;
     }
 };
 export const deleteSubCareer = async (id) => {

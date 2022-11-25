@@ -6,6 +6,7 @@ import { cilMenu } from '@coreui/icons';
 import classNames from 'classnames/bind';
 import Menu from './Popper/Menu';
 
+import config from '../config';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical, faRightFromBracket, faUnlock } from '@fortawesome/free-solid-svg-icons';
 import styles from './Component.module.scss';
@@ -20,7 +21,7 @@ const MENU_ITEMS = [
     {
         icon: <FontAwesomeIcon icon={faRightFromBracket} />,
         title: 'Đăng xuất',
-        to: '/',
+        to: config.routes.login,
     },
 ];
 

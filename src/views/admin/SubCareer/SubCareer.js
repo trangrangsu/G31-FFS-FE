@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import { CPagination, CPaginationItem } from '@coreui/react';
 import { faTrashCan, faPenClip } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { message } from 'antd';
 
 import * as adminSubCareerServices from '../../../services/adminSubCareerServices';
 import * as adminCareerServices from '../../../services/adminCareerServices';
@@ -39,11 +40,41 @@ function SubCareer() {
     const addSubCareerApi = async (careerId, name) => {
         const result1 = await adminSubCareerServices.addSubCareer(careerId, name);
         console.log(result1);
+        if (result1.response) {
+            message.error({
+                content: result1.response.data,
+                style: {
+                    marginTop: '50px',
+                },
+            });
+        } else {
+            message.success({
+                content: result1,
+                style: {
+                    marginTop: '50px',
+                },
+            });
+        }
         getSubCareerApi();
     };
     const updateSubCareerApi = async (careerId, id, name) => {
         const result1 = await adminSubCareerServices.updateSubCareer(careerId, id, name);
         console.log(result1);
+        if (result1.response) {
+            message.error({
+                content: result1.response.data,
+                style: {
+                    marginTop: '50px',
+                },
+            });
+        } else {
+            message.success({
+                content: result1,
+                style: {
+                    marginTop: '50px',
+                },
+            });
+        }
         getSubCareerApi();
     };
     const deleteSubCareerApi = async (id) => {
