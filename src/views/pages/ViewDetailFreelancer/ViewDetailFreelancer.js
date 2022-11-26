@@ -58,35 +58,40 @@ function ViewDetailFreelancer() {
     const [buyService, setBuyService] = useState(false);
     const [isApplied, setIsApplied] = useState(false);
     const text = 'Phí xem thông tin là ' + account.feeViewProfile + '$';
+    const [isValidFreelancer, setIsValidFreelancer] = useState(true);
 
     const fetchApi = async () => {
         const result = await recruiterPostManagementServices.getProfileFreelancer(freelancerId, account.userId);
         console.log(result);
-        setFullName(result.fullName);
-        setBirthdate(result.birthDate);
-        setSubCareer(result.subCareer);
-        setPhone(result.phone);
-        setEmail(result.email);
-        setAddress(result.address);
-        setCity(result.city);
-        setPrice(result.costPerHour);
-        setDescription(result.description);
-        setGenderBy(result.gender);
-        setIsApplied(result.isApplied);
-        if (result.educations !== null) {
-            setEducations(result.educations);
-        }
-        if (result.skills !== null) {
-            setSkills(result.skills);
-        }
-        if (result.workExps !== null) {
-            setWorkExps(result.workExps);
-        }
-        if (result.cv !== null) {
-            setCv(result.cv);
-        }
-        if (result.avatar !== null) {
-            setAvatar(result.avatar);
+        if (result !== undefined && result !== '' && result !== null) {
+            setFullName(result.fullName);
+            setBirthdate(result.birthDate);
+            setSubCareer(result.subCareer);
+            setPhone(result.phone);
+            setEmail(result.email);
+            setAddress(result.address);
+            setCity(result.city);
+            setPrice(result.costPerHour);
+            setDescription(result.description);
+            setGenderBy(result.gender);
+            setIsApplied(result.isApplied);
+            if (result.educations !== null) {
+                setEducations(result.educations);
+            }
+            if (result.skills !== null) {
+                setSkills(result.skills);
+            }
+            if (result.workExps !== null) {
+                setWorkExps(result.workExps);
+            }
+            if (result.cv !== null) {
+                setCv(result.cv);
+            }
+            if (result.avatar !== null) {
+                setAvatar(result.avatar);
+            }
+        } else {
+            setIsValidFreelancer(false);
         }
     };
     const updateAccountBalanceApi = async () => {
@@ -129,160 +134,166 @@ function ViewDetailFreelancer() {
     const handleOnDeleteWorkExp = (id) => {};
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('container')}>
-                <div className={cx('profile')}>
-                    <div className={cx('profile-basic')}>
-                        <div className={cx('avatar')}>
-                            <div className={cx('avatar-container')}>
-                                <div className={cx('avatar-img')}>
-                                    <Image src={image} alt="avatar" ref={imgRef} />
-                                </div>
-                            </div>
-                        </div>
-                        <div className={cx('info')}>
-                            <div className={cx('info-left')}>
-                                <div className={cx('info-name')}>
-                                    <p>{fullName}</p>
-                                </div>
-                                <div className={cx('info-item')}>
-                                    <FontAwesomeIcon icon={faVenusMars} />
-                                    <p>{gender}</p>
-                                </div>
-                                <div className={cx('info-item')}>
-                                    <FontAwesomeIcon icon={faCakeCandles} />
-                                    <p>{birthdate}</p>
-                                </div>
-                                <div className={cx('info-item')}>
-                                    <FontAwesomeIcon icon={faClipboardUser} />
-                                    <p>{subCareer}</p>
-                                </div>
-                            </div>
-                            <div className={cx('info-right')}>
-                                <div className={cx('info-space')}></div>
-                                {(isApplied || isMemberShip || buyService) && (
-                                    <>
-                                        <div className={cx('info-item')}>
-                                            <FontAwesomeIcon icon={faPhone} />
-                                            <p>{phone}</p>
-                                        </div>
-                                        <div className={cx('info-item')}>
-                                            <FontAwesomeIcon icon={faEnvelope} />
-                                            <p>{email}</p>
-                                        </div>
-                                    </>
-                                )}
-                                {!isApplied && !isMemberShip && !buyService && (
-                                    <>
-                                        <div className={cx('info-item')}>
-                                            <FontAwesomeIcon icon={faPhone} />
-                                            <p>**********</p>
-                                        </div>
-                                        <div className={cx('info-item')}>
-                                            <FontAwesomeIcon icon={faEnvelope} />
-                                            <p>***************</p>
-                                        </div>
-                                    </>
-                                )}
-
-                                <div className={cx('info-item')}>
-                                    <FontAwesomeIcon icon={faLocationDot} />
-                                    <p>
-                                        {address} - {city}
-                                    </p>
-                                </div>
-                            </div>
-                            {!isApplied && !isMemberShip && !buyService && (
-                                <div>
-                                    <Popconfirm
-                                        placement="top"
-                                        title={text}
-                                        onConfirm={handleSubmit}
-                                        okText="Xem thông tin"
-                                        cancelText="Hủy"
-                                    >
-                                        <Button type="primary" size="large">
-                                            Thông tin liên hệ
-                                        </Button>
-                                    </Popconfirm>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                    <div className={cx('profile-complicate')}>
-                        <div className={cx('complicate-left')}>
-                            <div className={cx('educations')}>
-                                <div className={cx('title')}>
-                                    <p>Giáo dục</p>
-                                </div>
-                                {educations.map((education, index) => (
-                                    <EducationItem
-                                        education={education}
-                                        key={index}
-                                        onEdit={handleOnEditEducation}
-                                        onDelete={handleOnDeleteEducation}
-                                    />
-                                ))}
-                            </div>
-                            <div className={cx('skills')}>
-                                <div className={cx('title')}>
-                                    <p>Kỹ năng</p>
-                                </div>
-                                {skills.map((skill) => (
-                                    <div className={cx('skill')} key={skill.id}>
-                                        <p>{skill.name}</p>
+            {isValidFreelancer ? (
+                <div className={cx('container')}>
+                    <div className={cx('profile')}>
+                        <div className={cx('profile-basic')}>
+                            <div className={cx('avatar')}>
+                                <div className={cx('avatar-container')}>
+                                    <div className={cx('avatar-img')}>
+                                        <Image src={image} alt="avatar" ref={imgRef} />
                                     </div>
-                                ))}
-                            </div>
-                            <div className={cx('cv')}>
-                                <div className={cx('cv-title')}>
-                                    <p>CV</p>
                                 </div>
-                                <div className={cx('cv-content')}>
-                                    <div className={cx('cv-left')}>
-                                        <FontAwesomeIcon icon={faFileLines} />
+                            </div>
+                            <div className={cx('info')}>
+                                <div className={cx('info-left')}>
+                                    <div className={cx('info-name')}>
+                                        <p>{fullName}</p>
                                     </div>
-                                    {cv !== '' && (
-                                        <div className={cx('cv-right')}>
-                                            <a href={cvUrl}>{cv}</a>
-                                        </div>
+                                    <div className={cx('info-item')}>
+                                        <FontAwesomeIcon icon={faVenusMars} />
+                                        <p>{gender}</p>
+                                    </div>
+                                    <div className={cx('info-item')}>
+                                        <FontAwesomeIcon icon={faCakeCandles} />
+                                        <p>{birthdate}</p>
+                                    </div>
+                                    <div className={cx('info-item')}>
+                                        <FontAwesomeIcon icon={faClipboardUser} />
+                                        <p>{subCareer}</p>
+                                    </div>
+                                </div>
+                                <div className={cx('info-right')}>
+                                    <div className={cx('info-space')}></div>
+                                    {(isApplied || isMemberShip || buyService) && (
+                                        <>
+                                            <div className={cx('info-item')}>
+                                                <FontAwesomeIcon icon={faPhone} />
+                                                <p>{phone}</p>
+                                            </div>
+                                            <div className={cx('info-item')}>
+                                                <FontAwesomeIcon icon={faEnvelope} />
+                                                <p>{email}</p>
+                                            </div>
+                                        </>
                                     )}
+                                    {!isApplied && !isMemberShip && !buyService && (
+                                        <>
+                                            <div className={cx('info-item')}>
+                                                <FontAwesomeIcon icon={faPhone} />
+                                                <p>**********</p>
+                                            </div>
+                                            <div className={cx('info-item')}>
+                                                <FontAwesomeIcon icon={faEnvelope} />
+                                                <p>***************</p>
+                                            </div>
+                                        </>
+                                    )}
+
+                                    <div className={cx('info-item')}>
+                                        <FontAwesomeIcon icon={faLocationDot} />
+                                        <p>
+                                            {address} - {city}
+                                        </p>
+                                    </div>
                                 </div>
+                                {!isApplied && !isMemberShip && !buyService && (
+                                    <div>
+                                        <Popconfirm
+                                            placement="top"
+                                            title={text}
+                                            onConfirm={handleSubmit}
+                                            okText="Xem thông tin"
+                                            cancelText="Hủy"
+                                        >
+                                            <Button type="primary" size="large">
+                                                Thông tin liên hệ
+                                            </Button>
+                                        </Popconfirm>
+                                    </div>
+                                )}
                             </div>
                         </div>
-                        <div className={cx('complicate-right')}>
-                            <div className={cx('complicate-description')}>
-                                <div className={cx('description-header')}>
-                                    <div className={cx('title', 'font-size')}>
-                                        <p>Giới thiệu</p>
-                                    </div>
+                        <div className={cx('profile-complicate')}>
+                            <div className={cx('complicate-left')}>
+                                <div className={cx('educations')}>
                                     <div className={cx('title')}>
-                                        <p>${price} VND/hr</p>
+                                        <p>Giáo dục</p>
+                                    </div>
+                                    {educations.map((education, index) => (
+                                        <EducationItem
+                                            education={education}
+                                            key={index}
+                                            onEdit={handleOnEditEducation}
+                                            onDelete={handleOnDeleteEducation}
+                                        />
+                                    ))}
+                                </div>
+                                <div className={cx('skills')}>
+                                    <div className={cx('title')}>
+                                        <p>Kỹ năng</p>
+                                    </div>
+                                    {skills.map((skill) => (
+                                        <div className={cx('skill')} key={skill.id}>
+                                            <p>{skill.name}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className={cx('cv')}>
+                                    <div className={cx('cv-title')}>
+                                        <p>CV</p>
+                                    </div>
+                                    <div className={cx('cv-content')}>
+                                        <div className={cx('cv-left')}>
+                                            <FontAwesomeIcon icon={faFileLines} />
+                                        </div>
+                                        {cv !== '' && (
+                                            <div className={cx('cv-right')}>
+                                                <a href={cvUrl}>{cv}</a>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
-                                <div className={cx('content')}>
-                                    <p>{description}</p>
-                                </div>
                             </div>
-                            <div className={cx('complicate-workExp')}>
-                                <div className={cx('title', 'font-size')}>
-                                    <p>Kinh nghiệm</p>
+                            <div className={cx('complicate-right')}>
+                                <div className={cx('complicate-description')}>
+                                    <div className={cx('description-header')}>
+                                        <div className={cx('title', 'font-size')}>
+                                            <p>Giới thiệu</p>
+                                        </div>
+                                        <div className={cx('title')}>
+                                            <p>${price} VND/hr</p>
+                                        </div>
+                                    </div>
+                                    <div className={cx('content')}>
+                                        <p>{description}</p>
+                                    </div>
                                 </div>
-                                {workExps.map((workExp, index) => (
-                                    <WorkExperiment
-                                        workExp={workExp}
-                                        key={index}
-                                        onEdit={handleOnEditWorkExp}
-                                        onDelete={handleOnDeleteWorkExp}
-                                    />
-                                ))}
+                                <div className={cx('complicate-workExp')}>
+                                    <div className={cx('title', 'font-size')}>
+                                        <p>Kinh nghiệm</p>
+                                    </div>
+                                    {workExps.map((workExp, index) => (
+                                        <WorkExperiment
+                                            workExp={workExp}
+                                            key={index}
+                                            onEdit={handleOnEditWorkExp}
+                                            onDelete={handleOnDeleteWorkExp}
+                                        />
+                                    ))}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className={cx('feedback')}>
-                        <Feedback userId={freelancerId} />
+                        <div className={cx('feedback')}>
+                            <Feedback userId={freelancerId} />
+                        </div>
                     </div>
                 </div>
-            </div>
+            ) : (
+                <div className={cx('container')}>
+                    <p className={cx('message-Invalid')}>Freelancer không tồn tại</p>
+                </div>
+            )}
         </div>
     );
 }

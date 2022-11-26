@@ -23,6 +23,8 @@ function ViewDetailRecruiter() {
     const [image, setImage] = useState(images.defaultAvatar);
     const [show, setShow] = useState(false);
     const [searchParams, setSearchParams] = useSearchParams();
+    const [isValidRecruiter, setIsValidRecruiter] = useState(true);
+
     const unBanApi = async (userId) => {
         const result = await adminFreelancerService.unBan(userId);
         console.log(result);
@@ -31,10 +33,14 @@ function ViewDetailRecruiter() {
         const fetchApi = async () => {
             const result = await adminRecruiterServices.getRecruiter(searchParams.get('id'));
             console.log(result);
-            setRecruiter(result);
-            setBanFlag(result.isBanned);
-            if (result.avatar !== null) {
-                setAvatar(result.avatar);
+            if (result !== undefined && result !== '' && result !== null) {
+                setRecruiter(result);
+                setBanFlag(result.isBanned);
+                if (result.avatar !== null) {
+                    setAvatar(result.avatar);
+                }
+            } else {
+                setIsValidRecruiter(false);
             }
         };
         fetchApi();
@@ -52,78 +58,84 @@ function ViewDetailRecruiter() {
     };
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('container')}>
-                <div className={cx('detail-title')}>
-                    <FontAwesomeIcon icon={faUserPen} className={cx('icon-user')} />
-                    <h1 className={cx('title')}>Thông Tin chi tiết của: {recruiter.companyName}</h1>
-                </div>
+            {isValidRecruiter ? (
+                <div className={cx('container')}>
+                    <div className={cx('detail-title')}>
+                        <FontAwesomeIcon icon={faUserPen} className={cx('icon-user')} />
+                        <h1 className={cx('title')}>Thông Tin chi tiết của: {recruiter.companyName}</h1>
+                    </div>
 
-                <div className={cx('recruiter-info')}>
-                    <div className={cx('left-info')}>
-                        <div className={cx('img-info')}>
-                            <Image className={cx('avatar-info')} src={image} alt="Girl in a jacket" ref={imgRef} />
+                    <div className={cx('recruiter-info')}>
+                        <div className={cx('left-info')}>
+                            <div className={cx('img-info')}>
+                                <Image className={cx('avatar-info')} src={image} alt="Girl in a jacket" ref={imgRef} />
+                            </div>
+                            <div className={cx('left-detail')}>
+                                <div className={cx('companyname')}>{recruiter.fullName}</div>
+                                <div>
+                                    <label>Đánh giá:</label>
+                                    {recruiter.star === 0 ? (
+                                        <p>Chưa có đánh giá</p>
+                                    ) : (
+                                        <p>
+                                            {recruiter.star} <Star />
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
                         </div>
-                        <div className={cx('left-detail')}>
-                            <div className={cx('companyname')}>{recruiter.fullName}</div>
-                            <div>
-                                <label>Đánh giá:</label>
-                                {recruiter.star === 0 ? (
-                                    <p>Chưa có đánh giá</p>
-                                ) : (
-                                    <p>
-                                        {recruiter.star} <Star />
-                                    </p>
-                                )}
+                        <div className={cx('right-info')}>
+                            <div className={cx('right-detail')}>
+                                <div>Phone: {recruiter.phone}</div>
+                                <div>Email: {recruiter.email}</div>
+                            </div>
+                        </div>
+                        <div className={cx('action')}>
+                            {!banFlag && (
+                                <Button admin className={cx('btn-warning')} onClick={handleShowBanPopup}>
+                                    {'Khóa tài khoản'}
+                                </Button>
+                            )}
+                            {banFlag && (
+                                <Button admin className={cx('btn-info')} onClick={handleUnban}>
+                                    {'Mở khóa'}
+                                </Button>
+                            )}
+                        </div>
+                    </div>
+                    <div className={cx('address-content')}>
+                        <div className={cx('address-title')}>
+                            <p>Địa chỉ</p>
+                        </div>
+                        <div className={cx('address')}>{recruiter.address}</div>
+                    </div>
+                    <div className={cx('description-content')}>
+                        <div className={cx('description-title')}>
+                            <p>{recruiter.companyName}</p>
+                        </div>
+                        <div className={cx('padding')}>
+                            <div className={cx('description')}>{recruiter.companyIntro}</div>
+                            <div className={cx('background-color')}>
+                                <label className={cx('label')}>Ngành nghề:</label>
+                                <p>{recruiter.career.name}</p>
+                            </div>
+                            <div className={cx('background-color')}>
+                                <label className={cx('label')}>Tax-Number:</label> <p>{recruiter.taxNumber}</p>
+                            </div>
+                            <div className={cx('background-color')}>
+                                <label className={cx('label')}>Website:</label>{' '}
+                                <Button text href={recruiter.website} className={cx('document')}>
+                                    {recruiter.website}
+                                </Button>
                             </div>
                         </div>
                     </div>
-                    <div className={cx('right-info')}>
-                        <div className={cx('right-detail')}>
-                            <div>Phone: {recruiter.phone}</div>
-                            <div>Email: {recruiter.email}</div>
-                        </div>
-                    </div>
-                    <div className={cx('action')}>
-                        {!banFlag && (
-                            <Button admin className={cx('btn-warning')} onClick={handleShowBanPopup}>
-                                {'Khóa tài khoản'}
-                            </Button>
-                        )}
-                        {banFlag && (
-                            <Button admin className={cx('btn-info')} onClick={handleUnban}>
-                                {'Mở khóa'}
-                            </Button>
-                        )}
-                    </div>
                 </div>
-                <div className={cx('address-content')}>
-                    <div className={cx('address-title')}>
-                        <p>Địa chỉ</p>
-                    </div>
-                    <div className={cx('address')}>{recruiter.address}</div>
+            ) : (
+                <div className={cx('container')}>
+                    <p className={cx('message-Invalid')}>Nhà tuyển dụng không tồn tại</p>
                 </div>
-                <div className={cx('description-content')}>
-                    <div className={cx('description-title')}>
-                        <p>{recruiter.companyName}</p>
-                    </div>
-                    <div className={cx('padding')}>
-                        <div className={cx('description')}>{recruiter.companyIntro}</div>
-                        <div className={cx('background-color')}>
-                            <label className={cx('label')}>Ngành nghề:</label>
-                            <p>{recruiter.career.name}</p>
-                        </div>
-                        <div className={cx('background-color')}>
-                            <label className={cx('label')}>Tax-Number:</label> <p>{recruiter.taxNumber}</p>
-                        </div>
-                        <div className={cx('background-color')}>
-                            <label className={cx('label')}>Website:</label>{' '}
-                            <Button text href={recruiter.website} className={cx('document')}>
-                                {recruiter.website}
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            )}
             {show && (
                 <BanPopUp
                     id={recruiter.id}

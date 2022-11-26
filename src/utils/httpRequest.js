@@ -3,8 +3,8 @@ import axios from 'axios';
 const httpRequest = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL,
     headers: {
-        //Authorization: sessionStorage.getItem('token') !== null ? sessionStorage.getItem('token') : -1,
-        Authorization: sessionStorage.getItem('token') !== null ? sessionStorage.getItem('token') : '',
+        //Authorization: localStorage.getItem('token') !== null ? localStorage.getItem('token') : -1,
+        Authorization: localStorage.getItem('token') !== null ? localStorage.getItem('token') : '',
     },
 });
 

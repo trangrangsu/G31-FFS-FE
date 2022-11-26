@@ -27,18 +27,24 @@ function Service() {
     const [postValue, setPostValue] = useState(1);
     const [applyValue, setApplyValue] = useState(0.5);
     const [viewValue, setViewValue] = useState(0.5);
+    const [postPreValue, setPostPreValue] = useState(1);
+    const [applyPreValue, setApplyPreValue] = useState(0.5);
+    const [viewPreValue, setViewPreValue] = useState(0.5);
     const [benefits, setBenefit] = useState([]);
     const [fees, setFees] = useState([]);
     const [messageFee, setMessageFree] = useState('');
     const fetchApi = async () => {
         const result = await adminServiceServices.getServices(user);
-        console.log(result);
+        //console.log(result);
         setServices(result.services);
         setBenefit(result.benefits);
         setFees(result.fees);
         setPostValue(result.fees[0].price);
         setApplyValue(result.fees[1].price);
         setViewValue(result.fees[2].price);
+        setPostPreValue(result.fees[0].price);
+        setApplyPreValue(result.fees[1].price);
+        setViewPreValue(result.fees[2].price);
     };
 
     const updateServiceApi = async (service) => {
@@ -54,7 +60,7 @@ function Service() {
     };
     const editFeeApi = async (feeId, price, flag) => {
         const result = await adminServiceServices.editFee(feeId, price);
-        console.log(result);
+        //console.log(result);
         if (result) {
             message.success({
                 content: 'Sửa thành công',
@@ -62,6 +68,13 @@ function Service() {
                     marginTop: '50px',
                 },
             });
+            if (flag === 'post') {
+                setPostPreValue(price);
+            } else if (flag === 'apply') {
+                setApplyPreValue(price);
+            } else {
+                setViewPreValue(price);
+            }
         } else {
             message.error({
                 content: 'Sửa thất bại',
@@ -69,7 +82,13 @@ function Service() {
                     marginTop: '50px',
                 },
             });
-            fetchApi();
+            if (flag === 'post') {
+                setPostValue(postPreValue);
+            } else if (flag === 'apply') {
+                setApplyValue(applyPreValue);
+            } else {
+                setViewValue(viewPreValue);
+            }
         }
     };
     useEffect(() => {
@@ -232,9 +251,21 @@ function Service() {
                                 </Button>
                             )}
                             {postEdit && (
-                                <Button type="primary" onClick={handEditPricePost}>
-                                    Xác nhận
-                                </Button>
+                                <>
+                                    <Button type="primary" onClick={handEditPricePost}>
+                                        Xác nhận
+                                    </Button>
+                                    <p style={{ width: '5px' }}></p>
+                                    <Button
+                                        type="primary"
+                                        onClick={() => {
+                                            setPostEdit(false);
+                                            setPostValue(postPreValue);
+                                        }}
+                                    >
+                                        Hủy
+                                    </Button>
+                                </>
                             )}
                         </div>
                         <div className={cx('fee-item')}>
@@ -256,9 +287,21 @@ function Service() {
                                 </Button>
                             )}
                             {applyEdit && (
-                                <Button type="primary" onClick={handEditPriceApply}>
-                                    Xác nhận
-                                </Button>
+                                <>
+                                    <Button type="primary" onClick={handEditPriceApply}>
+                                        Xác nhận
+                                    </Button>
+                                    <p style={{ width: '5px' }}></p>
+                                    <Button
+                                        type="primary"
+                                        onClick={() => {
+                                            setApplyEdit(false);
+                                            setApplyValue(applyPreValue);
+                                        }}
+                                    >
+                                        Hủy
+                                    </Button>
+                                </>
                             )}
                         </div>
                         <div className={cx('fee-item')}>
@@ -280,9 +323,21 @@ function Service() {
                                 </Button>
                             )}
                             {viewEdit && (
-                                <Button type="primary" onClick={handEditPriceView}>
-                                    Xác nhận
-                                </Button>
+                                <>
+                                    <Button type="primary" onClick={handEditPriceView}>
+                                        Xác nhận
+                                    </Button>
+                                    <p style={{ width: '5px' }}></p>
+                                    <Button
+                                        type="primary"
+                                        onClick={() => {
+                                            setViewEdit(false);
+                                            setViewValue(viewPreValue);
+                                        }}
+                                    >
+                                        Hủy
+                                    </Button>
+                                </>
                             )}
                         </div>
                         {messageFee !== '' && (

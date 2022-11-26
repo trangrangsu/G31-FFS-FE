@@ -34,7 +34,7 @@ const ViewDetailPost = ({ postId }) => {
     const viewDetailPostApi = async () => {
         const result = await recruiterPostManagementServices.viewDetailPost(account.userId, postId);
         console.log(result);
-        if (result !== undefined) {
+        if (result !== undefined && result !== '' && result !== null) {
             setPostDetail(result);
             setDocument(result.attach);
             if (!result.isActive) {

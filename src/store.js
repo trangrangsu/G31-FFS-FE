@@ -1,7 +1,7 @@
 import { createStore } from 'redux';
 import * as loginServices from './services/loginServices';
 
-const userId = sessionStorage.getItem('userId');
+const userId = localStorage.getItem('userId');
 console.log(userId);
 
 const initialState = {

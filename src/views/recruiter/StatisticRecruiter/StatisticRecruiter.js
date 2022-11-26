@@ -1,11 +1,23 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faComment, faPaste, faStar, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 
+import * as userStatisticServices from '../../../services/userStatisticServices';
 import styles from './StatisticRecruiter.module.scss';
-import { faComment, faPaste, faStar, faThumbsUp, faXmark } from '@fortawesome/free-solid-svg-icons';
 const cx = classNames.bind(styles);
 const StatisticRecruiter = () => {
+    //localStorage.getItem('token')
+    const getStatisticRecruiterApi = async () => {
+        const result = await userStatisticServices.getStatisticRecruiter(
+            localStorage.getItem('token'),
+            localStorage.getItem('userId'),
+        );
+        console.log(result);
+    };
+    useEffect(() => {
+        getStatisticRecruiterApi();
+    }, []);
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>

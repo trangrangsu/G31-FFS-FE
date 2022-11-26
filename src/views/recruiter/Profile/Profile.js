@@ -116,6 +116,9 @@ const Profile = () => {
         setCity(recruiter.city);
         setCountry(recruiter.country);
         updateProfileApi(recruiter);
+        setTimeout(() => {
+            fetchApi();
+        }, 100);
     };
     const handleCallCompanyInfo = (companyInfo) => {
         setShowCompanyInfo(false);
@@ -125,6 +128,9 @@ const Profile = () => {
         setCompanyName(companyInfo.companyName);
         setCompanyIntro(companyInfo.description);
         updateProfileRecruiterApi(companyInfo);
+        setTimeout(() => {
+            fetchApi();
+        }, 100);
     };
     return (
         <div className={cx('wrapper')}>

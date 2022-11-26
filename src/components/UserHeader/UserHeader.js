@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -50,6 +50,7 @@ const MENU_ITEMS = [
 ];
 
 function UserHeader() {
+    const dispatch = useDispatch();
     const account = useSelector((state) => state.account);
     const accountBalance = useSelector((state) => state.accountBalance).toFixed(1);
     const accountAvatar = useSelector((state) => state.accountAvatar);
@@ -72,11 +73,17 @@ function UserHeader() {
     }
 
     const handleMenuChange = (menuItem) => {
-        switch (menuItem.type) {
-            case 'language':
-                // Handle change language
-                break;
-            default:
+        //console.log(menuItem);
+        if (menuItem.title === 'Đăng xuất') {
+            dispatch({ type: 'set', account: {} });
+            dispatch({ type: 'set', accountBalance: 0 });
+            dispatch({ type: 'set', accountAvatar: '' });
+            dispatch({ type: 'set', currentServiceName: null });
+            dispatch({ type: 'set', currentServiceId: null });
+            dispatch({ type: 'set', isMemberShip: false });
+            localStorage.setItem('token', '');
+            localStorage.setItem('userId', '');
+            localStorage.setItem('userRole', '');
         }
     };
     useEffect(() => {

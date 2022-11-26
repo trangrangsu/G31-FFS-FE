@@ -28,7 +28,7 @@ const permissions = (role) => {
 };
 function AppRouter() {
     const account = useSelector((state) => state.account);
-    const userRole = sessionStorage.getItem('userRole');
+    const userRole = localStorage.getItem('userRole');
     const routes = permissions(userRole);
 
     return (

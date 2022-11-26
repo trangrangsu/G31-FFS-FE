@@ -10,7 +10,7 @@ import Comment from './Comment';
 import CommentItem from './CommentItem';
 import styles from './Feedback.module.scss';
 const cx = classNames.bind(styles);
-const currentUserId = sessionStorage.getItem('userId');
+const currentUserId = localStorage.getItem('userId');
 function Feedback({ userId }) {
     const [starAverage, setStarAverage] = useState(0);
     const [totalFeedback, setTotalFeedback] = useState(0);

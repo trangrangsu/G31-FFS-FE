@@ -28,7 +28,19 @@ const MENU_ITEMS = [
 const AppHeader = () => {
     const dispatch = useDispatch();
     const sidebarShow = useSelector((state) => state.sidebarShow);
-
+    const handleMenuChange = (menuItem) => {
+        if (menuItem.title === 'Đăng xuất') {
+            dispatch({ type: 'set', account: {} });
+            dispatch({ type: 'set', accountBalance: 0 });
+            dispatch({ type: 'set', accountAvatar: '' });
+            dispatch({ type: 'set', currentServiceName: null });
+            dispatch({ type: 'set', currentServiceId: null });
+            dispatch({ type: 'set', isMemberShip: false });
+            localStorage.setItem('token', '');
+            localStorage.setItem('userId', '');
+            localStorage.setItem('userRole', '');
+        }
+    };
     return (
         <CHeader position="sticky" className="mb-4">
             <CContainer fluid>
@@ -40,7 +52,7 @@ const AppHeader = () => {
                     <CNavItem></CNavItem>
                 </CHeaderNav>
                 <CHeaderNav className="ms-3">
-                    <Menu items={MENU_ITEMS} hideOnClick>
+                    <Menu items={MENU_ITEMS} hideOnClick onChange={handleMenuChange}>
                         <button className={cx('more-btn')}>
                             <FontAwesomeIcon icon={faEllipsisVertical} />
                         </button>

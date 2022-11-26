@@ -20,12 +20,17 @@ function ViewDetailPost() {
     const account = useSelector((state) => state.account);
     const [document, setDocument] = useState('');
     const [documentURL, setDocumentURL] = useState('#');
-    //const [isApproved, setIsApproved] = useState();
+    const [isValidPost, setIsValidPost] = useState(true);
+
     const fetchApi = async () => {
         const result = await adminPostServices.getDetailPost(searchParams.get('id'));
         console.log(result);
-        setPost(result);
-        setDocument(result.attach);
+        if (result !== undefined && result !== '' && result !== null) {
+            setPost(result);
+            setDocument(result.attach);
+        } else {
+            setIsValidPost(false);
+        }
     };
     useEffect(() => {
         fetchApi();
@@ -65,83 +70,89 @@ function ViewDetailPost() {
     };
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('container')}>
-                <div className={cx('detail-title')}>
-                    <h1 className={cx('title')}>Thông Tin chi tiết bài đăng</h1>
-                </div>
-                <div className={cx('margin-bottom')}>
-                    <h1 className={cx('title-header')}>{post.jobTitle}</h1>
-                    <div className={cx('content')}>
-                        <div className={cx('info')}>
-                            <p>
-                                Đã ngày <span>{post.time}</span> bởi{' '}
-                                <Button
-                                    to={{
-                                        pathname: Config.routes.viewDetailFreelancerAdmin,
-                                        search: `?id=${post.createBy.id}`,
-                                    }}
-                                >
-                                    {post.createBy.name}
-                                </Button>
-                            </p>
-                        </div>
-                        <div className={cx('description')}>
-                            <p>{post.description}</p>
-                        </div>
-                        <div className={cx('attach')}>
-                            <p>Đính kèm:</p>
-                            <Button href={documentURL}>{post.attach}</Button>
+            {isValidPost ? (
+                <div className={cx('container')}>
+                    <div className={cx('detail-title')}>
+                        <h1 className={cx('title')}>Thông Tin chi tiết bài đăng</h1>
+                    </div>
+                    <div className={cx('margin-bottom')}>
+                        <h1 className={cx('title-header')}>{post.jobTitle}</h1>
+                        <div className={cx('content')}>
+                            <div className={cx('info')}>
+                                <p>
+                                    Đã ngày <span>{post.time}</span> bởi{' '}
+                                    <Button
+                                        to={{
+                                            pathname: Config.routes.viewDetailFreelancerAdmin,
+                                            search: `?id=${post.createBy.id}`,
+                                        }}
+                                    >
+                                        {post.createBy.name}
+                                    </Button>
+                                </p>
+                            </div>
+                            <div className={cx('description')}>
+                                <p>{post.description}</p>
+                            </div>
+                            <div className={cx('attach')}>
+                                <p>Đính kèm:</p>
+                                <Button href={documentURL}>{post.attach}</Button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className={cx('margin-bottom')}>
-                    <h1 className={cx('title-header')}>Yêu Cầu</h1>
-                    <div className={cx('row1')}>
-                        <div className={cx('subCareer')}>
-                            <label className={cx('label')}>Chuyên ngành</label>
+                    <div className={cx('margin-bottom')}>
+                        <h1 className={cx('title-header')}>Yêu Cầu</h1>
+                        <div className={cx('row1')}>
+                            <div className={cx('subCareer')}>
+                                <label className={cx('label')}>Chuyên ngành</label>
+                                <div>
+                                    <p>{post.subCareer}</p>
+                                </div>
+                            </div>
+                            <div className={cx('Skills')}>
+                                <label className={cx('label')}>Kỹ năng</label>
+                                <div className={cx('container-skill')}>
+                                    {post.listSkills.map((skill) => (
+                                        <div key={skill.id}>
+                                            <p>{skill.name}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                        <div className={cx('row2')}>
+                            <label className={cx('label')}>Khu vực</label>
                             <div>
-                                <p>{post.subCareer}</p>
-                            </div>
-                        </div>
-                        <div className={cx('Skills')}>
-                            <label className={cx('label')}>Kỹ năng</label>
-                            <div className={cx('container-skill')}>
-                                {post.listSkills.map((skill) => (
-                                    <div key={skill.id}>
-                                        <p>{skill.name}</p>
-                                    </div>
-                                ))}
+                                <p>{post.area}</p>
                             </div>
                         </div>
                     </div>
-                    <div className={cx('row2')}>
-                        <label className={cx('label')}>Khu vực</label>
+                    <div className={cx('margin-bottom')}>
+                        <h1 className={cx('title-header')}>Ngân sách</h1>
+                        <div className={cx('padding')}>
+                            <div className={cx('top')}>
+                                <FontAwesomeIcon icon={faSackDollar} />
+                                <p>{post.budget} VND</p>
+                            </div>
+                            <p className={cx('bottom')}>{post.paymentType}</p>
+                        </div>
+                    </div>
+                    {post.isApproved === 2 && (
                         <div>
-                            <p>{post.area}</p>
+                            <Button approve className={cx('btn-post')} onClick={handleApprove}>
+                                Xác nhận
+                            </Button>
+                            <Button deny className={cx('btn-post')} onClick={handleDeny}>
+                                Từ chối
+                            </Button>
                         </div>
-                    </div>
+                    )}
                 </div>
-                <div className={cx('margin-bottom')}>
-                    <h1 className={cx('title-header')}>Ngân sách</h1>
-                    <div className={cx('padding')}>
-                        <div className={cx('top')}>
-                            <FontAwesomeIcon icon={faSackDollar} />
-                            <p>{post.budget} VND</p>
-                        </div>
-                        <p className={cx('bottom')}>{post.paymentType}</p>
-                    </div>
+            ) : (
+                <div className={cx('container')}>
+                    <p className={cx('message-Invalid')}>Bài đăng không tồn tại</p>
                 </div>
-                {post.isApproved === 2 && (
-                    <div>
-                        <Button approve className={cx('btn-post')} onClick={handleApprove}>
-                            Xác nhận
-                        </Button>
-                        <Button deny className={cx('btn-post')} onClick={handleDeny}>
-                            Từ chối
-                        </Button>
-                    </div>
-                )}
-            </div>
+            )}
         </div>
     );
 }
