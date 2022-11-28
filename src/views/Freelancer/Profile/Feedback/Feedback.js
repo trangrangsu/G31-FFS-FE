@@ -43,7 +43,6 @@ function Feedback({ userId }) {
                                 <p>{totalItems} lượt đánh giá</p>
                             </div>
                         </div>
-                        {currentUserId !== userId && <Comment userId={userId} />}
                         {comments.map((comment) => (
                             <CommentItem comment={comment} key={comment.id} />
                         ))}

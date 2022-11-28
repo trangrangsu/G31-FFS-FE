@@ -26,9 +26,10 @@ const UserService = () => {
     const [currentService, setCurrentService] = useState({});
     const [benefits, setBenefits] = useState([]);
     const [active, setActive] = useState(1);
+    const userRole = localStorage.getItem('userRole');
 
     const getServicesApi = async () => {
-        const result = await userServiceServices.getServices('freelancer');
+        const result = await userServiceServices.getServices(userRole);
         console.log(result);
         setServices(result.services);
         setCurrentService(result.services[0]);

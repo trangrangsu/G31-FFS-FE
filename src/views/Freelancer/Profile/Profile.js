@@ -426,7 +426,7 @@ const Profile = () => {
                                     {cv !== '' && (
                                         <div className={cx('cv-right')}>
                                             <a href={cvUrl} target="_blank">
-                                                {cv}
+                                                Xem CV
                                             </a>
                                             <FontAwesomeIcon icon={faTrashCan} onClick={handleDeleteCV} />
                                         </div>

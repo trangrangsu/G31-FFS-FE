@@ -249,7 +249,7 @@ function ViewDetailFreelancer() {
                                         </div>
                                         {cv !== '' && (
                                             <div className={cx('cv-right')}>
-                                                <a href={cvUrl}>{cv}</a>
+                                                <a href={cvUrl}>Xem CV</a>
                                             </div>
                                         )}
                                     </div>

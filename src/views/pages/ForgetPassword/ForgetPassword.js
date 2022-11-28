@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import classNames from 'classnames/bind';
 import { CFormInput } from '@coreui/react';
-import { Alert } from 'antd';
+import { Alert, message } from 'antd';
 
 import * as loginServices from '../../../services/loginServices';
 import images from '../../../assets/images';
@@ -11,7 +11,12 @@ import styles from './ForgetPassword.module.scss';
 const cx = classNames.bind(styles);
 const fetchApi = async (email) => {
     const result = await loginServices.forgetPassword(email);
-    console.log(result);
+    message.error({
+        content: result,
+        style: {
+            marginTop: '60px',
+        },
+    });
 };
 const ForgetPassword = () => {
     const [email, setEmail] = useState('');
