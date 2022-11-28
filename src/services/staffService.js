@@ -13,7 +13,7 @@ export const addStaff = async (staff) => {
         const res = await httpRequest.post('api/admin/add-staff', staff);
         return res;
     } catch (error) {
-        console.log(error);
+        return error;
     }
 };
 export const updateStaff = async (staff) => {
@@ -21,7 +21,7 @@ export const updateStaff = async (staff) => {
         const res = await httpRequest.put('api/admin/update-staff', staff);
         return res;
     } catch (error) {
-        console.log(error);
+        return error;
     }
 };
 export const banStaff = async (id) => {

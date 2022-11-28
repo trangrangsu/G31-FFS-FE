@@ -7,13 +7,18 @@ import * as userStatisticServices from '../../../services/userStatisticServices'
 import styles from './StatisticRecruiter.module.scss';
 const cx = classNames.bind(styles);
 const StatisticRecruiter = () => {
+    const [totalPosted, setTotalPosted] = useState('');
+    const [totalApplied, setTotalApplied] = useState('');
+    const [avgStar, setAvgStar] = useState('');
+    const [totalFeedbacks, setTotalFeedbacks] = useState('');
     //localStorage.getItem('token')
     const getStatisticRecruiterApi = async () => {
-        const result = await userStatisticServices.getStatisticRecruiter(
-            localStorage.getItem('token'),
-            localStorage.getItem('userId'),
-        );
+        const result = await userStatisticServices.getStatisticRecruiter(localStorage.getItem('userId'));
         console.log(result);
+        setTotalPosted(result.totalPosted);
+        setTotalApplied(result.totalApplied);
+        setAvgStar(result.avgStar);
+        setTotalFeedbacks(result.totalFeedbacks);
     };
     useEffect(() => {
         getStatisticRecruiterApi();
@@ -35,7 +40,7 @@ const StatisticRecruiter = () => {
                             <FontAwesomeIcon icon={faPaste} className={cx('icon')} />
                             <div className={cx('title')}>
                                 <p>Số bài đăng tuyển</p>
-                                <h4>35</h4>
+                                <h4>{totalPosted}</h4>
                             </div>
                         </div>
                         <div className={cx('approve')}>
@@ -44,7 +49,7 @@ const StatisticRecruiter = () => {
                                 <FontAwesomeIcon icon={faThumbsUp} className={cx('icon-first')} />
                                 <div className={cx('title')}>
                                     <p>Số hồ sơ ứng tuyển</p>
-                                    <h4>15</h4>
+                                    <h4>{totalApplied}</h4>
                                 </div>
                             </div>
                         </div>
@@ -56,7 +61,7 @@ const StatisticRecruiter = () => {
                                 <FontAwesomeIcon icon={faStar} className={cx('icon-three')} />
                                 <div className={cx('title')}>
                                     <p>Số sao trung bình</p>
-                                    <h4>4.1/5</h4>
+                                    <h4>{avgStar}/5</h4>
                                 </div>
                             </div>
                         </div>
@@ -65,8 +70,8 @@ const StatisticRecruiter = () => {
                                 <div className={cx('color-four')}></div>
                                 <FontAwesomeIcon icon={faComment} className={cx('icon-four')} />
                                 <div className={cx('title')}>
-                                    <p>Số lượt bình chọn</p>
-                                    <h4>40</h4>
+                                    <p>Số lượt đánh giá</p>
+                                    <h4>{totalFeedbacks}</h4>
                                 </div>
                             </div>
                         </div>

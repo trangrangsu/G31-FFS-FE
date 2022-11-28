@@ -23,6 +23,7 @@ const PostManagement = () => {
             pageIndex,
             status,
         );
+        console.log(result);
         if (typeof result === 'object') {
             setPosts(result.results);
             setTotalResults(result.totalResults);
@@ -45,6 +46,9 @@ const PostManagement = () => {
     };
     const handleChangeKeyWord = (e) => {
         const value = e.target.value;
+        if (value.length > 100) {
+            return;
+        }
         if (!value.startsWith(' ')) {
             setKeyWord(value);
         }
@@ -97,6 +101,7 @@ const PostManagement = () => {
                 {posts.map((post) => (
                     <PostItem post={post} key={post.jobId} />
                 ))}
+                {posts.length === 0 && <p className={cx('messageResults')}>Không có bài đăng</p>}
                 {totalResults > 10 && (
                     <div className={cx('paging')}>
                         <Pagination defaultCurrent="1" pageSize="10" total={totalResults} onChange={onChangePage} />

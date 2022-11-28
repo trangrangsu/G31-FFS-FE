@@ -20,12 +20,22 @@ const UserReport = () => {
         const result = await adminReportServices.addReport(data);
         console.log(result);
         if (result) {
-            message.success('Báo cáo thành công');
+            message.success({
+                content: 'Hoàn tất gửi báo cáo. Cảm ơn đóng góp của bạn.',
+                style: {
+                    marginTop: '60px',
+                },
+            });
             setMessageTitle('');
             setTitle('');
             setValue('');
         } else {
-            message.error('Báo cáo thất bại');
+            message.error({
+                content: 'Báo cáo thất bại',
+                style: {
+                    marginTop: '60px',
+                },
+            });
         }
     };
     const handleClick = () => {

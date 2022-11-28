@@ -75,6 +75,9 @@ function FreelancerList({ postId }) {
     };
     const handleChangeKeyWord = (e) => {
         const value = e.target.value;
+        if (value.length > 100) {
+            return;
+        }
         if (!value.startsWith(' ')) {
             setKeyWord(value);
         }
@@ -207,6 +210,7 @@ function FreelancerList({ postId }) {
                         />
                     );
                 })}
+                {listFreelancer.length === 0 && <p className={cx('messageResults')}>Không có ứng viên</p>}
             </div>
             {totalResults > 10 && (
                 <div className={cx('paging')}>

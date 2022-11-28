@@ -17,11 +17,21 @@ const ChangePassword = () => {
     const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
     const [messagePassword, setMessagePassword] = useState('');
     const changePasswordApi = async (data) => {
-        const result = await loginServices.changePassword(data);
+        const result = await loginServices.changePasswordAuthentication(data);
         if (result) {
-            message.success('Đổi mật khẩu thành công');
+            message.success({
+                content: 'Đổi mật khẩu thành công',
+                style: {
+                    marginTop: '60px',
+                },
+            });
         } else {
-            message.error('Mật khẩu không chính xác');
+            message.error({
+                content: 'Mật khẩu không chính xác',
+                style: {
+                    marginTop: '60px',
+                },
+            });
         }
     };
     function hasWhiteSpace(s) {
@@ -36,6 +46,8 @@ const ChangePassword = () => {
             setMessagePassword('Mật khẩu không chứa dấu cách');
         } else if (newPassword !== newPasswordConfirm) {
             setMessagePassword('Mật khẩu mới không khớp vui lòng nhập lại');
+        } else if (newPassword === oldPassword) {
+            setMessagePassword('Mật khẩu cũ không được trùng với mật khẩu mới');
         } else {
             const data = {};
             data.email = account.email;

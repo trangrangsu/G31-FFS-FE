@@ -30,7 +30,7 @@ const Recharge = () => {
         dispatch({ type: 'set', accountBalance: accountBalance + parseFloat(valueRecharge) });
     };
     const validateNumber = (number) => {
-        return number.match(/^[0-9]*$/);
+        return number.match(/^[0-9.]*$/);
     };
     const handleChangeNumber = (e) => {
         const value = e.target.value;
@@ -43,6 +43,8 @@ const Recharge = () => {
             setMessageNumber('Vui lòng nhập số tiền cần nạp');
         } else if (validateNumber(valueRecharge) === null) {
             setMessageNumber('Vui lòng nhập số');
+        } else if (parseFloat(valueRecharge) < 1) {
+            setMessageNumber('Vui lòng nạp ít nhất 1$');
         } else {
             setShowbtn(true);
             setMessageNumber('');

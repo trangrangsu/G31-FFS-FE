@@ -110,12 +110,21 @@ function StaffPopUp({ staff, callback }) {
             };
             const fetchApi = async () => {
                 const result = await staffService.addStaff(staff);
-                message.success({
-                    content: result,
-                    style: {
-                        marginTop: '50px',
-                    },
-                });
+                if (result.response) {
+                    message.error({
+                        content: result.response.data,
+                        style: {
+                            marginTop: '50px',
+                        },
+                    });
+                } else {
+                    message.success({
+                        content: result,
+                        style: {
+                            marginTop: '50px',
+                        },
+                    });
+                }
             };
             fetchApi();
             handleClose();
@@ -127,12 +136,21 @@ function StaffPopUp({ staff, callback }) {
             staff.phone = phone;
             const updateApi = async () => {
                 const result = await staffService.updateStaff(staff);
-                message.success({
-                    content: result,
-                    style: {
-                        marginTop: '50px',
-                    },
-                });
+                if (result.response) {
+                    message.error({
+                        content: result.response.data,
+                        style: {
+                            marginTop: '50px',
+                        },
+                    });
+                } else {
+                    message.success({
+                        content: result,
+                        style: {
+                            marginTop: '50px',
+                        },
+                    });
+                }
             };
             updateApi();
             handleClose();

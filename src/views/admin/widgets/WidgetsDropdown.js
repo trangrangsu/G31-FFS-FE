@@ -338,7 +338,7 @@ const WidgetsDropdown = () => {
                                 labels: datas[3].labels,
                                 datasets: [
                                     {
-                                        label: 'My First dataset',
+                                        label: datas[3].title,
                                         backgroundColor: 'rgba(255,255,255,.2)',
                                         borderColor: 'rgba(255,255,255,.55)',
                                         data: datas[3].data,

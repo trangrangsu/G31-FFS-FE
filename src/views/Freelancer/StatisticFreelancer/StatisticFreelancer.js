@@ -1,11 +1,29 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import * as userStatisticServices from '../../../services/userStatisticServices';
 import styles from './StatisticFreelancer.module.scss';
-import { faComment, faComments, faPaste, faStar, faThumbsUp, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faComments, faPaste, faStar, faThumbsUp, faXmark } from '@fortawesome/free-solid-svg-icons';
 const cx = classNames.bind(styles);
 const StatisticFreelancer = () => {
+    const [totalApplied, setTotalApplied] = useState('');
+    const [avgStar, setAvgStar] = useState('');
+    const [totalFeedbacks, setTotalFeedbacks] = useState('');
+    const [totalApproved, setTotalApproved] = useState('');
+    const [totalReject, setTotalReject] = useState('');
+    const getStatisticRecruiterApi = async () => {
+        const result = await userStatisticServices.getStatisticFreelancer(localStorage.getItem('userId'));
+        console.log(result);
+        setTotalApplied(result.totalApplied);
+        setTotalApproved(result.totalApproved);
+        setTotalReject(result.totalReject);
+        setAvgStar(result.avgStar);
+        setTotalFeedbacks(result.totalFeedbacks);
+    };
+    useEffect(() => {
+        getStatisticRecruiterApi();
+    }, []);
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
@@ -23,7 +41,7 @@ const StatisticFreelancer = () => {
                             <FontAwesomeIcon icon={faPaste} className={cx('icon')} />
                             <div className={cx('title')}>
                                 <p>Số bài ứng tuyển</p>
-                                <h4>35</h4>
+                                <h4>{totalApplied}</h4>
                             </div>
                         </div>
                         <div className={cx('approve')}>
@@ -32,7 +50,7 @@ const StatisticFreelancer = () => {
                                 <FontAwesomeIcon icon={faThumbsUp} className={cx('icon-first')} />
                                 <div className={cx('title')}>
                                     <p>Số bài chấp thuận</p>
-                                    <h4>15</h4>
+                                    <h4>{totalApproved}</h4>
                                 </div>
                             </div>
                         </div>
@@ -42,7 +60,7 @@ const StatisticFreelancer = () => {
                                 <FontAwesomeIcon icon={faXmark} className={cx('icon-second')} />
                                 <div className={cx('title')}>
                                     <p>Số bài từ chối</p>
-                                    <h4>20</h4>
+                                    <h4>{totalReject}</h4>
                                 </div>
                             </div>
                         </div>
@@ -54,7 +72,7 @@ const StatisticFreelancer = () => {
                                 <FontAwesomeIcon icon={faStar} className={cx('icon-three')} />
                                 <div className={cx('title')}>
                                     <p>Số sao trung bình</p>
-                                    <h4>4.1/5</h4>
+                                    <h4>{avgStar}/5</h4>
                                 </div>
                             </div>
                         </div>
@@ -63,8 +81,8 @@ const StatisticFreelancer = () => {
                                 <div className={cx('color-four')}></div>
                                 <FontAwesomeIcon icon={faComments} className={cx('icon-four')} />
                                 <div className={cx('title')}>
-                                    <p>Số lượt bình luận</p>
-                                    <h4>40</h4>
+                                    <p>Số lượt đánh giá</p>
+                                    <h4>{totalFeedbacks}</h4>
                                 </div>
                             </div>
                         </div>
