@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import classNames from 'classnames/bind';
 import { CFormInput } from '@coreui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -25,18 +25,6 @@ const Login = () => {
     const [message, setMessage] = useState('');
     const [messageEmail, setMessageEmail] = useState('');
     const [messagePassword, setMessagePassword] = useState('');
-
-    // useEffect(() => {
-    //     dispatch({ type: 'set', account: {} });
-    //     dispatch({ type: 'set', accountBalance: 0 });
-    //     dispatch({ type: 'set', accountAvatar: '' });
-    //     dispatch({ type: 'set', currentServiceName: null });
-    //     dispatch({ type: 'set', currentServiceId: null });
-    //     dispatch({ type: 'set', isMemberShip: false });
-    //     localStorage.setItem('token', '');
-    //     localStorage.setItem('userId', '');
-    //     localStorage.setItem('userRole', '');
-    // }, []);
 
     const fetchApi = async (user) => {
         const result = await loginServices.login(user);
@@ -118,7 +106,7 @@ const Login = () => {
         }
     };
     function enterPress(e) {
-        var code = e.keyCode ? e.keyCode : e.which;
+        let code = e.keyCode ? e.keyCode : e.which;
         if (code == 13) {
             handleLogin();
         }

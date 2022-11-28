@@ -274,6 +274,10 @@ const Profile = () => {
             imgRef.current.src = '';
         }
     }
+    const handleDeleteCV = () => {
+        editByFieldApi('cv', '');
+        setCv('');
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
@@ -409,9 +413,9 @@ const Profile = () => {
                                         name="myfile"
                                         onChange={(e) => {
                                             console.log(e.target.files[0]);
+                                            firebase.upLoadFile(account.userId, 'cv', e.target.files[0]);
                                             setCv(e.target.files[0].name);
                                             editByFieldApi('cv', e.target.files[0].name);
-                                            firebase.upLoadFile(account.userId, 'cv', e.target.files[0]);
                                         }}
                                     ></input>
                                 </div>
@@ -421,8 +425,10 @@ const Profile = () => {
                                     </div>
                                     {cv !== '' && (
                                         <div className={cx('cv-right')}>
-                                            <a href={cvUrl}>{cv}</a>
-                                            <FontAwesomeIcon icon={faTrashCan} />
+                                            <a href={cvUrl} target="_blank">
+                                                {cv}
+                                            </a>
+                                            <FontAwesomeIcon icon={faTrashCan} onClick={handleDeleteCV} />
                                         </div>
                                     )}
                                 </div>

@@ -33,6 +33,10 @@ const ChangePassword = () => {
                 },
             });
         }
+        messagePassword('');
+        setOldPassword('');
+        setNewPassword('');
+        setNewPasswordConfirm('');
     };
     function hasWhiteSpace(s) {
         return s.indexOf(' ') >= 0;

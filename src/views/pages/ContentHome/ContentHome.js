@@ -1,10 +1,46 @@
 import classNames from 'classnames/bind';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import config from '../../../config';
 import Button from '../../../components/Button';
 import images from '../../../assets/images';
 import styles from './ContentHome.module.scss';
 const cx = classNames.bind(styles);
 function ContentHome() {
+    const navigate = useNavigate();
+    const userId = localStorage.getItem('userId');
+    const userRole = localStorage.getItem('userRole');
+    useEffect(() => {
+        if (userId !== null) {
+            let to = {};
+            switch (userRole) {
+                case 'freelancer':
+                    to = {
+                        pathname: config.routes.searchJob,
+                    };
+                    break;
+                case 'recruiter':
+                    to = {
+                        pathname: config.routes.postManagement,
+                    };
+                    break;
+                case 'admin':
+                    to = {
+                        pathname: config.routes.dashboard,
+                    };
+                    break;
+                case 'staff':
+                    to = {
+                        pathname: config.routes.freelancer,
+                    };
+                    break;
+                default:
+            }
+            navigate(to);
+        }
+    }, []);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('guest-intro')}>
