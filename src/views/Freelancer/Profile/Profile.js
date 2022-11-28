@@ -115,6 +115,7 @@ const Profile = () => {
     const addEducationApi = async (education) => {
         const result = await freelancerProfileServices.addEducation(account.userId, education);
         console.log(result);
+        fetchApi();
     };
     const updateEducationApi = async (education) => {
         const result = await freelancerProfileServices.updateEducation(education);
@@ -127,6 +128,7 @@ const Profile = () => {
     const addWorkExpApi = async (workExp) => {
         const result = await freelancerProfileServices.addWorkExp(account.userId, workExp);
         console.log(result);
+        fetchApi();
     };
     const updateWorkExpApi = async (workExp) => {
         const result = await freelancerProfileServices.updateWorkExp(workExp);
