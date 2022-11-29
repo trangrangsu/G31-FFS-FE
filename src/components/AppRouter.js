@@ -2,6 +2,7 @@ import React, { Suspense, Fragment } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { guestRoutes, adminRoutes, staffRoutes, freelancerRoutes, recruiterRoutes } from '../routes';
+import * as httpRequest from '../utils/httpRequest';
 const AdminLayout = React.lazy(() => import('../layout/AdminLayout'));
 //routes,
 const loading = (
@@ -28,6 +29,7 @@ const permissions = (role) => {
 };
 function AppRouter() {
     const account = useSelector((state) => state.account);
+    httpRequest.setDefaultAuthorization(localStorage.getItem('token'));
     const userRole = localStorage.getItem('userRole');
     const routes = permissions(userRole);
 

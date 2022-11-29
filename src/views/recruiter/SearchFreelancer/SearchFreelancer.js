@@ -22,10 +22,11 @@ const SearchFreelancer = () => {
     const [showFilter, setShowFilter] = useState(false);
     const [valuePrice, setValuePrice] = useState(1);
     const [subCareer, setSubCareer] = useState(-1);
+    const [subCareerPath, setSubCareerPath] = useState(-1);
     const [freelancers, setFreelancers] = useState([]);
     const [city, setCity] = useState('');
     const [careers, setCareers] = useState([{ id: 1, name: 'cntt', subCareers: { data: [{ id: 1, name: 'cntt' }] } }]);
-    const [skill, setSkill] = useState([-1]);
+    const [skill, setSkill] = useState(-1);
     const [skills, setSkills] = useState([]);
     const [totalResults, setTotalResults] = useState(0);
     const [keyWord, setKeyWord] = useState('');
@@ -86,7 +87,11 @@ const SearchFreelancer = () => {
     const onChangeCareer = (value) => {
         if (value === undefined) {
             setSubCareer(-1);
-        } else setSubCareer(value[1]);
+            setSubCareerPath(-1);
+        } else {
+            setSubCareer(value[1]);
+            setSubCareerPath(value);
+        }
     };
     const onChangeArea = (value) => {
         if (value === undefined) {
@@ -138,7 +143,11 @@ const SearchFreelancer = () => {
                                 <div className={cx('choose-item')}>
                                     <div className={cx('date')}>
                                         <h5>Chi phí/Giờ</h5>
-                                        <Radio.Group onChange={onChangePrice} value={valuePrice}>
+                                        <Radio.Group
+                                            onChange={onChangePrice}
+                                            value={valuePrice}
+                                            defaultValue={valuePrice}
+                                        >
                                             <Space direction="vertical">
                                                 <Radio value={1}>Tất cả mức chi phí/giờ</Radio>
                                                 <Radio value={2}>Dưới 100k vnd</Radio>
@@ -156,6 +165,7 @@ const SearchFreelancer = () => {
                                                     placeholder="chọn chuyên ngành"
                                                     style={{ width: '200px' }}
                                                     options={renderItemsMenu(careers)}
+                                                    defaultValue={subCareerPath !== -1 && subCareerPath}
                                                     expandTrigger="hover"
                                                     displayRender={displayRender}
                                                     onChange={onChangeCareer}
@@ -170,6 +180,7 @@ const SearchFreelancer = () => {
                                                 placeholder="chọn khu vực"
                                                 optionFilterProp="children"
                                                 onChange={onChangeArea}
+                                                defaultValue={city}
                                                 style={{ width: '200px' }}
                                                 filterOption={(input, option) =>
                                                     (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
@@ -187,6 +198,7 @@ const SearchFreelancer = () => {
                                             style={{
                                                 width: '80%',
                                             }}
+                                            defaultValue={skill !== -1 ? skill : undefined}
                                             placeholder="chọn kỹ năng"
                                             onChange={handleChange}
                                             optionLabelProp="label"
@@ -215,6 +227,7 @@ const SearchFreelancer = () => {
                             <FreelancerItem key={index} freelancer={freelancer} type="view" />
                         ))}
                     </div>
+                    {totalResults === 0 && <p className={cx('messageResults')}>Không có freelancer phù hợp yêu cầu</p>}
                     {totalResults > 10 && (
                         <div className={cx('paging')}>
                             <Pagination defaultCurrent="1" pageSize="10" total={totalResults} onChange={onChangePage} />

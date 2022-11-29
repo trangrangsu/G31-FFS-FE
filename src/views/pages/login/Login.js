@@ -62,7 +62,9 @@ const Login = () => {
                     break;
                 default:
             }
-            navigate(to);
+            setTimeout(() => {
+                navigate(to);
+            }, 200);
         } else {
             console.log(result);
             setMessage(result.response.data);
