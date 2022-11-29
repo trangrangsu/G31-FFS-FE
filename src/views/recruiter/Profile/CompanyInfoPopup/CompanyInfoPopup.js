@@ -35,7 +35,10 @@ function CompanyInfoPopup({ companyInfo, callback, onclose }) {
             setCompanyName(companyInfo.companyName);
             setTaxNumber(companyInfo.taxNumber);
             setWebsite(companyInfo.website);
-            setCareer(companyInfo.career.id);
+
+            if (companyInfo.career !== null) {
+                setCareer(companyInfo.career.id);
+            }
             if (companyInfo.companyIntro !== null) {
                 setDescription(companyInfo.companyIntro);
             }

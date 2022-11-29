@@ -2,21 +2,13 @@ import axios from 'axios';
 
 const httpRequest = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL,
-    // headers: {
-    //     //Authorization: localStorage.getItem('token') !== null ? localStorage.getItem('token') : -1,
-    //     Authorization: localStorage.getItem('token') !== null ? localStorage.getItem('token') : '',
-    // },
 });
 const httpRequestNoAuthorization = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL,
 });
-
+httpRequest.defaults.headers.common['Authorization'] = '';
 export const setDefaultAuthorization = (token) => {
-    //httpRequest.defaults.headers.common['Authorization'] = 'token test';
-    console.log('here 1');
-    console.log(token);
     if (token !== null && token !== undefined && token !== '') {
-        console.log('here 1');
         httpRequest.defaults.headers.common['Authorization'] = token;
     }
 };
