@@ -11,45 +11,18 @@
 //intro
 .guest-intro {
     width: 100%;
-    height: 800px;
-    background-image: url(../../../assets/images/previewimg.jpg);
+    height: 660px;
     background-size: cover;
     background-position: 50%;
-    display: flex;
+    img{
+        width: 100%;
+        height: 650px;  
+    }
 }
 .guest-left-intro {
     margin-top: 20px;
     flex: 0.5 1;
     overflow: hidden;
-}
-.guest_imgContainer {
-    align-items: flex-end;
-    background-color: #deb887;
-    border-radius: 50%;
-    display: flex;
-    float: right;
-    height: 700px;
-    justify-content: center;
-    width: 700px;
-
-    img {
-        width: 600px;
-        height: 600px;
-        margin-bottom: 60px;
-        margin-left: 40px;
-    }
-}
-.guest-right-intro {
-    flex: 0.5 1;
-    position: relative;
-}
-.guest-wrapper {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: center;
-    padding-left: 50px;
-    width: 100%;
 }
 //top job
 .top-job {
@@ -57,6 +30,7 @@
 }
 .top-job-title {
     margin: 0;
+    padding-top: 10px;
     text-align: center;
     letter-spacing: -0.05em;
     line-height: 32px;
@@ -81,6 +55,10 @@
     height: 183px;
     overflow: hidden;
     position: relative;
+    img{
+        width: 275px;
+        height: 170px;
+    }
 }
 .item-title {
     margin-top: 14px;
@@ -89,26 +67,11 @@
         text-align: center;
     }
 }
-//service
-.services {
-    height: 200px;
-    align-items: center;
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-}
-.services-title {
-    margin: 0;
-    text-align: center;
-    letter-spacing: -0.05em;
-    font-size: 50px;
-}
 .btn {
     margin-top: 40px;
     color: var(--white);
     background-color: #34baeb;
 }
-
 //advantages
 .advantages {
     width: var(--default-layout-width);
@@ -211,6 +174,7 @@
     background-color: #c9e6f2;
     border-radius: 10px;
     padding: 10px;
+    text-align: center;
 }
 .about-us-infor {
     align-items: center;

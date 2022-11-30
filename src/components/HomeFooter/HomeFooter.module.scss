@@ -18,11 +18,13 @@
 }
 .logo img {
     border-radius: 5px;
+    margin-top: -40px;
+    margin-left: -40px;
 }
 .social {
     margin: 20px;
     margin-left: -9px;
-
+    margin-top: -20px;
     a {
         color: var(--white);
         background-color: #1c62a3;

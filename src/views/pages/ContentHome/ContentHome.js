@@ -2,11 +2,18 @@ import classNames from 'classnames/bind';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { Carousel } from 'antd';
 import config from '../../../config';
 import Button from '../../../components/Button';
 import images from '../../../assets/images';
 import styles from './ContentHome.module.scss';
 const cx = classNames.bind(styles);
+const contentStyle = {
+    height: '650px',
+    color: '#fff',
+    lineHeight: '160px',
+    textAlign: 'center',
+};
 function ContentHome() {
     const navigate = useNavigate();
     const userId = localStorage.getItem('userId');
@@ -44,17 +51,28 @@ function ContentHome() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('guest-intro')}>
-                <div className={cx('guest-left-intro')}>
-                    <div className={cx('guest_imgContainer')}>
-                        <img src={images.man} alt="" />
+                <Carousel autoplay>
+                    <div>
+                        <h3 style={contentStyle}>
+                            <img src={images.back3} alt="" />
+                        </h3>
                     </div>
-                </div>
-                <div className={cx('guest-right-intro')}>
-                    <div className={cx('guest-wrapper')}>
-                        <h2>Xin chào, chúng tôi là</h2>
-                        <h1>Lanceddy Team</h1>
+                    <div>
+                        <h3 style={contentStyle}>
+                            <img src={images.back4} alt="" />
+                        </h3>
                     </div>
-                </div>
+                    <div>
+                        <h3 style={contentStyle}>
+                            <img src={images.back5} alt="" />
+                        </h3>
+                    </div>
+                    <div>
+                        <h3 style={contentStyle}>
+                            <img src={images.back6} alt="" />
+                        </h3>
+                    </div>
+                </Carousel>
             </div>
             <div className={cx('distance')}></div>
             <div className={cx('top-job')}>
@@ -63,7 +81,7 @@ function ContentHome() {
                     <div className={cx('top-job-row')}>
                         <div className={cx('top-job-item')}>
                             <div className={cx('item-show')}>
-                                <img src={images.designWebsiteImg} alt="" />
+                                <img src={images.design} alt="" />
                             </div>
                             <div className={cx('item-title')}>
                                 <p>Thiết kế website</p>
@@ -71,7 +89,7 @@ function ContentHome() {
                         </div>
                         <div className={cx('top-job-item')}>
                             <div className={cx('item-show')}>
-                                <img src={images.designWebsiteImg} alt="" />
+                                <img src={images.translate} alt="" />
                             </div>
                             <div className={cx('item-title')}>
                                 <p>Dịch thuật</p>
@@ -79,7 +97,7 @@ function ContentHome() {
                         </div>
                         <div className={cx('top-job-item')}>
                             <div className={cx('item-show')}>
-                                <img src={images.designWebsiteImg} alt="" />
+                                <img src={images.website} alt="" />
                             </div>
                             <div className={cx('item-title')}>
                                 <p>Lập trình website</p>
@@ -87,7 +105,7 @@ function ContentHome() {
                         </div>
                         <div className={cx('top-job-item')}>
                             <div className={cx('item-show')}>
-                                <img src={images.designWebsiteImg} alt="" />
+                                <img src={images.music} alt="" />
                             </div>
                             <div className={cx('item-title')}>
                                 <p>Làm video clip</p>
@@ -97,7 +115,7 @@ function ContentHome() {
                     <div className={cx('top-job-row')}>
                         <div className={cx('top-job-item')}>
                             <div className={cx('item-show')}>
-                                <img src={images.designWebsiteImg} alt="" />
+                                <img src={images.seo} alt="" />
                             </div>
                             <div className={cx('item-title')}>
                                 <p>Tối ưu hóa công cụ tìm kiếm seo</p>
@@ -105,7 +123,7 @@ function ContentHome() {
                         </div>
                         <div className={cx('top-job-item')}>
                             <div className={cx('item-show')}>
-                                <img src={images.designWebsiteImg} alt="" />
+                                <img src={images.build} alt="" />
                             </div>
                             <div className={cx('item-title')}>
                                 <p>Viết nội dung website</p>
@@ -113,7 +131,7 @@ function ContentHome() {
                         </div>
                         <div className={cx('top-job-item')}>
                             <div className={cx('item-show')}>
-                                <img src={images.designWebsiteImg} alt="" />
+                                <img src={images.logos} alt="" />
                             </div>
                             <div className={cx('item-title')}>
                                 <p>Thiết kế logo</p>
@@ -121,7 +139,7 @@ function ContentHome() {
                         </div>
                         <div className={cx('top-job-item')}>
                             <div className={cx('item-show')}>
-                                <img src={images.designWebsiteImg} alt="" />
+                                <img src={images.app} alt="" />
                             </div>
                             <div className={cx('item-title')}>
                                 <p>Ứng dụng di động</p>
@@ -138,7 +156,7 @@ function ContentHome() {
                 <div className={cx('advantages-row')}>
                     <div className={cx('advantages-item')}>
                         <div className={cx('advantages-item-show')}>
-                            <img src={images.designWebsiteImg} alt="" />
+                            <img src={images.cv} alt="" />
                         </div>
                         <div className={cx('advantages-item-title')}>
                             <p>Hàng ngàn hồ sơ ứng viên chất lượng, có chuyên môn</p>
@@ -146,7 +164,7 @@ function ContentHome() {
                     </div>
                     <div className={cx('advantages-item')}>
                         <div className={cx('advantages-item-show')}>
-                            <img src={images.designWebsiteImg} alt="" />
+                            <img src={images.iot} alt="" />
                         </div>
                         <div className={cx('advantages-item-title')}>
                             <p>Kết nối nhanh chóng</p>
@@ -154,7 +172,7 @@ function ContentHome() {
                     </div>
                     <div className={cx('advantages-item')}>
                         <div className={cx('advantages-item-show')}>
-                            <img src={images.designWebsiteImg} alt="" />
+                            <img src={images.choose} alt="" />
                         </div>
                         <div className={cx('advantages-item-title')}>
                             <p>Tuyển dụng chính xác freelancer bạn cần</p>
@@ -163,10 +181,7 @@ function ContentHome() {
                 </div>
             </div>
             <div className={cx('distance')}></div>
-            <div className={cx('services')}>
-                <h2 className={cx('services-title')}>DỊCH VỤ NỔI BẬT LANCEDDY</h2>
-                <Button className={cx('btn')}>Xem thêm</Button>
-            </div>
+
             <div className={cx('about-us')}>
                 <h2 className={cx('about-us-title')}>Thành viên dự án</h2>
                 <div className={cx('about-us-container')}>
@@ -175,7 +190,7 @@ function ContentHome() {
                             <img src={images.cong} alt="cong" />
                         </div>
                         <div className={cx('about-us-maxim')}>
-                            <p>Phương châm sống</p>
+                            <p>Nó chạy ... trên máy của tôi</p>
                         </div>
                         <div className={cx('about-us-infor')}>
                             <h3>Biện Văn Công</h3>
@@ -187,7 +202,7 @@ function ContentHome() {
                             <img src={images.manh} alt="cong" />
                         </div>
                         <div className={cx('about-us-maxim')}>
-                            <p>Phương châm sống</p>
+                            <p>Đi một ngày đàng học một sàng khôn</p>
                         </div>
                         <div className={cx('about-us-infor')}>
                             <h3>Nguyễn Văn Mạnh</h3>
@@ -199,7 +214,7 @@ function ContentHome() {
                             <img src={images.trang} alt="cong" />
                         </div>
                         <div className={cx('about-us-maxim')}>
-                            <p>Phương châm sống</p>
+                            <p>It happened! So it happened.</p>
                         </div>
                         <div className={cx('about-us-infor')}>
                             <h3>Nguyễn Bá Trang</h3>
@@ -211,7 +226,7 @@ function ContentHome() {
                             <img src={images.quyet} alt="cong" />
                         </div>
                         <div className={cx('about-us-maxim')}>
-                            <p>Phương châm sống</p>
+                            <p>Học hết sức, chơi hết mình</p>
                         </div>
                         <div className={cx('about-us-infor')}>
                             <h3>Nguyễn Bắc Quyết</h3>
@@ -223,7 +238,7 @@ function ContentHome() {
                             <img src={images.tuyen} alt="cong" />
                         </div>
                         <div className={cx('about-us-maxim')}>
-                            <p>Phương châm sống</p>
+                            <p>Thành quả của im lặng là hòa bình</p>
                         </div>
                         <div className={cx('about-us-infor')}>
                             <h3>Nguyễn Hữu Tuyên</h3>
