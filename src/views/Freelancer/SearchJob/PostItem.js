@@ -66,7 +66,7 @@ function PostItem({ post, userId }) {
             <div className={cx('row-5')}>
                 {post.listSkills.map((skill) => (
                     <div className={cx('skill')} key={skill.id}>
-                        <p>{skill.name}</p>
+                        {skill.name}
                     </div>
                 ))}
             </div>

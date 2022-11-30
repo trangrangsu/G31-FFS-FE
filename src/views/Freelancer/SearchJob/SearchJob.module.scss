@@ -169,14 +169,16 @@
     background-color: #B2BDC9;
     display: inline-block;
     border-radius: 10px;
+    line-height: 20px;
+    padding: 1px 10px;
     +div{
         margin-left:3px;
     }
-    p{
-        line-height: 20px;
-        margin: 0;
-        padding: 1px 10px;
-    }
+    // p{
+    //     line-height: 20px;
+    //     margin: 0;
+    //     padding: 1px 10px;
+    // }
 
 
 }
