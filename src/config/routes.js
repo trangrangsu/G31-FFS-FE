@@ -12,6 +12,7 @@ const routes = {
     recharge: '/recharge',
     rechargeHistory: '/rechargeHistory',
     userService: '/service',
+    rules: '/rules',
     dashboard: '/admin/dashboard',
     freelancer: '/admin/freelancer',
     recruiter: '/admin/recruiter',

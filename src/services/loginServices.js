@@ -47,7 +47,7 @@ export const changePassword = async (user) => {
 //   }
 export const changePasswordAuthentication = async (user) => {
     try {
-        const res = await httpRequest.put('changePassword', user);
+        const res = await httpRequest.put('api/user/changePassword', user);
         return res;
     } catch (error) {
         console.log(error);

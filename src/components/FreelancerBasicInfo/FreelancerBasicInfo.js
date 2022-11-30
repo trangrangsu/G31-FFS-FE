@@ -5,6 +5,7 @@ import { CFormInput, CFormCheck } from '@coreui/react';
 import DatePicker from 'react-datepicker';
 import { Checkbox, Alert } from 'antd';
 
+import config from '../../config';
 import * as careerServices from '../../services/careerServices';
 import Combox from '../Popper/Combox';
 import CareerMenu from '../Popper/CareerMenu';
@@ -426,7 +427,7 @@ const FreelancerBasicInfo = ({ freelancer, onClick }) => {
                 <div className={cx('rule', ruleValidate ? 'validate' : '')}>
                     <Checkbox onChange={() => setChecked4(!checked4)}></Checkbox>
                     <span className={cx('rule-text')}>Vâng, tôi hiểu và đồng ý với </span>
-                    <Button text href="#" className={cx('rule-btn')}>
+                    <Button text to={config.routes.rules} className={cx('rule-btn')}>
                         các điều khoản
                     </Button>
                     <span> của lanceddy</span>

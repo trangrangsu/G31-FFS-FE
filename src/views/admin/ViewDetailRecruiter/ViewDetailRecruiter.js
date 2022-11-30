@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import { useState, useEffect, useRef } from 'react';
 
-import { faUserPen, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faUserPen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSearchParams } from 'react-router-dom';
 import * as adminRecruiterServices from '../../../services/adminRecruiterServices';
@@ -117,7 +117,7 @@ function ViewDetailRecruiter() {
                             <div className={cx('description')}>{recruiter.companyIntro}</div>
                             <div className={cx('background-color')}>
                                 <label className={cx('label')}>Ngành nghề:</label>
-                                <p>{recruiter.career.name}</p>
+                                <p>{recruiter.career !== null && recruiter.career.name}</p>
                             </div>
                             <div className={cx('background-color')}>
                                 <label className={cx('label')}>Tax-Number:</label> <p>{recruiter.taxNumber}</p>

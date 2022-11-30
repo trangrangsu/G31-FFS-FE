@@ -43,6 +43,7 @@ const PostManagement = React.lazy(() => import('./views/recruiter/PostManagement
 const PostApplyManagement = React.lazy(() => import('./views/recruiter/PostApplyManagement'));
 const VerifyOTP = React.lazy(() => import('./views/pages/VerifyOTP'));
 const ErrorPage = React.lazy(() => import('./views/pages/ErrorPage'));
+const Rules = React.lazy(() => import('./views/pages/Rules'));
 
 // Public routes
 export const routes = [
@@ -95,6 +96,7 @@ export const guestRoutes = [
     { path: config.routes.forgetPassword, element: ForgetPassword, layout: HomeLayout },
     { path: config.routes.resetPassword, element: ResetPassword, layout: HomeLayout },
     { path: config.routes.errorPage, element: ErrorPage, layout: HomeLayout },
+    { path: config.routes.rules, element: Rules, layout: HomeLayout },
 ];
 
 // Admin routes

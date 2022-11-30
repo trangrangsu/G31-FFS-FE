@@ -21,25 +21,26 @@
     flex-direction: column;
     border: 1px solid #063BB7;   
     border-bottom-color: white;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
 }
 .container-header{
     width: 900px;   
     height: 60px;
     text-align: center;
     background-color: #063BB7;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
     align-items: center;
     color: white;
     display: flex;
     justify-content: center;
-    border: 1px solid #A8A2A2; 
 }
-.container-header h6{
-    padding-top: 5px;
-    text-transform: uppercase;
+.message-header{
+    h6{
+        font-size: 20px;
+        margin-top: 5px;
+        margin-bottom: 0;
+    }
+    p{
+        margin: 0;
+    }
 }
 .container h2{
     font-size: 30px;
@@ -115,8 +116,6 @@
     font-size: 12px;
 }
 
-
-//container-service
 .container-service{
     width: 900px;
     height: 600px;
@@ -125,13 +124,10 @@
     display: flex; 
     align-items: center;
     border-top-color: white;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
     position: relative;
     z-index: 1;
 }
 
-//container-service-detail
 .container-service-detail{
     width: 600px;
     height: 580px;

@@ -34,6 +34,7 @@ const Login = () => {
             dispatch({ type: 'set', accountAvatar: result.avatar });
             dispatch({ type: 'set', isMemberShip: result.isMemberShip });
             dispatch({ type: 'set', currentServiceName: result.currentServiceName });
+            dispatch({ type: 'set', durationRemain: result.durationRemain });
             dispatch({ type: 'set', currentServiceId: result.currentServiceId });
             localStorage.setItem('userId', result.userId);
             localStorage.setItem('userRole', result.role);

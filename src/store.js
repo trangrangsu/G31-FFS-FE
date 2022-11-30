@@ -332,6 +332,7 @@ const fetchApi = async (userId) => {
         initialState.accountBalance = result.accountBalance;
         initialState.accountAvatar = result.avatar;
         initialState.currentServiceName = result.currentServiceName;
+        initialState.durationRemain = result.durationRemain;
         initialState.currentServiceId = result.currentServiceId;
         initialState.isMemberShip = result.isMemberShip;
     }

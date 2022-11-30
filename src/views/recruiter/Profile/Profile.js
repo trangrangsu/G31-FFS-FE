@@ -130,7 +130,7 @@ const Profile = () => {
         updateProfileRecruiterApi(companyInfo);
         setTimeout(() => {
             fetchApi();
-        }, 100);
+        }, 200);
     };
     return (
         <div className={cx('wrapper')}>
@@ -209,7 +209,11 @@ const Profile = () => {
                             </div>
                             <div className={cx('info-item2')}>
                                 <label>Website: </label>
-                                {website !== null && <a href={website}>{website}</a>}
+                                {website !== null && (
+                                    <a href={website} target="_blank">
+                                        {website}
+                                    </a>
+                                )}
                             </div>
                             <div className={cx('info-item2')}>
                                 <label>Ngành nghề: </label>

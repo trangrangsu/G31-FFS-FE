@@ -18,6 +18,7 @@ const ChangePassword = () => {
     const [messagePassword, setMessagePassword] = useState('');
     const changePasswordApi = async (data) => {
         const result = await loginServices.changePasswordAuthentication(data);
+        console.log(result);
         if (result) {
             message.success({
                 content: 'Đổi mật khẩu thành công',
@@ -33,7 +34,7 @@ const ChangePassword = () => {
                 },
             });
         }
-        messagePassword('');
+        setMessagePassword('');
         setOldPassword('');
         setNewPassword('');
         setNewPasswordConfirm('');

@@ -20,6 +20,7 @@ const UserService = () => {
     const account = useSelector((state) => state.account);
     const accountBalance = useSelector((state) => state.accountBalance);
     const currentServiceName = useSelector((state) => state.currentServiceName);
+    const durationRemain = useSelector((state) => state.durationRemain);
     const currentServiceId = useSelector((state) => state.currentServiceId);
     const dispatch = useDispatch();
     const [services, setServices] = useState([{ serviceName: '' }, { serviceName: '' }, { serviceName: '' }]);
@@ -42,6 +43,7 @@ const UserService = () => {
             dispatch({ type: 'set', accountBalance: accountBalance - parseFloat(currentService.price) });
             dispatch({ type: 'set', isMemberShip: true });
             dispatch({ type: 'set', currentServiceName: currentService.serviceName });
+            dispatch({ type: 'set', durationRemain: currentService.duration });
             dispatch({ type: 'set', currentServiceId: currentService.id });
             message.success('Bạn đã mua thành công gói ' + currentService.serviceName);
         } else {
@@ -68,7 +70,10 @@ const UserService = () => {
                     <div className={cx('container')}>
                         <div className={cx('container-header')}>
                             {currentServiceName ? (
-                                <h6>Bạn đang là hội viên {account.currentServiceName}</h6>
+                                <div className={cx('message-header')}>
+                                    <h6>Bạn đang là hội viên {currentServiceName}</h6>
+                                    <p>Thời gian còn lại là {durationRemain} ngày</p>
+                                </div>
                             ) : (
                                 <h6>Bạn chưa là hội viên của Lanceddy</h6>
                             )}
