@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import * as searchPostFreelancerServices from '../../../services/searchPostFreelancerServices';
 import * as careerServices from '../../../services/careerServices';
 import PostItem from './PostItem';
+import TopItem from './TopItem';
 import Image from '../../../components/Image';
 import images from '../../../assets/images';
 import styles from './SearchJob.module.scss';
@@ -97,6 +98,9 @@ const SearchJob = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
+                <div className={cx('Top-post')}>
+                    <TopItem />
+                </div>
                 <div className={cx('page-title')}>Tìm kiếm việc làm</div>
                 <div className={cx('displayFlex')}>
                     <div className={cx('left')}>
@@ -153,6 +157,9 @@ const SearchJob = () => {
                                     {posts.map((post, index) => (
                                         <PostItem key={index} post={post} userId={account.userId} />
                                     ))}
+                                    {totalResults === 0 && (
+                                        <p className={cx('message-result')}>Không có bài đăng phù hợp</p>
+                                    )}
                                 </div>
                                 {totalResults > 10 && (
                                     <Pagination

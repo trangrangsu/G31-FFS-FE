@@ -146,7 +146,6 @@ const Profile = () => {
         fetchApi();
     }, []);
     useEffect(() => {
-        console.log(avatar);
         if (avatar !== '') firebase.downloadFile(account.userId, 'avatar', avatar, setImage);
     }, [avatar]);
     useEffect(() => {
@@ -414,7 +413,9 @@ const Profile = () => {
                                         onChange={(e) => {
                                             console.log(e.target.files[0]);
                                             firebase.upLoadFile(account.userId, 'cv', e.target.files[0]);
-                                            setCv(e.target.files[0].name);
+                                            setTimeout(() => {
+                                                setCv(e.target.files[0].name);
+                                            }, 1000);
                                             editByFieldApi('cv', e.target.files[0].name);
                                         }}
                                     ></input>

@@ -109,28 +109,23 @@ const Profile = () => {
     const handleCallBack = (recruiter) => {
         setShowBasicInfo(false);
         recruiter.id = account.userId;
-        setFullName(recruiter.fullName);
-        setEmail(recruiter.email);
-        setPhone(recruiter.phone);
-        setAddress(recruiter.address);
-        setCity(recruiter.city);
-        setCountry(recruiter.country);
+        // setFullName(recruiter.fullName);
+        // setEmail(recruiter.email);
+        // setPhone(recruiter.phone);
+        // setAddress(recruiter.address);
+        // setCity(recruiter.city);
+        // setCountry(recruiter.country);
         updateProfileApi(recruiter);
         setTimeout(() => {
             fetchApi();
-        }, 100);
+        }, 400);
     };
     const handleCallCompanyInfo = (companyInfo) => {
         setShowCompanyInfo(false);
-        setTaxNumber(companyInfo.taxNumber);
-        setWebsite(companyInfo.website);
-        setCareer(companyInfo.careerInfo);
-        setCompanyName(companyInfo.companyName);
-        setCompanyIntro(companyInfo.description);
         updateProfileRecruiterApi(companyInfo);
         setTimeout(() => {
             fetchApi();
-        }, 200);
+        }, 400);
     };
     return (
         <div className={cx('wrapper')}>
@@ -211,7 +206,7 @@ const Profile = () => {
                                 <label>Website: </label>
                                 {website !== null && (
                                     <a href={website} target="_blank">
-                                        {website}
+                                        {website.split('/')[2]}
                                     </a>
                                 )}
                             </div>

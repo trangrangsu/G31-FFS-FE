@@ -1,0 +1,16 @@
+.top-revenue{
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+}
+.top-revenue-item{
+    width: 50%;
+    h4{
+        padding: 0 16px;
+    }
+}
+.top-revenue-table{
+    th{
+        font-weight: 600 !important;
+    }
+}

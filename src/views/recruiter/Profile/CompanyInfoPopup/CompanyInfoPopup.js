@@ -26,10 +26,6 @@ function CompanyInfoPopup({ companyInfo, callback, onclose }) {
         const result = await adminCareerServices.getAllCareers();
         console.log(result);
         setCareers(result);
-    };
-
-    useEffect(() => {
-        fetchApi();
         if (companyInfo.id) {
             setTitle('Chỉnh sửa');
             setCompanyName(companyInfo.companyName);
@@ -38,11 +34,17 @@ function CompanyInfoPopup({ companyInfo, callback, onclose }) {
 
             if (companyInfo.career !== null) {
                 setCareer(companyInfo.career.id);
+            } else {
+                setCareer(result[0].id);
             }
             if (companyInfo.companyIntro !== null) {
                 setDescription(companyInfo.companyIntro);
             }
         }
+    };
+
+    useEffect(() => {
+        fetchApi();
     }, []);
     const handleClose = () => {
         setShow(false);

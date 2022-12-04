@@ -44,9 +44,9 @@ function Freelancer() {
             return (
                 <tr onClick={() => handleClickUser(freelancer.id)} key={freelancer.id}>
                     <td>{freelancer.id}</td>
-                    <td>{freelancer.email}</td>
-                    <td>{freelancer.fullName}</td>
-                    <td>{freelancer.accountBalance}</td>
+                    <td className={cx('table-td')}>{freelancer.email}</td>
+                    <td className={cx('table-td')}>{freelancer.fullName}</td>
+                    <td>{freelancer.accountBalance} $</td>
                     <td>{freelancer.isBanned ? 'Cấm' : 'Hoạt động'}</td>
                     <td>{freelancer.currentService}</td>
                 </tr>

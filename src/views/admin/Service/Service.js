@@ -17,6 +17,7 @@ function Service() {
     const inputRefPost = useRef();
     const inputRefApply = useRef();
     const inputRefView = useRef();
+    const inputRefPush = useRef();
     const [services, setServices] = useState([]);
     const [show, setShow] = useState(false);
     const [serviceInfo, setServiceInfo] = useState({});
@@ -24,12 +25,15 @@ function Service() {
     const [postEdit, setPostEdit] = useState(false);
     const [applyEdit, setApplyEdit] = useState(false);
     const [viewEdit, setViewEdit] = useState(false);
+    const [pushEdit, setPushEdit] = useState(false);
     const [postValue, setPostValue] = useState(1);
     const [applyValue, setApplyValue] = useState(0.5);
     const [viewValue, setViewValue] = useState(0.5);
+    const [pushValue, setPushValue] = useState(0.5);
     const [postPreValue, setPostPreValue] = useState(1);
     const [applyPreValue, setApplyPreValue] = useState(0.5);
     const [viewPreValue, setViewPreValue] = useState(0.5);
+    const [pushPreValue, setPushPreValue] = useState(0.5);
     const [benefits, setBenefit] = useState([]);
     const [fees, setFees] = useState([]);
     const [messageFee, setMessageFree] = useState('');
@@ -158,6 +162,24 @@ function Service() {
                 editFeeApi(fees[2].id, viewValue, 'view');
             }
         }
+    };
+    const handEditPricePush = () => {
+        if (!pushEdit) {
+            setPushEdit(true);
+            inputRefPush.current.focus({
+                cursor: 'end',
+            });
+        }
+        // else {
+        //     if (viewValue.toString().length > 10) {
+        //         setMessageFree('Giá phải nhỏ hơn hoặc bằng 10 chữ số');
+        //         return;
+        //     } else {
+        //         setMessageFree('');
+        //         setPushEdit(false);
+        //         editFeeApi(fees[2].id, viewValue, 'push');
+        //     }
+        // }
     };
     return (
         <div className={cx('wrapper')}>
@@ -333,6 +355,42 @@ function Service() {
                                         onClick={() => {
                                             setViewEdit(false);
                                             setViewValue(viewPreValue);
+                                        }}
+                                    >
+                                        Hủy
+                                    </Button>
+                                </>
+                            )}
+                        </div>
+                        <div className={cx('fee-item')}>
+                            <p>{fees[2].name}</p>
+                            <div className={cx('input')}>
+                                <InputNumber
+                                    placeholder="$"
+                                    ref={inputRefPush}
+                                    disabled={!pushEdit}
+                                    value={pushValue}
+                                    formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                    parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+                                    onChange={(e) => setPushValue(e)}
+                                />
+                            </div>
+                            {!pushEdit && (
+                                <Button type="primary" onClick={handEditPricePush}>
+                                    Sửa giá
+                                </Button>
+                            )}
+                            {pushEdit && (
+                                <>
+                                    <Button type="primary" onClick={handEditPricePush}>
+                                        Xác nhận
+                                    </Button>
+                                    <p style={{ width: '5px' }}></p>
+                                    <Button
+                                        type="primary"
+                                        onClick={() => {
+                                            setPushEdit(false);
+                                            setPushValue(pushPreValue);
                                         }}
                                     >
                                         Hủy

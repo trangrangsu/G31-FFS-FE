@@ -1,13 +1,46 @@
-import React from 'react';
 import { useState, useEffect } from 'react';
-import { CButtonGroup, CCard, CCardBody, CCardFooter, CCol, CRow } from '@coreui/react';
+import { CButtonGroup, CCard, CCardBody, CCardFooter, CCol, CRow, CWidgetStatsF } from '@coreui/react';
 import { CChartLine } from '@coreui/react-chartjs';
 import { getStyle, hexToRgba } from '@coreui/utils';
 import WidgetsDropdown from '../widgets/WidgetsDropdown';
-import { CWidgetStatsF } from '@coreui/react';
+import { Table } from 'antd';
+import classNames from 'classnames/bind';
 
 import * as adminDashboardServices from '../../../services/adminDashboardServices';
+import styles from './Dashboard.module.scss';
+const cx = classNames.bind(styles);
+const dataSource = [
+    {
+        key: '1',
+        email: 'trangnbhe141334@fpt.edu.vn',
+        name: 'Nguyễn Bá Trang',
+        money: '10000$',
+    },
+    {
+        key: '2',
+        email: 'congbvhe141...@fpt.edu.vn',
+        name: 'Biện Văn Công',
+        money: '10000$',
+    },
+];
 
+const columns = [
+    {
+        title: 'Email',
+        dataIndex: 'email',
+        key: 'email',
+    },
+    {
+        title: 'Họ và tên',
+        dataIndex: 'name',
+        key: 'name',
+    },
+    {
+        title: 'Số tiền đã sử dụng',
+        dataIndex: 'money',
+        key: 'money',
+    },
+];
 const Dashboard = () => {
     const [revenue, setRevenue] = useState({
         label: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -52,18 +85,7 @@ const Dashboard = () => {
                             </div>
                         </CCol>
                         <CCol sm={7} className="d-none d-md-block">
-                            <CButtonGroup className="float-end me-3">
-                                {/* {['Day', 'Month', 'Year'].map((value) => (
-                                    <CButton
-                                        color="outline-secondary"
-                                        key={value}
-                                        className="mx-0"
-                                        active={value === 'Month'}
-                                    >
-                                        {value}
-                                    </CButton>
-                                ))} */}
-                            </CButtonGroup>
+                            <CButtonGroup className="float-end me-3"></CButtonGroup>
                         </CCol>
                     </CRow>
                     <CChartLine
@@ -118,6 +140,26 @@ const Dashboard = () => {
                         }}
                     />
                 </CCardBody>
+                <div className={cx('top-revenue')}>
+                    <div className={cx('top-revenue-item')}>
+                        <h4>10 nhà tuyển dụng đóng góp doanh thu cao nhất</h4>
+                        <Table
+                            columns={columns}
+                            dataSource={dataSource}
+                            pagination={false}
+                            className={cx('top-revenue-table')}
+                        />
+                    </div>
+                    <div className={cx('top-revenue-item')}>
+                        <h4>10 freelancer tạo ra doanh thu cao nhất</h4>
+                        <Table
+                            dataSource={dataSource}
+                            columns={columns}
+                            pagination={false}
+                            className={cx('top-revenue-table')}
+                        />
+                    </div>
+                </div>
                 <CCardFooter>
                     <CRow>
                         <CCol sm={6} lg={3}>

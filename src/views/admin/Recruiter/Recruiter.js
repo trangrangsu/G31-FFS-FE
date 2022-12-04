@@ -219,8 +219,8 @@ function Recruiter() {
                                 return (
                                     <tr key={recruiters.id}>
                                         <td>{recruiters.id}</td>
-                                        <td>{recruiters.email}</td>
-                                        <td>{recruiters.fullName}</td>
+                                        <td className={cx('table-td')}>{recruiters.email}</td>
+                                        <td className={cx('table-td')}>{recruiters.fullName}</td>
                                         <td>{recruiters.phone}</td>
                                         <td onClick={() => handleApprove(recruiters.id)}>
                                             <FontAwesomeIcon icon={faCircleCheck} className={cx('hover')} />
@@ -283,8 +283,8 @@ function Recruiter() {
                             return (
                                 <tr key={recruiters.id} onClick={() => handleClickUser(recruiters.id)}>
                                     <td>{recruiters.id}</td>
-                                    <td>{recruiters.email}</td>
-                                    <td>{recruiters.fullName}</td>
+                                    <td className={cx('table-td')}>{recruiters.email}</td>
+                                    <td className={cx('table-td')}>{recruiters.fullName}</td>
                                     <td>{recruiters.accountBalance}</td>
                                     <td>{recruiters.isBanned ? 'Cấm' : 'Hoạt động'}</td>
                                     <td>{recruiters.currentService}</td>

@@ -146,8 +146,8 @@ function Staff() {
                                 return (
                                     <tr key={staff.id}>
                                         <td>{staff.id}</td>
-                                        <td>{staff.email}</td>
-                                        <td>{staff.fullName}</td>
+                                        <td className={cx('table-td')}>{staff.email}</td>
+                                        <td className={cx('table-td')}>{staff.fullName}</td>
                                         <td>{staff.phone}</td>
                                         <td>{staff.address}</td>
                                         <td>{staff.isActive ? 'Hoạt động' : 'Không hoạt động'}</td>

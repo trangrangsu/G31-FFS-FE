@@ -11,7 +11,7 @@ import { faFlag } from '@fortawesome/free-regular-svg-icons';
 export const navAdmin = [
     {
         component: CNavItem,
-        name: 'Dashboard',
+        name: 'Bảng điều khiển',
         to: config.routes.dashboard,
         icon: <CIcon icon={cilChartLine} customClassName="nav-icon" />,
     },
@@ -23,31 +23,31 @@ export const navAdmin = [
     },
     {
         component: CNavItem,
-        name: 'Recruiter',
+        name: 'Nhà tuyển dụng',
         to: config.routes.recruiter,
         icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
     },
     {
         component: CNavItem,
-        name: 'Staff',
+        name: 'Nhân viên',
         to: config.routes.staff,
         icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
     },
     {
         component: CNavItem,
-        name: 'Membership',
+        name: 'Hội viên',
         to: config.routes.service,
         icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
     },
     {
         component: CNavItem,
-        name: 'Career',
+        name: 'Ngành nghề',
         to: config.routes.career,
         icon: <CIcon icon={cilListRich} customClassName="nav-icon" />,
     },
     {
         component: CNavItem,
-        name: 'SubCareer',
+        name: 'Chuyên ngành',
         to: config.routes.subCareer,
         icon: <CIcon icon={cilList} customClassName="nav-icon" />,
     },
@@ -61,26 +61,26 @@ export const navStaff = [
     },
     {
         component: CNavItem,
-        name: 'Recruiter',
+        name: 'Nhà tuyển dụng',
         to: config.routes.recruiter,
         icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
     },
 
     {
         component: CNavItem,
-        name: 'Payment',
+        name: 'Thanh toán',
         to: config.routes.payment,
         icon: <CIcon icon={cilCash} customClassName="nav-icon" />,
     },
     {
         component: CNavItem,
-        name: 'Post',
+        name: 'Bài đăng',
         to: config.routes.post,
         icon: <FontAwesomeIcon icon={faClipboard} className="nav-icon-custom" />,
     },
     {
         component: CNavItem,
-        name: 'Report',
+        name: 'Báo cáo',
         to: config.routes.report,
         icon: <FontAwesomeIcon icon={faFlag} className="nav-icon-custom" />,
     },

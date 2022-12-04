@@ -59,7 +59,7 @@ const ViewDetailPost = () => {
     const getPostDetailApi = async (postId) => {
         const result = await getPostDetailFreelancerServices.getPostDetail(postId, account.userId);
         console.log(result);
-        if (result !== undefined) {
+        if (result !== undefined && result !== null && result !== '') {
             setPostDetail(result);
             setStatus(result.isApply);
             setDocument(result.attach);
