@@ -166,7 +166,7 @@ function Post() {
     };
     const handleChangeTitle = (e) => {
         const value = e.target.value;
-        if (value.length > 200) {
+        if (value.length > 100) {
             return;
         }
         if (!value.startsWith(' ')) {

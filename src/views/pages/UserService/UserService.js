@@ -64,7 +64,7 @@ const UserService = () => {
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
                 <div className={cx('bannerSale-first')}>
-                    <img src={images.sales} className={cx('mb-bank')} alt="banner" />
+                    <img src={images.bannerSearchFreelancer} className={cx('mb-bank')} alt="banner" />
                 </div>
                 <div className={cx('container-main')}>
                     <div className={cx('container')}>
@@ -163,6 +163,14 @@ const UserService = () => {
                             </div>
                             <ul className={cx('service-detail-item2')}>
                                 {benefits.map((benefit) => {
+                                    if (benefit.id === 5 && currentService.serviceName === 'Gold') {
+                                        return (
+                                            <li className={cx('row-detail')} key={benefit.id} hidden>
+                                                <FontAwesomeIcon icon={faCheck} />
+                                                <span>{benefit.name}</span>
+                                            </li>
+                                        );
+                                    }
                                     return (
                                         <li className={cx('row-detail')} key={benefit.id}>
                                             <FontAwesomeIcon icon={faCheck} />
@@ -183,7 +191,7 @@ const UserService = () => {
                     </div>
                 </div>
                 <div className={cx('bannerSale-second')}>
-                    <img src={images.sales} className={cx('mb-bank')} alt="banner" />
+                    <img src={images.bannerSearchFreelancer} className={cx('mb-bank')} alt="banner" />
                 </div>
             </div>
         </div>

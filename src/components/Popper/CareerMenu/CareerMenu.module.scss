@@ -1,6 +1,7 @@
 // Menu wrapper
 .menu-list {
-    width: 270px;
+    width: 300px;
+    height: 100px;
     border: 1px solid rgba(22, 24, 35, 0.12);
     border-radius: 5px;
 }
@@ -10,7 +11,7 @@
 }
 
 .menu-body {
-    overflow-y: auto;
+    //overflow-y: auto;
 }
 
 // Menu items

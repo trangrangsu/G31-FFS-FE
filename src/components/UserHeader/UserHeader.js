@@ -65,15 +65,13 @@ function UserHeader() {
     const [close, setClose] = useState(true);
 
     if (account.role === 'freelancer') {
-        console.log(account.role);
+        MENU_ITEMS[0].to.pathname = config.routes.freelancerProfile;
     }
     if (account.role === 'recruiter') {
-        console.log(account.role);
         MENU_ITEMS[0].to.pathname = config.routes.recruiterProfile;
     }
 
     const handleMenuChange = (menuItem) => {
-        //console.log(menuItem);
         if (menuItem.title === 'Đăng xuất') {
             dispatch({ type: 'set', account: {} });
             dispatch({ type: 'set', accountBalance: 0 });

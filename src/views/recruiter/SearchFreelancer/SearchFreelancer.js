@@ -50,10 +50,8 @@ const SearchFreelancer = () => {
             isMemberShip,
             pageIndex,
         );
-        if (typeof result === 'object') {
-            setFreelancers(result.results);
-            setTotalResults(result.totalResults);
-        }
+        setFreelancers(result.results);
+        setTotalResults(result.totalResults);
     };
 
     useEffect(() => {

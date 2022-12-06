@@ -20,6 +20,7 @@ const SearchJob = () => {
     const cities = useSelector((state) => state.city);
     const [careers, setCareers] = useState([]);
     const [posts, setPosts] = useState([]);
+    const [topPosts, setTopPosts] = useState([]);
     const [area, setArea] = useState('');
     const [keyword, setKeyword] = useState('');
     const [subCareerId, setSubCareerId] = useState(-1);
@@ -30,6 +31,10 @@ const SearchJob = () => {
     const getCareeersApi = async () => {
         const result = await careerServices.getCareers();
         setCareers(result);
+    };
+    const getAllTopJobApi = async () => {
+        const result = await searchPostFreelancerServices.getAllTopJob();
+        setTopPosts(result);
     };
     const getPostsApi = async (area, keyword, subCareerId, paymentType, pageIndex) => {
         const result = await searchPostFreelancerServices.getPosts(
@@ -46,6 +51,7 @@ const SearchJob = () => {
     };
     useEffect(() => {
         getCareeersApi();
+        getAllTopJobApi();
         getPostsApi(area, keyword, -1, paymentType, 0);
     }, []);
     const renderItemsMenu = (careers) => {
@@ -98,9 +104,13 @@ const SearchJob = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
-                <div className={cx('Top-post')}>
-                    <TopItem />
-                </div>
+                {topPosts.length !== 0 && (
+                    <div className={cx('Top-post')}>
+                        {topPosts.map((post) => (
+                            <TopItem key={post.id} post={post} />
+                        ))}
+                    </div>
+                )}
                 <div className={cx('page-title')}>Tìm kiếm việc làm</div>
                 <div className={cx('displayFlex')}>
                     <div className={cx('left')}>

@@ -85,6 +85,6 @@ export const pushOnTop = async (userId, jobId) => {
         const res = await httpRequest.put(`api/recruiter/pushTop?recruiterId=${userId}&jobId=${jobId}`);
         return res;
     } catch (error) {
-        console.log(error);
+        return error;
     }
 };

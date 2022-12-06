@@ -109,12 +109,6 @@ const Profile = () => {
     const handleCallBack = (recruiter) => {
         setShowBasicInfo(false);
         recruiter.id = account.userId;
-        // setFullName(recruiter.fullName);
-        // setEmail(recruiter.email);
-        // setPhone(recruiter.phone);
-        // setAddress(recruiter.address);
-        // setCity(recruiter.city);
-        // setCountry(recruiter.country);
         updateProfileApi(recruiter);
         setTimeout(() => {
             fetchApi();

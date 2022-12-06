@@ -64,7 +64,7 @@ const RechargeHistory = () => {
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
                 <div className={cx('bannerSale_left')}>
-                    <img src={images.sales} className={cx('mb-bank')} alt="banner" />
+                    <img src={images.bannerSearchFreelancer} className={cx('mb-bank')} alt="banner" />
                 </div>
 
                 <div className={cx('container')}>
@@ -130,7 +130,7 @@ const RechargeHistory = () => {
                     </div>
                 </div>
                 <div className={cx('bannerSale_right')}>
-                    <img src={images.sales} className={cx('mb-bank')} alt="banner" />
+                    <img src={images.bannerSearchFreelancer} className={cx('mb-bank')} alt="banner" />
                 </div>
             </div>
         </div>

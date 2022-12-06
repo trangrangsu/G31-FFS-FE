@@ -11,7 +11,6 @@ import styles from './UserItem.module.scss';
 const cx = classNames.bind(styles);
 
 function UserItem({ data, type }) {
-    console.log(data);
     const [path, setPath] = useState(Config.routes.viewDetailFreelancerAdmin);
     const [image, setImage] = useState(images.defaultAvatar);
     const [avatar, setAvatar] = useState('');

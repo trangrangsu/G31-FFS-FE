@@ -82,6 +82,9 @@ function WorkExpPopup({ workExp, callback, onclose }) {
         ) {
             count++;
             setMessageNumber('Vui lòng nhập số');
+        } else if (parseInt(monthFrom) > 12 || parseInt(monthTo)) {
+            count++;
+            setMessageNumber('Vui lòng nhập tháng từ 01 đến 12');
         } else if (yearFrom > yearTo) {
             count++;
             setMessageNumber('Năm bắt đầu phải nhỏ hơn năm kết thúc');

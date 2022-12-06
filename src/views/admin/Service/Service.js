@@ -39,16 +39,18 @@ function Service() {
     const [messageFee, setMessageFree] = useState('');
     const fetchApi = async () => {
         const result = await adminServiceServices.getServices(user);
-        //console.log(result);
+        console.log(result);
         setServices(result.services);
         setBenefit(result.benefits);
         setFees(result.fees);
         setPostValue(result.fees[0].price);
         setApplyValue(result.fees[1].price);
         setViewValue(result.fees[2].price);
+        setPushValue(result.fees[3].price);
         setPostPreValue(result.fees[0].price);
         setApplyPreValue(result.fees[1].price);
         setViewPreValue(result.fees[2].price);
+        setPushPreValue(result.fees[3].price);
     };
 
     const updateServiceApi = async (service) => {
@@ -76,8 +78,10 @@ function Service() {
                 setPostPreValue(price);
             } else if (flag === 'apply') {
                 setApplyPreValue(price);
-            } else {
+            } else if (flag === 'view') {
                 setViewPreValue(price);
+            } else {
+                setPushPreValue(price);
             }
         } else {
             message.error({
@@ -90,8 +94,10 @@ function Service() {
                 setPostValue(postPreValue);
             } else if (flag === 'apply') {
                 setApplyValue(applyPreValue);
-            } else {
+            } else if (flag === 'view') {
                 setViewValue(viewPreValue);
+            } else {
+                setPushValue(pushPreValue);
             }
         }
     };
@@ -169,17 +175,16 @@ function Service() {
             inputRefPush.current.focus({
                 cursor: 'end',
             });
+        } else {
+            if (pushValue.toString().length > 10) {
+                setMessageFree('Giá phải nhỏ hơn hoặc bằng 10 chữ số');
+                return;
+            } else {
+                setMessageFree('');
+                setPushEdit(false);
+                editFeeApi(fees[3].id, pushValue, 'push');
+            }
         }
-        // else {
-        //     if (viewValue.toString().length > 10) {
-        //         setMessageFree('Giá phải nhỏ hơn hoặc bằng 10 chữ số');
-        //         return;
-        //     } else {
-        //         setMessageFree('');
-        //         setPushEdit(false);
-        //         editFeeApi(fees[2].id, viewValue, 'push');
-        //     }
-        // }
     };
     return (
         <div className={cx('wrapper')}>
@@ -363,7 +368,7 @@ function Service() {
                             )}
                         </div>
                         <div className={cx('fee-item')}>
-                            <p>{fees[2].name}</p>
+                            <p>{fees[3].name}</p>
                             <div className={cx('input')}>
                                 <InputNumber
                                     placeholder="$"

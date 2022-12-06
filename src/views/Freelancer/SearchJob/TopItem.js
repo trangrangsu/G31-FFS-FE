@@ -1,32 +1,54 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 
+import Image from '../../../components/Image';
+import * as firebase from '../../../firebase/firebase';
 import config from '../../../config';
 import Button from '../../../components/Button';
+import images from '../../../assets/images';
 import styles from './SearchJob.module.scss';
 
 const cx = classNames.bind(styles);
-const postDetail = {
-    postID: 100,
-    avatar: 'https://www.google.com/imgres?imgurl=https%3A%2F%2Ffpttelecom.net.vn%2Fstorage%2Fmedia%2F1vesPKZS1Endp5TFr7hXSTtgG4n0I5ZiLpHmu7m7.jpeg&imgrefurl=https%3A%2F%2Ffpttelecom.net.vn%2Ftai-sao-ban-nen-lam-viec-tai-fpt-telecom&tbnid=FqPOn8Wwp4q7BM&vet=12ahUKEwi7xKmb_977AhUHgJQKHWp1BUIQMygQegUIARDcAQ..i&docid=vQi3cVbZqEr16M&w=674&h=1024&q=fpt&ved=2ahUKEwi7xKmb_977AhUHgJQKHWp1BUIQMygQegUIARDcAQ',
-    jobTitle: 'Thiết kế website bán quần áo online',
-    subCareer: 'Lập trình website',
-    paymentType: 'Trả theo dự án',
-    budget: '4.000.000 VNĐ',
-    area: 'Hà Nội',
-};
-function TopItem({ post, userId }) {
-    const navigate = useNavigate();
 
+function TopItem({ post }) {
+    const navigate = useNavigate();
+    const [image, setImage] = useState(images.defaultAvatar);
+
+    useEffect(() => {
+        if (post.recruiter.avatar !== null && post.recruiter.avatar !== '')
+            firebase.downloadFile(post.recruiter.id, 'avatar', post.recruiter.avatar, setImage);
+    }, []);
     const handleViewDetail = () => {
         const to = {
             pathname: config.routes.viewDetailPost,
-            search: `?id=${post.postID}`,
+            search: `?id=${post.id}`,
         };
         navigate(to);
     };
-    return <div className={cx('wrapper-top')}></div>;
+    return (
+        <div className={cx('box')}>
+            <div className={cx('wrapper-top')} onClick={handleViewDetail}>
+                <Image src={image} alt="avatar" />
+                <div className={cx('top-title')}>{post.title}</div>
+                <p className={cx('top-text', 'top-padding')}>{post.subcareer}</p>
+                <div className={cx('top-container')}>
+                    <FontAwesomeIcon className={cx('top-icon')} icon={faLocationDot} />
+                    <p className={cx('top-text')}>{post.area}</p>
+                </div>
+                <div className={cx('top-container')}>
+                    <div className={cx('top-text')}>{post.typebudget}: </div>
+                    <div className={cx('top-text', 'top-margin')}> {post.bugget} VND</div>
+                </div>
+            </div>
+            <span className={cx('left-top')}></span>
+            <span className={cx('top-top')}></span>
+            <span className={cx('right-top')}></span>
+            <span className={cx('bottom-top')}></span>
+        </div>
+    );
 }
 
 export default TopItem;

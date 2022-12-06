@@ -56,6 +56,7 @@ function CareerMenu({ children, careers = [], hideOnClick = false, onChange = de
         <Tippy
             interactive
             offset={[0, 8]}
+            trigger="click"
             hideOnClick={hideOnClick}
             placement="bottom-start"
             render={renderResult}

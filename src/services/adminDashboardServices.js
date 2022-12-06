@@ -8,3 +8,11 @@ export const getDashboard = async () => {
         console.log(error);
     }
 };
+export const getUserHot = async () => {
+    try {
+        const res = await httpRequest.get(`api/admin/getUserHot`);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};

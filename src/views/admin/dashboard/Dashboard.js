@@ -9,20 +9,6 @@ import classNames from 'classnames/bind';
 import * as adminDashboardServices from '../../../services/adminDashboardServices';
 import styles from './Dashboard.module.scss';
 const cx = classNames.bind(styles);
-const dataSource = [
-    {
-        key: '1',
-        email: 'trangnbhe141334@fpt.edu.vn',
-        name: 'Nguyễn Bá Trang',
-        money: '10000$',
-    },
-    {
-        key: '2',
-        email: 'congbvhe141...@fpt.edu.vn',
-        name: 'Biện Văn Công',
-        money: '10000$',
-    },
-];
 
 const columns = [
     {
@@ -52,6 +38,8 @@ const Dashboard = () => {
         { title: 'Loại Membership', value: 5 },
         { title: 'Membership', value: 2000 },
     ]);
+    const [freelancers, setFreelancers] = useState([]);
+    const [recruiters, setRecruiters] = useState([]);
 
     const fetchApi = async () => {
         const result = await adminDashboardServices.getDashboard();
@@ -66,10 +54,26 @@ const Dashboard = () => {
             { title: 'Membership', value: result.totalMemberShip },
         ]);
     };
+    const getUserHotApi = async () => {
+        const result = await adminDashboardServices.getUserHot();
+        setFreelancers(result.freelancers);
+        setRecruiters(result.recruiters);
+    };
     useEffect(() => {
         fetchApi();
+        getUserHotApi();
     }, []);
 
+    const genderData = (data) => {
+        return data.map((user) => {
+            return {
+                key: user.id,
+                email: user.email,
+                name: user.fullName,
+                money: user.totalMoneyUsed,
+            };
+        });
+    };
     return (
         <>
             <WidgetsDropdown />
@@ -145,7 +149,7 @@ const Dashboard = () => {
                         <h4>10 nhà tuyển dụng đóng góp doanh thu cao nhất</h4>
                         <Table
                             columns={columns}
-                            dataSource={dataSource}
+                            dataSource={genderData(recruiters)}
                             pagination={false}
                             className={cx('top-revenue-table')}
                         />
@@ -153,7 +157,7 @@ const Dashboard = () => {
                     <div className={cx('top-revenue-item')}>
                         <h4>10 freelancer tạo ra doanh thu cao nhất</h4>
                         <Table
-                            dataSource={dataSource}
+                            dataSource={genderData(freelancers)}
                             columns={columns}
                             pagination={false}
                             className={cx('top-revenue-table')}

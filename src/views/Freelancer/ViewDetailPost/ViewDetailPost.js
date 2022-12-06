@@ -453,7 +453,7 @@ const ViewDetailPost = () => {
                         <div className={cx('right-component')}>
                             <div className={cx('company-title')}>Trang web công ty</div>
                             <CustomButton href={postDetail.createBy.website} className={cx('company-link')}>
-                                {postDetail.createBy.website}
+                                {postDetail.createBy.website && postDetail.createBy.website.split('/')[2]}
                             </CustomButton>
                         </div>
                     </div>

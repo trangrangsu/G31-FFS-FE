@@ -18,7 +18,6 @@ import styles from './FreelancerItem.module.scss';
 const cx = classNames.bind(styles);
 const FreelancerItem = ({ postId, freelancer, type, onDelete }) => {
     const navigate = useNavigate();
-
     const account = useSelector((state) => state.account);
     const [image, setImage] = useState(images.defaultAvatar);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -47,11 +46,11 @@ const FreelancerItem = ({ postId, freelancer, type, onDelete }) => {
             message.error('Đánh giá thất bại');
         }
     };
-    useEffect(() => {
-        if (freelancer.avatar !== null) {
-            firebase.downloadFile(freelancer.id, 'avatar', freelancer.avatar, setImage);
-        }
-    }, []);
+
+    if (freelancer.avatar !== null) {
+        firebase.downloadFile(freelancer.id, 'avatar', freelancer.avatar, setImage);
+    }
+
     const handleApprove = () => {
         responseJobApplyApi('Chấp thuận', 1);
     };
@@ -205,7 +204,7 @@ const FreelancerItem = ({ postId, freelancer, type, onDelete }) => {
                             </div>
                         </div>
                         <div className={cx('cost')}>
-                            <p>Chi phí/Giờ:{freelancer.costPerHour}</p>
+                            <p>Chi phí/Giờ: {freelancer.costPerHour}</p>
                         </div>
                     </div>
                 </div>

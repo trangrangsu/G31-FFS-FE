@@ -10,6 +10,14 @@ export const getPosts = async (userId, area, keyword, subCareerId, paymentType, 
         console.log(error);
     }
 };
+export const getAllTopJob = async () => {
+    try {
+        const res = await httpRequest.get(`api/job/getAllTopJob`);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
 export const addJobSaved = async (freelancerId, jobId) => {
     try {
         const res = await httpRequest.post(`api/freelancer/addJobSaved?freelancerId=${freelancerId}&jobId=${jobId}`);

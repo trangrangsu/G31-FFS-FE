@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import { Button, message as notification } from 'antd';
-import { useSelector } from 'react-redux';
+import { Button, message as notificationMess, Popconfirm, notification } from 'antd';
+import { useSelector, useDispatch } from 'react-redux';
 
 import * as recruiterPostManagementServices from '../../../services/recruiterPostManagementServices';
 import config from '../../../config';
@@ -10,22 +10,35 @@ import CustomButton from '../../../components/Button';
 import styles from './PostManagement.module.scss';
 
 const cx = classNames.bind(styles);
-
+const openNotificationWithIcon = (type) => {
+    notification[type]({
+        message: 'Thông báo',
+        description: 'Tài khoản không còn đủ số dư. Vui lòng nạp thêm tiền',
+    });
+};
+const openNotificationPush = (type, mess) => {
+    notification[type]({
+        message: 'Thông báo',
+        description: mess,
+    });
+};
 function PostItem({ post }) {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const account = useSelector((state) => state.account);
+    const text = 'Phí đẩy top là ' + account.feePushTop + '$';
+    const accountBalance = useSelector((state) => state.accountBalance);
     const isMemberShip = useSelector((state) => state.isMemberShip);
     const [message, setMessage] = useState('');
 
     const pushOnTopApi = async () => {
         const result = await recruiterPostManagementServices.pushOnTop(account.userId, post.jobId);
         console.log(result);
-        if (result) {
-            notification.success('Đẩy top thành công');
-        } else if (result === false) {
-            notification.warn('Bạn vừa đẩy top. Sau 2 tiếng bạn mới có thể đẩy lại.');
+        if (result === true) {
+            notificationMess.success('Đẩy top thành công');
+            dispatch({ type: 'set', accountBalance: accountBalance - account.feePushTop });
         } else {
-            notification.error('Đẩy top thất bại');
+            openNotificationPush('error', result.response.data);
         }
     };
     useEffect(() => {
@@ -47,8 +60,12 @@ function PostItem({ post }) {
         };
         navigate(to);
     };
-    const handlePushOnTop = () => {
-        pushOnTopApi();
+    const checkWallet = () => {
+        if (accountBalance - account.feePushTop > 0) {
+            pushOnTopApi();
+        } else {
+            openNotificationWithIcon('warning');
+        }
     };
     return (
         <div className={cx('wrapper-post')}>
@@ -59,9 +76,15 @@ function PostItem({ post }) {
                 <div className={cx('row')}>
                     {post.status === 1 && isMemberShip && (
                         <div>
-                            <Button type="primary" onClick={handlePushOnTop}>
-                                Đẩy top
-                            </Button>
+                            <Popconfirm
+                                placement="top"
+                                title={text}
+                                onConfirm={checkWallet}
+                                okText="Đẩy"
+                                cancelText="Hủy"
+                            >
+                                <Button type="primary">Đẩy top</Button>
+                            </Popconfirm>
                         </div>
                     )}
                     <div className={cx('message', 'message' + post.status)}>
