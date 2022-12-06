@@ -29,8 +29,8 @@ function TopItem({ post }) {
         navigate(to);
     };
     return (
-        <div className={cx('box')}>
-            <div className={cx('wrapper-top')} onClick={handleViewDetail}>
+        <div className={cx('box')} onClick={handleViewDetail}>
+            <div className={cx('wrapper-top')}>
                 <Image src={image} alt="avatar" />
                 <div className={cx('top-title')}>{post.title}</div>
                 <p className={cx('top-text', 'top-padding')}>{post.subcareer}</p>
