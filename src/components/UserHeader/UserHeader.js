@@ -102,9 +102,11 @@ function UserHeader() {
         }
     }, [currPage, lastList, prevPage, notifications]);
     const handleViewNotification = () => {
-        fetchData();
-        setUnReadNotification(0);
-        setClose(false);
+        if (close) {
+            fetchData();
+            setUnReadNotification(0);
+            setClose(false);
+        }
     };
     const onScroll = () => {
         if (listInnerRef.current) {
@@ -175,9 +177,12 @@ function UserHeader() {
                                     style={{ maxHeight: '715px', overflowY: 'auto' }}
                                 >
                                     <h2>Thông báo</h2>
-                                    {notifications.map((notification) => (
-                                        <NotificationItem key={notification.postId} item={notification} />
+                                    {notifications.map((notification, index) => (
+                                        <NotificationItem key={index} item={notification} />
                                     ))}
+                                    {notifications.length === 0 && (
+                                        <p className={cx('notification-none')}>Không có thông báo</p>
+                                    )}
                                 </div>
                             )}
                             onClickOutside={() => {

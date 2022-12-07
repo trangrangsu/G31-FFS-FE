@@ -181,7 +181,7 @@ function ViewDetailFreelancer() {
                                 </div>
                                 <div className={cx('info-item2')}>
                                     <label>Website: </label>
-                                    {website !== null && <a href={website}>{website}</a>}
+                                    {website !== null && <a href={website}>{website.split('/')[2]}</a>}
                                 </div>
                                 <div className={cx('info-item2')}>
                                     <label>Ngành nghề: </label>

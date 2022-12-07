@@ -33,7 +33,9 @@ function TopItem({ post }) {
             <div className={cx('wrapper-top')}>
                 <Image src={image} alt="avatar" />
                 <div className={cx('top-title')}>{post.title}</div>
-                <p className={cx('top-text', 'top-padding')}>{post.subcareer}</p>
+                <div className={cx('background-sub-career')}>
+                    <p className={cx('top-text', 'top-padding')}>{post.subcareer}</p>
+                </div>
                 <div className={cx('top-container')}>
                     <FontAwesomeIcon className={cx('top-icon')} icon={faLocationDot} />
                     <p className={cx('top-text')}>{post.area}</p>

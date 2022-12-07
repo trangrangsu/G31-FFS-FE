@@ -29,8 +29,9 @@ function SubCareer() {
         console.log(result2);
         setListCareers(result2);
         setCareer(result2[0].id);
+        getSubCareerApi(result2[0].id);
     };
-    const getSubCareerApi = async (pIndex) => {
+    const getSubCareerApi = async (career, pIndex) => {
         const result1 = await adminSubCareerServices.getSubCareers(career, searchValue, pIndex);
         console.log(result1);
         setSubCareers(result1.results);
@@ -84,18 +85,17 @@ function SubCareer() {
     };
     useEffect(() => {
         getCareerApi();
-        getSubCareerApi();
     }, []);
     useEffect(() => {
-        getSubCareerApi();
+        getSubCareerApi(career);
     }, [career]);
     useEffect(() => {
         if (searchValue === '') {
-            getSubCareerApi();
+            getSubCareerApi(career);
         }
     }, [searchValue]);
     const handlePaging = (pIndex) => {
-        getSubCareerApi(pIndex);
+        getSubCareerApi(career, pIndex);
     };
 
     const renderPages = () => {
