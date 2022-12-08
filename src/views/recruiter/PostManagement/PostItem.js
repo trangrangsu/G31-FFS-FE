@@ -29,6 +29,7 @@ function PostItem({ post }) {
     const text = 'Phí đẩy top là ' + account.feePushTop + '$';
     const accountBalance = useSelector((state) => state.accountBalance);
     const isMemberShip = useSelector((state) => state.isMemberShip);
+    const currentServiceName = useSelector((state) => state.currentServiceName);
     const [message, setMessage] = useState('');
 
     const pushOnTopApi = async () => {
@@ -74,7 +75,7 @@ function PostItem({ post }) {
                     {post.jobTitle}
                 </CustomButton>
                 <div className={cx('row')}>
-                    {post.status === 1 && isMemberShip && (
+                    {post.status === 1 && isMemberShip && currentServiceName !== 'Gold' && (
                         <div>
                             <Popconfirm
                                 placement="top"
