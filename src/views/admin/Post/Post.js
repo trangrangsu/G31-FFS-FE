@@ -11,9 +11,9 @@ const cx = classNames.bind(styles);
 function Post() {
     const navigate = useNavigate();
     const status = ['Tất cả', 'Đã phê duyệt', 'Không phê duyệt', 'Chờ phê duyệt'];
-    const headers = ['ID', 'THỜI GIAN ĐĂNG', 'NGƯỜI ĐĂNG', 'TIÊU ĐỀ'];
+    const headers = ['ID', 'THỜI GIAN', 'NGƯỜI ĐĂNG', 'TIÊU ĐỀ'];
     const [posts, setPost] = useState([]);
-    const [state, setState] = useState(status[0]);
+    const [state, setState] = useState(status[3]);
     const [searchValue, setSearchValue] = useState('');
     const [pageIndex, setPageIndex] = useState(0);
     const [totalPages, setTotalPages] = useState(5);
@@ -135,11 +135,11 @@ function Post() {
                     <tbody>
                         {posts.map((post) => {
                             return (
-                                <tr key={post.id} onClick={() => handleViewDetail(post)}>
+                                <tr key={post.id} onClick={() => handleViewDetail(post)} className={cx('hover')}>
                                     <td>{post.id}</td>
                                     <td>{post.createdDate}</td>
-                                    <td>{post.createdBy}</td>
-                                    <td>{post.jobTitle}</td>
+                                    <td className={cx('table-td')}>{post.createdBy}</td>
+                                    <td className={cx('table-td')}>{post.jobTitle}</td>
                                 </tr>
                             );
                         })}

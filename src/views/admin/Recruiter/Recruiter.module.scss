@@ -72,6 +72,11 @@
     padding: 10px;
     font-size: 20px;
 }
+.hover{
+    &:hover{
+        cursor: pointer;
+    }
+}
 .table-td{
     text-align: left;
     border: 1px solid #fff;

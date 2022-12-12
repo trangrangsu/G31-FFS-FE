@@ -281,7 +281,11 @@ function Recruiter() {
                     <tbody>
                         {recruiters.map((recruiters) => {
                             return (
-                                <tr key={recruiters.id} onClick={() => handleClickUser(recruiters.id)}>
+                                <tr
+                                    key={recruiters.id}
+                                    onClick={() => handleClickUser(recruiters.id)}
+                                    className={cx('hover')}
+                                >
                                     <td>{recruiters.id}</td>
                                     <td className={cx('table-td')}>{recruiters.email}</td>
                                     <td className={cx('table-td')}>{recruiters.fullName}</td>

@@ -155,7 +155,7 @@ const Dashboard = () => {
                         />
                     </div>
                     <div className={cx('top-revenue-item')}>
-                        <h4>10 freelancer tạo ra doanh thu cao nhất</h4>
+                        <h4>10 freelancer đóng góp doanh thu cao nhất</h4>
                         <Table
                             dataSource={genderData(freelancers)}
                             columns={columns}

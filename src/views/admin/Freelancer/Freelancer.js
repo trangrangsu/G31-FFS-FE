@@ -42,7 +42,7 @@ function Freelancer() {
     const renderTableData = () => {
         return freelancers.map((freelancer) => {
             return (
-                <tr onClick={() => handleClickUser(freelancer.id)} key={freelancer.id}>
+                <tr onClick={() => handleClickUser(freelancer.id)} key={freelancer.id} className={cx('hover')}>
                     <td>{freelancer.id}</td>
                     <td className={cx('table-td')}>{freelancer.email}</td>
                     <td className={cx('table-td')}>{freelancer.fullName}</td>
