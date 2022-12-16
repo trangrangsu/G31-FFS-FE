@@ -104,6 +104,7 @@ const SearchJob = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
+                <Image src={images.featuredPost} alt="avatar" className={cx('featured-post')} />
                 {topPosts.length !== 0 && (
                     <div className={cx('Top-post')}>
                         {topPosts.map((post) => (

@@ -5,7 +5,7 @@ export const register = async (user) => {
         const res = await httpRequest.postNoAuthen('sign-up', user);
         return res;
     } catch (error) {
-        console.log(error);
+        return error;
     }
 };
 export const verifyAccount = async (code) => {

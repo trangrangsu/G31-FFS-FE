@@ -2,7 +2,7 @@
     margin: 60px;
     .container {
         width: 1200px;
-        padding: 60px 20px ;
+        padding: 0px 20px 60px 20px;
         margin: 0 auto;
         background: #ffffff;
         font-size: 24px;
@@ -91,7 +91,13 @@
     padding: 10px;
     text-align: center;
 }
-
+.featured-post{
+    width: 1150px;
+    height: 80px;
+    margin-left: 5px;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
 // postItem
 
 .wrapper-post{

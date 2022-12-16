@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { CFormCheck } from '@coreui/react';
 import classNames from 'classnames/bind';
-import { Alert } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import { message, Spin } from 'antd';
 
 import * as registerServices from '../../../services/registerServices';
 import FreelancerBasicInfo from '../../../components/FreelancerBasicInfo';
@@ -10,19 +11,29 @@ import config from '../../../config';
 import Button from '../../../components/Button';
 import styles from './Register.module.scss';
 const cx = classNames.bind(styles);
-
+const antIcon = (
+    <LoadingOutlined
+        style={{
+            fontSize: 24,
+        }}
+        spin
+    />
+);
 const Register = () => {
     const [isFreelancer, setIsFreelancer] = useState(false);
     const [isRecruiter, setIsRecruiter] = useState(false);
-    const [isRegister, setIsRegister] = useState(false);
+    const [isProcess, setIsProcess] = useState(false);
     const fetchApi = async (freelancer) => {
         const result = await registerServices.register(freelancer);
-        console.log(result);
-        if (result !== undefined) {
-            setIsRegister(true);
+        setIsProcess(false);
+        if (result.response) {
+            message.error(result.response.data, 3);
+        } else {
+            message.success(result, 3);
         }
     };
     const handleCallBack = (user) => {
+        setIsProcess(true);
         if (isFreelancer) {
             user.role = 'freelancer';
         } else {
@@ -65,15 +76,9 @@ const Register = () => {
                         }}
                     />
                 </div>
-                {(isFreelancer || isRecruiter) && isRegister && (
-                    <Alert
-                        className={cx('message')}
-                        message="Yêu cầu của bạn đã được chấp nhận. Hãy kiểm tra email để xác nhận tài khoản"
-                        type="success"
-                    />
-                )}
                 {isFreelancer && <FreelancerBasicInfo onClick={handleCallBack} />}
                 {isRecruiter && <RecruiterBasicInfo onClick={handleCallBack} />}
+                {isProcess && <Spin indicator={antIcon} />}
             </div>
         </div>
     );

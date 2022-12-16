@@ -28,6 +28,8 @@ const images = {
     back4: require('../../assets/images/back4.png'),
     back5: require('../../assets/images/back5.png'),
     back6: require('../../assets/images/back6.png'),
+
+    featuredPost: require('../../assets/images/featuredPost.gif'),
 };
 
 export default images;
