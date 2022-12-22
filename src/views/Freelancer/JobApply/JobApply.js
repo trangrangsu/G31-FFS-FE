@@ -3,6 +3,8 @@ import classNames from 'classnames/bind';
 import { useSelector } from 'react-redux';
 import { Select, Pagination } from 'antd';
 
+import Image from '../../../components/Image';
+import images from '../../../assets/images';
 import * as freelancerJobManagementServices from '../../../services/freelancerJobManagementServices';
 import PostItem from './PostItem';
 import styles from './JobApply.module.scss';
@@ -57,7 +59,7 @@ const JobApply = () => {
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <div className={cx('head')}>
-                    <div className={cx('page-title')}>Quản lý công việc ứng tuyển</div>
+                    <Image src={images.jobManagement} alt="avatar" className={cx('image-tile')} />
                     <div className={cx('mini-nav')}>
                         <div className={cx('nav-item2', active ? 'active' : '')} onClick={handleApplied}>
                             Đã ứng tuyển
@@ -100,6 +102,7 @@ const JobApply = () => {
                     {posts.map((post) => (
                         <PostItem key={post.postID} post={post} type={type} userId={account.userId} />
                     ))}
+                    {posts.length === 0 && <p className={cx('message')}>Không có bài đăng</p>}
                 </div>
                 {totalResults > 10 && (
                     <div className={cx('paging')}>

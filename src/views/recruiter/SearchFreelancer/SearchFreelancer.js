@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { Input, Radio, Space, Select, Pagination, Cascader } from 'antd';
 
+import Image from '../../../components/Image';
+import images from '../../../assets/images';
 import * as recruiterCreatePostServices from '../../../services/recruiterCreatePostServices';
 import * as careerServices from '../../../services/careerServices';
 import * as recruiterSearchServices from '../../../services/recruiterSearchServices';
@@ -114,8 +116,7 @@ const SearchFreelancer = () => {
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <div className={cx('header')}>
-                    <h1>Tìm và tuyển ứng viên</h1>
-                    <Button className={cx('btn-post')}>Đăng tuyển</Button>
+                    <Image src={images.findFreelancer} alt="avatar" className={cx('page-title')} />
                 </div>
                 <div className={cx('search')}>
                     <div className={cx('filter')}>

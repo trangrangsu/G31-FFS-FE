@@ -96,9 +96,7 @@ function ViewDetailFreelancer() {
             {isValidRecruiter ? (
                 <div className={cx('container')}>
                     <div className={cx('person-info')}>
-                        <div className={cx('label')}>
-                            <p>Thông tin cá nhân</p>
-                        </div>
+                        <Image src={images.personalInfo} alt="avatar" className={cx('page-title')} />
                         <div className={cx('container-info')}>
                             <div className={cx('avatar')}>
                                 <div className={cx('avatar-container')}>

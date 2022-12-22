@@ -30,6 +30,12 @@ const images = {
     back6: require('../../assets/images/back6.png'),
 
     featuredPost: require('../../assets/images/featuredPost.gif'),
+    personalInfo: require('../../assets/images/personalInfo.gif'),
+    postManagement: require('../../assets/images/postManagement.gif'),
+    postDetail: require('../../assets/images/postDetail.gif'),
+    jobManagement: require('../../assets/images/jobManagement.gif'),
+    findFreelancer: require('../../assets/images/findFreelancer.gif'),
+    postJob: require('../../assets/images/postJob.gif'),
 };
 
 export default images;

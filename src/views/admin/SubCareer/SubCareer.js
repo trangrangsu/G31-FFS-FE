@@ -14,7 +14,7 @@ import styles from './SubCareer.module.scss';
 const cx = classNames.bind(styles);
 
 function SubCareer() {
-    const headers = ['ID', 'TÊN NGÀNH NGHỀ', 'CHỈNH SỬA', 'XÓA'];
+    const headers = ['ID', 'TÊN NGÀNH NGHỀ', 'CHỈNH SỬA'];
     const [subCareers, setSubCareers] = useState([]);
     const [listCareers, setListCareers] = useState([]);
 
@@ -226,14 +226,14 @@ function SubCareer() {
                                             className={cx('hover')}
                                         />
                                     </td>
-                                    <td>
+                                    {/* <td>
                                         {' '}
                                         <FontAwesomeIcon
                                             icon={faTrashCan}
                                             onClick={() => handDelete(subCareer)}
                                             className={cx('hover')}
                                         />
-                                    </td>
+                                    </td> */}
                                 </tr>
                             );
                         })}

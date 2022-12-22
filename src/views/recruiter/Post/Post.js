@@ -5,6 +5,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Cascader, Select, Input, Button, message, InputNumber, Popconfirm, Alert, notification } from 'antd';
 import { faPenToSquare, faFileLines, faUserCheck, faMoneyCheckDollar } from '@fortawesome/free-solid-svg-icons';
 
+import Image from '../../../components/Image';
+import images from '../../../assets/images';
+import CustomButton from '../../../components/Button';
+import config from '../../../config';
 import * as firebase from '../../../firebase/firebase';
 import * as careerServices from '../../../services/careerServices';
 import * as recruiterCreatePostServices from '../../../services/recruiterCreatePostServices';
@@ -189,9 +193,7 @@ function Post() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
-                <div className={cx('title-post')}>
-                    <p className={cx('greeting-title')}>Đăng Tin Tuyển Dụng</p>
-                </div>
+                <Image src={images.postJob} alt="avatar" className={cx('page-title')} />
                 <div className={cx('form-Post')}>
                     <div className={cx('career-post')}>
                         <FontAwesomeIcon icon={faPenToSquare} className={cx('icon-post')} />
@@ -369,9 +371,9 @@ function Post() {
                         )}
                         <p>
                             Khi đăng việc, tôi xác nhận đồng ý các{' '}
-                            <a href="/page/dieu-khoan-su-dung-danh-cho-khach-hang" target="_blank">
+                            <CustomButton text to={config.routes.rules} className={cx('rule-btn')}>
                                 điều khoản sử dụng
-                            </a>{' '}
+                            </CustomButton>
                             của Lanceddy, và không để lộ bất kỳ thông tin liên lạc cá nhân nào trong phần mô tả nội dung
                             công việc.
                         </p>

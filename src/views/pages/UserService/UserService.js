@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import { CButton } from '@coreui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSelector, useDispatch } from 'react-redux';
-import { message, notification } from 'antd';
+import { message, notification, Popconfirm } from 'antd';
 
 import * as userServiceServices from '../../../services/userServiceServices';
 import images from '../../../assets/images';
@@ -16,6 +16,7 @@ const openNotificationWithIcon = (type) => {
         description: 'Tài khoản không còn đủ số dư. Vui lòng nạp thêm tiền',
     });
 };
+const text = 'Bạn đã chắc chắn nâng cấp tài khoản?';
 const UserService = () => {
     const account = useSelector((state) => state.account);
     const accountBalance = useSelector((state) => state.accountBalance);
@@ -159,7 +160,7 @@ const UserService = () => {
                             <div className={cx('detail-item-p')}>
                                 Với gói <b>{currentService.serviceName} </b>
                                 thì bạn có thể sử dụng được các tính năng ở dưới đây hoàn toàn miễn phí trong{' '}
-                                <b>{currentService.duration}</b>
+                                <b>{currentService.duration}</b> ngày
                             </div>
                             <ul className={cx('service-detail-item2')}>
                                 {benefits.map((benefit) => {
@@ -179,14 +180,22 @@ const UserService = () => {
                                     );
                                 })}
                             </ul>
-                            <CButton
-                                color="light"
-                                disabled={currentService.id <= currentServiceId ? true : false}
-                                className={cx('detail-icon')}
-                                onClick={handleBuyService}
+                            <Popconfirm
+                                placement="top"
+                                title={text}
+                                onConfirm={handleBuyService}
+                                okText="Nâng cấp"
+                                cancelText="Không"
                             >
-                                <h5>Nâng Cấp Tài Khoản</h5>
-                            </CButton>
+                                <CButton
+                                    color="light"
+                                    disabled={currentService.id <= currentServiceId ? true : false}
+                                    className={cx('detail-icon')}
+                                    // onClick={handleBuyService}
+                                >
+                                    <h5>Nâng Cấp Tài Khoản</h5>
+                                </CButton>
+                            </Popconfirm>
                         </div>
                     </div>
                 </div>

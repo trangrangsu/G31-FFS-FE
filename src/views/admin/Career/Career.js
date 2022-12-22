@@ -12,7 +12,7 @@ import styles from './Career.module.scss';
 const cx = classNames.bind(styles);
 
 function Career() {
-    const headers = ['ID', 'Tên Ngành Nghề', 'Chỉnh Sửa', 'Xóa'];
+    const headers = ['ID', 'Tên Ngành Nghề', 'Chỉnh Sửa'];
     const [careers, setCareer] = useState([]);
     const [show, setShow] = useState(false);
     const [careerInfo, setCareerInfo] = useState({});
@@ -148,14 +148,14 @@ function Career() {
                                             className={cx('hover')}
                                         />
                                     </td>
-                                    <td>
+                                    {/* <td>
                                         {' '}
                                         <FontAwesomeIcon
                                             icon={faTrashCan}
                                             onClick={() => handDelete(career)}
                                             className={cx('hover')}
                                         />
-                                    </td>
+                                    </td> */}
                                 </tr>
                             );
                         })}

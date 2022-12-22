@@ -9,7 +9,7 @@ const cx = classNames.bind(styles);
 function Payment() {
     const status = ['Tất cả', 'Đã phê duyệt', 'Không phê duyệt', 'Chờ phê duyệt'];
 
-    const headers = ['MÃ NẠP', 'ID KHÁCH HÀNG', 'SỐ TIỀN', 'THỜI GIAN'];
+    const headers = ['MÃ NẠP', 'ID KHÁCH HÀNG', 'TÊN KHÁCH HÀNG', 'SỐ TIỀN', 'THỜI GIAN'];
 
     const [requests, setRequests] = useState([]);
     const [searchValue, setSearchValue] = useState('');
@@ -108,6 +108,7 @@ function Payment() {
                             <tr key={request.id}>
                                 <td>{request.paymentCode}</td>
                                 <td>{request.userId}</td>
+                                <td>{request.fullName}</td>
                                 <td>{request.money}</td>
                                 <td>{request.dateRequest}</td>
                             </tr>

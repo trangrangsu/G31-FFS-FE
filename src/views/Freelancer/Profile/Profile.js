@@ -448,7 +448,7 @@ const Profile = () => {
                                         />
                                     </div>
                                     <div className={cx('title')}>
-                                        <p>${price} VND/hr</p>
+                                        <p>{new Intl.NumberFormat('de-DE').format(price)} VND/hr</p>
                                         <FontAwesomeIcon
                                             icon={faPenToSquare}
                                             onClick={() => {

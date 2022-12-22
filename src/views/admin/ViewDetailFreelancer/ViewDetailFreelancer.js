@@ -71,7 +71,7 @@ function ViewDetailFreelancer() {
                 <div className={cx('container')}>
                     <div className={cx('detail-title')}>
                         <FontAwesomeIcon icon={faUserPen} className={cx('icon-user')} />
-                        <h1 className={cx('title')}>Thông Tin chi tiết của: {freelancer.fullName}</h1>
+                        <h1 className={cx('title')}>Thông tin chi tiết của: {freelancer.fullName}</h1>
                     </div>
 
                     <div className={cx('freelancer-info')}>
@@ -95,15 +95,14 @@ function ViewDetailFreelancer() {
                                 <div>Chi phí: {freelancer.costPerHour}</div>
                                 {cv !== '' && (
                                     <div className={cx('cv-right')}>
-                                        <p>CV:</p>
-                                        <a href={cvUrl}>{cv}</a>
+                                        CV: <a href={cvUrl}>{cv}</a>
                                     </div>
                                 )}
                             </div>
                         </div>
                         <div className={cx('right-info')}>
                             <div className={cx('right-detail')}>
-                                <div>Giới tính: {freelancer.gender}</div>
+                                <div>Giới tính: {freelancer.gender ? 'Nam' : 'Nữ'}</div>
                                 <div>Ngày Sinh: {freelancer.birthdate}</div>
                                 <div>Số diện thoại: {freelancer.phone}</div>
                                 <div>Địa chỉ: {freelancer.address}</div>

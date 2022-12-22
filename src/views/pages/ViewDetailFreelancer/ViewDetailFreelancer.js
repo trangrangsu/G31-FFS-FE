@@ -262,7 +262,7 @@ function ViewDetailFreelancer() {
                                             <p>Giới thiệu</p>
                                         </div>
                                         <div className={cx('title')}>
-                                            <p>${price} VND/hr</p>
+                                            <p>{new Intl.NumberFormat('de-DE').format(price)} VND/hr</p>
                                         </div>
                                     </div>
                                     <div className={cx('content')}>

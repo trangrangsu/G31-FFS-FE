@@ -112,7 +112,6 @@ const SearchJob = () => {
                         ))}
                     </div>
                 )}
-                <div className={cx('page-title')}>Tìm kiếm việc làm</div>
                 <div className={cx('displayFlex')}>
                     <div className={cx('left')}>
                         <div className={cx('left-component')}>

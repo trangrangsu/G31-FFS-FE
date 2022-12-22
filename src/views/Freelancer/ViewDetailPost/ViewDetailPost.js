@@ -225,7 +225,7 @@ const ViewDetailPost = () => {
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('page-title')}>Chi tiết bài đăng</div>
+            <Image src={images.postDetail} alt="avatar" className={cx('page-title')} />
             {isValidPost ? (
                 <div className={cx('container')}>
                     <div className={cx('left')}>

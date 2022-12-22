@@ -1,6 +1,6 @@
 .wrapper {
     .container {
-        margin: 100px auto;
+        margin: 60px auto;
         width: 900px;
         height: fit-content;
         background-color: #fff !important;
@@ -38,7 +38,7 @@
             }
         }
         .icon-post {
-            color: black;
+            color: #0067c7;
             height: 30px;
             width: 30px;
             margin-right: 40px;
@@ -54,6 +54,7 @@
             font-weight: bold;
             display: block;
             font-size: 25px;
+            color: #0067c7;
         }
         .label-subTitle {
             font-size: 18px;
@@ -62,11 +63,11 @@
         }
         .career-post {
             padding: 16px;
-            border: 1px solid #A8A2A2;
+            //border: 1px solid #A8A2A2;
             margin-bottom: 20px;
             display: flex;
             border-radius: 10px;
-            box-shadow: rgba(0, 0, 0, 0.2) 0 0 10px;
+            // box-shadow: rgba(0, 0, 0, 0.2) 0 0 10px;
             select {
                 margin-bottom: 16px;
 
@@ -76,16 +77,16 @@
             padding: 16px;
             border-radius: 10px;
             margin-bottom: 20px;
-            box-shadow: rgba(0, 0, 0, 0.2) 0 0 10px;
+            // box-shadow: rgba(0, 0, 0, 0.2) 0 0 10px;
 
         }
         .post-detail {
             padding: 16px;
             display: flex;
-            border: 1px solid #A8A2A2;
+            //border: 1px solid #A8A2A2;
             border-radius: 10px;
             margin-bottom: 20px;
-            box-shadow: rgba(0, 0, 0, 0.2) 0 0 10px;
+            // box-shadow: rgba(0, 0, 0, 0.2) 0 0 10px;
             .label-attach {
                 margin-top: 16px;
                 color: blue;
@@ -101,18 +102,18 @@
         .more-req {
             padding: 16px;
             display: flex;
-            border: 1px solid #A8A2A2;
+            //border: 1px solid #A8A2A2;
             border-radius: 10px;
             margin-bottom: 20px;
-            box-shadow: rgba(0, 0, 0, 0.2) 0 0 10px;
+            // box-shadow: rgba(0, 0, 0, 0.2) 0 0 10px;
         }
         .budget-post {
             padding: 16px;
             display: flex;
-            border: 1px solid #A8A2A2;
+            //border: 1px solid #A8A2A2;
             border-radius: 10px;
             margin-bottom: 20px;
-            box-shadow: rgba(0, 0, 0, 0.2) 0 0 10px;
+            // box-shadow: rgba(0, 0, 0, 0.2) 0 0 10px;
             input::placeholder {
                 text-align: right;
             }
@@ -124,7 +125,7 @@
             text-align: center;
             margin: 0 auto;
             background-color: #f0f0f0;
-            box-shadow: rgba(0, 0, 0, 0.2) 0 0 10px;
+            // box-shadow: rgba(0, 0, 0, 0.2) 0 0 10px;
             button {
                 margin-bottom: 20px;
                 font-weight: bold;
@@ -158,4 +159,19 @@
     div{
         color: red;
     }
+}
+.rule-btn{
+    font-size: 18px;
+    padding: 0px;
+    color:#0067c7;
+    text-decoration: none;
+    &:hover{
+        text-decoration: underline;
+        color: #195893;
+    }
+}
+.page-title{
+    width: 880px;
+    height: 60px;
+    margin: 10px;
 }

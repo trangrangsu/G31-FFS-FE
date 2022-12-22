@@ -3,6 +3,8 @@ import classNames from 'classnames/bind';
 import { Input, Select, Pagination } from 'antd';
 import { useSelector } from 'react-redux';
 
+import Image from '../../../components/Image';
+import images from '../../../assets/images';
 import * as recruiterPostManagementServices from '../../../services/recruiterPostManagementServices';
 import PostItem from './PostItem';
 import styles from './PostManagement.module.scss';
@@ -57,7 +59,7 @@ const PostManagement = () => {
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <div className={cx('head')}>
-                    <div className={cx('page-title')}>Danh sách bài đăng</div>
+                    <Image src={images.postManagement} alt="avatar" className={cx('page-title')} />
                     <div className={cx('search')}>
                         <div>
                             <Select

@@ -41,8 +41,8 @@ function TopItem({ post }) {
                     <p className={cx('top-text')}>{post.area}</p>
                 </div>
                 <div className={cx('top-container')}>
-                    <div className={cx('top-text')}>{post.typebudget}: </div>
-                    <div className={cx('top-text', 'top-margin')}> {post.bugget} VND</div>
+                    <div>{post.typebudget}: </div>
+                    <div className={cx('top-margin')}> {post.bugget} VND</div>
                 </div>
             </div>
             <span className={cx('left-top')}></span>
