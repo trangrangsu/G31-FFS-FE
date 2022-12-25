@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { Carousel } from 'antd';
 import config from '../../../config';
-import Button from '../../../components/Button';
 import images from '../../../assets/images';
+import './Slider.scss';
 import styles from './ContentHome.module.scss';
 const cx = classNames.bind(styles);
 const contentStyle = {
@@ -148,7 +148,6 @@ function ContentHome() {
                     </div>
                 </div>
             </div>
-
             <div className={cx('distance')}></div>
             <div className={cx('advantages')}>
                 <h2 className={cx('advantages-title')}>Tại Sao Nên Tuyển Dụng Tại Lanceddy?</h2>
@@ -179,9 +178,13 @@ function ContentHome() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>{' '}
+            <span className="sliderSpan1" id="sliderSpan1"></span>
+            <span className="sliderSpan2" id="sliderSpan2"></span>
+            <span className="sliderSpan3" id="sliderSpan3"></span>
+            <span className="sliderSpan4" id="sliderSpan4"></span>
+            <span className="sliderSpan5" id="sliderSpan5"></span>
             <div className={cx('distance')}></div>
-
             <div className={cx('about-us')}>
                 <h2 className={cx('about-us-title')}>Thành viên dự án</h2>
                 <div className={cx('about-us-container')}>
@@ -244,6 +247,85 @@ function ContentHome() {
                             <h3>Nguyễn Hữu Tuyên</h3>
                             <p>Backend Developer</p>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div className={'slideContainer'}>
+                <div className="imageSlider">
+                    <div className="slidesDiv">
+                        <div className="img img1">
+                            <div className={cx('about-us-img')}>
+                                <img src={images.cong} alt="cong" />
+                            </div>
+                            <div className={cx('about-us-maxim')}>
+                                <p>Nó chạy ... trên máy của tôi</p>
+                            </div>
+                            <div className={cx('about-us-infor')}>
+                                <h3>Biện Văn Công</h3>
+                                <p>Backend Developer</p>
+                            </div>
+                        </div>
+                        <a href="#sliderSpan1" className="button button1"></a>
+                    </div>
+                    <div className="slidesDiv">
+                        <div className="img img2">
+                            <div className={cx('about-us-img')}>
+                                <img src={images.manh} alt="cong" />
+                            </div>
+                            <div className={cx('about-us-maxim')}>
+                                <p>Đi một ngày đàng học một sàng khôn</p>
+                            </div>
+                            <div className={cx('about-us-infor')}>
+                                <h3>Nguyễn Văn Mạnh</h3>
+                                <p>Fontend Developer</p>
+                            </div>
+                        </div>
+                        <a href="#sliderSpan2" className="button button2"></a>
+                    </div>
+                    <div className="slidesDiv">
+                        <div className="img img3">
+                            <div className={cx('about-us-img')}>
+                                <img src={images.trang} alt="cong" />
+                            </div>
+                            <div className={cx('about-us-maxim')}>
+                                <p>It happened! So it happened.</p>
+                            </div>
+                            <div className={cx('about-us-infor')}>
+                                <h3>Nguyễn Bá Trang</h3>
+                                <p>Leader</p>
+                            </div>
+                        </div>
+                        <a href="#sliderSpan3" className="button button3"></a>
+                    </div>
+                    <div className="slidesDiv">
+                        <div className="img img4">
+                            <div className={cx('about-us-img')}>
+                                <img src={images.quyet} alt="cong" />
+                            </div>
+                            <div className={cx('about-us-maxim')}>
+                                <p>Học hết sức, chơi hết mình</p>
+                            </div>
+                            <div className={cx('about-us-infor')}>
+                                <h3>Nguyễn Bắc Quyết</h3>
+                                <p>Fontend Developer</p>
+                            </div>
+                        </div>
+                        <a href="#sliderSpan4" className="button button4"></a>
+                    </div>
+                    <div className="slidesDiv">
+                        <div className="img img5">
+                            <div className={cx('about-us-img')}>
+                                <img src={images.tuyen} alt="cong" />
+                            </div>
+                            <div className={cx('about-us-maxim')}>
+                                <p>Thành quả của im lặng là hòa bình</p>
+                            </div>
+                            <div className={cx('about-us-infor')}>
+                                <h3>Nguyễn Hữu Tuyên</h3>
+                                <p>Backend Developer</p>
+                            </div>
+                        </div>
+                        <a href="#sliderSpan5" className="button button5"></a>
                     </div>
                 </div>
             </div>

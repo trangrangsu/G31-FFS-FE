@@ -143,11 +143,11 @@
     display: flex;
     flex-direction: column;
     height: 70%;
+    width: 230px;
     justify-content: space-around;
     margin: 50px 10px;
     padding: 20px;
     transition: all 1s ease;
-    width: 230px;
 
     &:hover {
         transform: scale(1.1);
@@ -190,11 +190,13 @@
         opacity: 0.8;
     }
 }
+
+
 // Mobile: width < 740px
 @media only screen and (max-width: 46.1875em){
     .guest-intro {
         width: 100%;
-        height: 300px;
+        height: 310px;
         img{
             width: 100%;
             height: 300px;
@@ -240,6 +242,14 @@
 // Tablet: width >= 740px and width < 1024px
 //@media only screen and (min-width: 46.25em) and (max-width: 63.9375em) {
 @media only screen and (min-width: 46.25em) and (max-width: 1200px) {
+    .guest-intro {
+        width: 100%;
+        height: 410px;
+        img{
+            width: 100%;
+            height: 400px;
+        }
+    }
     .top-job-list{
         width: 100%;
     }
@@ -272,13 +282,39 @@
             height: 200px;
         }
     }
-    .about-us-container {
-        width: 100%;
-        align-items: inherit;
-        justify-content: space-between;
-
+    .about-us{
+        display: none;
     }
-    .about-us-card{
-        width: 33.33%;
+    .about-us-img {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    
+        img {
+            border-radius: 50%;
+            height: 100px;
+            width: 100px;
+            margin: 0 20px;
+            object-fit: cover;
+        }
+    }
+    .about-us-maxim {
+        border-radius: 5px;
+        padding: 5px;
+        p{
+            margin: 0;
+        }
+    }
+    .about-us-infor {
+        margin-top: 5px;
+        h3 {
+            font-size: 18px;
+        }
+    
+        p {
+            font-weight: 600;
+            opacity: 0.8;
+            margin: 0;
+        }
     }
 }
